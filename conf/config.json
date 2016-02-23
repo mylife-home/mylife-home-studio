@@ -1,0 +1,12 @@
+{
+  "net": {
+    "host"           : "rpi2-devel.mti-team2.dyndns.org",
+    "port"           : 6667,
+    "admin_channel"  : "mylife-admin",
+    "log_channel"    : "mylife-log",
+    "resources_nick" : "mylife-home-resources"
+  },
+  "web": {
+    "port" : 8002
+  }
+}
