@@ -5,20 +5,11 @@
   "license": "GPL",
   "private": true,
   "dependencies": {
-    "iron-elements": "PolymerElements/iron-elements#^1.0.0",
-    "neon-elements": "PolymerElements/neon-elements#^1.0.0",
-    "page": "visionmedia/page.js#~1.6.4",
-    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
-    "platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
-    "polymer": "Polymer/polymer#^1.2.0",
-    "paper-button": "PolymerElements/paper-button#^1.0.11",
-    "polymer-experiments": "PolymerLabs/polymer-experiments",
-    "observe-js": "Polymer/observe-js#^0.5.7",
     "system.js": "~0.19.3",
-    "traceur": "~0.0.91",
     "socket.io-client": "~1.3.7",
     "async": "^1.5.0",
-    "bootstrap": "~3.3.5"
+    "react": "^0.14.7",
+    "babel": "*"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
