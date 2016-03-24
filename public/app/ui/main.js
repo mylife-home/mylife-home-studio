@@ -3,7 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import HelloWorld from './hello-world-component';
+
+import Application from './application';
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
@@ -12,6 +13,6 @@ import HelloWorld from './hello-world-component';
 injectTapEventPlugin();
 
 ReactDOM.render(
-  <HelloWorld/>,
+  <Application/>,
   document.getElementById('content')
 );
