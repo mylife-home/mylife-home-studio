@@ -2,10 +2,11 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {RaisedButton} from 'material-ui';
 
 class HelloWorld extends React.Component {
   render() {
-    return <h1>Hello, world!</h1>;
+    return <RaisedButton label="Hello, world!" />;
   }
 }
 
