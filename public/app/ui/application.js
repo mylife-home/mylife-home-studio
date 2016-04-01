@@ -1,10 +1,13 @@
 'use strict';
 
 import React from 'react';
-
 import AppBar from 'material-ui/lib/app-bar';
+
+import MainToolbar from './main-toolbar';
+
 import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
+
 import HelloWorld from './hello-world-component';
 
 const styles = {
@@ -20,6 +23,7 @@ class Application extends React.Component {
   render() { return (
     <div>
       <AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
+      <MainToolbar />
       <Tabs>
         <Tab label="Item One">
           <div>
