@@ -23,7 +23,8 @@ class OnlineStore extends EventEmitter {
         break;
 
       case AppConstants.ActionTypes.REPOSITORY_ADD:
-        this.entities.set(action.entity.id, action.entity);
+        const entity = action.entity;
+        this.entities.set(entity.id, entity);
         this.emitChange();
         break;
 
@@ -51,7 +52,7 @@ class OnlineStore extends EventEmitter {
   }
 
   getAll() {
-    return Array.from(this.entities);
+    return Array.from(this.entities.values());
   }
 };
 
