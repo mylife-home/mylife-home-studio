@@ -2,11 +2,11 @@
 
 import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
-
-import MainToolbar from './main-toolbar';
-
 import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
+
+import MainToolbar from './main-toolbar';
+import OnlineTab from './online-tab';
 
 import HelloWorld from './hello-world-component';
 
@@ -25,14 +25,8 @@ class Application extends React.Component {
       <AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
       <MainToolbar />
       <Tabs>
-        <Tab label="Item One">
-          <div>
-            <h2 style={styles.headline}>Tab One</h2>
-            <p>
-              This is an example tab.
-            </p>
-            <HelloWorld/>
-          </div>
+        <Tab label="Online">
+          <OnlineTab />
         </Tab>
         <Tab label="Item Two" >
           <div>

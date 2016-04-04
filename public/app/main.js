@@ -7,6 +7,7 @@ import debugLib from 'debug';
 
 import Application from './components/application';
 import Facade from './services/facade'; // import to force init
+import OnlineStore from './stores/online-store'; // import to force init
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
