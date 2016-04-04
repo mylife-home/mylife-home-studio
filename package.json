@@ -35,6 +35,8 @@
     },
     "dependencies": {
       "async": "npm:async@^2.0.0-rc.1",
+      "flux": "npm:flux@^2.1.1",
+      "keymirror": "npm:keymirror@^0.1.1",
       "material-ui": "npm:material-ui@^0.15.0-alpha.2",
       "react": "npm:react@^0.14.7",
       "react-dom": "npm:react-dom@^0.14.7",
