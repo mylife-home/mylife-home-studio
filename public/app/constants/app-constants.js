@@ -2,8 +2,10 @@
 
 import keyMirror from 'keymirror';
 
-module.exports = {
-  actionTypes: keyMirror({
-    TOTO: null
+export default {
+  ActionTypes: keyMirror({
+    REPOSITORY_CLEAR: null,
+    REPOSITORY_ADD: null,
+    REPOSITORY_REMOVE: null
   })
 };
