@@ -15,21 +15,43 @@ class OnlineStore extends EventEmitter {
   }
 
   handleDispatch(action) {
-    switch(action.type) {
+    let entity;
 
+    switch(action.type) {
       case AppConstants.ActionTypes.REPOSITORY_CLEAR:
         this.entities.clear();
         this.emitChange();
         break;
 
       case AppConstants.ActionTypes.REPOSITORY_ADD:
-        const entity = action.entity;
+        entity = action.entity;
         this.entities.set(entity.id, entity);
         this.emitChange();
         break;
 
       case AppConstants.ActionTypes.REPOSITORY_REMOVE:
         this.entities.delete(action.id);
+        this.emitChange();
+        break;
+
+      case AppConstants.ActionTypes.ENTITY_RESOURCES_LIST:
+        entity = this.entities.get(action.entityId);
+        if(!entity) { return; }
+        entity.resources = action.resources;
+        this.emitChange();
+        break;
+
+      case AppConstants.ActionTypes.ENTITY_PLUGINS_LIST:
+        entity = this.entities.get(action.entityId);
+        if(!entity) { return; }
+        entity.plugins = action.plugins;
+        this.emitChange();
+        break;
+
+      case AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST:
+        entity = this.entities.get(action.entityId);
+        if(!entity) { return; }
+        entity.components = action.components;
         this.emitChange();
         break;
     }

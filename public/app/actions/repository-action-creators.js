@@ -2,6 +2,7 @@
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
+import ResourcesActionCreators from './resources-action-creators';
 
 export default {
 
@@ -16,6 +17,8 @@ export default {
       type: AppConstants.ActionTypes.REPOSITORY_ADD,
       entity
     });
+
+    ResourcesActionCreators.entityQuery(entity);
   },
 
   remove: function(id) {
