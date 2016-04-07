@@ -17,10 +17,12 @@ export default {
     case shared.EntityType.RESOURCES:
       Facade.resources.queryResourcesList(entity.id);
       break;
+
     case shared.EntityType.CORE:
       Facade.resources.queryPluginsList(entity.id);
       Facade.resources.queryComponentsList(entity.id);
       break;
+
     case shared.EntityType.UI:
       break;
     }
