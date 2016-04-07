@@ -13,7 +13,7 @@ class Resources {
   queryResourcesList(entityId) {
     console.log('queryResourcesList');
     request
-      .post('/api/' + entityId)
+      .post('/resources/' + entityId)
       .send({ type : 'enum' })
       .end(function(err, res){
         console.log(err, res);
