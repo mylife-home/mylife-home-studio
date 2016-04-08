@@ -2,11 +2,10 @@
 
 import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
-import Tabs from 'material-ui/lib/tabs/tabs';
-import Tab from 'material-ui/lib/tabs/tab';
+import mui from 'material-ui';
 
 import MainToolbar from './main-toolbar';
-import OnlineTab from './online-tab';
+import OnlineTab from './online-tab/main';
 
 import HelloWorld from './hello-world-component';
 
@@ -22,21 +21,21 @@ const styles = {
 class Application extends React.Component {
   render() { return (
     <div>
-      <AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
+      <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
       <MainToolbar />
-      <Tabs>
-        <Tab label="Online">
+      <mui.Tabs>
+        <mui.Tab label="Online">
           <OnlineTab />
-        </Tab>
-        <Tab label="Item Two" >
+        </mui.Tab>
+        <mui.Tab label="Item Two" >
           <div>
             <h2 style={styles.headline}>Tab Two</h2>
             <p>
               This is another example tab.
             </p>
           </div>
-        </Tab>
-      </Tabs>
+        </mui.Tab>
+      </mui.Tabs>
     </div>
   ); }
 }
