@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import mui from 'material-ui';
+import base from '../base/index';
 
 class TreeResource extends React.Component {
 
@@ -12,13 +13,24 @@ class TreeResource extends React.Component {
   }
 
   render() {
+    const entity = this.props.entity;
     const resource = this.props.resource;
-    return (<mui.ListItem><div>{resource}</div></mui.ListItem>);
+    const value = { type: 'resource', entity: entity.id, resource };
+
+    return (
+      <base.SelectableListItem value={value}>
+        <div>
+          {resource}
+        </div>
+      </base.SelectableListItem>
+    );
   }
 }
 
 TreeResource.propTypes = {
+  entity: React.PropTypes.object.isRequired,
   resource: React.PropTypes.string.isRequired
 };
+
 
 export default TreeResource;

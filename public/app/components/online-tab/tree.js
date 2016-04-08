@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import mui from 'material-ui';
+import base from '../base/index';
 
 import shared from '../../shared/index';
 
@@ -14,38 +15,41 @@ class Tree extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = getStateFromStores();
+    this.state = {
+      entities: OnlineStore.getAll()
+    }
   }
 
   componentDidMount() {
-    OnlineStore.addChangeListener(this._onChange.bind(this));
+    OnlineStore.addChangeListener(this.handleStoreChange.bind(this));
   }
 
   componentWillUnmount() {
-    OnlineStore.removeChangeListener(this._onChange.bind(this));
+    OnlineStore.removeChangeListener(this.handleStoreChange.bind(this));
   }
 
-  _onChange() {
-    this.setState(getStateFromStores());
+  handleStoreChange() {
+    this.setState({
+      entities: OnlineStore.getAll()
+    });
+  }
+
+  handleSelectionChanged(value) {
+    console.log('selection changed', value);
+    // TODO
   }
 
   render() {
     const entities = this.state.entities
-      .filter(e => e.type != shared.EntityType.UNKNOWN)
+      .filter(entity => (entity.type != shared.EntityType.UNKNOWN))
       .map((entity) => (<TreeEntity key={entity.id} entity={entity} />));
 
     return (
-      <mui.List>
+      <base.SelectableList selectedValueChanged={this.handleSelectionChanged.bind(this)}>
         {entities}
-      </mui.List>
+      </base.SelectableList>
     );
   }
-}
-
-function getStateFromStores() {
-  return {
-    entities: OnlineStore.getAll()
-  };
 }
 
 export default Tree;

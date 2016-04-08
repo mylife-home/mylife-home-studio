@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import mui from 'material-ui';
+import base from '../base/index';
 
 import shared from '../../shared/index';
 
@@ -19,16 +20,16 @@ class TreeEntity extends React.Component {
 
   renderResourcesDetails(entity) {
     if(!entity.resources) { return []; }
-    return entity.resources.map(resource => (<TreeResource key={resource} resource={resource} />));
+    return entity.resources.map(resource => (<TreeResource key={resource} entity={entity} resource={resource} />));
   }
 
   renderCoreDetails(entity) {
     const arr = [];
     if(entity.plugins) {
-      entity.plugins.forEach(plugin => { arr.push(<TreePlugin key={`${plugin.library}.${plugin.type}`} plugin={plugin} />); });
+      entity.plugins.forEach(plugin => { arr.push(<TreePlugin key={`${plugin.library}.${plugin.type}`} entity={entity} plugin={plugin} />); });
     }
     if(entity.components) {
-      entity.components.forEach(component => { arr.push(<TreeComponent key={component.id} component={component} />); });
+      entity.components.forEach(component => { arr.push(<TreeComponent key={component.id} entity={entity} component={component} />); });
     }
     return arr;
   }
@@ -56,9 +57,13 @@ class TreeEntity extends React.Component {
 
   render() {
     const entity = this.props.entity;
+    const value = { type: 'entity', entity: entity.id };
 
     return (
-      <mui.ListItem nestedItems={this.renderDetails(entity)}>{entity.id}</mui.ListItem>
+      <base.SelectableListItem
+        value={value}
+        nestedItems={this.renderDetails(entity)}
+      >{entity.id}</base.SelectableListItem>
     );
   }
 }
