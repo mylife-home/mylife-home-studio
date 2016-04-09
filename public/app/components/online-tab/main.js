@@ -14,9 +14,14 @@ class OnlineTab extends React.Component {
     super(props);
   }
 
+  handleSelectionChanged(value) {
+    console.log('selection changed', value);
+    // TODO
+  }
+
   render() {
     return (
-      <Tree />
+      <Tree selectedValueChanged={this.handleSelectionChanged} />
     );
   }
 }

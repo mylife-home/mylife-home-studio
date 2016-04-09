@@ -35,8 +35,10 @@ class Tree extends React.Component {
   }
 
   handleSelectionChanged(value) {
-    console.log('selection changed', value);
-    // TODO
+    const selectedValueChanged = this.props.selectedValueChanged;
+    if(selectedValueChanged) {
+      selectedValueChanged(value);
+    }
   }
 
   render() {
@@ -51,5 +53,9 @@ class Tree extends React.Component {
     );
   }
 }
+
+Tree.propTypes = {
+  selectedValueChanged: React.PropTypes.func.isRequired
+};
 
 export default Tree;
