@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import mui from 'material-ui';
+import * as bs from 'react-bootstrap';
 
 import Tree from './tree';
 
@@ -21,7 +22,14 @@ class OnlineTab extends React.Component {
 
   render() {
     return (
-      <Tree selectedValueChanged={this.handleSelectionChanged} />
+      <bs.Grid>
+        <bs.Row>
+          <bs.Col sm={3}>
+            <Tree selectedValueChanged={this.handleSelectionChanged} />
+          </bs.Col>
+          <bs.Col sm={9}>main</bs.Col>
+        </bs.Row>
+      </bs.Grid>
     );
   }
 }
