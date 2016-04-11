@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import mui from 'material-ui';
 import base from '../base/index';
 
+import Facade from '../../services/facade';
+
 class TreePlugin extends React.Component {
 
   constructor(props) {
@@ -14,21 +16,21 @@ class TreePlugin extends React.Component {
 
   renderUsageIcon(plugin) {
     switch(plugin.usage) {
-    case 'driver': // TODO: use constants
+    case Facade.metadata.pluginUsage.driver:
       return (
         <base.TooltipContainer tooltip="Hardware driver">
           <base.icons.PluginDriver />
         </base.TooltipContainer>
       );
 
-    case 'vpanel': // TODO: use constants
+    case Facade.metadata.pluginUsage.vpanel:
       return (
         <base.TooltipContainer tooltip="Virtual panel">
           <base.icons.PluginVPanel />
         </base.TooltipContainer>
       );
 
-    case 'ui':
+    case Facade.metadata.pluginUsage.ui:
       return (
         <base.TooltipContainer tooltip="UI">
           <base.icons.PluginUi />
