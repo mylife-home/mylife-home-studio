@@ -5,7 +5,7 @@ import AppBar from 'material-ui/lib/app-bar';
 import mui from 'material-ui';
 
 import MainToolbar from './main-toolbar';
-import OnlineTab from './online-tab/main';
+import OnlineTab from './online-tab/index';
 
 import HelloWorld from './hello-world-component';
 
