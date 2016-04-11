@@ -55,6 +55,34 @@ class TreeEntity extends React.Component {
     }
   }
 
+  renderTypeIcon(entity) {
+    switch(entity.type) {
+    case shared.EntityType.RESOURCES:
+      return (
+        <base.TooltipContainer tooltip="Resources entity">
+          <base.icons.EntityResources />
+        </base.TooltipContainer>
+      );
+
+    case shared.EntityType.CORE:
+      return (
+        <base.TooltipContainer tooltip="Core entity">
+          <base.icons.EntityCore />
+        </base.TooltipContainer>
+      );
+
+    case shared.EntityType.UI:
+      return (
+        <base.TooltipContainer tooltip="UI entity">
+          <base.icons.EntityUi />
+        </base.TooltipContainer>
+      );
+
+    default:
+      return null;
+    }
+  }
+
   render() {
     const entity = this.props.entity;
     const value = { type: 'entity', entity: entity.id };
@@ -62,8 +90,9 @@ class TreeEntity extends React.Component {
     return (
       <base.SelectableListItem
         value={value}
-        nestedItems={this.renderDetails(entity)}
-      >{entity.id}</base.SelectableListItem>
+        leftIcon={this.renderTypeIcon(entity)}
+        primaryText={entity.host}
+        nestedItems={this.renderDetails(entity)} />
     );
   }
 }
