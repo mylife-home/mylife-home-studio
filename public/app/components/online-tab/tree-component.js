@@ -18,11 +18,15 @@ class TreeComponent extends React.Component {
     const value = { type: 'component', entity: entity.id, component: component.id };
 
     return (
-      <base.SelectableListItem value={value}>
-        <div>
-          {component.id}
-        </div>
-      </base.SelectableListItem>
+      <base.SelectableListItem
+        value={value}
+        leftIcon={
+          <base.TooltipContainer tooltip="Component">
+            <base.icons.Component />
+          </base.TooltipContainer>
+        }
+        primaryText={component.id}
+      />
     );
   }
 }

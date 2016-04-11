@@ -18,11 +18,15 @@ class TreeResource extends React.Component {
     const value = { type: 'resource', entity: entity.id, resource };
 
     return (
-      <base.SelectableListItem value={value}>
-        <div>
-          {resource}
-        </div>
-      </base.SelectableListItem>
+      <base.SelectableListItem
+        value={value}
+        leftIcon={
+          <base.TooltipContainer tooltip="Resource">
+            <base.icons.Resource />
+          </base.TooltipContainer>
+        }
+        primaryText={resource}
+      />
     );
   }
 }
