@@ -21,16 +21,20 @@ class OnlineTab extends React.Component {
 
   render() {
     return (
-      <bs.Grid>
+      <bs.Grid fluid={true}>
         <bs.Row>
           <bs.Col sm={3}>
-            <Tree
-              selectedNode={this.state.selectedNode}
-              selectedValueChanged={this.handleSelectionChanged.bind(this)} />
+            <mui.Paper>
+              <Tree
+                selectedNode={this.state.selectedNode}
+                selectedValueChanged={this.handleSelectionChanged.bind(this)} />
+            </mui.Paper>
           </bs.Col>
           <bs.Col sm={9}>
-            <Details
-              value={this.state.selectedNode} />
+            <mui.Paper>
+              <Details
+                value={this.state.selectedNode} />
+            </mui.Paper>
           </bs.Col>
         </bs.Row>
       </bs.Grid>
