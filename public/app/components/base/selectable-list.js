@@ -8,7 +8,7 @@ class SelectableList extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { selectedNode: null };
+    this.state = { selectedNode: props.selectedNode };
   }
 
   getChildContext() {
@@ -20,6 +20,14 @@ class SelectableList extends React.Component {
 
   isSelected(value) {
     return JSON.stringify(value) === JSON.stringify(this.state.selectedNode);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.selectedNode) {
+      this.setState({
+        selectedNode: nextProps.selectedNode
+      });
+    }
   }
 
   handleSelectionChange(value) {
@@ -53,7 +61,8 @@ SelectableList.childContextTypes = {
 };
 
 SelectableList.propTypes = {
-  selectedValueChanged: React.PropTypes.func
+  selectedValueChanged: React.PropTypes.func,
+  selectedNode: React.PropTypes.object
 };
 
 export default SelectableList;
