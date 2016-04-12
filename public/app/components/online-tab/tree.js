@@ -47,7 +47,10 @@ class Tree extends React.Component {
       .map((entity) => (<TreeEntity key={entity.id} entity={entity} />));
 
     return (
-      <base.SelectableList selectedValueChanged={this.handleSelectionChanged.bind(this)}>
+      <base.SelectableList
+        selectedValueChanged={this.handleSelectionChanged.bind(this)}
+        selectedNode={this.props.selectedNode}
+      >
         {entities}
       </base.SelectableList>
     );
@@ -55,7 +58,8 @@ class Tree extends React.Component {
 }
 
 Tree.propTypes = {
-  selectedValueChanged: React.PropTypes.func.isRequired
+  selectedValueChanged: React.PropTypes.func.isRequired,
+  selectedNode: React.PropTypes.object
 };
 
 export default Tree;

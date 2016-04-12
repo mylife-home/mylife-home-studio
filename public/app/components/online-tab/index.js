@@ -6,18 +6,17 @@ import mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 
 import Tree from './tree';
-
-import OnlineStore from '../../stores/online-store';
+import Details from './details';
 
 class OnlineTab extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = { selectedNode: null };
   }
 
   handleSelectionChanged(value) {
-    console.log('selection changed', value);
-    // TODO
+    this.setState({ selectedNode: value });
   }
 
   render() {
@@ -25,9 +24,14 @@ class OnlineTab extends React.Component {
       <bs.Grid>
         <bs.Row>
           <bs.Col sm={3}>
-            <Tree selectedValueChanged={this.handleSelectionChanged} />
+            <Tree
+              selectedNode={this.state.selectedNode}
+              selectedValueChanged={this.handleSelectionChanged.bind(this)} />
           </bs.Col>
-          <bs.Col sm={9}>main</bs.Col>
+          <bs.Col sm={9}>
+            <Details
+              value={this.state.selectedNode} />
+          </bs.Col>
         </bs.Row>
       </bs.Grid>
     );
