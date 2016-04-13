@@ -7,8 +7,6 @@ import mui from 'material-ui';
 import MainToolbar from './main-toolbar';
 import OnlineTab from './online-tab/index';
 
-import HelloWorld from './hello-world-component';
-
 const styles = {
   headline: {
     fontSize: 24,
