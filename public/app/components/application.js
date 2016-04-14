@@ -15,12 +15,6 @@ const styles = {
     left:0,
     right:0,
   },
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
   tabs: {
     height : 'calc(100% - 120px)',
     position: 'relative'
@@ -44,7 +38,7 @@ class Application extends React.Component {
           </mui.Tab>
           <mui.Tab label="Item Two" >
             <div>
-              <h2 style={styles.headline}>Tab Two</h2>
+              <h2>Tab Two</h2>
               <p>
                 This is another example tab.
               </p>
