@@ -37,7 +37,7 @@ class Application extends React.Component {
                   contentContainerStyle={styles.tabContainer}
                   tabTemplate={base.TabTemplate}>
           <mui.Tab label="Online"
-                   icon={<base.icons.Online />}>
+                   icon={<base.icons.tabs.Online />}>
             <OnlineTab />
           </mui.Tab>
           <mui.Tab label="Item Two">

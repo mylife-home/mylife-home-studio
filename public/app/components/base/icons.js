@@ -17,10 +17,27 @@ import NotificationPersonalVideo from 'material-ui/svg-icons/notification/person
 
 import SocialPublic from 'material-ui/svg-icons/social/public';
 
+import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
+import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
+import ActionOpenInBrowser from 'material-ui/svg-icons/action/open-in-browser';
+import ContentSave from 'material-ui/svg-icons/content/save';
+
 export default {
-  Online          : SocialPublic,
-  Vpanel          : HardwareMemory,
-  Ui              : NotificationPersonalVideo,
+
+  toolbar: {
+    New           : FileCreateNewFolder,
+    OpenOnline    : FileFolderOpen,
+    OpenFile      : ActionOpenInBrowser,
+    SaveAll       : ContentSave,
+    Save          : ContentSave,
+    SaveAs        : ContentSave
+  },
+
+  tabs: {
+    Online        : SocialPublic,
+    Vpanel        : HardwareMemory,
+    Ui            : NotificationPersonalVideo,
+  },
 
   Entity          : HardwareRouter,
   EntityCore      : SocialPublic,

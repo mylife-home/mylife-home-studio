@@ -2,11 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-
-import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
-import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
-import ActionOpenInBrowser from 'material-ui/svg-icons/action/open-in-browser';
-import ContentSave from 'material-ui/svg-icons/content/save';
+import base from './base/index';
 
 class MainToolbar extends React.Component {
   render() { return (
@@ -14,38 +10,38 @@ class MainToolbar extends React.Component {
       <mui.ToolbarGroup float="left">
         <mui.ToolbarTitle text="vpanel" />
         <mui.IconButton tooltip="new">
-          <FileCreateNewFolder />
+          <base.icons.toolbar.New />
         </mui.IconButton>
         <mui.IconButton tooltip="open online">
-          <FileFolderOpen />
+          <base.icons.toolbar.OpenOnline />
         </mui.IconButton>
         <mui.IconButton tooltip="open from file">
-          <ActionOpenInBrowser />
+          <base.icons.toolbar.OpenFile />
         </mui.IconButton>
 
         <mui.ToolbarSeparator />
 
         <mui.ToolbarTitle text="ui"/>
         <mui.IconButton tooltip="new">
-          <FileCreateNewFolder />
+          <base.icons.toolbar.New />
         </mui.IconButton>
         <mui.IconButton tooltip="open online">
-          <FileFolderOpen />
+          <base.icons.toolbar.OpenOnline />
         </mui.IconButton>
         <mui.IconButton tooltip="open from file">
-          <ActionOpenInBrowser />
+          <base.icons.toolbar.OpenFile />
         </mui.IconButton>
 
         <mui.ToolbarSeparator />
 
         <mui.IconButton tooltip="save all">
-          <ContentSave />
+          <base.icons.toolbar.SaveAll />
         </mui.IconButton>
         <mui.IconButton tooltip="save">
-          <ContentSave />
+          <base.icons.toolbar.Save />
         </mui.IconButton>
         <mui.IconButton tooltip="save as">
-          <ContentSave />
+          <base.icons.toolbar.SaveAs />
         </mui.IconButton>
       </mui.ToolbarGroup>
     </mui.Toolbar>
