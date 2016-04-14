@@ -8,6 +8,13 @@ import MainToolbar from './main-toolbar';
 import OnlineTab from './online-tab/index';
 
 const styles = {
+  root: {
+    position: 'fixed',
+    top:0,
+    bottom:0,
+    left:0,
+    right:0,
+  },
   headline: {
     fontSize: 24,
     paddingTop: 16,
@@ -18,7 +25,7 @@ const styles = {
 
 class Application extends React.Component {
   render() { return (
-    <div>
+    <div style={styles.root}>
       <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
       <MainToolbar />
       <mui.Tabs>
