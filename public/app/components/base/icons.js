@@ -18,6 +18,10 @@ import NotificationPersonalVideo from 'material-ui/svg-icons/notification/person
 import SocialPublic from 'material-ui/svg-icons/social/public';
 
 export default {
+  Online          : SocialPublic,
+  Vpanel          : HardwareMemory,
+  Ui              : NotificationPersonalVideo,
+
   Entity          : HardwareRouter,
   EntityCore      : SocialPublic,
   EntityResources : CommunicationImportContacts,
@@ -36,5 +40,5 @@ export default {
   NetAction       : ActionBuild,
   NetAttribute    : ActionSearch,
 
-  NetConfig       : ActionSettings
+  NetConfig       : ActionSettings,
 };

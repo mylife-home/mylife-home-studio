@@ -21,7 +21,7 @@ const styles = {
     position: 'relative'
   },
   tabContainer: {
-    height : 'calc(100% - 50px)'
+    height : 'calc(100% - 54px)'
   },
   theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
@@ -36,7 +36,8 @@ class Application extends React.Component {
         <mui.Tabs style={styles.tabs}
                   contentContainerStyle={styles.tabContainer}
                   tabTemplate={base.TabTemplate}>
-          <mui.Tab label="Online">
+          <mui.Tab label="Online"
+                   icon={<base.icons.Online />}>
             <OnlineTab />
           </mui.Tab>
           <mui.Tab label="Item Two">
