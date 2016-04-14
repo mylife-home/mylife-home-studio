@@ -35,7 +35,7 @@ export default {
 
   tabs: {
     Online        : SocialPublic,
-    Vpanel        : HardwareMemory,
+    VPanel        : HardwareMemory,
     Ui            : NotificationPersonalVideo,
   },
 
