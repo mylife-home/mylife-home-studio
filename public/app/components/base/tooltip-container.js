@@ -1,9 +1,9 @@
 
 'use strict';
 import React from 'react';
-import PropTypes from 'material-ui/lib/utils/prop-types';
-import Tooltip from 'material-ui/lib/tooltip';
-import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
+import PropTypes from 'material-ui/utils/propTypes';
+import Tooltip from 'material-ui/internal/Tooltip';
+import * as muiStyles from 'material-ui/styles/index';
 
 // https://github.com/callemall/material-ui/blob/v0.15.0-alpha.2/src/icon-button.jsx
 
@@ -36,7 +36,7 @@ class TooltipContainer extends React.Component {
     super(props);
     this.state = {
       tooltipShown: false,
-      muiTheme: context.muiTheme || getMuiTheme()
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
   }
 

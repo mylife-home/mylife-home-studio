@@ -2,11 +2,17 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import mui from 'material-ui';
+import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 
 import Tree from './tree';
 import Details from './details';
+
+const styles = {
+  fullHeight: {
+    height: '100%'
+  }
+};
 
 class OnlineTab extends React.Component {
 

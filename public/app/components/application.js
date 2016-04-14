@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import AppBar from 'material-ui/lib/app-bar';
-import mui from 'material-ui';
+import * as mui from 'material-ui';
+import * as muiStyles from 'material-ui/styles/index';
 
 import MainToolbar from './main-toolbar';
 import OnlineTab from './online-tab/index';
@@ -21,27 +21,38 @@ const styles = {
     marginBottom: 12,
     fontWeight: 400,
   },
+  tabs: {
+    height : 'calc(100% - 120px)',
+    position: 'relative'
+  },
+  tabContainer: {
+    height : 'calc(100% - 50px)'
+  },
+  theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
 
 class Application extends React.Component {
   render() { return (
-    <div style={styles.root}>
-      <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
-      <MainToolbar />
-      <mui.Tabs>
-        <mui.Tab label="Online">
-          <OnlineTab />
-        </mui.Tab>
-        <mui.Tab label="Item Two" >
-          <div>
-            <h2 style={styles.headline}>Tab Two</h2>
-            <p>
-              This is another example tab.
-            </p>
-          </div>
-        </mui.Tab>
-      </mui.Tabs>
-    </div>
+    <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
+      <div style={styles.root}>
+        <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
+        <MainToolbar />
+        <mui.Tabs style={styles.tabs}
+                  contentContainerStyle={styles.tabContainer}>
+          <mui.Tab label="Online" style={{height: '100%'}}>
+            <OnlineTab />
+          </mui.Tab>
+          <mui.Tab label="Item Two" >
+            <div>
+              <h2 style={styles.headline}>Tab Two</h2>
+              <p>
+                This is another example tab.
+              </p>
+            </div>
+          </mui.Tab>
+        </mui.Tabs>
+      </div>
+    </muiStyles.MuiThemeProvider>
   ); }
 }
 

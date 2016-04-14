@@ -43,9 +43,9 @@
       "keymirror": "npm:keymirror@^0.1.1",
       "material-ui": "npm:material-ui@^0.15.0-alpha.2",
       "node-events": "npm:node-events@^0.0.2",
-      "react": "npm:react@^0.14.7",
+      "react": "npm:react@^15.0.1",
       "react-bootstrap": "npm:react-bootstrap@^0.28.5",
-      "react-dom": "npm:react-dom@^0.14.7",
+      "react-dom": "npm:react-dom@^15.0.1",
       "react-tap-event-plugin": "npm:react-tap-event-plugin@^0.2.2",
       "socket.io-client": "github:socketio/socket.io-client@^1.4.5",
       "superagent": "npm:superagent@^1.8.3"

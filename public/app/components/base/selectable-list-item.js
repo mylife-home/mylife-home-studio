@@ -2,18 +2,18 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import mui from 'material-ui';
+import * as mui from 'material-ui';
+import * as muiStyles from 'material-ui/styles/index';
 
 // https://github.com/callemall/material-ui/blob/v0.15.0-alpha.2/src/hoc/selectable-enhance.js
-import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
-import ColorManipulator from 'material-ui/lib/utils/color-manipulator';
+import ColorManipulator from 'material-ui/utils/colorManipulator';
 
 class SelectableListItem extends React.Component {
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      muiTheme: context.muiTheme || getMuiTheme()
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
   }
 

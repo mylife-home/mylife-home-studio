@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import mui from 'material-ui';
+import * as mui from 'material-ui';
 
 class SelectableList extends React.Component {
 
