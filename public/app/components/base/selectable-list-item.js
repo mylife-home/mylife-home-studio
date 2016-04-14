@@ -4,9 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as muiStyles from 'material-ui/styles/index';
+import * as muiColorManipulator from 'material-ui/utils/colorManipulator';
 
 // https://github.com/callemall/material-ui/blob/v0.15.0-alpha.2/src/hoc/selectable-enhance.js
-import ColorManipulator from 'material-ui/utils/colorManipulator';
 
 class SelectableListItem extends React.Component {
 
@@ -34,7 +34,7 @@ class SelectableListItem extends React.Component {
     const style = {};
     if(this.context.isSelectedNode(value)) {
       const textColor = this.state.muiTheme.rawTheme.palette.textColor;
-      const selectedColor = ColorManipulator.fade(textColor, 0.2);
+      const selectedColor = muiColorManipulator.fade(textColor, 0.2);
       style.backgroundColor = selectedColor;
     }
 

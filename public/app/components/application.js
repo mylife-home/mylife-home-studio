@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import * as muiStyles from 'material-ui/styles/index';
+import base from './base/index';
 
 import MainToolbar from './main-toolbar';
 import OnlineTab from './online-tab/index';
@@ -25,6 +26,7 @@ const styles = {
   theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
 
+
 class Application extends React.Component {
   render() { return (
     <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
@@ -32,11 +34,12 @@ class Application extends React.Component {
         <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
         <MainToolbar />
         <mui.Tabs style={styles.tabs}
-                  contentContainerStyle={styles.tabContainer}>
-          <mui.Tab label="Online" style={{height: '100%'}}>
+                  contentContainerStyle={styles.tabContainer}
+                  tabTemplate={base.TabTemplate}>
+          <mui.Tab label="Online">
             <OnlineTab />
           </mui.Tab>
-          <mui.Tab label="Item Two" >
+          <mui.Tab label="Item Two">
             <div>
               <h2>Tab Two</h2>
               <p>
@@ -51,23 +54,3 @@ class Application extends React.Component {
 }
 
 export default Application;
-
-/* TODO
-
-
-tabs : {
-  height : calc(100% - 120px)
-  position: relative
-}
-
-tab : {
-  height : calc(100% - 50px)
-}
-
-paper : {
-  overflow: auto
-
-
-sur toute la hierarchie : height: 100%
-
-*/
