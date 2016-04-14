@@ -29,7 +29,7 @@ System.config({
     "react": "npm:react@15.0.1",
     "react-bootstrap": "npm:react-bootstrap@0.28.5",
     "react-dom": "npm:react-dom@15.0.1",
-    "react-tap-event-plugin": "npm:react-tap-event-plugin@0.2.2",
+    "react-tap-event-plugin": "npm:react-tap-event-plugin@1.0.0",
     "socket.io-client": "github:socketio/socket.io-client@1.4.5",
     "superagent": "npm:superagent@1.8.3",
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -339,9 +339,6 @@ System.config({
       "promise": "npm:promise@7.1.1",
       "whatwg-fetch": "npm:whatwg-fetch@0.9.0"
     },
-    "npm:fbjs@0.6.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:fbjs@0.7.2": {
       "core-js": "npm:core-js@1.2.6",
       "isomorphic-fetch": "npm:isomorphic-fetch@2.2.1",
@@ -422,7 +419,7 @@ System.config({
     },
     "npm:isomorphic-fetch@2.2.1": {
       "node-fetch": "npm:node-fetch@1.5.1",
-      "whatwg-fetch": "npm:whatwg-fetch@0.11.0"
+      "whatwg-fetch": "npm:whatwg-fetch@0.9.0"
     },
     "npm:lodash-compat@3.10.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
@@ -602,18 +599,10 @@ System.config({
     "npm:react-prop-types@0.3.0": {
       "warning": "npm:warning@2.1.0"
     },
-    "npm:react-tap-event-plugin@0.2.2": {
-      "fbjs": "npm:fbjs@0.2.1",
-      "react": "npm:react@0.14.8"
-    },
     "npm:react-tap-event-plugin@1.0.0": {
       "fbjs": "npm:fbjs@0.2.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "react": "npm:react@15.0.1"
-    },
-    "npm:react@0.14.8": {
-      "fbjs": "npm:fbjs@0.6.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:react@15.0.1": {
       "fbjs": "npm:fbjs@0.8.0",

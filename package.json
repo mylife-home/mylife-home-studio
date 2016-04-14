@@ -46,7 +46,7 @@
       "react": "npm:react@^15.0.1",
       "react-bootstrap": "npm:react-bootstrap@^0.28.5",
       "react-dom": "npm:react-dom@^15.0.1",
-      "react-tap-event-plugin": "npm:react-tap-event-plugin@^0.2.2",
+      "react-tap-event-plugin": "npm:react-tap-event-plugin@^1.0.0",
       "socket.io-client": "github:socketio/socket.io-client@^1.4.5",
       "superagent": "npm:superagent@^1.8.3"
     },
