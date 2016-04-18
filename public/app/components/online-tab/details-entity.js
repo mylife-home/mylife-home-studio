@@ -9,6 +9,8 @@ import shared from '../../shared/index';
 
 import DetailsTitle from './details-title';
 
+import ResourcesActionCreators from '../../actions/resources-action-creators';
+
 class DetailsEntity extends React.Component {
 
   constructor(props) {
@@ -22,6 +24,7 @@ class DetailsEntity extends React.Component {
       return (
         <div>
           <base.icons.EntityResources />
+          &nbsp;
           Resources
         </div>
       );
@@ -30,6 +33,7 @@ class DetailsEntity extends React.Component {
       return (
         <div>
           <base.icons.EntityCore />
+          &nbsp;
           Core
         </div>
       );
@@ -38,6 +42,7 @@ class DetailsEntity extends React.Component {
       return (
         <div>
           <base.icons.EntityUi />
+          &nbsp;
           UI
         </div>
       );
@@ -49,13 +54,15 @@ class DetailsEntity extends React.Component {
 
   render() {
     const entity = this.props.entity;
+    const refreshAction = () => ResourcesActionCreators.entityQuery(enity);
 
     return (
       <DetailsTitle
         center={
           <div>
             {entity.id}
-            <mui.IconButton tooltip="refresh">
+            &nbsp;
+            <mui.IconButton tooltip="refresh" onTouche={refreshAction}>
               <base.icons.actions.Refresh />
             </mui.IconButton>
           </div>
@@ -63,6 +70,7 @@ class DetailsEntity extends React.Component {
         left={
           <div>
             <base.icons.Entity />
+            &nbsp;
             Entity
           </div>
         }
