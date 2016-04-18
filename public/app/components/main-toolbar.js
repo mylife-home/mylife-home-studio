@@ -37,7 +37,6 @@ class MainToolbar extends React.Component {
 
   render() {
     const iconStyle = Object.assign({}, styles.icon, { fill: this.state.muiTheme.toolbar.iconColor});
-    console.log(iconStyle);
     return (
     <mui.Toolbar>
       <mui.ToolbarGroup float="left">
