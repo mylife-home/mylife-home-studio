@@ -44,13 +44,13 @@ class MainToolbar extends React.Component {
         <mui.ToolbarTitle text="vpanel" />
 
         <mui.IconButton tooltip="new" style={styles.button}>
-          <base.icons.toolbar.New />
+          <base.icons.actions.New />
         </mui.IconButton>
         <mui.IconButton tooltip="open online" style={styles.button}>
-          <base.icons.toolbar.OpenOnline />
+          <base.icons.actions.OpenOnline />
         </mui.IconButton>
         <mui.IconButton tooltip="open from file" style={styles.button}>
-          <base.icons.toolbar.OpenFile />
+          <base.icons.actions.OpenFile />
         </mui.IconButton>
 
         <mui.ToolbarSeparator />
@@ -59,25 +59,25 @@ class MainToolbar extends React.Component {
         <mui.ToolbarTitle text="ui"/>
 
         <mui.IconButton tooltip="new" style={styles.button}>
-          <base.icons.toolbar.New />
+          <base.icons.actions.New />
         </mui.IconButton>
         <mui.IconButton tooltip="open online" style={styles.button}>
-          <base.icons.toolbar.OpenOnline />
+          <base.icons.actions.OpenOnline />
         </mui.IconButton>
         <mui.IconButton tooltip="open from file" style={styles.button}>
-          <base.icons.toolbar.OpenFile />
+          <base.icons.actions.OpenFile />
         </mui.IconButton>
 
         <mui.ToolbarSeparator />
 
         <mui.IconButton tooltip="save all" style={styles.button}>
-          <base.icons.toolbar.SaveAll />
+          <base.icons.actions.SaveAll />
         </mui.IconButton>
         <mui.IconButton tooltip="save" style={styles.button}>
-          <base.icons.toolbar.Save />
+          <base.icons.actions.Save />
         </mui.IconButton>
         <mui.IconButton tooltip="save as" style={styles.button}>
-          <base.icons.toolbar.SaveAs />
+          <base.icons.actions.SaveAs />
         </mui.IconButton>
       </mui.ToolbarGroup>
     </mui.Toolbar>

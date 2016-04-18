@@ -1,5 +1,6 @@
 'use strict';
 
+import ActionAutorenew from 'material-ui/svg-icons/action/autorenew';
 import ActionBuild from 'material-ui/svg-icons/action/build';
 import ActionCode from 'material-ui/svg-icons/action/code';
 import ActionExtension from 'material-ui/svg-icons/action/extension';
@@ -24,13 +25,14 @@ import ContentSave from 'material-ui/svg-icons/content/save';
 
 export default {
 
-  toolbar: {
+  actions: {
     New           : FileCreateNewFolder,
     OpenOnline    : FileFolderOpen,
     OpenFile      : ActionOpenInBrowser,
     SaveAll       : ContentSave,
     Save          : ContentSave,
-    SaveAs        : ContentSave
+    SaveAs        : ContentSave,
+    Refresh       : ActionAutorenew,
   },
 
   tabs: {
