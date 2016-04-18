@@ -8,18 +8,25 @@ import base from '../base/index';
 import shared from '../../shared/index';
 
 const styles = {
-  titleContainer: {
-    textAlign: 'center',
-    margin: '10px'
+  titleContainer : {
+    textAlign    : 'center',
+    marginLeft   : '25px',
+    marginRight  : '25px',
+    marginTop    : '10px',
+    marginBottom : '10px',
+  },
+  titleItem: {
+    verticalAlign: 'middle',
+    lineHeight: '60px',
+    marginTop: 0
   },
   titleLeft: {
-    float: 'left'
+    float: 'left',
   },
   titleRight: {
-    float: 'right'
+    float: 'right',
   },
   titleMain: {
-
   }
 };
 
@@ -35,7 +42,8 @@ class DetailsTitle extends React.Component {
     if(!val) {
       return null;
     }
-    return (<h3 style={styles.titleLeft}>{val}</h3>);
+    const style = Object.assign({}, styles.titleItem, styles.titleLeft);
+    return (<h3 style={style}>{val}</h3>);
   }
 
   renderRight() {
@@ -43,7 +51,8 @@ class DetailsTitle extends React.Component {
     if(!val) {
       return null;
     }
-    return (<h3 style={styles.titleRight}>{val}</h3>);
+    const style = Object.assign({}, styles.titleItem, styles.titleRight);
+    return (<h3 style={style}>{val}</h3>);
   }
 
   render() {
@@ -51,7 +60,7 @@ class DetailsTitle extends React.Component {
       <div style={styles.titleContainer}>
         {this.renderLeft()}
         {this.renderRight()}
-        <h2>{this.props.center}</h2>
+        <h2 style={Object.assign({}, styles.titleItem, styles.titleMain)}>{this.props.center}</h2>
       </div>
     );
   }
