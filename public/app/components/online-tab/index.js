@@ -34,16 +34,16 @@ class OnlineTab extends React.Component {
 
   render() {
     return (
-      <bs.Grid fluid={true} style={Object.assign({}, styles.noPadding, styles.fullHeight)}>
+      <bs.Grid fluid={true} style={Object.assign({}, styles.fullHeight)}>
         <bs.Row style={styles.fullHeight}>
-          <bs.Col sm={3} style={styles.fullHeight}>
+          <bs.Col sm={3} style={Object.assign({}, styles.noPadding, styles.fullHeight)}>
             <mui.Paper style={Object.assign({}, styles.scrollable, styles.fullHeight)}>
               <Tree
                 selectedNode={this.state.selectedNode}
                 selectedValueChanged={this.handleSelectionChanged.bind(this)} />
             </mui.Paper>
           </bs.Col>
-          <bs.Col sm={9} style={Object.assign({}, styles.scrollable, styles.fullHeight)}>
+          <bs.Col sm={9} style={Object.assign({}, styles.noPadding, styles.scrollable, styles.fullHeight)}>
             <Details
               value={this.state.selectedNode} />
           </bs.Col>
