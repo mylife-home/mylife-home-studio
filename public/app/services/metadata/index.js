@@ -28,7 +28,7 @@ class Metadata {
     return TypeFactory.createRange(min, max);
   }
 
-  createEnumc(values) {
+  createEnum(values) {
     return TypeFactory.createEnum(values);
   }
 }
