@@ -25,7 +25,6 @@ class Metadata {
   }
 
   parseClass(value) {
-    console.log(value);
     const ret = {
       attributes: [],
       actions: []
