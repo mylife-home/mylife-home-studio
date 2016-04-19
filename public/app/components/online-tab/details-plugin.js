@@ -57,6 +57,8 @@ class DetailsPlugin extends React.Component {
       <div key={act.name}>
         <base.icons.NetAction style={{verticalAlign: 'middle'}}/>
         &nbsp;
+        Action:
+        &nbsp;
         {act.name}
         &nbsp;
         {act.types.map(t => t.toString()).join(', ')}
@@ -69,6 +71,8 @@ class DetailsPlugin extends React.Component {
     return (
       <div key={attr.name}>
         <base.icons.NetAttribute style={{verticalAlign: 'middle'}}/>
+        &nbsp;
+        Attribute:
         &nbsp;
         {attr.name}
         &nbsp;
@@ -102,7 +106,9 @@ class DetailsPlugin extends React.Component {
         <DetailsContainer>
           <base.icons.actions.Info style={{verticalAlign: 'middle'}}/>
           &nbsp;
-          Version: {plugin.version}
+          Version:
+          &nbsp;
+          {plugin.version}
           <mui.Divider />
           {clazz.actions.map(this.renderAction.bind(this))}
           {clazz.attributes.map(this.renderAttribute.bind(this))}
