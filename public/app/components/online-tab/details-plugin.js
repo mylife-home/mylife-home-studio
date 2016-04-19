@@ -73,7 +73,7 @@ class DetailsPlugin extends React.Component {
           }
           right={this.renderUsageIcon(plugin)}/>
         <DetailsContainer>
-          <base.icons.actions.Info/>
+          <base.icons.actions.Info style={{verticalAlign: 'middle'}}/>
            &nbsp;
            Version: {plugin.version}
            <mui.Divider />
