@@ -44,10 +44,6 @@ class DetailsResource extends React.Component {
           }/>
       </div>
     );
-
-    return (
-      <h2>{resource}</h2>
-    );
   }
 }
 
