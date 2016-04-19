@@ -4,6 +4,7 @@ import ActionAutorenew from 'material-ui/svg-icons/action/autorenew';
 import ActionBuild from 'material-ui/svg-icons/action/build';
 import ActionCode from 'material-ui/svg-icons/action/code';
 import ActionExtension from 'material-ui/svg-icons/action/extension';
+import ActionInfo from 'material-ui/svg-icons/action/info';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 import ActionSubject from 'material-ui/svg-icons/action/subject';
@@ -33,6 +34,7 @@ export default {
     Save          : ContentSave,
     SaveAs        : ContentSave,
     Refresh       : ActionAutorenew,
+    Info          : ActionInfo,
   },
 
   tabs: {
