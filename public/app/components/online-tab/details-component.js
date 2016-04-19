@@ -8,6 +8,7 @@ import base from '../base/index';
 import shared from '../../shared/index';
 
 import DetailsTitle from './details-title';
+import DetailsContainer from './details-container';
 
 class DetailsComponent extends React.Component {
 
@@ -27,10 +28,6 @@ class DetailsComponent extends React.Component {
   render() {
     const entity = this.props.entity;
     const component = this.props.component;
-    const additionalStyle = {
-      fontFamily: this.state.muiTheme.fontFamily,
-      color: this.state.muiTheme.palette.primaryColor,
-    };
 
     return (
       <div>
@@ -54,6 +51,8 @@ class DetailsComponent extends React.Component {
               {`${component.library}.${component.type}`}
             </div>
           }/>
+        <DetailsContainer>
+        </DetailsContainer>
       </div>
     );
   }

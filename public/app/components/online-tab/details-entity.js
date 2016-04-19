@@ -8,6 +8,7 @@ import base from '../base/index';
 import shared from '../../shared/index';
 
 import DetailsTitle from './details-title';
+import DetailsContainer from './details-container';
 
 import ResourcesActionCreators from '../../actions/resources-action-creators';
 
@@ -63,10 +64,6 @@ class DetailsEntity extends React.Component {
   render() {
     const entity = this.props.entity;
     const refreshAction = () => ResourcesActionCreators.entityQuery(entity);
-    const additionalStyle = {
-      fontFamily: this.state.muiTheme.fontFamily,
-      color: this.state.muiTheme.palette.primaryColor,
-    };
 
     return (
       <div>
@@ -88,6 +85,8 @@ class DetailsEntity extends React.Component {
             </div>
           }
           right={this.renderTypeIcon(entity)}/>
+        <DetailsContainer>
+        </DetailsContainer>
       </div>
     );
   }

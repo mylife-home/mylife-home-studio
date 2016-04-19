@@ -9,20 +9,13 @@ import shared from '../../shared/index';
 import Facade from '../../services/facade';
 
 import DetailsTitle from './details-title';
+import DetailsContainer from './details-container';
 
 class DetailsPlugin extends React.Component {
 
   constructor(props, context) {
     super(props);
-    this.state = {
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
-    };
-  }
-
-  getChildContext() {
-    return {
-      muiTheme: this.state.muiTheme,
-    };
+    this.state = {};
   }
 
   renderUsageIcon(plugin) {
@@ -62,10 +55,6 @@ class DetailsPlugin extends React.Component {
   render() {
     const entity = this.props.entity;
     const plugin = this.props.plugin;
-    const additionalStyle = {
-      fontFamily: this.state.muiTheme.fontFamily,
-      color: this.state.muiTheme.palette.primaryColor,
-    };
 
     return (
       <div>
@@ -83,6 +72,12 @@ class DetailsPlugin extends React.Component {
             </div>
           }
           right={this.renderUsageIcon(plugin)}/>
+        <DetailsContainer>
+          <base.icons.actions.Info/>
+           &nbsp;
+           Version: {plugin.version}
+           <mui.Divider />
+        </DetailsContainer>
       </div>
     );
   }
@@ -91,15 +86,6 @@ class DetailsPlugin extends React.Component {
 DetailsPlugin.propTypes = {
   entity: React.PropTypes.object.isRequired,
   plugin: React.PropTypes.object.isRequired,
-  muiTheme: React.PropTypes.object
-};
-
-DetailsPlugin.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-DetailsPlugin.contextTypes = {
-  muiTheme: React.PropTypes.object
 };
 
 export default DetailsPlugin;
