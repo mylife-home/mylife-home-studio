@@ -32,9 +32,17 @@ const styles = {
 
 class DetailsTitle extends React.Component {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
-    this.state = {};
+    this.state = {
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+    };
+  }
+
+  getChildContext() {
+    return {
+      muiTheme: this.state.muiTheme,
+    };
   }
 
   renderLeft() {
@@ -56,9 +64,14 @@ class DetailsTitle extends React.Component {
   }
 
   render() {
+    const additionalStyle = {
+      fontFamily: this.state.muiTheme.fontFamily,
+      color: this.state.muiTheme.palette.primaryColor,
+    };
+
     return (
       <div>
-        <div style={styles.titleContainer}>
+        <div style={Object.assign({}, styles.titleContainer, additionalStyle)}>
           {this.renderLeft()}
           {this.renderRight()}
           <h2 style={Object.assign({}, styles.titleItem, styles.titleMain)}>{this.props.center}</h2>
@@ -73,6 +86,15 @@ DetailsTitle.propTypes = {
   left:   React.PropTypes.node,
   right:  React.PropTypes.node,
   center: React.PropTypes.node.isRequired,
+  muiTheme: React.PropTypes.object
+};
+
+DetailsTitle.childContextTypes = {
+  muiTheme: React.PropTypes.object
+};
+
+DetailsTitle.contextTypes = {
+  muiTheme: React.PropTypes.object
 };
 
 export default DetailsTitle;

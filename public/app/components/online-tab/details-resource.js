@@ -25,10 +25,17 @@ const styles = {
 
 class DetailsResource extends React.Component {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
-      content: null
+      content: null,
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+    };
+  }
+
+  getChildContext() {
+    return {
+      muiTheme: this.state.muiTheme,
     };
   }
 
@@ -63,6 +70,10 @@ class DetailsResource extends React.Component {
     const resource = this.props.resource;
     const content = this.state.content || '';
     const refreshAction = () => ResourcesActionCreators.resourceGetQuery(entity.id, resource);
+    const additionalStyle = {
+      fontFamily: this.state.muiTheme.fontFamily,
+      color: this.state.muiTheme.palette.primaryColor,
+    };
 
     return (
       <div>
@@ -83,7 +94,7 @@ class DetailsResource extends React.Component {
               Resource
             </div>
           }/>
-        <div style={styles.text}>
+        <div style={Object.assign({}, styles.text, additionalStyle)}>
           {content}
         </div>
       </div>
@@ -94,6 +105,15 @@ class DetailsResource extends React.Component {
 DetailsResource.propTypes = {
   entity: React.PropTypes.object.isRequired,
   resource: React.PropTypes.string.isRequired,
+  muiTheme: React.PropTypes.object
+};
+
+DetailsResource.childContextTypes = {
+  muiTheme: React.PropTypes.object
+};
+
+DetailsResource.contextTypes = {
+  muiTheme: React.PropTypes.object
 };
 
 export default DetailsResource;

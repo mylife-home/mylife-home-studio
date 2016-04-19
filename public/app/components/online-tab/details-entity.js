@@ -13,9 +13,17 @@ import ResourcesActionCreators from '../../actions/resources-action-creators';
 
 class DetailsEntity extends React.Component {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
-    this.state = {};
+    this.state = {
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+    };
+  }
+
+  getChildContext() {
+    return {
+      muiTheme: this.state.muiTheme,
+    };
   }
 
   renderTypeIcon(entity) {
@@ -55,6 +63,10 @@ class DetailsEntity extends React.Component {
   render() {
     const entity = this.props.entity;
     const refreshAction = () => ResourcesActionCreators.entityQuery(entity);
+    const additionalStyle = {
+      fontFamily: this.state.muiTheme.fontFamily,
+      color: this.state.muiTheme.palette.primaryColor,
+    };
 
     return (
       <div>
@@ -83,6 +95,15 @@ class DetailsEntity extends React.Component {
 
 DetailsEntity.propTypes = {
   entity: React.PropTypes.object.isRequired,
+  muiTheme: React.PropTypes.object
+};
+
+DetailsEntity.childContextTypes = {
+  muiTheme: React.PropTypes.object
+};
+
+DetailsEntity.contextTypes = {
+  muiTheme: React.PropTypes.object
 };
 
 export default DetailsEntity;
