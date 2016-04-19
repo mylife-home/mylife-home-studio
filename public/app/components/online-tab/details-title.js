@@ -18,7 +18,8 @@ const styles = {
   titleItem: {
     verticalAlign: 'middle',
     lineHeight: '60px',
-    marginTop: 0
+    marginTop: 0,
+    marginBottom : 0,
   },
   titleLeft: {
     float: 'left',
