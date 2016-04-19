@@ -12,6 +12,17 @@ import DetailsTitle from './details-title';
 import ResourcesActionCreators from '../../actions/resources-action-creators';
 import OnlineStore from '../../stores/online-store';
 
+const styles = {
+  text: {
+    padding: '10px',
+    position: 'absolute',
+    lineHeight: '22px',
+    overflowY: 'auto',
+    width: '100%',
+    wordWrap: 'break-word'
+  }
+};
+
 class DetailsResource extends React.Component {
 
   constructor(props) {
@@ -29,6 +40,14 @@ class DetailsResource extends React.Component {
     OnlineStore.removeChangeListener(this.handleStoreChange.bind(this));
   }
 
+  componentWillReceiveProps(nextProps) {
+    const entity = nextProps.entity || this.props.entity;
+    const resource = nextProps.resource || this.props.resource;
+
+    this.setState({
+      content: entity.cachedResources && entity.cachedResources[resource]
+    });
+  }
 
   handleStoreChange() {
     const entity = this.props.entity;
@@ -42,7 +61,7 @@ class DetailsResource extends React.Component {
   render() {
     const entity = this.props.entity;
     const resource = this.props.resource;
-    const content = this.state.content;
+    const content = this.state.content || '';
     const refreshAction = () => ResourcesActionCreators.resourceGetQuery(entity.id, resource);
 
     return (
@@ -64,7 +83,7 @@ class DetailsResource extends React.Component {
               Resource
             </div>
           }/>
-        <div>
+        <div style={styles.text}>
           {content}
         </div>
       </div>
