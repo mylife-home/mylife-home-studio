@@ -7,6 +7,8 @@ import base from '../base/index';
 
 import shared from '../../shared/index';
 
+import DetailsTitle from './details-title';
+
 class DetailsComponent extends React.Component {
 
   constructor(props) {
@@ -19,7 +21,28 @@ class DetailsComponent extends React.Component {
     const component = this.props.component;
 
     return (
-      <h2>{component.id}</h2>
+      <div>
+        <DetailsTitle
+          center={
+            <div>
+              {component.id}
+            </div>
+          }
+          left={
+            <div>
+              <base.icons.Component />
+              &nbsp;
+              Component
+            </div>
+          }
+          right={
+            <div>
+              <base.icons.Plugin />
+              &nbsp;
+              {`${component.library}.${component.type}`}
+            </div>
+          }/>
+      </div>
     );
   }
 }

@@ -54,27 +54,29 @@ class DetailsEntity extends React.Component {
 
   render() {
     const entity = this.props.entity;
-    const refreshAction = () => ResourcesActionCreators.entityQuery(enity);
+    const refreshAction = () => ResourcesActionCreators.entityQuery(entity);
 
     return (
-      <DetailsTitle
-        center={
-          <div>
-            {entity.id}
-            &nbsp;
-            <mui.IconButton tooltip="refresh" onTouche={refreshAction}>
-              <base.icons.actions.Refresh />
-            </mui.IconButton>
-          </div>
-        }
-        left={
-          <div>
-            <base.icons.Entity />
-            &nbsp;
-            Entity
-          </div>
-        }
-        right={this.renderTypeIcon(entity)}/>
+      <div>
+        <DetailsTitle
+          center={
+            <div>
+              {entity.id}
+              &nbsp;
+              <mui.IconButton tooltip="refresh" onTouchTap={refreshAction}>
+                <base.icons.actions.Refresh />
+              </mui.IconButton>
+            </div>
+          }
+          left={
+            <div>
+              <base.icons.Entity />
+              &nbsp;
+              Entity
+            </div>
+          }
+          right={this.renderTypeIcon(entity)}/>
+      </div>
     );
   }
 }

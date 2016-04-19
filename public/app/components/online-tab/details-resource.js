@@ -7,6 +7,10 @@ import base from '../base/index';
 
 import shared from '../../shared/index';
 
+import DetailsTitle from './details-title';
+
+import ResourcesActionCreators from '../../actions/resources-action-creators';
+
 class DetailsResource extends React.Component {
 
   constructor(props) {
@@ -17,6 +21,29 @@ class DetailsResource extends React.Component {
   render() {
     const entity = this.props.entity;
     const resource = this.props.resource;
+    const refreshAction = () => console.trace('TODO');
+
+    return (
+      <div>
+        <DetailsTitle
+          center={
+            <div>
+              {resource}
+              &nbsp;
+              <mui.IconButton tooltip="refresh" onTouchTap={refreshAction}>
+                <base.icons.actions.Refresh />
+              </mui.IconButton>
+            </div>
+          }
+          left={
+            <div>
+              <base.icons.Resource />
+              &nbsp;
+              Resource
+            </div>
+          }/>
+      </div>
+    );
 
     return (
       <h2>{resource}</h2>
