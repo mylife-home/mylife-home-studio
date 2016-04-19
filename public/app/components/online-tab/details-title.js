@@ -57,10 +57,13 @@ class DetailsTitle extends React.Component {
 
   render() {
     return (
-      <div style={styles.titleContainer}>
-        {this.renderLeft()}
-        {this.renderRight()}
-        <h2 style={Object.assign({}, styles.titleItem, styles.titleMain)}>{this.props.center}</h2>
+      <div>
+        <div style={styles.titleContainer}>
+          {this.renderLeft()}
+          {this.renderRight()}
+          <h2 style={Object.assign({}, styles.titleItem, styles.titleMain)}>{this.props.center}</h2>
+        </div>
+        <mui.Divider />
       </div>
     );
   }
