@@ -11,7 +11,7 @@ import DetailsTitle from './details-title';
 
 class DetailsComponent extends React.Component {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()

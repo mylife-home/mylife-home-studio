@@ -12,7 +12,7 @@ import DetailsTitle from './details-title';
 
 class DetailsPlugin extends React.Component {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
@@ -24,6 +24,7 @@ class DetailsPlugin extends React.Component {
       muiTheme: this.state.muiTheme,
     };
   }
+
   renderUsageIcon(plugin) {
     switch(plugin.usage) {
     case Facade.metadata.pluginUsage.driver:
