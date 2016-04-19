@@ -52,9 +52,36 @@ class DetailsPlugin extends React.Component {
     }
   }
 
+  renderAction(act) {
+    return (
+      <div key={act.name}>
+        <base.icons.NetAction style={{verticalAlign: 'middle'}}/>
+        &nbsp;
+        {act.name}
+        &nbsp;
+        {act.types.map(t => t.toString()).join(', ')}
+        <mui.Divider />
+      </div>
+    );
+  }
+
+  renderAttribute(attr) {
+    return (
+      <div key={attr.name}>
+        <base.icons.NetAttribute style={{verticalAlign: 'middle'}}/>
+        &nbsp;
+        {attr.name}
+        &nbsp;
+        {attr.type.toString()}
+        <mui.Divider />
+      </div>
+    );
+  }
+
   render() {
     const entity = this.props.entity;
     const plugin = this.props.plugin;
+    const clazz = Facade.metadata.parseClass(plugin.clazz);
 
     return (
       <div>
@@ -74,9 +101,11 @@ class DetailsPlugin extends React.Component {
           right={this.renderUsageIcon(plugin)}/>
         <DetailsContainer>
           <base.icons.actions.Info style={{verticalAlign: 'middle'}}/>
-           &nbsp;
-           Version: {plugin.version}
-           <mui.Divider />
+          &nbsp;
+          Version: {plugin.version}
+          <mui.Divider />
+          {clazz.actions.map(this.renderAction.bind(this))}
+          {clazz.attributes.map(this.renderAttribute.bind(this))}
         </DetailsContainer>
       </div>
     );
