@@ -8,6 +8,7 @@ import base from '../base/index';
 import shared from '../../shared/index';
 
 import DetailsTitle from './details-title';
+import DetailsContainer from './details-container';
 
 import ResourcesActionCreators from '../../actions/resources-action-creators';
 import OnlineStore from '../../stores/online-store';
@@ -28,16 +29,10 @@ class DetailsResource extends React.Component {
   constructor(props, context) {
     super(props);
     this.state = {
-      content: null,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+      content: null
     };
   }
 
-  getChildContext() {
-    return {
-      muiTheme: this.state.muiTheme,
-    };
-  }
 
   componentDidMount() {
     OnlineStore.addChangeListener(this.handleStoreChange.bind(this));
@@ -70,10 +65,6 @@ class DetailsResource extends React.Component {
     const resource = this.props.resource;
     const content = this.state.content || '';
     const refreshAction = () => ResourcesActionCreators.resourceGetQuery(entity.id, resource);
-    const additionalStyle = {
-      fontFamily: this.state.muiTheme.fontFamily,
-      color: this.state.muiTheme.palette.primaryColor,
-    };
 
     return (
       <div>
@@ -94,9 +85,9 @@ class DetailsResource extends React.Component {
               Resource
             </div>
           }/>
-        <div style={Object.assign({}, styles.text, additionalStyle)}>
+        <DetailsContainer>
           {content}
-        </div>
+        </DetailsContainer>
       </div>
     );
   }
@@ -105,15 +96,6 @@ class DetailsResource extends React.Component {
 DetailsResource.propTypes = {
   entity: React.PropTypes.object.isRequired,
   resource: React.PropTypes.string.isRequired,
-  muiTheme: React.PropTypes.object
-};
-
-DetailsResource.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-DetailsResource.contextTypes = {
-  muiTheme: React.PropTypes.object
 };
 
 export default DetailsResource;

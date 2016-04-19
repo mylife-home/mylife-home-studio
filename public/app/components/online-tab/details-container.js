@@ -1,0 +1,63 @@
+'use strict';
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import * as mui from 'material-ui';
+import base from '../base/index';
+
+const styles = {
+  text: {
+    padding: '10px',
+    position: 'absolute',
+    lineHeight: '22px',
+    overflowY: 'auto',
+    width: '100%',
+    wordWrap: 'break-word',
+  }
+};
+
+class DetailsContainer extends React.Component {
+
+  constructor(props, context) {
+    super(props);
+    this.state = {
+      content: null,
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+    };
+  }
+
+  getChildContext() {
+    return {
+      muiTheme: this.state.muiTheme,
+    };
+  }
+
+  render() {
+    const additionalStyle = {
+      fontFamily: this.state.muiTheme.fontFamily,
+      color: this.state.muiTheme.palette.primaryColor,
+    };
+
+    return (
+      <div style={Object.assign({}, styles.text, additionalStyle)} {...this.props} {...this.state}>
+        <span style={{verticalAlign: 'middle'}}>
+          {this.props.children}
+        </span>
+      </div>
+    );
+  }
+}
+
+DetailsContainer.propTypes = {
+  muiTheme: React.PropTypes.object
+};
+
+DetailsContainer.childContextTypes = {
+  muiTheme: React.PropTypes.object
+};
+
+DetailsContainer.contextTypes = {
+  muiTheme: React.PropTypes.object
+};
+
+export default DetailsContainer;
