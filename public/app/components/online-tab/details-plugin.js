@@ -112,6 +112,7 @@ class DetailsPlugin extends React.Component {
           <mui.Divider />
           {clazz.actions.map(this.renderAction.bind(this))}
           {clazz.attributes.map(this.renderAttribute.bind(this))}
+          TODO: {plugin.config}
         </DetailsContainer>
       </div>
     );
