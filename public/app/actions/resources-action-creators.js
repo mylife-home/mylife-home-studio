@@ -50,6 +50,43 @@ export default {
       entityId,
       components
     });
-  }
+  },
 
+  resourceGetQuery: function(entityId, resourceId) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.RESOURCE_GET_QUERY,
+      entityId,
+      resourceId
+    });
+
+    Facade.resources.queryResourceGet(entityId, resourceId);
+  },
+
+  resourceGetResult: function(entityId, resourceId, resourceContent) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.RESOURCE_GET_RESULT,
+      entityId,
+      resourceId,
+      resourceContent
+    });
+  },
+
+  resourceSetQuery: function(entityId, resourceId, resourceContent) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.RESOURCE_SET_QUERY,
+      entityId,
+      resourceId,
+      resourceContent
+    });
+
+    Facade.resources.queryResourceSet(entityId, resourceId, resourceContent);
+  },
+
+  resourceSetResult: function(entityId, resourceId) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.RESOURCE_SET_RESULT,
+      entityId,
+      resourceId
+    });
+  },
 };

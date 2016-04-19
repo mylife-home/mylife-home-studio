@@ -38,6 +38,7 @@ class OnlineStore extends EventEmitter {
         entity = this.entities.get(action.entityId);
         if(!entity) { return; }
         entity.resources = action.resources;
+        entity.cachedResources = null;
         this.emitChange();
         break;
 
@@ -52,6 +53,15 @@ class OnlineStore extends EventEmitter {
         entity = this.entities.get(action.entityId);
         if(!entity) { return; }
         entity.components = action.components;
+        this.emitChange();
+        break;
+
+      case AppConstants.ActionTypes.RESOURCE_GET_RESULT:
+      case AppConstants.ActionTypes.RESOURCE_SET_QUERY:
+        entity = this.entities.get(action.entityId);
+        if(!entity) { return; }
+        entity.cachedResources = entity.cachedResources || {};
+        entity.cachedResources[action.resourceId] = action.resourceContent;
         this.emitChange();
         break;
     }

@@ -26,6 +26,6 @@ export default {
       type: AppConstants.ActionTypes.REPOSITORY_REMOVE,
       id
     });
-  }
+  },
 
 };

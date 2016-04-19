@@ -4,7 +4,6 @@ import debugLib from 'debug';
 import request from 'superagent';
 import ResourcesActionCreators from '../actions/resources-action-creators';
 
-
 const debug = debugLib('mylife:home:studio:services:resources');
 
 class Resources {
@@ -12,7 +11,7 @@ class Resources {
   }
 
   queryResourcesList(entityId) {
-    debug('queryResourcesList');
+    debug(`queryResourcesList(${entityId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'enum' })
@@ -23,7 +22,7 @@ class Resources {
   }
 
   queryPluginsList(entityId) {
-    debug('queryPluginsList');
+    debug(`queryPluginsList(${entityId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'plugins' })
@@ -34,13 +33,35 @@ class Resources {
   }
 
   queryComponentsList(entityId) {
-    debug('queryComponentsList');
+    debug(`queryComponentsList(${entityId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'components' })
       .end(function(err, res){
         if(err) { return console.error(err); }
         ResourcesActionCreators.entityComponentsList(entityId, res.body.data);
+      });
+  }
+
+  queryResourceGet(entityId, resourceId) {
+    debug(`queryResourceGet(${entityId}, ${resourceId})`);
+    request
+      .post('/resources/' + entityId)
+      .send({ type : 'get', key: resourceId })
+      .end(function(err, res){
+        if(err) { return console.error(err); }
+        ResourcesActionCreators.resourceGetResult(entityId, resourceId, res.body.data);
+      });
+  }
+
+  queryResourceSet(entityId, resourceId, resourceContent) {
+    debug(`queryResourceSet(${entityId}, ${resourceId}, <content>)`);
+    request
+      .post('/resources/' + entityId)
+      .send({ type : 'set', key: resourceId, value: resourceContent })
+      .end(function(err, res){
+        if(err) { return console.error(err); }
+        ResourcesActionCreators.resourceSetResult(entityId, resourceId);
       });
   }
 }
