@@ -40,9 +40,7 @@ class DetailsContainer extends React.Component {
 
     return (
       <div style={Object.assign({}, styles.text, additionalStyle)} {...this.props} {...this.state}>
-        <span style={{verticalAlign: 'middle'}}>
-          {this.props.children}
-        </span>
+        {this.props.children}
       </div>
     );
   }
