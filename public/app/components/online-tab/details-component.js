@@ -25,6 +25,23 @@ class DetailsComponent extends React.Component {
     };
   }
 
+  renderConfig(conf) {
+    return (
+      <div key={conf.key}>
+        <base.icons.NetConfig style={{verticalAlign: 'middle'}}/>
+        &nbsp;
+        Configuration:
+        &nbsp;
+        {conf.key}
+        &nbsp;
+        =
+        &nbsp;
+        {conf.value}
+        <mui.Divider />
+      </div>
+    );
+  }
+
   render() {
     const entity = this.props.entity;
     const component = this.props.component;
@@ -52,6 +69,7 @@ class DetailsComponent extends React.Component {
             </div>
           }/>
         <DetailsContainer>
+          {component.config.map(this.renderConfig, this)}
         </DetailsContainer>
       </div>
     );
