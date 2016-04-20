@@ -53,7 +53,7 @@ class Metadata {
     for(const member of members) {
       const parts = member.substr(1).split(',');
       const name = parts[0];
-      const types = parts.splice(1).map(this.parseType.bind(this));
+      const types = parts.splice(1).map(this.parseType, this);
       switch(member[0]) {
       case '=': // attribute
         ret.attributes.push({
