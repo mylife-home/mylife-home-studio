@@ -7,9 +7,16 @@ import TypeFactory from './type-factory';
 const debug = debugLib('mylife:home:studio:services:metadata');
 
 const pluginUsage = Object.freeze({
-  'vpanel' : 1,
-  'ui'     : 2,
-  'driver' : 3
+  vpanel : 1,
+  ui     : 2,
+  driver : 3
+});
+
+const configType = Object.freeze({
+  string  :  's',
+  integer :  'i',
+  number  :  'n',
+  boolean :  'b',
 });
 
 class Metadata {
@@ -18,6 +25,18 @@ class Metadata {
 
   get pluginUsage() {
     return pluginUsage;
+  }
+
+  get configType() {
+    return configType;
+  }
+
+  getConfigTypeName(value) {
+    for(const name of Object.keys(configType)) {
+      if(configType[name] === value) {
+        return name;
+      }
+    }
   }
 
   parseType(value) {
@@ -30,7 +49,7 @@ class Metadata {
       actions: []
     };
 
-    const members = value.split('|');
+    const members = value.split('|').filter(s => s !== '');
     for(const member of members) {
       const parts = member.substr(1).split(',');
       const name = parts[0];
@@ -52,6 +71,16 @@ class Metadata {
     }
 
     return ret;
+  }
+
+  parseConfig(value) {
+    return value.
+        split('|').
+        filter(s => s !== '').
+        map(item => {
+      const parts = item.split(':');
+      return { name: parts[1], type: parts[0] }
+    });
   }
 
   createRange(min, max) {

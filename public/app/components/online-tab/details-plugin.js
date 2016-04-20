@@ -82,10 +82,26 @@ class DetailsPlugin extends React.Component {
     );
   }
 
+  renderConfig(conf) {
+    return (
+      <div key={conf.name}>
+        <base.icons.NetConfig style={{verticalAlign: 'middle'}}/>
+        &nbsp;
+        Configuration:
+        &nbsp;
+        {conf.name}
+        &nbsp;
+        {Facade.metadata.getConfigTypeName(conf.type)}
+        <mui.Divider />
+      </div>
+    );
+  }
+
   render() {
     const entity = this.props.entity;
     const plugin = this.props.plugin;
-    const clazz = Facade.metadata.parseClass(plugin.clazz);
+    const clazz  = Facade.metadata.parseClass(plugin.clazz);
+    const config = Facade.metadata.parseConfig(plugin.config);
 
     return (
       <div>
@@ -112,7 +128,7 @@ class DetailsPlugin extends React.Component {
           <mui.Divider />
           {clazz.actions.map(this.renderAction.bind(this))}
           {clazz.attributes.map(this.renderAttribute.bind(this))}
-          TODO: {plugin.config}
+          {config.map(this.renderConfig.bind(this))}
         </DetailsContainer>
       </div>
     );
