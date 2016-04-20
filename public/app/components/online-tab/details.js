@@ -31,7 +31,7 @@ class Details extends React.Component {
 
     switch(value.type) {
     case 'entity':
-      return (<DetailsEntity entity={entity}/>);
+      return (<DetailsEntity entity={entity} changeValue={this.props.changeValue}/>);
 
     case 'plugin':
       const plugin = entity.plugins.find(p => `${p.library}.${p.type}` === value.plugin);
@@ -53,6 +53,7 @@ class Details extends React.Component {
 
 Details.propTypes = {
   value: React.PropTypes.object,
+  changeValue: React.PropTypes.func.isRequired
 };
 
 export default Details;

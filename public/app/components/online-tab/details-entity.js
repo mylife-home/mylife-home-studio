@@ -58,7 +58,11 @@ class DetailsEntity extends React.Component {
   }
 
   renderResourcesDetails(entity) {
-    const click = () => {}; // TODO
+    const click = (resource) => {
+      const value = { type: 'resource', entity: entity.id, resource };
+      this.props.changeValue(value);
+    };
+
     if(!entity.resources) { return []; }
     return entity.resources.map(resource => (
       <mui.ListItem key={resource}
@@ -73,8 +77,15 @@ class DetailsEntity extends React.Component {
   }
 
   renderCoreDetails(entity) {
-    const clickPlugin = () => {}; // TODO
-    const clickComponent = () => {}; // TODO
+    const clickPlugin = (plugin) => {
+      const value = { type: 'plugin', entity: entity.id, plugin: `${plugin.library}.${plugin.type}` };
+      this.props.changeValue(value);
+    };
+    const clickComponent = (component) => {
+      const value = { type: 'component', entity: entity.id, component: component.id };
+      this.props.changeValue(value);
+    };
+
     const arr = [];
     if(entity.plugins) {
       entity.plugins.forEach(plugin => { arr.push(
@@ -195,6 +206,7 @@ class DetailsEntity extends React.Component {
 
 DetailsEntity.propTypes = {
   entity: React.PropTypes.object.isRequired,
+  changeValue: React.PropTypes.func.isRequired,
   muiTheme: React.PropTypes.object
 };
 

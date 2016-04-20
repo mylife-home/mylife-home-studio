@@ -32,6 +32,10 @@ class OnlineTab extends React.Component {
     this.setState({ selectedNode: value });
   }
 
+  changeValue(value) {
+    this.setState({ selectedNode: value });
+  }
+
   render() {
     return (
       <bs.Grid fluid={true} style={Object.assign({}, styles.fullHeight)}>
@@ -45,7 +49,8 @@ class OnlineTab extends React.Component {
           </bs.Col>
           <bs.Col sm={9} style={Object.assign({}, styles.noPadding, styles.scrollable, styles.fullHeight)}>
             <Details
-              value={this.state.selectedNode} />
+              value={this.state.selectedNode}
+              changeValue={this.changeValue.bind(this)} />
           </bs.Col>
         </bs.Row>
       </bs.Grid>
