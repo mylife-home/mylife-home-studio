@@ -10,6 +10,8 @@ import shared from '../../shared/index';
 import DetailsTitle from './details-title';
 import DetailsContainer from './details-container';
 
+import Facade from '../../services/facade';
+
 import ResourcesActionCreators from '../../actions/resources-action-creators';
 
 class DetailsEntity extends React.Component {
@@ -25,6 +27,102 @@ class DetailsEntity extends React.Component {
     return {
       muiTheme: this.state.muiTheme,
     };
+  }
+
+  renderPluginUsageIcon(plugin) {
+    switch(plugin.usage) {
+    case Facade.metadata.pluginUsage.driver:
+      return (
+        <base.TooltipContainer tooltip="Hardware driver">
+          <base.icons.PluginDriver />
+        </base.TooltipContainer>
+      );
+
+    case Facade.metadata.pluginUsage.vpanel:
+      return (
+        <base.TooltipContainer tooltip="Virtual panel">
+          <base.icons.PluginVPanel />
+        </base.TooltipContainer>
+      );
+
+    case Facade.metadata.pluginUsage.ui:
+      return (
+        <base.TooltipContainer tooltip="UI">
+          <base.icons.PluginUi />
+        </base.TooltipContainer>
+      );
+
+    default:
+      return null;
+    }
+  }
+
+  renderResourcesDetails(entity) {
+    const click = () => {}; // TODO
+    if(!entity.resources) { return []; }
+    return entity.resources.map(resource => (
+      <mui.ListItem key={resource}
+                    onTouchTap={click.bind(null, resource)}
+                    leftIcon={
+                      <base.TooltipContainer tooltip="Resource">
+                        <base.icons.Resource />
+                      </base.TooltipContainer>
+                    }
+                    primaryText={resource} />
+    ));
+  }
+
+  renderCoreDetails(entity) {
+    const clickPlugin = () => {}; // TODO
+    const clickComponent = () => {}; // TODO
+    const arr = [];
+    if(entity.plugins) {
+      entity.plugins.forEach(plugin => { arr.push(
+        <mui.ListItem key={`${plugin.library}.${plugin.type}`}
+                      onTouchTap={clickPlugin.bind(null, plugin)}
+                      leftIcon={
+                        <base.TooltipContainer tooltip="Plugin">
+                          <base.icons.Plugin />
+                        </base.TooltipContainer>
+                      }
+                      rightIcon={this.renderPluginUsageIcon(plugin)}
+                      primaryText={`${plugin.library}.${plugin.type}`}  />
+      ); });
+    }
+    if(entity.components) {
+      entity.components.forEach(component => { arr.push(
+        <mui.ListItem key={component.id}
+                      onTouchTap={clickComponent.bind(null, component)}
+                      leftIcon={
+                        <base.TooltipContainer tooltip="Component">
+                          <base.icons.Component />
+                        </base.TooltipContainer>
+                      }
+                      primaryText={component.id} />
+      ); });
+    }
+    return arr;
+  }
+
+  renderUiDetails(entity) {
+    return [];
+  }
+
+  renderDetails(entity) {
+
+    switch(entity.type) {
+    case shared.EntityType.RESOURCES:
+      return this.renderResourcesDetails(entity);
+
+    case shared.EntityType.CORE:
+      return this.renderCoreDetails(entity);
+
+    case shared.EntityType.UI:
+      return this.renderUiDetails(entity);
+
+    default:
+      return [];
+    }
   }
 
   renderTypeIcon(entity) {
@@ -86,6 +184,9 @@ class DetailsEntity extends React.Component {
           }
           right={this.renderTypeIcon(entity)}/>
         <DetailsContainer>
+          <mui.List style={{overflowX:'hidden'}}>
+            {this.renderDetails(entity)}
+          </mui.List>
         </DetailsContainer>
       </div>
     );
