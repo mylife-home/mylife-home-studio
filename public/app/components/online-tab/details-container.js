@@ -9,7 +9,7 @@ const styles = {
   text: {
     padding: '10px',
     position: 'absolute',
-    lineHeight: '22px',
+    lineHeight: '50px',
     overflowY: 'auto',
     width: '100%',
     wordWrap: 'break-word',
