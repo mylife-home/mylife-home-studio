@@ -49,11 +49,11 @@ class MainToolbar extends React.Component {
     });
   }
 
-  openVPanelProjectDialog(){
+  openVPanelProjectDialog() {
     this.refs.openVPanelProject.click();
   }
 
-  openUiProjectDialog(){
+  openUiProjectDialog() {
     this.refs.openUiProject.click();
   }
 
