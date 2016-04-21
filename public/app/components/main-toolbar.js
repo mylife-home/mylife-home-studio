@@ -4,6 +4,8 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from './base/index';
 
+import DialogsActionCreators from '../actions/dialogs-action-creators';
+
 const styles = {
   icon: {
     margin: 16,
@@ -36,22 +38,14 @@ class MainToolbar extends React.Component {
   }
 
   handleOpenVPanelProject(e) {
-    return this.loadJsonFile(e, (err, data) => {
-      if(err) {
-        console.error(err);
-      } else {
-        console.log(data);
-      }
+    return this.loadJsonFile(e, (data) => {
+      console.log(data);
     });
   }
 
   handleOpenUiProject(e) {
-    return this.loadJsonFile(e, (err, data) => {
-      if(err) {
-        console.error(err);
-      } else {
-        console.log(data);
-      }
+    return this.loadJsonFile(e, (data) => {
+      console.log(data);
     });
   }
 
@@ -63,21 +57,23 @@ class MainToolbar extends React.Component {
     this.refs.openUiProject.click();
   }
 
-  loadJsonFile(e, done) {
+  loadJsonFile(e, cb) {
     const file = e.target.files[0];
+    e.target.value = '';
+
     const reader = new FileReader();
 
     reader.onloadend = () => {
       const err = reader.error;
-      if(err) { return done(err); }
+      if(err) { return DialogsActionCreators.error(err); }
       const content = reader.result;
       let data;
       try {
         data = JSON.parse(content);
       } catch(err) {
-        return done(err);
+        return DialogsActionCreators.error(err);
       }
-      return done(null, data);
+      return cb(data);
     };
 
     reader.readAsText(file);
