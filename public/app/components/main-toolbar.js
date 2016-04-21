@@ -35,6 +35,54 @@ class MainToolbar extends React.Component {
     });
   }
 
+  handleOpenVPanelProject(e) {
+    return this.loadJsonFile(e, (err, data) => {
+      if(err) {
+        console.error(err);
+      } else {
+        console.log(data);
+      }
+    });
+  }
+
+  handleOpenUiProject(e) {
+    return this.loadJsonFile(e, (err, data) => {
+      if(err) {
+        console.error(err);
+      } else {
+        console.log(data);
+      }
+    });
+  }
+
+  openVPanelProjectDialog(){
+    this.refs.openVPanelProject.click();
+  }
+
+  openUiProjectDialog(){
+    this.refs.openUiProject.click();
+  }
+
+  loadJsonFile(e, done) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const err = reader.error;
+      if(err) { return done(err); }
+      const content = reader.result;
+      let data;
+      try {
+        data = JSON.parse(content);
+      } catch(err) {
+        return done(err);
+      }
+      return done(null, data);
+    };
+
+    reader.readAsText(file);
+  }
+
   render() {
     const iconStyle = Object.assign({}, styles.icon, { fill: this.state.muiTheme.toolbar.iconColor});
     return (
@@ -49,7 +97,9 @@ class MainToolbar extends React.Component {
         <mui.IconButton tooltip="open online" style={styles.button}>
           <base.icons.actions.OpenOnline />
         </mui.IconButton>
-        <mui.IconButton tooltip="open from file" style={styles.button}>
+        <mui.IconButton tooltip="open from file"
+                        style={styles.button}
+                        onClick={this.openVPanelProjectDialog.bind(this)}>
           <base.icons.actions.OpenFile />
         </mui.IconButton>
 
@@ -64,7 +114,9 @@ class MainToolbar extends React.Component {
         <mui.IconButton tooltip="open online" style={styles.button}>
           <base.icons.actions.OpenOnline />
         </mui.IconButton>
-        <mui.IconButton tooltip="open from file" style={styles.button}>
+        <mui.IconButton tooltip="open from file"
+                        style={styles.button}
+                        onClick={this.openVPanelProjectDialog.bind(this)}>
           <base.icons.actions.OpenFile />
         </mui.IconButton>
 
@@ -80,6 +132,18 @@ class MainToolbar extends React.Component {
           <base.icons.actions.SaveAs />
         </mui.IconButton>
       </mui.ToolbarGroup>
+
+      <input
+        ref="openVPanelProject"
+        type="file"
+        style={{"display" : "none"}}
+        onChange={this.handleOpenVPanelProject.bind(this)}/>
+
+      <input
+        ref="openUiProject"
+        type="file"
+        style={{"display" : "none"}}
+        onChange={this.handleOpenUiProject.bind(this)}/>
     </mui.Toolbar>
   ); }
 }
