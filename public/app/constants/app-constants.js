@@ -17,5 +17,8 @@ export default {
     RESOURCE_GET_RESULT: null,
     RESOURCE_SET_QUERY: null,
     RESOURCE_SET_RESULT: null,
+
+    DIALOG_ERROR: null,
+    DIALOG_ERROR_CLEAN: null,
   })
 };

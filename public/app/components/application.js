@@ -26,7 +26,6 @@ const styles = {
   theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
 
-
 class Application extends React.Component {
   render() { return (
     <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
@@ -49,6 +48,7 @@ class Application extends React.Component {
             </div>
           </mui.Tab>
         </mui.Tabs>
+        <base.DialogError />
       </div>
     </muiStyles.MuiThemeProvider>
   ); }
