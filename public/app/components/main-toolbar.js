@@ -60,13 +60,31 @@ class MainToolbar extends React.Component {
   }
 
   openOnlineVPanelProjectDialog() {
-    const list = OnlineStore.getResourceNames('project.vpanel.');
-    console.log('openOnlineVPanelProjectDialog', list);
+    this.setState({
+      openOnlineVPanelProjectItems: OnlineStore.getResourceNames('project.vpanel.')
+    });
   }
 
   openOnlineUiProjectDialog() {
-    const list = OnlineStore.getResourceNames('project.ui.');
-    console.log('openOnlineUiProjectDialog', list);
+    this.setState({
+      openOnlineUiProjectItems: OnlineStore.getResourceNames('project.ui.')
+    });
+  }
+
+  handleOpenOnlineVPanelProject(name) {
+    this.setState({
+      openOnlineVPanelProjectItems: null
+    });
+    if(!name) { return; }
+    console.log('handleOpenOnlineVPanelProject', name);
+  }
+
+  handleOpenOnlineUiProject(name) {
+    this.setState({
+      openOnlineUiProjectItems: null
+    });
+    if(!name) { return; }
+    console.log('handleOpenOnlineUiProject', name);
   }
 
   loadJsonFile(e, cb) {
@@ -156,6 +174,18 @@ class MainToolbar extends React.Component {
         type="file"
         style={{"display" : "none"}}
         onChange={this.handleOpenFileUiProject.bind(this)}/>
+
+        <base.DialogSelect title="Select VPanel Project"
+                           open={!!this.state.openOnlineVPanelProjectItems}
+                           items={this.state.openOnlineVPanelProjectItems || []}
+                           select={this.handleOpenOnlineVPanelProject.bind(this)}
+                           cancel={this.handleOpenOnlineVPanelProject.bind(this, null)}/>
+
+        <base.DialogSelect title="Select UI Project"
+                           open={!!this.state.openOnlineUiProjectItems}
+                           items={this.state.openOnlineUiProjectItems || []}
+                           select={this.handleOpenOnlineUiProject.bind(this)}
+                           cancel={this.handleOpenOnlineUiProject.bind(this, null)}/>
     </mui.Toolbar>
   ); }
 }
