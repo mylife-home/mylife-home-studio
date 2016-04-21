@@ -73,7 +73,7 @@ class DetailsResource extends React.Component {
             <div>
               {resource}
               &nbsp;
-              <mui.IconButton tooltip="refresh" onTouchTap={refreshAction}>
+              <mui.IconButton tooltip="refresh" onClick={refreshAction}>
                 <base.icons.actions.Refresh />
               </mui.IconButton>
             </div>

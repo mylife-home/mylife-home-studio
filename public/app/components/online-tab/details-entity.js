@@ -181,7 +181,7 @@ class DetailsEntity extends React.Component {
             <div>
               {entity.id}
               &nbsp;
-              <mui.IconButton tooltip="refresh" onTouchTap={refreshAction}>
+              <mui.IconButton tooltip="refresh" onClick={refreshAction}>
                 <base.icons.actions.Refresh />
               </mui.IconButton>
             </div>
