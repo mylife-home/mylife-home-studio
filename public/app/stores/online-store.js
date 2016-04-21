@@ -86,6 +86,14 @@ class OnlineStore extends EventEmitter {
   getAll() {
     return Array.from(this.entities.values());
   }
+
+  getResourceNames(startsWith) {
+    const resourcesEntity = Array.from(this.entities.values()).find(e => e.resources);
+    if(!resourcesEntity) { return []; }
+    const names = resourcesEntity.resources;
+    if(!startsWith) { return names; }
+    return names.filter(n => n.startsWith(startsWith));
+  }
 };
 
 export default new OnlineStore();

@@ -6,6 +6,8 @@ import base from './base/index';
 
 import DialogsActionCreators from '../actions/dialogs-action-creators';
 
+import OnlineStore from '../stores/online-store';
+
 const styles = {
   icon: {
     margin: 16,
@@ -37,24 +39,34 @@ class MainToolbar extends React.Component {
     });
   }
 
-  handleOpenVPanelProject(e) {
+  handleOpenFileVPanelProject(e) {
     return this.loadJsonFile(e, (data) => {
-      console.log(data);
+      console.log('handleOpenFileVPanelProject', data);
     });
   }
 
-  handleOpenUiProject(e) {
+  handleOpenFileUiProject(e) {
     return this.loadJsonFile(e, (data) => {
-      console.log(data);
+      console.log('handleOpenFileUiProject', data);
     });
   }
 
-  openVPanelProjectDialog() {
-    this.refs.openVPanelProject.click();
+  openFileVPanelProjectDialog() {
+    this.refs.openFileVPanelProject.click();
   }
 
-  openUiProjectDialog() {
-    this.refs.openUiProject.click();
+  openFileUiProjectDialog() {
+    this.refs.openFileUiProject.click();
+  }
+
+  openOnlineVPanelProjectDialog() {
+    const list = OnlineStore.getResourceNames('project.vpanel.');
+    console.log('openOnlineVPanelProjectDialog', list);
+  }
+
+  openOnlineUiProjectDialog() {
+    const list = OnlineStore.getResourceNames('project.ui.');
+    console.log('openOnlineUiProjectDialog', list);
   }
 
   loadJsonFile(e, cb) {
@@ -90,12 +102,14 @@ class MainToolbar extends React.Component {
         <mui.IconButton tooltip="new" style={styles.button}>
           <base.icons.actions.New />
         </mui.IconButton>
-        <mui.IconButton tooltip="open online" style={styles.button}>
+        <mui.IconButton tooltip="open online"
+                        style={styles.button}
+                        onClick={this.openOnlineVPanelProjectDialog.bind(this)}>
           <base.icons.actions.OpenOnline />
         </mui.IconButton>
         <mui.IconButton tooltip="open from file"
                         style={styles.button}
-                        onClick={this.openVPanelProjectDialog.bind(this)}>
+                        onClick={this.openFileVPanelProjectDialog.bind(this)}>
           <base.icons.actions.OpenFile />
         </mui.IconButton>
 
@@ -107,12 +121,14 @@ class MainToolbar extends React.Component {
         <mui.IconButton tooltip="new" style={styles.button}>
           <base.icons.actions.New />
         </mui.IconButton>
-        <mui.IconButton tooltip="open online" style={styles.button}>
+        <mui.IconButton tooltip="open online"
+                        style={styles.button}
+                        onClick={this.openOnlineUiProjectDialog.bind(this)}>
           <base.icons.actions.OpenOnline />
         </mui.IconButton>
         <mui.IconButton tooltip="open from file"
                         style={styles.button}
-                        onClick={this.openVPanelProjectDialog.bind(this)}>
+                        onClick={this.openFileUiProjectDialog.bind(this)}>
           <base.icons.actions.OpenFile />
         </mui.IconButton>
 
@@ -130,16 +146,16 @@ class MainToolbar extends React.Component {
       </mui.ToolbarGroup>
 
       <input
-        ref="openVPanelProject"
+        ref="openFileVPanelProject"
         type="file"
         style={{"display" : "none"}}
-        onChange={this.handleOpenVPanelProject.bind(this)}/>
+        onChange={this.handleOpenFileVPanelProject.bind(this)}/>
 
       <input
-        ref="openUiProject"
+        ref="openFileUiProject"
         type="file"
         style={{"display" : "none"}}
-        onChange={this.handleOpenUiProject.bind(this)}/>
+        onChange={this.handleOpenFileUiProject.bind(this)}/>
     </mui.Toolbar>
   ); }
 }
