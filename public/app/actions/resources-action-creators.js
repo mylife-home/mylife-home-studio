@@ -52,14 +52,14 @@ export default {
     });
   },
 
-  resourceGetQuery: function(entityId, resourceId) {
+  resourceGetQuery: function(entityId, resourceId, cb) {
     AppDispatcher.dispatch({
       type: AppConstants.ActionTypes.RESOURCE_GET_QUERY,
       entityId,
       resourceId
     });
 
-    Facade.resources.queryResourceGet(entityId, resourceId);
+    Facade.resources.queryResourceGet(entityId, resourceId, cb);
   },
 
   resourceGetResult: function(entityId, resourceId, resourceContent) {
