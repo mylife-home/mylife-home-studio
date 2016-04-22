@@ -5,8 +5,10 @@ import * as mui from 'material-ui';
 import base from './base/index';
 
 import DialogsActionCreators from '../actions/dialogs-action-creators';
+import ResourcesActionCreators from '../actions/resources-action-creators';
 
 import OnlineStore from '../stores/online-store';
+
 
 const styles = {
   icon: {
@@ -76,7 +78,9 @@ class MainToolbar extends React.Component {
       openOnlineVPanelProjectItems: null
     });
     if(!name) { return; }
-    console.log('handleOpenOnlineVPanelProject', name);
+    this.loadJsonOnline(name, (data) => {
+      console.log('handleOpenOnlineVPanelProject', data);
+    });
   }
 
   handleOpenOnlineUiProject(name) {
@@ -84,7 +88,9 @@ class MainToolbar extends React.Component {
       openOnlineUiProjectItems: null
     });
     if(!name) { return; }
-    console.log('handleOpenOnlineUiProject', name);
+    this.loadJsonOnline(name, (data) => {
+      console.log('handleOpenOnlineUiProject', data);
+    });
   }
 
   loadJsonFile(e, cb) {
@@ -107,6 +113,27 @@ class MainToolbar extends React.Component {
     };
 
     reader.readAsText(file);
+  }
+
+  loadJsonOnline(resource, cb) {
+    function parse(content) {
+      let data;
+      try {
+        data = JSON.parse(content);
+      } catch(err) {
+        return DialogsActionCreators.error(err);
+      }
+      return cb(data);
+    }
+
+    const entity = OnlineStore.getResourceEntity();
+    const cachedContent = entity.cachedResources && entity.cachedResources[resource];
+    if(cachedContent) {
+      return parse(cachedContent);
+    }
+
+    // need to get content .. TODO: Flux pattern to do that ?
+    return ResourcesActionCreators.resourceGetQuery(entity.id, resource, parse);
   }
 
   render() {
