@@ -36,7 +36,7 @@ class ProjectStore extends EventEmitter {
   }
 
   getAll() {
-    return Object.freeze(this.projects);
+    return this.projects;
   }
 };
 
