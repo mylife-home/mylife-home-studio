@@ -8,6 +8,8 @@ import base from './base/index';
 import MainToolbar from './main-toolbar';
 import OnlineTab from './online-tab/index';
 
+import ProjectStore from '../stores/project-store';
+
 const styles = {
   root: {
     position: 'fixed',
@@ -27,31 +29,59 @@ const styles = {
 };
 
 class Application extends React.Component {
-  render() { return (
-    <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
-      <div style={styles.root}>
-        <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
-        <MainToolbar />
-        <mui.Tabs style={styles.tabs}
-                  contentContainerStyle={styles.tabContainer}
-                  tabTemplate={base.TabTemplate}>
-          <mui.Tab label="Online"
-                   icon={<base.icons.tabs.Online />}>
-            <OnlineTab />
-          </mui.Tab>
-          <mui.Tab label="Item Two">
-            <div>
-              <h2>Tab Two</h2>
-              <p>
-                This is another example tab.
-              </p>
-            </div>
-          </mui.Tab>
-        </mui.Tabs>
-        <base.DialogError />
-      </div>
-    </muiStyles.MuiThemeProvider>
-  ); }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      projects: ProjectStore.getAll()
+    }
+  }
+
+  componentDidMount() {
+    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  handleStoreChange() {
+    this.setState({
+      projects: ProjectStore.getAll()
+    });
+  }
+
+  render() {
+    const tabs = this.state.projects.map((project) => (
+      <mui.Tab key={project.id} label={project.name}>
+        <div>
+          <h2>{project.name}</h2>
+          <p>
+            TODO
+          </p>
+        </div>
+      </mui.Tab>
+    ));
+
+    return (
+      <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
+        <div style={styles.root}>
+          <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
+          <MainToolbar />
+          <mui.Tabs style={styles.tabs}
+                    contentContainerStyle={styles.tabContainer}
+                    tabTemplate={base.TabTemplate}>
+            <mui.Tab label="Online"
+                     icon={<base.icons.tabs.Online />}>
+              <OnlineTab />
+            </mui.Tab>
+            {tabs}
+          </mui.Tabs>
+          <base.DialogError />
+        </div>
+      </muiStyles.MuiThemeProvider>
+    );
+  }
 }
 
 export default Application;
