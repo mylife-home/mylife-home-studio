@@ -1,11 +1,13 @@
 'use strict';
 
 import Repository from './repository';
-import Resources from './resources';
-import Metadata from './metadata/index';
+import Resources  from './resources';
+import Metadata   from './metadata/index';
+import Projects   from './projects';
 
 export default {
   repository : new Repository(),
   resources  : new Resources(),
-  metadata   : new Metadata()
+  metadata   : new Metadata(),
+  projects   : new Projects()
 }

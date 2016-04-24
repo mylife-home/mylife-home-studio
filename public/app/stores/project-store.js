@@ -10,21 +10,14 @@ class ProjectStore extends EventEmitter {
 
   constructor() {
     super();
-    this.error = null;
+    this.projects = [];
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
 
   handleDispatch(action) {
     switch(action.type) {
-      case AppConstants.ActionTypes.PROJECT_NEW:
-        // TODO
-        console.log('new', action.projectType);
-        this.emitChange();
-        break;
-
-      case AppConstants.ActionTypes.PROJECT_OPEN:
-        // TODO
-        console.log('open', action.projectType, action.projectContent);
+      case AppConstants.ActionTypes.PROJECT_LOAD:
+        this.projects.push(action.project);
         this.emitChange();
         break;
     }
@@ -43,7 +36,7 @@ class ProjectStore extends EventEmitter {
   }
 
   getAll() {
-    // TODO
+    return Object.freeze(this.projects);
   }
 };
 

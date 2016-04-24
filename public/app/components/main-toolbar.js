@@ -10,6 +10,8 @@ import ProjectActionCreators from '../actions/project-action-creators';
 
 import OnlineStore from '../stores/online-store';
 
+import Facade from '../services/facade';
+
 const styles = {
   icon: {
     margin: 16,
@@ -41,24 +43,20 @@ class MainToolbar extends React.Component {
     });
   }
 
-  handleOpenFileVPanelProject(e) {
-    return this.loadJsonFile(e, (data) => {
-      ProjectActionCreators.open('vpanel', data);
-    });
-  }
-
-  handleOpenFileUiProject(e) {
-    return this.loadJsonFile(e, (data) => {
-      ProjectActionCreators.open('ui', data);
-    });
-  }
-
   newVPanelProject() {
-    ProjectActionCreators.new('vpanel');
+    this.loadNewProject('vpanel');
   }
 
   newUiProject() {
-    ProjectActionCreators.new('ui');
+    this.loadNewProject('ui');
+  }
+
+  handleOpenFileVPanelProject(e) {
+    this.loadProjectFile(e, 'vpanel');
+  }
+
+  handleOpenFileUiProject(e) {
+    this.loadProjectFile(e, 'ui');
   }
 
   openFileVPanelProjectDialog() {
@@ -86,9 +84,7 @@ class MainToolbar extends React.Component {
       openOnlineVPanelProjectItems: null
     });
     if(!name) { return; }
-    this.loadJsonOnline(name, (data) => {
-      ProjectActionCreators.open('vpanel', data);
-    });
+    this.loadProjectOnline(name, 'vpanel');
   }
 
   handleOpenOnlineUiProject(name) {
@@ -96,12 +92,20 @@ class MainToolbar extends React.Component {
       openOnlineUiProjectItems: null
     });
     if(!name) { return; }
-    this.loadJsonOnline(name, (data) => {
-      ProjectActionCreators.open('ui', data);
-    });
+    this.loadProjectOnline(name, 'ui');
   }
 
-  loadJsonFile(e, cb) {
+  loadNewProject(type) {
+    let project;
+    try {
+      project = Facade.projects.new(type);
+    } catch(err) {
+      return DialogsActionCreators.error(err);
+    }
+    ProjectActionCreators.load(project);
+  }
+
+  loadProjectFile(e, type) {
     const file = e.target.files[0];
     e.target.value = '';
 
@@ -111,37 +115,37 @@ class MainToolbar extends React.Component {
       const err = reader.error;
       if(err) { return DialogsActionCreators.error(err); }
       const content = reader.result;
-      let data;
+      let project;
       try {
-        data = JSON.parse(content);
+        project = Facade.projects.open(type, content);
       } catch(err) {
         return DialogsActionCreators.error(err);
       }
-      return cb(data);
+      ProjectActionCreators.load(project);
     };
 
     reader.readAsText(file);
   }
 
-  loadJsonOnline(resource, cb) {
-    function parse(content) {
-      let data;
+  loadProjectOnline(resource, type) {
+    function load(content) {
+      let project;
       try {
-        data = JSON.parse(content);
+        project = Facade.projects.open(type, content);
       } catch(err) {
         return DialogsActionCreators.error(err);
       }
-      return cb(data);
+      ProjectActionCreators.load(project);
     }
 
     const entity = OnlineStore.getResourceEntity();
     const cachedContent = entity.cachedResources && entity.cachedResources[resource];
     if(cachedContent) {
-      return parse(cachedContent);
+      return load(cachedContent);
     }
 
     // need to get content .. TODO: Flux pattern to do that ?
-    return ResourcesActionCreators.resourceGetQuery(entity.id, resource, parse);
+    return ResourcesActionCreators.resourceGetQuery(entity.id, resource, load);
   }
 
   render() {
