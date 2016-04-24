@@ -6,9 +6,9 @@ import base from './base/index';
 
 import DialogsActionCreators from '../actions/dialogs-action-creators';
 import ResourcesActionCreators from '../actions/resources-action-creators';
+import ProjectActionCreators from '../actions/project-action-creators';
 
 import OnlineStore from '../stores/online-store';
-
 
 const styles = {
   icon: {
@@ -43,14 +43,22 @@ class MainToolbar extends React.Component {
 
   handleOpenFileVPanelProject(e) {
     return this.loadJsonFile(e, (data) => {
-      console.log('handleOpenFileVPanelProject', data);
+      ProjectActionCreators.open('vpanel', data);
     });
   }
 
   handleOpenFileUiProject(e) {
     return this.loadJsonFile(e, (data) => {
-      console.log('handleOpenFileUiProject', data);
+      ProjectActionCreators.open('ui', data);
     });
+  }
+
+  newVPanelProject() {
+    ProjectActionCreators.new('vpanel');
+  }
+
+  newUiProject() {
+    ProjectActionCreators.new('ui');
   }
 
   openFileVPanelProjectDialog() {
@@ -79,7 +87,7 @@ class MainToolbar extends React.Component {
     });
     if(!name) { return; }
     this.loadJsonOnline(name, (data) => {
-      console.log('handleOpenOnlineVPanelProject', data);
+      ProjectActionCreators.open('vpanel', data);
     });
   }
 
@@ -89,7 +97,7 @@ class MainToolbar extends React.Component {
     });
     if(!name) { return; }
     this.loadJsonOnline(name, (data) => {
-      console.log('handleOpenOnlineUiProject', data);
+      ProjectActionCreators.open('ui', data);
     });
   }
 
@@ -144,7 +152,9 @@ class MainToolbar extends React.Component {
         <base.icons.tabs.VPanel style={iconStyle} />
         <mui.ToolbarTitle text="vpanel" />
 
-        <mui.IconButton tooltip="new" style={styles.button}>
+        <mui.IconButton tooltip="new"
+                        style={styles.button}
+                        onClick={this.newVPanelProject.bind(this)}>
           <base.icons.actions.New />
         </mui.IconButton>
         <mui.IconButton tooltip="open online"
@@ -163,7 +173,9 @@ class MainToolbar extends React.Component {
         <base.icons.tabs.Ui style={iconStyle} />
         <mui.ToolbarTitle text="ui"/>
 
-        <mui.IconButton tooltip="new" style={styles.button}>
+        <mui.IconButton tooltip="new"
+                        style={styles.button}
+                        onClick={this.newUiProject.bind(this)}>
           <base.icons.actions.New />
         </mui.IconButton>
         <mui.IconButton tooltip="open online"
