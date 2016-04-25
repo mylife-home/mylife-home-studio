@@ -18,7 +18,8 @@ const styles = {
   },
   button: {
     height: '56px',
-    width: '56px'
+    width: '56px',
+    overflow: 'inherit'
   }
 };
 

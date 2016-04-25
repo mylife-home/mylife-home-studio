@@ -22,10 +22,11 @@ const styles = {
   },
   tabs: {
     height : 'calc(100% - 120px)',
-    position: 'relative'
+    position: 'relative',
+    zIndex : -1, // need that for toolbar tooltips ?!
   },
   tabContainer: {
-    height : 'calc(100% - 54px)'
+    height : 'calc(100% - 54px)',
   },
   theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
