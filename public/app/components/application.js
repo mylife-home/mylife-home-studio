@@ -7,8 +7,8 @@ import base from './base/index';
 
 import MainToolbar from './main-toolbar';
 import OnlineTab from './online-tab/index';
-
-import ProjectActionCreators from '../actions/project-action-creators';
+import VPanelProjectTab from './vpanel-project-tab/index';
+import UiProjectTab from './ui-project-tab/index';
 
 import ProjectStore from '../stores/project-store';
 
@@ -54,18 +54,30 @@ class Application extends React.Component {
   }
 
   render() {
-    // TODO: move in separate file
-    const tabs = this.state.projects.map((project) => (
-      <mui.Tab key={project.id} label={project.name}>
-        <div>
-          <h2>{project.name}</h2>
-          <p>
-            <mui.FlatButton onClick={() => ProjectActionCreators.close(project)}>Close</mui.FlatButton>
-            TODO
-          </p>
-        </div>
-      </mui.Tab>
-    ));
+    const tabs = this.state.projects.map((project) => {
+      switch(project.type) {
+      case 'vpanel':
+        return (
+          <mui.Tab key={project.id}
+                   label={project.name}
+                   icon={<base.icons.tabs.VPanel />}>
+            <VPanelProjectTab project={project} />
+          </mui.Tab>
+        );
+
+      case 'ui':
+        return (
+          <mui.Tab key={project.id}
+                   label={project.name}
+                   icon={<base.icons.tabs.Ui />}>
+            <UiProjectTab project={project} />
+          </mui.Tab>
+        );
+
+      default:
+        throw new Error(`project type not supported: ${project.type}`);
+      }
+    });
 
     return (
       <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
