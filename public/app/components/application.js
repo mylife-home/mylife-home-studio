@@ -11,6 +11,9 @@ import VPanelProjectTab from './vpanel-project-tab/index';
 import UiProjectTab from './ui-project-tab/index';
 
 import ProjectStore from '../stores/project-store';
+import ActiveTabStore from '../stores/active-tab-store';
+
+import TabActionCreators from '../actions/tab-action-creators';
 
 const styles = {
   root: {
@@ -36,21 +39,25 @@ class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      projects: ProjectStore.getAll()
+      projects: ProjectStore.getAll(),
+      activeTab: ActiveTabStore.getActiveTab()
     }
   }
 
   componentDidMount() {
     ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+    ActiveTabStore.addChangeListener(this.handleStoreChange.bind(this));
   }
 
   componentWillUnmount() {
     ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
+    ActiveTabStore.removeChangeListener(this.handleStoreChange.bind(this));
   }
 
   handleStoreChange() {
     this.setState({
-      projects: ProjectStore.getAll()
+      projects: ProjectStore.getAll(),
+      activeTab: ActiveTabStore.getActiveTab()
     });
   }
 
@@ -59,7 +66,8 @@ class Application extends React.Component {
       switch(project.type) {
       case 'vpanel':
         return (
-          <mui.Tab key={project.id}
+          <mui.Tab value={project.id}
+                   key={project.id}
                    label={project.name}
                    icon={<base.icons.tabs.VPanel />}>
             <VPanelProjectTab project={project} />
@@ -68,7 +76,8 @@ class Application extends React.Component {
 
       case 'ui':
         return (
-          <mui.Tab key={project.id}
+          <mui.Tab value={project.id}
+                   key={project.id}
                    label={project.name}
                    icon={<base.icons.tabs.Ui />}>
             <UiProjectTab project={project} />
@@ -85,10 +94,13 @@ class Application extends React.Component {
         <div style={styles.root}>
           <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
           <MainToolbar />
-          <mui.Tabs style={styles.tabs}
+          <mui.Tabs value={this.state.activeTab}
+                    onChange={(value) => TabActionCreators.activate(value)}
+                    style={styles.tabs}
                     contentContainerStyle={styles.tabContainer}
                     tabTemplate={base.TabTemplate}>
-            <mui.Tab label="Online"
+            <mui.Tab value="online"
+                     label="Online"
                      icon={<base.icons.tabs.Online />}>
               <OnlineTab />
             </mui.Tab>

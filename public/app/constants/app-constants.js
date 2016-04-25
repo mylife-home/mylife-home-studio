@@ -23,5 +23,7 @@ export default {
 
     PROJECT_LOAD: null,
     PROJECT_CLOSE: null,
+
+    TAB_ACTIVATE: null,
   })
 };
