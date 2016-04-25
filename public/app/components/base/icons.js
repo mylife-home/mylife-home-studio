@@ -9,6 +9,8 @@ import ActionSearch from 'material-ui/svg-icons/action/search';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 import ActionSubject from 'material-ui/svg-icons/action/subject';
 
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+
 import CommunicationImportContacts from 'material-ui/svg-icons/communication/import-contacts';
 
 import HardwareMemory from 'material-ui/svg-icons/hardware/memory';
@@ -35,6 +37,7 @@ export default {
     SaveAs        : ContentSave,
     Refresh       : ActionAutorenew,
     Info          : ActionInfo,
+    Close         : NavigationClose,
   },
 
   tabs: {
