@@ -7,7 +7,6 @@ import base from '../base/index';
 
 import shared from '../../shared/index';
 
-import DetailsTitle from './details-title';
 import DetailsContainer from './details-container';
 
 import ResourcesActionCreators from '../../actions/resources-action-creators';
@@ -68,7 +67,7 @@ class DetailsResource extends React.Component {
 
     return (
       <div>
-        <DetailsTitle
+        <base.DetailsTitle
           center={
             <div>
               {resource}

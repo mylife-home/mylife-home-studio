@@ -7,7 +7,6 @@ import base from '../base/index';
 
 import shared from '../../shared/index';
 
-import DetailsTitle from './details-title';
 import DetailsContainer from './details-container';
 
 class DetailsComponent extends React.Component {
@@ -48,7 +47,7 @@ class DetailsComponent extends React.Component {
 
     return (
       <div>
-        <DetailsTitle
+        <base.DetailsTitle
           center={
             <div>
               {component.id}

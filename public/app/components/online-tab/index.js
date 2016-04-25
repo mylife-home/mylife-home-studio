@@ -8,18 +8,7 @@ import * as bs from 'react-bootstrap';
 import Tree from './tree';
 import Details from './details';
 
-const styles = {
-  noPadding: {
-    paddingLeft: 0,
-    paddingRight: 0
-  },
-  fullHeight: {
-    height: '100%'
-  },
-  scrollable: {
-    overflow: 'auto'
-  }
-};
+import tabStyles from '../base/tab-styles';
 
 class OnlineTab extends React.Component {
 
@@ -38,16 +27,16 @@ class OnlineTab extends React.Component {
 
   render() {
     return (
-      <bs.Grid fluid={true} style={Object.assign({}, styles.fullHeight)}>
-        <bs.Row style={styles.fullHeight}>
-          <bs.Col sm={3} style={Object.assign({}, styles.noPadding, styles.fullHeight)}>
-            <mui.Paper style={Object.assign({}, styles.scrollable, styles.fullHeight)}>
+      <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
+        <bs.Row style={tabStyles.fullHeight}>
+          <bs.Col sm={3} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
+            <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
               <Tree
                 selectedNode={this.state.selectedNode}
                 selectedValueChanged={this.handleSelectionChanged.bind(this)} />
             </mui.Paper>
           </bs.Col>
-          <bs.Col sm={9} style={Object.assign({}, styles.noPadding, styles.scrollable, styles.fullHeight)}>
+          <bs.Col sm={9} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
             <Details
               value={this.state.selectedNode}
               changeValue={this.changeValue.bind(this)} />

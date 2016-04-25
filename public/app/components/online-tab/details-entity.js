@@ -7,7 +7,6 @@ import base from '../base/index';
 
 import shared from '../../shared/index';
 
-import DetailsTitle from './details-title';
 import DetailsContainer from './details-container';
 
 import Facade from '../../services/facade';
@@ -176,7 +175,7 @@ class DetailsEntity extends React.Component {
 
     return (
       <div>
-        <DetailsTitle
+        <base.DetailsTitle
           center={
             <div>
               {entity.id}

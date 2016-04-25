@@ -7,6 +7,7 @@ import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import TooltipContainer from './tooltip-container';
 import TabTemplate from './tab-template';
+import DetailsTitle from './details-title';
 
 export default {
   icons,
@@ -16,4 +17,5 @@ export default {
   SelectableListItem,
   TooltipContainer,
   TabTemplate,
+  DetailsTitle,
 };

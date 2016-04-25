@@ -8,7 +8,6 @@ import base from '../base/index';
 import shared from '../../shared/index';
 import Facade from '../../services/facade';
 
-import DetailsTitle from './details-title';
 import DetailsContainer from './details-container';
 
 class DetailsPlugin extends React.Component {
@@ -105,7 +104,7 @@ class DetailsPlugin extends React.Component {
 
     return (
       <div>
-        <DetailsTitle
+        <base.DetailsTitle
           center={
             <div>
               {`${plugin.library}.${plugin.type}`}
