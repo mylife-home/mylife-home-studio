@@ -8,6 +8,8 @@ import base from './base/index';
 import MainToolbar from './main-toolbar';
 import OnlineTab from './online-tab/index';
 
+import ProjectActionCreators from '../actions/project-action-creators';
+
 import ProjectStore from '../stores/project-store';
 
 const styles = {
@@ -52,11 +54,13 @@ class Application extends React.Component {
   }
 
   render() {
+    // TODO: move in separate file
     const tabs = this.state.projects.map((project) => (
       <mui.Tab key={project.id} label={project.name}>
         <div>
           <h2>{project.name}</h2>
           <p>
+            <mui.FlatButton onClick={() => ProjectActionCreators.close(project)}>Close</mui.FlatButton>
             TODO
           </p>
         </div>

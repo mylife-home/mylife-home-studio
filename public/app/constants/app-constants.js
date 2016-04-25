@@ -22,5 +22,6 @@ export default {
     DIALOG_ERROR_CLEAN: null,
 
     PROJECT_LOAD: null,
+    PROJECT_CLOSE: null,
   })
 };

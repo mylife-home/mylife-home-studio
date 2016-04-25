@@ -9,5 +9,12 @@ export default {
       type: AppConstants.ActionTypes.PROJECT_LOAD,
       project
     });
+  },
+
+  close: function(project) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.PROJECT_CLOSE,
+      project
+    });
   }
 };

@@ -10,15 +10,25 @@ class ProjectStore extends EventEmitter {
 
   constructor() {
     super();
-    this.projects = [];
+    this.projects = new Map();
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
 
   handleDispatch(action) {
     switch(action.type) {
       case AppConstants.ActionTypes.PROJECT_LOAD:
-        this.projects.push(action.project);
-        this.emitChange();
+        {
+          const project = action.project;
+          this.projects.set(project.id, project);
+          this.emitChange();
+        }
+        break;
+      case AppConstants.ActionTypes.PROJECT_CLOSE:
+        {
+          const project = action.project;
+          this.projects.delete(project.id);
+          this.emitChange();
+        }
         break;
     }
   }
@@ -36,7 +46,7 @@ class ProjectStore extends EventEmitter {
   }
 
   getAll() {
-    return this.projects;
+    return Array.from(this.projects.values());
   }
 };
 
