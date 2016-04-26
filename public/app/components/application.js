@@ -63,12 +63,14 @@ class Application extends React.Component {
 
   render() {
     const tabs = this.state.projects.map((project) => {
+      let title = project.name;
+      if(project.dirty) { title += ' *'; }
       switch(project.type) {
       case 'vpanel':
         return (
           <mui.Tab value={project.id}
                    key={project.id}
-                   label={project.name}
+                   label={title}
                    icon={<base.icons.tabs.VPanel />}>
             <VPanelProjectTab project={project} />
           </mui.Tab>
@@ -78,7 +80,7 @@ class Application extends React.Component {
         return (
           <mui.Tab value={project.id}
                    key={project.id}
-                   label={project.name}
+                   label={title}
                    icon={<base.icons.tabs.Ui />}>
             <UiProjectTab project={project} />
           </mui.Tab>
