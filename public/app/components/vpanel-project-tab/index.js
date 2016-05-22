@@ -6,6 +6,10 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import Properties from './properties';
+import Toolbox from './toolbox';
+import Canvas from './canvas';
+
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 import tabStyles from '../base/tab-styles';
@@ -24,7 +28,7 @@ class VPanelProjectTab extends React.Component {
         <bs.Row style={tabStyles.fullHeight}>
           <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
             <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              TOOLBOX
+              <Toolbox project={project} />
             </mui.Paper>
           </bs.Col>
           <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
@@ -37,12 +41,12 @@ class VPanelProjectTab extends React.Component {
                     <base.icons.actions.Close />
                   </mui.IconButton>
                 }/>
-              TODO
+              <Canvas project={project} />
             </div>
           </bs.Col>
           <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
             <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              PROPERTIES
+              <Properties project={project} />
             </mui.Paper>
           </bs.Col>
         </bs.Row>
