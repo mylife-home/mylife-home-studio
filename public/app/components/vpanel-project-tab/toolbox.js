@@ -6,6 +6,8 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import ProjectActionCreators from '../../actions/project-action-creators';
+
 const styles = {
   icon: {
     margin: 16,
@@ -24,21 +26,24 @@ class Toolbox extends React.Component {
   }
 
   importOnlineToolbox() {
-
+    const project = this.props.project;
+    ProjectActionCreators.vPanelImportToolbox(project);
   }
 
   importOnlineDriverComponents() {
-
+    const project = this.props.project;
+    ProjectActionCreators.vPanelImportDrivers(project);
   }
 
   deployVPanel() {
-
+    const project = this.props.project;
+    ProjectActionCreators.vPanelDeployVPanel(project);
   }
 
   deployDrivers() {
-
+    const project = this.props.project;
+    ProjectActionCreators.vPanelDeployDrivers(project);
   }
-
 
   render() {
     return (

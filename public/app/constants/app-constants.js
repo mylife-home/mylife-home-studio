@@ -23,6 +23,12 @@ export default {
 
     PROJECT_LOAD: null,
     PROJECT_CLOSE: null,
+    PROJECT_REFRESH: null,
+
+    PROJECT_VPANEL_IMPORT_TOOLBOX: null,
+    PROJECT_VPANEL_IMPORT_DRIVERS: null,
+    PROJECT_VPANEL_DEPLOY_VPANEL: null,
+    PROJECT_VPANEL_DEPLOY_DRIVERS: null,
 
     TAB_ACTIVATE: null,
   })
