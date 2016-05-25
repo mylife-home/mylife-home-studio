@@ -18,7 +18,7 @@ class Canvas extends React.Component {
     return (
       <div>
         TODO<br/>
-        {JSON.stringify(project)}
+        {JSON.stringify(project._raw)}
       </div>
     );
   }

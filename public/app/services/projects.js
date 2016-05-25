@@ -43,7 +43,7 @@ class Projects {
     const data = JSON.parse(content);
     const id = uuid.v4();
     const project = {
-      //_raw: data,
+      _raw: data,
       id,
       type,
       name: data.Name,
