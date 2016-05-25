@@ -4,7 +4,11 @@ import uuid from 'uuid';
 import debugLib from 'debug';
 import RepositoryActionCreators from '../actions/repository-action-creators';
 
+import Metadata from './metadata/index';
+
 const debug = debugLib('mylife:home:studio:services:projects');
+
+const metadata = new Metadata();
 
 class Projects {
   constructor() {
@@ -16,6 +20,8 @@ class Projects {
       id,
       type,
       name: id,
+      createDate: new Date(),
+      lastUpdate: new Date(),
       dirty: true
     };
 
@@ -27,11 +33,14 @@ class Projects {
     const data = JSON.parse(content);
     const id = uuid.v4();
     const project = {
-      _raw: data,
+      //_raw: data,
       id,
       type,
       name: data.Name,
-      dirty: false
+      creationDate: loadDate(data.CreationDate),
+      lastUpdate: loadDate(data.LastUpdate),
+      dirty: false,
+      toolbox: data.Toolbox.map(loadToolboxItem)
     };
 
     debug('project created', project.id);
@@ -68,6 +77,55 @@ class Projects {
     err.validationErrors = msgs;
     throw err;
   }
+}
+
+function loadToolboxItem(item) {
+  return {
+    entityId: item.EntityName,
+    plugins: item.Plugins.map(loadPlugin)
+  };
+}
+
+function loadPlugin(plugin) {
+  const ret = Object.assign({}, plugin);
+  ret.clazz = metadata.parseClass(plugin.clazz);
+  return ret;
+}
+
+function loadDate(raw) {
+  console.log(raw);
+  raw = raw.substr(6, raw.length - 8);
+  let tz;
+  let tzMin;
+
+  if(raw.includes('-')) {
+    raw = raw.split('-');
+    tz = '-' + raw[1];
+    raw = raw[0];
+  }
+
+  if(raw.includes('+')) {
+    raw = raw.split('+');
+    tz = raw[1];
+    raw = raw[0];
+  }
+
+  if(tz && tz.length === 4) {
+    tzMin = tz.substr(2);
+    tz = tz.substr(0, 2);
+  }
+
+  const date = new Date(parseInt(raw));
+  console.log(date, parseInt(tz));
+  if(tz) {
+    date.setHours(date.getHours() + parseInt(tz));
+  }
+  if(tzMin) {
+    date.setMinutes(date.getMinutes() + parseInt(tzMin));
+  }
+
+  console.log(date);
+  return date;
 }
 
 export default Projects;
