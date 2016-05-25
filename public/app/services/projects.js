@@ -110,7 +110,6 @@ function loadPlugin(plugin) {
 }
 
 function loadDate(raw) {
-  console.log(raw);
   raw = raw.substr(6, raw.length - 8);
   let tz;
   let tzMin;
@@ -133,7 +132,6 @@ function loadDate(raw) {
   }
 
   const date = new Date(parseInt(raw));
-  console.log(date, parseInt(tz));
   if(tz) {
     date.setHours(date.getHours() + parseInt(tz));
   }
@@ -141,7 +139,6 @@ function loadDate(raw) {
     date.setMinutes(date.getMinutes() + parseInt(tzMin));
   }
 
-  console.log(date);
   return date;
 }
 
