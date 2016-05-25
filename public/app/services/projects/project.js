@@ -1,6 +1,9 @@
 'use strict';
 
 import uuid from 'uuid';
+import debugLib from 'debug';
+
+const debug = debugLib('mylife:home:studio:services:projects');
 
 class Project {
   constructor(type, data) {
