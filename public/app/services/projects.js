@@ -55,6 +55,7 @@ class Projects {
     switch(type) {
       case 'vpanel':
         project.toolbox = data.Toolbox.map(loadToolboxItem);
+        project.components = data.Components.map(loadComponent.bind(null, project));
         break;
 
       case 'ui':
@@ -130,17 +131,47 @@ function loadDate(raw) {
   return date;
 }
 
+function loadMap(map) {
+  const ret = {};
+  for(const item of map) {
+    ret[item.Key] = item.Value;
+  }
+  return ret;
+}
+
 function loadToolboxItem(item) {
+  const entityId = item.EntityName;
   return {
-    entityId: item.EntityName,
-    plugins: item.Plugins.map(loadPlugin)
+    entityId,
+    plugins: item.Plugins.map(loadPlugin.bind(null, entityId))
   };
 }
 
-function loadPlugin(plugin) {
+function loadPlugin(entityId, plugin) {
   const ret = Object.assign({}, plugin);
   ret.clazz = metadata.parseClass(plugin.clazz);
   return ret;
+}
+
+function loadComponent(project, component) {
+  return {
+    id: component.Component.id,
+    bindings: component.Component.bindings, // TODO
+    config: loadMap(component.Component.config),
+    designer: loadMap(component.Component.designer),
+    plugin: findPlugin(project, component.EntityName, component.library, component.type)
+  };
+}
+
+function findPlugin(project, entityId, library, type) {
+  for(let item of project.toolbox) {
+    if(item.entityId !== entityId) { continue; }
+    for(let plugin of item.plugins) {
+      if(plugin.library === library && plugin.type === type) {
+        return plugin;
+      }
+    }
+  }
 }
 
 export default Projects;
