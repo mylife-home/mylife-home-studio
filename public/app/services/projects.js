@@ -97,19 +97,6 @@ class Projects {
   }
 }
 
-function loadToolboxItem(item) {
-  return {
-    entityId: item.EntityName,
-    plugins: item.Plugins.map(loadPlugin)
-  };
-}
-
-function loadPlugin(plugin) {
-  const ret = Object.assign({}, plugin);
-  ret.clazz = metadata.parseClass(plugin.clazz);
-  return ret;
-}
-
 function loadDate(raw) {
   raw = raw.substr(6, raw.length - 8);
   let tz;
@@ -141,6 +128,19 @@ function loadDate(raw) {
   }
 
   return date;
+}
+
+function loadToolboxItem(item) {
+  return {
+    entityId: item.EntityName,
+    plugins: item.Plugins.map(loadPlugin)
+  };
+}
+
+function loadPlugin(plugin) {
+  const ret = Object.assign({}, plugin);
+  ret.clazz = metadata.parseClass(plugin.clazz);
+  return ret;
 }
 
 export default Projects;
