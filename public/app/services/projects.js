@@ -25,6 +25,14 @@ class Projects {
       dirty: true
     };
 
+    switch(type) {
+      case 'vpanel':
+        break;
+
+      case 'ui':
+        break;
+    }
+
     debug('project created', project.id);
     return project;
   }
@@ -39,9 +47,18 @@ class Projects {
       name: data.Name,
       creationDate: loadDate(data.CreationDate),
       lastUpdate: loadDate(data.LastUpdate),
-      dirty: false,
-      toolbox: data.Toolbox.map(loadToolboxItem)
+      dirty: false
+
     };
+
+    switch(type) {
+      case 'vpanel':
+        project.toolbox = data.Toolbox.map(loadToolboxItem);
+        break;
+
+      case 'ui':
+        break;
+    }
 
     debug('project created', project.id);
     return project;
