@@ -50,7 +50,6 @@ class Projects {
       creationDate: loadDate(data.CreationDate),
       lastUpdate: loadDate(data.LastUpdate),
       dirty: false
-
     };
 
     switch(type) {
