@@ -27,6 +27,8 @@ class Projects {
 
     switch(type) {
       case 'vpanel':
+        project.toolbox = [];
+        project.components = [];
         break;
 
       case 'ui':
