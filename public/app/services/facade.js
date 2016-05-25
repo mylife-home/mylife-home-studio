@@ -3,7 +3,7 @@
 import Repository from './repository';
 import Resources  from './resources';
 import Metadata   from './metadata/index';
-import Projects   from './projects';
+import Projects   from './projects/index';
 
 export default {
   repository : new Repository(),
