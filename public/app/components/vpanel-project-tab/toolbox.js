@@ -46,9 +46,25 @@ class Toolbox extends React.Component {
   }
 
   render() {
+    const project = this.props.project;
+
     return (
       <div>
         TOOLBOX
+        <ul>
+          {project.toolbox.map((item) => (
+            <li key={item.entityId}>
+              {item.entityId}
+              <ul>
+                {item.plugins.map((plugin) => (
+                  <li key={plugin.library + ':' + plugin.type}>
+                    {plugin.library + ':' + plugin.type}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
         <mui.Toolbar>
           <mui.ToolbarGroup float="left">
 
