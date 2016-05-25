@@ -1,9 +1,8 @@
 'use strict';
 
+import uuid from 'uuid';
 import debugLib from 'debug';
-import RepositoryActionCreators from '../../actions/repository-action-creators';
-
-import Project from './project';
+import RepositoryActionCreators from '../actions/repository-action-creators';
 
 const debug = debugLib('mylife:home:studio:services:projects');
 
@@ -12,12 +11,31 @@ class Projects {
   }
 
   new(type) {
-    return new Project(type);
+    const id = uuid.v4();
+    const project = {
+      id,
+      type,
+      name: id,
+      dirty: true
+    };
+
+    debug('project created', project.id);
+    return project;
   }
 
   open(type, content) {
     const data = JSON.parse(content);
-    return new Project(type, data);
+    const id = uuid.v4();
+    const project = {
+      _raw: data,
+      id,
+      type,
+      name: data.Name,
+      dirty: false
+    };
+
+    debug('project created', project.id);
+    return project;
   }
 
   save(project, serializer, done) {
@@ -27,6 +45,8 @@ class Projects {
       return done(err);
     }
 
+    return done(new Error('not implemented'));
+/*
     const data = project._data;
     const content = JSON.stringify(data);
     serializer(project.name, content, (err) => {
@@ -34,6 +54,7 @@ class Projects {
       project._save();
       return done();
     });
+*/
   }
 
   validate(project) {
