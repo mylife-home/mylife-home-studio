@@ -2,13 +2,19 @@
 
 import uuid from 'uuid';
 import debugLib from 'debug';
+import async from 'async';
 import RepositoryActionCreators from '../actions/repository-action-creators';
+import OnlineStore from '../stores/online-store'; // TODO: remove that ?
 
 import Metadata from './metadata/index';
+import Resources from './resources';
+
+import shared from '../shared/index';
 
 const debug = debugLib('mylife:home:studio:services:projects');
 
-const metadata = new Metadata();
+const metadata = new Metadata(); // TODO: how to use facade ?
+const resources = new Resources(); // TODO: how to use facade ?
 
 class Projects {
   constructor() {
@@ -96,6 +102,46 @@ class Projects {
     err.validationErrors = msgs;
     throw err;
   }
+
+/*
+WIP: how to connect that with actions ??
+
+  importOnlineToolbox(project, force, cb) {
+    return loadOnlineCoreEntities((err) => {
+      if(err) { return done(err); }
+
+      console.log('importOnlineToolbox');
+      return done();
+    });
+  }
+
+  importOnlineDriverComponents(project, force, cb) {
+    return loadOnlineCoreEntities((err) => {
+      if(err) { return done(err); }
+
+      console.log('importOnlineDriverComponents');
+      return done();
+    });
+  }
+
+  deployVPanel(project, force, cb) {
+    return loadOnlineCoreEntities((err) => {
+      if(err) { return done(err); }
+
+      console.log('deployVPanel');
+      return done();
+    });
+  }
+
+  deployDrivers(project, force, cb) {
+    return loadOnlineCoreEntities((err) => {
+      if(err) { return done(err); }
+
+      console.log('deployDrivers');
+      return done();
+    });
+  }
+*/
 }
 
 function loadDate(raw) {
@@ -173,6 +219,18 @@ function findPlugin(project, entityId, library, type) {
       }
     }
   }
+}
+
+function loadOnlineCoreEntities(cb) {
+  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+
+  const funcs = [];
+  for(const entity of entities) {
+    funcs.push((cb) => resources.queryPluginsList(entity.id, cb));
+    funcs.push((cb) => resources.queryComponentsList(entity.id, cb));
+  }
+
+  async.parallel(array, cb);
 }
 
 export default Projects;
