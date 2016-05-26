@@ -21,7 +21,7 @@ class Resources {
       });
   }
 
-  queryPluginsList(entityId) {
+  queryPluginsList(entityId, cb) {
     debug(`queryPluginsList(${entityId})`);
     request
       .post('/resources/' + entityId)
@@ -29,10 +29,11 @@ class Resources {
       .end(function(err, res){
         if(err) { return console.error(err); }
         ResourcesActionCreators.entityPluginsList(entityId, res.body.data);
+        if(cb) { cb(data); }
       });
   }
 
-  queryComponentsList(entityId) {
+  queryComponentsList(entityId, cb) {
     debug(`queryComponentsList(${entityId})`);
     request
       .post('/resources/' + entityId)
@@ -40,6 +41,7 @@ class Resources {
       .end(function(err, res){
         if(err) { return console.error(err); }
         ResourcesActionCreators.entityComponentsList(entityId, res.body.data);
+        if(cb) { cb(data); }
       });
   }
 
