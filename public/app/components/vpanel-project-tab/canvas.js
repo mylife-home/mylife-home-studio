@@ -15,10 +15,26 @@ class Canvas extends React.Component {
   render() {
     const project = this.props.project;
 
+    // {JSON.stringify(project._raw)}
     return (
       <div>
-        TODO<br/>
-        {JSON.stringify(project._raw)}
+        CANVAS
+        <ul>
+          {project.components.map((component) => (
+            <li key={component.id}>
+              {component.id}
+              <table>
+                <tbody>
+                  <tr><td>entity</td><td>&nbsp;</td><td>{component.plugin.entityId}</td></tr>
+                  <tr><td>plugin</td><td>&nbsp;</td><td>{component.plugin.library + ':' + component.plugin.type}</td></tr>
+                  <tr><td>bindings</td><td>&nbsp;</td><td>{JSON.stringify(component.bindings)}</td></tr>
+                  <tr><td>config</td><td>&nbsp;</td><td>{JSON.stringify(component.config)}</td></tr>
+                  <tr><td>designer</td><td>&nbsp;</td><td>{JSON.stringify(component.designer)}</td></tr>
+                </tbody>
+              </table>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
