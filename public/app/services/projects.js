@@ -160,7 +160,7 @@ function loadComponent(project, component) {
     bindings: component.Component.bindings, // TODO
     config: loadMap(component.Component.config),
     designer: loadMap(component.Component.designer),
-    plugin: findPlugin(project, component.EntityName, component.library, component.type)
+    plugin: findPlugin(project, component.EntityName, component.Component.library, component.Component.type)
   };
 }
 
