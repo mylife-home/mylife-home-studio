@@ -148,8 +148,9 @@ function loadToolboxItem(item) {
 }
 
 function loadPlugin(entityId, plugin) {
-  const ret = Object.assign({}, plugin);
-  ret.clazz = metadata.parseClass(plugin.clazz);
+  const ret    = Object.assign({}, plugin);
+  ret.clazz    = metadata.parseClass(plugin.clazz);
+  ret.entityId = entityId;
   return ret;
 }
 
