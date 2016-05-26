@@ -135,7 +135,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:async@2.0.0-rc.5": {
-      "lodash": "npm:lodash@4.12.0",
+      "lodash": "npm:lodash@4.13.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:babel-runtime@5.8.38": {
@@ -431,6 +431,10 @@ System.config({
       "lodash.debounce": "npm:lodash.debounce@4.0.6"
     },
     "npm:lodash@4.12.0": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash@4.13.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
