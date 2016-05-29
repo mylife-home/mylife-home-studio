@@ -27,7 +27,15 @@ class Canvas extends React.Component {
                 <tbody>
                   <tr><td>entity</td><td>&nbsp;</td><td>{component.plugin.entityId}</td></tr>
                   <tr><td>plugin</td><td>&nbsp;</td><td>{component.plugin.library + ':' + component.plugin.type}</td></tr>
-                  <tr><td>bindings</td><td>&nbsp;</td><td>{JSON.stringify(component.bindings)}</td></tr>
+                  <tr><td>bindings</td><td>&nbsp;</td><td>
+                    <ul>
+                    {component.bindings.map((binding) => (
+                      <li key={binding.local_action + ':' + binding.remote_id + ':' + binding.remote_attribute}>
+                        {binding.local_action + ' -> ' + binding.remote_id + ':' + binding.remote_attribute}
+                      </li>
+                    ))}
+                    </ul>
+                  </td></tr>
                   <tr><td>config</td><td>&nbsp;</td><td>{JSON.stringify(component.config)}</td></tr>
                   <tr><td>designer</td><td>&nbsp;</td><td>{JSON.stringify(component.designer)}</td></tr>
                 </tbody>
