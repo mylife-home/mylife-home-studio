@@ -3,17 +3,19 @@
 import uuid from 'uuid';
 import debugLib from 'debug';
 import async from 'async';
-import RepositoryActionCreators from '../actions/repository-action-creators';
-import OnlineStore from '../stores/online-store'; // TODO: remove that ?
+import RepositoryActionCreators from '../../actions/repository-action-creators';
+import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 
-import Metadata from './metadata/index';
-import Resources from './resources';
+import Resources from '../resources';
 
-import shared from '../shared/index';
+import shared from '../../shared/index';
+
+import vpanel from './vpanel';
+import ui from './ui';
+import common from './common';
 
 const debug = debugLib('mylife:home:studio:services:projects');
 
-const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
 
 class Projects {
@@ -33,11 +35,11 @@ class Projects {
 
     switch(type) {
       case 'vpanel':
-        project.toolbox = [];
-        project.components = [];
+        vpanel.createNew(project);
         break;
 
       case 'ui':
+        ui.createNew(project);
         break;
     }
 
@@ -53,15 +55,14 @@ class Projects {
       id,
       type,
       name: data.Name,
-      creationDate: loadDate(data.CreationDate),
-      lastUpdate: loadDate(data.LastUpdate),
+      creationDate: common.loadDate(data.CreationDate),
+      lastUpdate: common.loadDate(data.LastUpdate),
       dirty: false
     };
 
     switch(type) {
       case 'vpanel':
-        project.toolbox = data.Toolbox.map(loadToolboxItem);
-        project.components = data.Components.map(loadComponent.bind(null, project));
+        vpanel.open(project, data);
         break;
 
       case 'ui':
@@ -142,83 +143,6 @@ WIP: how to connect that with actions ??
     });
   }
 */
-}
-
-function loadDate(raw) {
-  raw = raw.substr(6, raw.length - 8);
-  let tz;
-  let tzMin;
-
-  if(raw.includes('-')) {
-    raw = raw.split('-');
-    tz = '-' + raw[1];
-    raw = raw[0];
-  }
-
-  if(raw.includes('+')) {
-    raw = raw.split('+');
-    tz = raw[1];
-    raw = raw[0];
-  }
-
-  if(tz && tz.length === 4) {
-    tzMin = tz.substr(2);
-    tz = tz.substr(0, 2);
-  }
-
-  const date = new Date(parseInt(raw));
-  if(tz) {
-    date.setHours(date.getHours() + parseInt(tz));
-  }
-  if(tzMin) {
-    date.setMinutes(date.getMinutes() + parseInt(tzMin));
-  }
-
-  return date;
-}
-
-function loadMap(map) {
-  const ret = {};
-  for(const item of map) {
-    ret[item.Key] = item.Value;
-  }
-  return ret;
-}
-
-function loadToolboxItem(item) {
-  const entityId = item.EntityName;
-  return {
-    entityId,
-    plugins: item.Plugins.map(loadPlugin.bind(null, entityId))
-  };
-}
-
-function loadPlugin(entityId, plugin) {
-  const ret    = Object.assign({}, plugin);
-  ret.clazz    = metadata.parseClass(plugin.clazz);
-  ret.entityId = entityId;
-  return ret;
-}
-
-function loadComponent(project, component) {
-  return {
-    id: component.Component.id,
-    bindings: component.Component.bindings, // TODO
-    config: loadMap(component.Component.config),
-    designer: loadMap(component.Component.designer),
-    plugin: findPlugin(project, component.EntityName, component.Component.library, component.Component.type)
-  };
-}
-
-function findPlugin(project, entityId, library, type) {
-  for(let item of project.toolbox) {
-    if(item.entityId !== entityId) { continue; }
-    for(let plugin of item.plugins) {
-      if(plugin.library === library && plugin.type === type) {
-        return plugin;
-      }
-    }
-  }
 }
 
 function loadOnlineCoreEntities(cb) {
