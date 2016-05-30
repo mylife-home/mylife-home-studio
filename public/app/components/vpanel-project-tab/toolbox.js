@@ -27,22 +27,22 @@ class Toolbox extends React.Component {
 
   importOnlineToolbox() {
     const project = this.props.project;
-    ProjectActionCreators.vPanelImportToolbox(project);
+    //ProjectActionCreators.vPanelImportToolbox(project);
   }
 
   importOnlineDriverComponents() {
     const project = this.props.project;
-    ProjectActionCreators.vPanelImportDrivers(project);
+    //ProjectActionCreators.vPanelImportDrivers(project);
   }
 
   deployVPanel() {
     const project = this.props.project;
-    ProjectActionCreators.vPanelDeployVPanel(project);
+    //ProjectActionCreators.vPanelDeployVPanel(project);
   }
 
   deployDrivers() {
     const project = this.props.project;
-    ProjectActionCreators.vPanelDeployDrivers(project);
+    //ProjectActionCreators.vPanelDeployDrivers(project);
   }
 
   render() {
