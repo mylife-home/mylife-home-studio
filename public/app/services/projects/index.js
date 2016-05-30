@@ -104,10 +104,7 @@ class Projects {
     throw err;
   }
 
-/*
-WIP: how to connect that with actions ??
-
-  importOnlineToolbox(project, force, cb) {
+  vpanelImportOnlineToolbox(project, force, done) {
     return loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
@@ -116,7 +113,7 @@ WIP: how to connect that with actions ??
     });
   }
 
-  importOnlineDriverComponents(project, force, cb) {
+  vpanelImportOnlineDriverComponents(project, force, done) {
     return loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
@@ -125,24 +122,33 @@ WIP: how to connect that with actions ??
     });
   }
 
-  deployVPanel(project, force, cb) {
+  prepareDeployVPanel(project, done) {
     return loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
-      console.log('deployVPanel');
+      console.log('prepareDeployVPanel');
       return done();
     });
   }
 
-  deployDrivers(project, force, cb) {
+  prepareDeployDrivers(project, done) {
     return loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
-      console.log('deployDrivers');
+      console.log('prepareDeployDrivers');
       return done();
     });
   }
-*/
+
+  executeDeployVPanel(project, done) {
+    console.log('executeDeployVPanel');
+    return done();
+  }
+
+  executeDeployDrivers(project, done) {
+    console.log('executeDeployDrivers');
+    return done();
+  }
 }
 
 function loadOnlineCoreEntities(done) {
