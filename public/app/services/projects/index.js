@@ -108,8 +108,13 @@ class Projects {
     return loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
-      console.log('importOnlineToolbox');
-      return done();
+      const messages = [];
+      try {
+        vpanel.importToolbox(project, force, messages);
+      } catch(err) {
+        return done(err);
+      }
+      return done(null, messages);
     });
   }
 

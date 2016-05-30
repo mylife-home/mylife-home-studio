@@ -7,7 +7,8 @@ const metadata = new Metadata(); // TODO: how to use facade ?
 
 export default {
   createNew,
-  open
+  open,
+  importToolbox
 };
 
 function createNew(project) {
@@ -19,6 +20,11 @@ function open(project, data) {
   project.toolbox = data.Toolbox.map(loadToolboxItem);
   project.components = data.Components.map(loadComponent.bind(null, project));
   createLinks(project);
+}
+
+function importToolbox(project, force, messages) {
+  // TODO
+  console.log('vpanel.importToolbox');
 }
 
 function loadToolboxItem(item) {
