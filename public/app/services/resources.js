@@ -28,7 +28,8 @@ class Resources {
       .send({ type : 'plugins' })
       .end(function(err, res){
         if(err) { return console.error(err); }
-        ResourcesActionCreators.entityPluginsList(entityId, res.body.data);
+        const data = res.body.data;
+        ResourcesActionCreators.entityPluginsList(entityId, data);
         if(cb) { cb(data); }
       });
   }
@@ -40,7 +41,8 @@ class Resources {
       .send({ type : 'components' })
       .end(function(err, res){
         if(err) { return console.error(err); }
-        ResourcesActionCreators.entityComponentsList(entityId, res.body.data);
+        const data = res.body.data;
+        ResourcesActionCreators.entityComponentsList(entityId, data);
         if(cb) { cb(data); }
       });
   }
