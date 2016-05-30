@@ -6,6 +6,9 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import DialogsActionCreators from '../../actions/dialogs-action-creators';
+
+import Facade from '../../services/facade';
 
 const styles = {
   icon: {
@@ -26,22 +29,35 @@ class Toolbox extends React.Component {
 
   importOnlineToolbox() {
     const project = this.props.project;
-    //ProjectActionCreators.vPanelImportToolbox(project);
+    // TODO
+    Facade.projects.vpanelImportOnlineToolbox(project, false, (err) => {
+      console.log(err);
+      if(err) { return DialogsActionCreators.error(err); }
+    });
   }
 
   importOnlineDriverComponents() {
     const project = this.props.project;
-    //ProjectActionCreators.vPanelImportDrivers(project);
+    // TODO
+    Facade.projects.vpanelImportOnlineDriverComponents(project, false, (err) => {
+      if(err) { return DialogsActionCreators.error(err); }
+    });
   }
 
   deployVPanel() {
     const project = this.props.project;
-    //ProjectActionCreators.vPanelDeployVPanel(project);
+    // TODO
+    Facade.projects.prepareDeployVPanel(project, (err) => {
+      if(err) { return DialogsActionCreators.error(err); }
+    });
   }
 
   deployDrivers() {
     const project = this.props.project;
-    //ProjectActionCreators.vPanelDeployDrivers(project);
+    // TODO
+    Facade.projects.prepareDeployDrivers(project, (err) => {
+      if(err) { return DialogsActionCreators.error(err); }
+    });
   }
 
   render() {
