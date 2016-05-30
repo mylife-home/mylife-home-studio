@@ -15,7 +15,7 @@ class Resources {
     request
       .post('/resources/' + entityId)
       .send({ type : 'enum' })
-      .end(function(err, res){
+      .end((err, res) => {
         if(err) { return console.error(err); }
         ResourcesActionCreators.entityResourcesList(entityId, res.body.data);
       });
@@ -26,11 +26,14 @@ class Resources {
     request
       .post('/resources/' + entityId)
       .send({ type : 'plugins' })
-      .end(function(err, res){
-        if(err) { return console.error(err); }
+      .end((err, res) => {
+        if(err) {
+          if(!cb) { return console.error(err); }
+          return cb(err);
+        }
         const data = res.body.data;
         ResourcesActionCreators.entityPluginsList(entityId, data);
-        if(cb) { cb(data); }
+        if(cb) { cb(null, data); }
       });
   }
 
@@ -39,11 +42,14 @@ class Resources {
     request
       .post('/resources/' + entityId)
       .send({ type : 'components' })
-      .end(function(err, res){
-        if(err) { return console.error(err); }
+      .end((err, res) => {
+        if(err) {
+          if(!cb) { return console.error(err); }
+          return cb(err);
+        }
         const data = res.body.data;
         ResourcesActionCreators.entityComponentsList(entityId, data);
-        if(cb) { cb(data); }
+        if(cb) { cb(null, data); }
       });
   }
 
@@ -52,11 +58,14 @@ class Resources {
     request
       .post('/resources/' + entityId)
       .send({ type : 'get', key: resourceId })
-      .end(function(err, res){
-        if(err) { return console.error(err); }
+      .end((err, res) => {
+        if(err) {
+          if(!cb) { return console.error(err); }
+          return cb(err);
+        }
         const data = res.body.data;
         ResourcesActionCreators.resourceGetResult(entityId, resourceId, data);
-        if(cb) { cb(data); }
+        if(cb) { cb(null, data); }
       });
   }
 
@@ -65,7 +74,7 @@ class Resources {
     request
       .post('/resources/' + entityId)
       .send({ type : 'set', key: resourceId, value: resourceContent })
-      .end(function(err, res){
+      .end((err, res) => {
         if(err) { return console.error(err); }
         ResourcesActionCreators.resourceSetResult(entityId, resourceId);
       });

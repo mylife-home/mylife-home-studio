@@ -146,7 +146,10 @@ class MainToolbar extends React.Component {
     }
 
     // need to get content .. TODO: Flux pattern to do that ?
-    return ResourcesActionCreators.resourceGetQuery(entity.id, resource, load);
+    return ResourcesActionCreators.resourceGetQuery(entity.id, resource, (err, content) => {
+      if(err) { return DialogsActionCreators.error(err); }
+      return load(content);
+    });
   }
 
   render() {
