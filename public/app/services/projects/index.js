@@ -145,7 +145,7 @@ WIP: how to connect that with actions ??
 */
 }
 
-function loadOnlineCoreEntities(cb) {
+function loadOnlineCoreEntities(done) {
   const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
 
   const funcs = [];
@@ -154,7 +154,7 @@ function loadOnlineCoreEntities(cb) {
     funcs.push((cb) => resources.queryComponentsList(entity.id, cb));
   }
 
-  async.parallel(array, cb);
+  async.parallel(funcs, done);
 }
 
 export default Projects;
