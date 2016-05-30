@@ -6,7 +6,6 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import ProjectActionCreators from '../../actions/project-action-creators';
 
 const styles = {
   icon: {
