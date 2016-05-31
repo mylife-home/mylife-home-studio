@@ -2,21 +2,13 @@
 
 import uuid from 'uuid';
 import debugLib from 'debug';
-import async from 'async';
 import RepositoryActionCreators from '../../actions/repository-action-creators';
-import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
-
-import Resources from '../resources';
-
-import shared from '../../shared/index';
 
 import vpanel from './vpanel';
 import ui from './ui';
 import common from './common';
 
 const debug = debugLib('mylife:home:studio:services:projects');
-
-const resources = new Resources(); // TODO: how to use facade ?
 
 class Projects {
   constructor() {
@@ -104,16 +96,16 @@ class Projects {
     throw err;
   }
 
-  vpanelImportOnlineToolbox(project, force, done) {
-    return loadOnlineCoreEntities((err) => {
-      if(err) { return done(err); }
+  vpanelPrepareImportOnlineToolbox(project, done) {
+    return vpanel.prepareImportToolbox(project, done);
+  }
 
-      return vpanel.importToolbox(project, force, done);
-    });
+  vpanelExecuteImportOnlineToolbox(data, done) {
+    return vpanel.executeImportToolbox(data, done);
   }
 
   vpanelImportOnlineDriverComponents(project, force, done) {
-    return loadOnlineCoreEntities((err) => {
+    return common.loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
       console.log('importOnlineDriverComponents');
@@ -122,7 +114,7 @@ class Projects {
   }
 
   prepareDeployVPanel(project, done) {
-    return loadOnlineCoreEntities((err) => {
+    return common.loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
       console.log('prepareDeployVPanel');
@@ -131,7 +123,7 @@ class Projects {
   }
 
   prepareDeployDrivers(project, done) {
-    return loadOnlineCoreEntities((err) => {
+    return common.loadOnlineCoreEntities((err) => {
       if(err) { return done(err); }
 
       console.log('prepareDeployDrivers');
@@ -148,18 +140,6 @@ class Projects {
     console.log('executeDeployDrivers');
     return done();
   }
-}
-
-function loadOnlineCoreEntities(done) {
-  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
-
-  const funcs = [];
-  for(const entity of entities) {
-    funcs.push((cb) => resources.queryPluginsList(entity.id, cb));
-    funcs.push((cb) => resources.queryComponentsList(entity.id, cb));
-  }
-
-  async.parallel(funcs, done);
 }
 
 export default Projects;

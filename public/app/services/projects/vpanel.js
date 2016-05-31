@@ -10,7 +10,8 @@ const metadata = new Metadata(); // TODO: how to use facade ?
 export default {
   createNew,
   open,
-  importToolbox
+  prepareImportToolbox,
+  executeImportToolbox
 };
 
 function createNew(project) {
@@ -24,21 +25,91 @@ function open(project, data) {
   createLinks(project);
 }
 
-function importToolbox(project, force, done) {
+function prepareImportToolbox(project, done) {
+  return common.loadOnlineCoreEntities((err) => {
+    if(err) { return done(err); }
 
-  let data;
+    let ret;
+    try {
+
+      const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+      const onlinePlugins = new Map();
+      for(const entity of entities) {
+        for(const plugin of entity.plugins) {
+          onlinePlugins.set(`${entity.id}:${plugin.library}${plugin.type}`, {
+            entity,
+            plugin
+          });
+        }
+      }
+
+      const projectPlugins = new Map();
+      for(const item of project.toolbox) {
+        for(const plugin of item.plugins) {
+          projectPlugins.set(`${item.entityId}:${plugin.library}${plugin.type}`, {
+            item,
+            plugin
+          });
+        }
+      }
+
+      const added    = Array.from(onlinePlugins.keys()).
+                             filter(id => !projectPlugins.has(id));
+      const deleted  = Array.from(projectPlugins.keys()).
+                             filter(id => !onlinePlugins.has(id));
+      const modified = Array.from(projectPlugins.keys()).
+                             filter(id => onlinePlugins.has(id)).
+                             filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.rawClass);
+
+      const messages = [];
+
+      added.forEach(id => messages.push(`New plugin: ${id}`));
+      deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
+      modified.forEach(id => messages.push(`Plugin modified: ${id}`));
+
+      const componentsToDelete = [];
+      // TODO: go deeper in changes in class
+      deleted.concat(modified).forEach(id => {
+        Array.push.apply(componentsToDelete, findPluginUsage(project, projectPlugins.get(id).plugin));
+      });
+
+      const bindingsToDelete = [];
+      componentsToDelete.forEach(comp => {
+        Array.push.apply(bindingsToDelete, comp.bindings);
+        Array.push.apply(bindingsToDelete, comp.bindingRemotes);
+      });
+
+      bindingsToDelete.forEach(binding => messages.push(
+        `Binding deleted: ${binding.local_id}:${binding.action_name} -> ${binding.remote_id}:${binding.attribute_name}`));
+
+      componentsToDelete.forEach(comp => messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`));
+
+      ret = {
+        project,
+        onlinePlugins,
+        projectPlugins,
+        added,
+        deleted,
+        modified,
+        componentsToDelete,
+        bindingsToDelete,
+        messages
+      };
+
+    } catch(err) {
+      return done(err);
+    }
+
+    return done(null, ret);
+  });
+}
+
+function executeImportToolbox(data, done) {
   try {
-    data = prepareImportToolbox(project);
+    // TODO
   } catch(err) {
     return done(err);
   }
-
-  if(!force && data.messages.length > 0) {
-    return done(null, data.messages);
-  }
-
-  // TODO with data
-  console.log('vpanel.importToolbox');
 
   return done();
 }
@@ -102,69 +173,4 @@ function findComponent(project, componentId) {
 
 function findPluginUsage(project, plugin) {
   return project.components.filter(comp => comp.plugin === plugin);
-}
-
-function prepareImportToolbox(project) {
-  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
-  const onlinePlugins = new Map();
-  for(const entity of entities) {
-    for(const plugin of entity.plugins) {
-      onlinePlugins.set(`${entity.id}:${plugin.library}${plugin.type}`, {
-        entity,
-        plugin
-      });
-    }
-  }
-
-  const projectPlugins = new Map();
-  for(const item of project.toolbox) {
-    for(const plugin of item.plugins) {
-      projectPlugins.set(`${item.entityId}:${plugin.library}${plugin.type}`, {
-        item,
-        plugin
-      });
-    }
-  }
-
-  const added    = Array.from(onlinePlugins.keys()).
-                         filter(id => !projectPlugins.has(id));
-  const deleted  = Array.from(projectPlugins.keys()).
-                         filter(id => !onlinePlugins.has(id));
-  const modified = Array.from(projectPlugins.keys()).
-                         filter(id => onlinePlugins.has(id)).
-                         filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.rawClass);
-
-  const messages = [];
-
-  added.forEach(id => messages.push(`New plugin: ${id}`));
-  deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
-  modified.forEach(id => messages.push(`Plugin modified: ${id}`));
-
-  const componentsToDelete = [];
-  // TODO: go deeper in changes in class
-  deleted.concat(modified).forEach(id => {
-    Array.push.apply(componentsToDelete, findPluginUsage(project, projectPlugins.get(id).plugin));
-  });
-
-  const bindingsToDelete = [];
-  componentsToDelete.forEach(comp => {
-    Array.push.apply(bindingsToDelete, comp.bindings);
-    Array.push.apply(bindingsToDelete, comp.bindingRemotes);
-  });
-
-  bindingsToDelete.forEach(binding => messages.push(
-    `Binding deleted: ${binding.local_id}:${binding.action_name} -> ${binding.remote_id}:${binding.attribute_name}`));
-
-  componentsToDelete.forEach(comp => messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`));
-
-  return {
-    onlinePlugins,
-    projectPlugins,
-    added,
-    deleted,
-    modified,
-    componentsToDelete,
-    bindingsToDelete,
-    messages
-  };
 }

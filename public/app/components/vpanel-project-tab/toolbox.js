@@ -29,9 +29,10 @@ class Toolbox extends React.Component {
 
   importOnlineToolbox() {
     const project = this.props.project;
-    // TODO
-    Facade.projects.vpanelImportOnlineToolbox(project, false, (err) => {
-      if(err) { return DialogsActionCreators.error(err); }
+    Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
+      if(err) { return DialogsActionCreators.error(err.toString()); }
+      // TODO
+      console.log(data.messages);
     });
   }
 

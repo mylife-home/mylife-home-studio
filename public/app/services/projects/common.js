@@ -1,8 +1,17 @@
 'use strict';
 
+import async from 'async';
+
+import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
+import shared from '../../shared/index';
+import Resources from '../resources';
+
+const resources = new Resources(); // TODO: how to use facade ?
+
 export default {
   loadDate,
-  loadMap
+  loadMap,
+  loadOnlineCoreEntities
 };
 
 function loadDate(raw) {
@@ -44,4 +53,16 @@ function loadMap(map) {
     ret[item.Key] = item.Value;
   }
   return ret;
+}
+
+function loadOnlineCoreEntities(done) {
+  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+
+  const funcs = [];
+  for(const entity of entities) {
+    funcs.push((cb) => resources.queryPluginsList(entity.id, cb));
+    funcs.push((cb) => resources.queryComponentsList(entity.id, cb));
+  }
+
+  async.parallel(funcs, done);
 }
