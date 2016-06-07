@@ -58,7 +58,7 @@ function prepareImportToolbox(project, done) {
       });
 
       bindingsToDelete.forEach(binding => messages.push(
-        `Binding deleted: ${binding.local_id}:${binding.action_name} -> ${binding.remote_id}:${binding.attribute_name}`));
+        `Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote_id}:${binding.remote_attribute}`));
 
       componentsToDelete.forEach(comp => messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`));
 
