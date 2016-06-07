@@ -31,46 +31,22 @@ function prepareImportToolbox(project, done) {
 
     let ret;
     try {
-
-      const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
-      const onlinePlugins = new Map();
-      for(const entity of entities) {
-        for(const plugin of entity.plugins) {
-          onlinePlugins.set(`${entity.id}:${plugin.library}${plugin.type}`, {
-            entity,
-            plugin
-          });
-        }
-      }
-
-      const projectPlugins = new Map();
-      for(const item of project.toolbox) {
-        for(const plugin of item.plugins) {
-          projectPlugins.set(`${item.entityId}:${plugin.library}${plugin.type}`, {
-            item,
-            plugin
-          });
-        }
-      }
-
-      const added    = Array.from(onlinePlugins.keys()).
-                             filter(id => !projectPlugins.has(id));
-      const deleted  = Array.from(projectPlugins.keys()).
-                             filter(id => !onlinePlugins.has(id));
-      const modified = Array.from(projectPlugins.keys()).
-                             filter(id => onlinePlugins.has(id)).
-                             filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.rawClass);
-
+      const projectPlugins = getProjectPlugins(project);
+      const onlinePlugins = getOnlinePlugins();
+      const diff = pluginsDiff(projectPlugins, onlinePlugins);
       const messages = [];
 
-      added.forEach(id => messages.push(`New plugin: ${id}`));
-      deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
-      modified.forEach(id => messages.push(`Plugin modified: ${id}`));
+      diff.added.forEach(id => messages.push(`New plugin: ${id}`));
+      diff.deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
+      diff.modified.forEach(id => messages.push(`Plugin modified: ${id}`));
 
       const componentsToDelete = [];
       // TODO: go deeper in changes in class
-      deleted.concat(modified).forEach(id => {
-        Array.push.apply(componentsToDelete, findPluginUsage(project, projectPlugins.get(id).plugin));
+      diff.deleted.concat(diff.modified).forEach(id => {
+        const usage = findPluginUsage(project, projectPlugins.get(id).plugin);
+        if(usage.length) {
+          Array.push.apply(componentsToDelete, usage);
+        }
       });
 
       const bindingsToDelete = [];
@@ -88,9 +64,9 @@ function prepareImportToolbox(project, done) {
         project,
         onlinePlugins,
         projectPlugins,
-        added,
-        deleted,
-        modified,
+        added: diff.added,
+        deleted: diff.deleted,
+        modified: diff.modified,
         componentsToDelete,
         bindingsToDelete,
         messages
@@ -173,4 +149,44 @@ function findComponent(project, componentId) {
 
 function findPluginUsage(project, plugin) {
   return project.components.filter(comp => comp.plugin === plugin);
+}
+
+function getProjectPlugins(project) {
+  const ret = new Map();
+  for(const item of project.toolbox) {
+    for(const plugin of item.plugins) {
+      ret.set(`${item.entityId}:${plugin.library}:${plugin.type}`, {
+        item,
+        plugin
+      });
+    }
+  }
+  return ret;
+}
+
+function getOnlinePlugins() {
+  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+  const ret = new Map();
+  for(const entity of entities) {
+    for(const plugin of entity.plugins) {
+      ret.set(`${entity.id}:${plugin.library}:${plugin.type}`, {
+        entity,
+        plugin
+      });
+    }
+  }
+  return ret;
+}
+
+function pluginsDiff(projectPlugins, onlinePlugins) {
+
+  return {
+    added    : Array.from(onlinePlugins.keys()).
+                     filter(id => !projectPlugins.has(id)),
+    deleted  : Array.from(projectPlugins.keys()).
+                     filter(id => !onlinePlugins.has(id)),
+    modified : Array.from(projectPlugins.keys()).
+                     filter(id => onlinePlugins.has(id)).
+                     filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.rawClass)
+  };
 }
