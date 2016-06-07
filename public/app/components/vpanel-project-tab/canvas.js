@@ -31,7 +31,7 @@ class Canvas extends React.Component {
                     <ul>
                     {component.bindings.map((binding) => (
                       <li key={binding.local_action + ':' + binding.remote_id + ':' + binding.remote_attribute}>
-                        {binding.local_action + ' -> ' + binding.remote_id + ':' + binding.remote_attribute}
+                        {binding.remote_id + ':' + binding.remote_attribute + ' -> ' + binding.local_action}
                       </li>
                     ))}
                     </ul>
