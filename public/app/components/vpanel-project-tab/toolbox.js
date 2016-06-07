@@ -39,7 +39,7 @@ class Toolbox extends React.Component {
     Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
       if(err) { return DialogsActionCreators.error(err.toString()); }
 
-      if(data.messages) {
+      if(data.messages && data.messages.length) {
         this.setState({
           importOnlineToolboxConfirm: data
         });
