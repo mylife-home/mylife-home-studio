@@ -76,7 +76,7 @@ function prepareImportToolbox(project, done) {
       const bindingsToDelete = [];
       componentsToDelete.forEach(comp => {
         Array.push.apply(bindingsToDelete, comp.bindings);
-        Array.push.apply(bindingsToDelete, comp.bindingRemotes);
+        Array.push.apply(bindingsToDelete, comp.bindingTargets);
       });
 
       bindingsToDelete.forEach(binding => messages.push(
@@ -134,7 +134,7 @@ function loadComponent(project, component) {
   return {
     id: component.Component.id,
     bindings: component.Component.bindings,
-    bindingRemotes: [],
+    bindingTargets: [],
     config: common.loadMap(component.Component.config),
     designer: common.loadMap(component.Component.designer),
     plugin: findPlugin(project, component.EntityName, component.Component.library, component.Component.type)
