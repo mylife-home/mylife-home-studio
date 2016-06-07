@@ -82,7 +82,33 @@ function prepareImportToolbox(project, done) {
 
 function executeImportToolbox(data, done) {
   try {
-    // TODO
+
+    for(const binding of data.bindingsToDelete) {
+      arrayRemoveByValue(binding.local.bindings, binding);
+      binding.local.bindings(binding.remote.bindingTargets, binding);
+    }
+
+    for(const component of data.componentsToDelete) {
+      arrayRemoveByValue(data.project.components, component);
+    }
+
+    for(const del of data.deleted.concat(data.modified)) {
+      const { item, plugin } = data.projectPlugins.get(del);
+      arrayRemoveByValue(item.plugins, plugin);
+    }
+
+    for(const add of data.added.concat(data.modified)) {
+      const {entity, plugin } = data.onlinePlugins.get(add);
+      const entityId = entity.id;
+      const item = getToolboxItem(data.project, entityId);
+      item.plugins.push(loadPlugin(entityId, plugin));
+    }
+
+    // clean empty toolbox items
+    data.project.toolbox.
+                 filter(it => !it.plugins.length).
+                 forEach(arrayRemoveByValue.bind(null, data.project.toolbox));
+
   } catch(err) {
     return done(err);
   }
@@ -96,6 +122,17 @@ function loadToolboxItem(item) {
     entityId,
     plugins: item.Plugins.map(loadPlugin.bind(null, entityId))
   };
+}
+
+function getToolboxItem(project, entityId) {
+  for(const item of project.toolbox) {
+    if(item.entityId === entityId) {
+      return item;
+    }
+  }
+  const ret = { entityId, plugins: [] };
+  project.toolbox.push(ret);
+  return ret;
 }
 
 function loadPlugin(entityId, plugin) {
@@ -149,6 +186,12 @@ function findComponent(project, componentId) {
 
 function findPluginUsage(project, plugin) {
   return project.components.filter(comp => comp.plugin === plugin);
+}
+
+function arrayRemoveByValue(array, item) {
+  const index = array.indexOf(item);
+  if(index === -1) { return; }
+  array.splice(index, 1);
 }
 
 function getProjectPlugins(project) {
