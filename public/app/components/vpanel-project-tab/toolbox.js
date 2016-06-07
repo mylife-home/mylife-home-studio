@@ -25,16 +25,52 @@ class Toolbox extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = { };
   }
+
+  closeInfo() {
+    this.setState({ showInfo: null });
+  }
+
+  // importOnlineToolbox
 
   importOnlineToolbox() {
     const project = this.props.project;
     Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
       if(err) { return DialogsActionCreators.error(err.toString()); }
-      // TODO
-      console.log(data.messages);
+
+      if(data.messages) {
+        this.setState({
+          importOnlineToolboxConfirm: data
+        });
+        return;
+      }
+
+      this.executeImportOnlineToolbox(data);
     });
   }
+
+  cancelImportOnlineToolbox() {
+    this.setState({ importOnlineToolboxConfirm: null });
+  }
+
+  confirmImportOnlineToolbox() {
+    const data = this.state.importOnlineToolboxConfirm;
+    this.setState({ importOnlineToolboxConfirm: null });
+    this.executeImportOnlineToolbox(data);
+  }
+
+  executeImportOnlineToolbox(data) {
+    Facade.projects.vpanelExecuteImportOnlineToolbox(data, (err) => {
+      if(err) { return DialogsActionCreators.error(err.toString()); }
+
+      this.setState({
+        showInfo: ['Toolbox imported']
+      });
+    });
+  }
+
+  // importOnlineDriverComponents
 
   importOnlineDriverComponents() {
     const project = this.props.project;
@@ -109,6 +145,17 @@ class Toolbox extends React.Component {
 
           </mui.ToolbarGroup>
         </mui.Toolbar>
+
+        <base.DialogInfo title="Success"
+                         open={!!this.state.showInfo}
+                         lines={this.state.showInfo || []}
+                         close={this.closeInfo.bind(this)}/>
+
+        <base.DialogConfirm title="Confirm"
+                            open={!!this.state.importOnlineToolboxConfirm}
+                            lines={(this.state.importOnlineToolboxConfirm && this.state.importOnlineToolboxConfirm.messages) || []}
+                            yes={this.confirmImportOnlineToolbox.bind(this)}
+                            no={this.cancelImportOnlineToolbox.bind(this)}/>
       </div>
     );
   }

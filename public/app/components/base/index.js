@@ -3,6 +3,8 @@
 import icons from './icons';
 import DialogError from './dialog-error';
 import DialogSelect from './dialog-select';
+import DialogConfirm from './dialog-confirm';
+import DialogInfo from './dialog-info';
 import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import TooltipContainer from './tooltip-container';
@@ -13,6 +15,8 @@ export default {
   icons,
   DialogError,
   DialogSelect,
+  DialogConfirm,
+  DialogInfo,
   SelectableList,
   SelectableListItem,
   TooltipContainer,
