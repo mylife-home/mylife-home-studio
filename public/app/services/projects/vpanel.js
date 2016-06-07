@@ -22,6 +22,7 @@ function createNew(project) {
 function open(project, data) {
   project.toolbox = data.Toolbox.map(loadToolboxItem);
   project.components = data.Components.map(loadComponent.bind(null, project));
+  validate(project);
   createLinks(project);
 }
 
@@ -40,19 +41,20 @@ function prepareImportToolbox(project, done) {
       diff.deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
       diff.modified.forEach(id => messages.push(`Plugin modified: ${id}`));
 
-      const componentsToDelete = [];
+      const componentsToDelete = new Set();
       // TODO: go deeper in changes in class
       diff.deleted.concat(diff.modified).forEach(id => {
         const usage = findPluginUsage(project, projectPlugins.get(id).plugin);
-        if(usage.length) {
-          Array.push.apply(componentsToDelete, usage);
+        for(const comp of usage) {
+          componentsToDelete.add(comp);
         }
       });
 
-      const bindingsToDelete = [];
+      const bindingsToDelete = new Set();
       componentsToDelete.forEach(comp => {
-        Array.push.apply(bindingsToDelete, comp.bindings);
-        Array.push.apply(bindingsToDelete, comp.bindingTargets);
+        for(const binding of comp.bindings.concat(comp.bindingTargets)) {
+          bindingsToDelete.add(binding);
+        }
       });
 
       bindingsToDelete.forEach(binding => messages.push(
@@ -85,7 +87,7 @@ function executeImportToolbox(data, done) {
 
     for(const binding of data.bindingsToDelete) {
       arrayRemoveByValue(binding.local.bindings, binding);
-      binding.local.bindings(binding.remote.bindingTargets, binding);
+      arrayRemoveByValue(binding.remote.bindingTargets, binding);
     }
 
     for(const component of data.componentsToDelete) {
@@ -162,6 +164,30 @@ function createLinks(project) {
       binding.remote = remoteComponent
       remoteComponent.bindingTargets.push(binding);
     }
+  }
+}
+
+function validate(project) {
+  removeDuplicates(project.components, c => c.id);
+  for(const comp of project.components) {
+    removeDuplicates(comp.bindings, b => `${b.remote_id}:${b.remote_attribute}:${b.local_action}`);
+  }
+}
+
+function removeDuplicates(array, itemValue) {
+  const values = new Set();
+  const indexes = [];
+  for(const [i, it] of array.entries()) {
+    const value = itemValue(it);
+    if(values.has(value)) {
+      indexes.push(i);
+      continue;
+    }
+    values.add(value);
+  }
+  indexes.reverse();
+  for(const i of indexes) {
+    array.splice(i, 1);
   }
 }
 
