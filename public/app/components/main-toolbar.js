@@ -6,7 +6,6 @@ import base from './base/index';
 
 import DialogsActionCreators from '../actions/dialogs-action-creators';
 import ResourcesActionCreators from '../actions/resources-action-creators';
-import ProjectActionCreators from '../actions/project-action-creators';
 
 import OnlineStore from '../stores/online-store';
 
@@ -103,7 +102,6 @@ class MainToolbar extends React.Component {
     } catch(err) {
       return DialogsActionCreators.error(err);
     }
-    ProjectActionCreators.load(project);
   }
 
   loadProjectFile(e, type) {
@@ -122,7 +120,6 @@ class MainToolbar extends React.Component {
       } catch(err) {
         return DialogsActionCreators.error(err);
       }
-      ProjectActionCreators.load(project);
     };
 
     reader.readAsText(file);
@@ -136,7 +133,6 @@ class MainToolbar extends React.Component {
       } catch(err) {
         return DialogsActionCreators.error(err);
       }
-      ProjectActionCreators.load(project);
     }
 
     const entity = OnlineStore.getResourceEntity();

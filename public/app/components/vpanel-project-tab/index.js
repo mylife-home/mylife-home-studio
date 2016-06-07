@@ -11,6 +11,7 @@ import Toolbox from './toolbox';
 import Canvas from './canvas';
 
 import ProjectActionCreators from '../../actions/project-action-creators';
+import ProjectStore from '../../stores/project-store';
 
 import tabStyles from '../base/tab-styles';
 
@@ -18,6 +19,21 @@ class VPanelProjectTab extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = { };
+  }
+
+  componentDidMount() {
+    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  handleStoreChange() {
+    const project = this.props.project;
+    let projectVersion = project && project.version;
+    this.setState({ projectVersion });
   }
 
   render() {

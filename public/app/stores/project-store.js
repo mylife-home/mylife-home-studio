@@ -20,6 +20,7 @@ class ProjectStore extends EventEmitter {
         {
           const project = action.project;
           this.projects.set(project.id, project);
+          project.version = 1;
           this.emitChange();
         }
         break;
@@ -27,6 +28,13 @@ class ProjectStore extends EventEmitter {
         {
           const project = action.project;
           this.projects.delete(project.id);
+          this.emitChange();
+        }
+        break;
+      case AppConstants.ActionTypes.PROJECT_REFRESH:
+        {
+          const project = action.project;
+          ++project.version;
           this.emitChange();
         }
         break;

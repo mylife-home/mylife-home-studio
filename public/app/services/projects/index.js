@@ -3,6 +3,7 @@
 import uuid from 'uuid';
 import debugLib from 'debug';
 import RepositoryActionCreators from '../../actions/repository-action-creators';
+import ProjectActionCreators from '../../actions/project-action-creators';
 
 import vpanel from './vpanel';
 import ui from './ui';
@@ -36,6 +37,7 @@ class Projects {
     }
 
     debug('project created', project.id);
+    ProjectActionCreators.load(project);
     return project;
   }
 
@@ -62,6 +64,7 @@ class Projects {
     }
 
     debug('project created', project.id);
+    ProjectActionCreators.load(project);
     return project;
   }
 
@@ -101,7 +104,11 @@ class Projects {
   }
 
   vpanelExecuteImportOnlineToolbox(data, done) {
-    return vpanel.executeImportToolbox(data, done);
+    return vpanel.executeImportToolbox(data, (err) => {
+      if(err) { return done(err); }
+      ProjectActionCreators.refresh(data.project);
+      return done();
+    });
   }
 
   vpanelImportOnlineDriverComponents(project, force, done) {
