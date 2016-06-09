@@ -132,7 +132,7 @@ function importDriverComponents(project, done) {
       const onlinePlugins = getOnlinePlugins();
       const onlineComponents = getOnlineComponents();
       const diff = pluginsDiff(projectPlugins, onlinePlugins);
-      if(diff.deleted.length || diff.modified.length || diff.added.length) {
+      if(diff.count) {
         throw new Error('plugins are outdated');
       }
 
@@ -309,7 +309,7 @@ function getOnlineComponents() {
 
 function pluginsDiff(projectPlugins, onlinePlugins) {
 
-  return {
+  const ret = {
     added    : Array.from(onlinePlugins.keys()).
                      filter(id => !projectPlugins.has(id)),
     deleted  : Array.from(projectPlugins.keys()).
@@ -318,4 +318,10 @@ function pluginsDiff(projectPlugins, onlinePlugins) {
                      filter(id => onlinePlugins.has(id)).
                      filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.rawClass)
   };
+
+  ret.count = ret.added.length +
+              ret.deleted.length +
+              ret.modified.length;
+
+  return ret;
 }
