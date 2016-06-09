@@ -9,6 +9,8 @@ import Resources from '../resources';
 const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
 
+let operationId = 0;
+
 export default {
   createNew,
   open,
@@ -385,43 +387,63 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
   }
 }
 
-function createActionDeleteBinding(entityId, componentId, binding) {
-  return (done) => {
-    return resources.queryComponentUnbind(entityId, {
+function createOperationDeleteBinding(entityId, componentId, binding) {
+  return {
+    id: ++operationId,
+    enabled: true,
+    description: `Delete binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
+    action: (done) => {
+      return resources.queryComponentUnbind(entityId, {
         remote_id: binding.remote_id,
         remote_attribute: binding.remote_attribute,
         local_id: componentId,
         local_action: binding.local_action
       }, done);
+    }
   };
 }
 
-function createActionDeleteComponent(entityId, componentId) {
-  return (done) => {
-    return resources.queryComponentDelete(entityId, componentId, done);
+function createOperationDeleteComponent(entityId, componentId) {
+  return {
+    id: ++operationId,
+    enabled: true,
+    description: `Delete component ${componentId} on entity ${entityId}`,
+    action: (done) => {
+      return resources.queryComponentDelete(entityId, componentId, done);
+    }
   };
 }
 
-function createActionCreateComponent(component) {
-  return (done) => {
-    return resources.queryComponentCreate(component.plugin.entityId, {
-        comp_id: component.id,
-        library: component.plugin.library,
-        comp_type: component.plugin.type,
-        config: mapToAction(component.config),
-        designer: mapToAction(component.designer)
+function createOperationCreateComponent(component) {
+  return {
+    id: ++operationId,
+    enabled: true,
+    description: `Create component ${component.id} on entity ${component.plugin.entityId}`,
+    action: (done) => {
+      return resources.queryComponentCreate(component.plugin.entityId, {
+          comp_id: component.id,
+          library: component.plugin.library,
+          comp_type: component.plugin.type,
+          config: mapToAction(component.config),
+          designer: mapToAction(component.designer)
       }, done);
+    }
   };
 }
 
-function createActionCreateBinding(component, binding) {
-  return (done) => {
-    return resources.queryComponentBind(component.plugin.entityId, {
+function createOperationCreateBinding(component, binding) {
+  return {
+    id: ++operationId,
+    enabled: true,
+    description: `Create binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
+    action: (done) => {
+      return resources.queryComponentBind(component.plugin.entityId, {
         remote_id: binding.remote_id,
         remote_attribute: binding.remote_attribute,
         local_id: Component.id,
         local_action: binding.local_action
       }, done);
+    }
   };
 }
 
