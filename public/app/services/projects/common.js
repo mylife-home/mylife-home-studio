@@ -11,6 +11,7 @@ const resources = new Resources(); // TODO: how to use facade ?
 export default {
   loadDate,
   loadMap,
+  loadMapOnline,
   loadOnlineCoreEntities
 };
 
@@ -51,6 +52,14 @@ function loadMap(map) {
   const ret = {};
   for(const item of map) {
     ret[item.Key] = item.Value;
+  }
+  return ret;
+}
+
+function loadMapOnline(map) {
+  const ret = {};
+  for(const item of map) {
+    ret[item.key] = item.value;
   }
   return ret;
 }

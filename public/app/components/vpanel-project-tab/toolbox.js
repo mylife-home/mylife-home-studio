@@ -70,13 +70,16 @@ class Toolbox extends React.Component {
     });
   }
 
-  // importOnlineDriverComponents
+  // ---
 
   importOnlineDriverComponents() {
     const project = this.props.project;
-    // TODO
     Facade.projects.vpanelImportOnlineDriverComponents(project, (err) => {
       if(err) { return DialogsActionCreators.error(err); }
+
+      this.setState({
+        showInfo: ['Components imported']
+      });
     });
   }
 

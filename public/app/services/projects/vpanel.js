@@ -11,7 +11,8 @@ export default {
   createNew,
   open,
   prepareImportToolbox,
-  executeImportToolbox
+  executeImportToolbox,
+  importDriverComponents
 };
 
 function createNew(project) {
@@ -88,15 +89,18 @@ function executeImportToolbox(data, done) {
     for(const binding of data.bindingsToDelete) {
       arrayRemoveByValue(binding.local.bindings, binding);
       arrayRemoveByValue(binding.remote.bindingTargets, binding);
+      data.project.dirty = true;
     }
 
     for(const component of data.componentsToDelete) {
       arrayRemoveByValue(data.project.components, component);
+      data.project.dirty = true;
     }
 
     for(const del of data.deleted.concat(data.modified)) {
       const { item, plugin } = data.projectPlugins.get(del);
       arrayRemoveByValue(item.plugins, plugin);
+      data.project.dirty = true;
     }
 
     for(const add of data.added.concat(data.modified)) {
@@ -104,6 +108,7 @@ function executeImportToolbox(data, done) {
       const entityId = entity.id;
       const item = getToolboxItem(data.project, entityId);
       item.plugins.push(loadPlugin(entityId, plugin));
+      data.project.dirty = true;
     }
 
     // clean empty toolbox items
@@ -116,6 +121,47 @@ function executeImportToolbox(data, done) {
   }
 
   return done();
+}
+
+function importDriverComponents(project, done) {
+  return common.loadOnlineCoreEntities((err) => {
+    if(err) { return done(err); }
+
+    try {
+      const projectPlugins = getProjectPlugins(project);
+      const onlinePlugins = getOnlinePlugins();
+      const onlineComponents = getOnlineComponents();
+      const diff = pluginsDiff(projectPlugins, onlinePlugins);
+      if(diff.deleted.length || diff.modified.length || diff.added.length) {
+        throw new Error('plugins are outdated');
+      }
+
+      for(const [ id, value ] of onlineComponents.entries()) {
+        if(findComponent(project, id)) { continue; }
+
+        const onlineComponent = value.component;
+        const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+        if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
+
+        const component = {
+          id: onlineComponent.id,
+          bindings: [],
+          bindingTargets: [],
+          config: common.loadMapOnline(onlineComponent.config),
+          designer: common.loadMapOnline(onlineComponent.designer),
+          plugin
+        };
+
+        project.components.push(component);
+        project.dirty = true;
+      }
+
+    } catch(err) {
+      return done(err);
+    }
+
+    return done();
+  });
 }
 
 function loadToolboxItem(item) {
@@ -241,6 +287,20 @@ function getOnlinePlugins() {
       ret.set(`${entity.id}:${plugin.library}:${plugin.type}`, {
         entity,
         plugin
+      });
+    }
+  }
+  return ret;
+}
+
+function getOnlineComponents() {
+  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+  const ret = new Map();
+  for(const entity of entities) {
+    for(const component of entity.components) {
+      ret.set(component.id, {
+        entity,
+        component
       });
     }
   }

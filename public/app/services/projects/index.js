@@ -111,11 +111,10 @@ class Projects {
     });
   }
 
-  vpanelImportOnlineDriverComponents(project, force, done) {
-    return common.loadOnlineCoreEntities((err) => {
+  vpanelImportOnlineDriverComponents(project, done) {
+    return vpanel.importDriverComponents(project, (err) => {
       if(err) { return done(err); }
-
-      console.log('importOnlineDriverComponents');
+      ProjectActionCreators.refresh(project);
       return done();
     });
   }
