@@ -79,6 +79,96 @@ class Resources {
         ResourcesActionCreators.resourceSetResult(entityId, resourceId);
       });
   }
+
+  queryComponentCreate(entityId, component, cb) {
+    debug(`queryComponentCreate(${entityId}, ${component.id})`);
+    request
+      .post('/resources/' + entityId)
+      .send({
+        type: 'comp_create',
+        comp_id: component.id,
+        library: component.library,
+        comp_type: component.type,
+        config: component.config, // array of {key, value}
+        designer: component.designer // array of {key, value}
+      })
+      .end((err, res) => {
+        checkResult(err, res, cb);
+      });
+  }
+
+  queryComponentDelete(entityId, componentId, cb) {
+    debug(`queryComponentDelete(${entityId}, ${componentId})`);
+    request
+      .post('/resources/' + entityId)
+      .send({
+        type: 'comp_delete',
+        comp_id: componentId
+      })
+      .end((err, res) => {
+        checkResult(err, res, cb);
+      });
+  }
+
+  queryComponentBind(entityId, binding, cb) {
+    debug(`queryComponentBind(${entityId}, ${binding.remote_id}.${binding.remote_attribute} -> ${binding.local_id}.${binding.local_action})`);
+    request
+      .post('/resources/' + entityId)
+      .send({
+        type: 'comp_bind',
+        remote_id: binding.remote_id,
+        remote_attribute: binding.remote_attribute,
+        local_id: binding.local_id,
+        local_action: binding.local_action
+      })
+      .end((err, res) => {
+        checkResult(err, res, cb);
+      });
+  }
+
+  queryComponentUnbind(entityId, binding, cb) {
+    debug(`queryComponentUnbind(${entityId}, ${binding.remote_id}.${binding.remote_attribute} -> ${binding.local_id}.${binding.local_action})`);
+    request
+      .post('/resources/' + entityId)
+      .send({
+        type: 'comp_unbind',
+        remote_id: binding.remote_id,
+        remote_attribute: binding.remote_attribute,
+        local_id: binding.local_id,
+        local_action: binding.local_action
+      })
+      .end((err, res) => {
+        checkResult(err, res, cb);
+      });
+  }
+
+  queryCompSetDesigner(entityId, componentId, designer, cb) {
+    debug(`queryComponentUnbind(${entityId}, ${binding.remote_id}.${binding.remote_attribute} -> ${binding.local_id}.${binding.local_action})`);
+    request
+      .post('/resources/' + entityId)
+      .send({
+        type: 'comp_set_designer',
+        comp_id: componentId,
+        designer // array of {key, value}
+      })
+      .end((err, res) => {
+        checkResult(err, res, cb);
+      });
+  }
+}
+
+function checkResult(err, res, cb) {
+  if(!err) {
+    const data = res.body.data;
+    if(data.type === 'error') {
+      err = new Error(data.error);
+    }
+  }
+  if(err) {
+    if(!cb) { return console.error(err); }
+    return cb(err);
+  }
+  if(cb) { cb(); }
 }
 
 export default Resources;
