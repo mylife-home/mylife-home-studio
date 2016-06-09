@@ -2,6 +2,7 @@
 
 import icons from './icons';
 import DialogError from './dialog-error';
+import DialogBusy from './dialog-busy';
 import DialogSelect from './dialog-select';
 import DialogConfirm from './dialog-confirm';
 import DialogInfo from './dialog-info';
@@ -14,6 +15,7 @@ import DetailsTitle from './details-title';
 export default {
   icons,
   DialogError,
+  DialogBusy,
   DialogSelect,
   DialogConfirm,
   DialogInfo,

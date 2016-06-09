@@ -20,6 +20,8 @@ export default {
 
     DIALOG_ERROR: null,
     DIALOG_ERROR_CLEAN: null,
+    DIALOG_SET_BUSY: null,
+    DIALOG_UNSET_BUSY: null,
 
     PROJECT_LOAD: null,
     PROJECT_CLOSE: null,

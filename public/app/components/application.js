@@ -109,6 +109,7 @@ class Application extends React.Component {
             {tabs}
           </mui.Tabs>
           <base.DialogError />
+          <base.DialogBusy />
         </div>
       </muiStyles.MuiThemeProvider>
     );
