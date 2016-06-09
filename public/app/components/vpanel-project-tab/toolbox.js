@@ -37,7 +37,7 @@ class Toolbox extends React.Component {
   importOnlineToolbox() {
     const project = this.props.project;
     Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
-      if(err) { return DialogsActionCreators.error(err.toString()); }
+      if(err) { return DialogsActionCreators.error(err); }
 
       if(data.messages && data.messages.length) {
         this.setState({
@@ -62,7 +62,7 @@ class Toolbox extends React.Component {
 
   executeImportOnlineToolbox(data) {
     Facade.projects.vpanelExecuteImportOnlineToolbox(data, (err) => {
-      if(err) { return DialogsActionCreators.error(err.toString()); }
+      if(err) { return DialogsActionCreators.error(err); }
 
       this.setState({
         showInfo: ['Toolbox imported']
@@ -75,7 +75,7 @@ class Toolbox extends React.Component {
   importOnlineDriverComponents() {
     const project = this.props.project;
     // TODO
-    Facade.projects.vpanelImportOnlineDriverComponents(project, false, (err) => {
+    Facade.projects.vpanelImportOnlineDriverComponents(project, (err) => {
       if(err) { return DialogsActionCreators.error(err); }
     });
   }
