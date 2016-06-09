@@ -175,12 +175,12 @@ function prepareDeployVPanel(project, done) {
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
       const onlineComponents = getOnlineComponents();
 
+      //const operation = { id, enable: true, description, data: { ... } };
+
       console.log('prepareDeployVPanel');
     } catch(err) {
       return done(err);
     }
-
-    //const operation = { id, enable: true, description, data: { ... } };
 
     return done(null, ret);
   });
