@@ -12,7 +12,11 @@ export default {
   open,
   prepareImportToolbox,
   executeImportToolbox,
-  importDriverComponents
+  importDriverComponents,
+  prepareDeployVPanel,
+  executeDeployVPanel,
+  prepareDeployDrivers,
+  executeDeployDrivers
 };
 
 function createNew(project) {
@@ -162,6 +166,34 @@ function importDriverComponents(project, done) {
 
     return done();
   });
+}
+
+function prepareDeployVPanel(project, done) {
+  return common.loadOnlineCoreEntities((err) => {
+    if(err) { return done(err); }
+
+    console.log('prepareDeployVPanel');
+    return done();
+  });
+}
+
+function executeDeployVPanel(data, done) {
+  console.log('executeDeployVPanel');
+  return done();
+}
+
+function prepareDeployDrivers(project, done) {
+  return common.loadOnlineCoreEntities((err) => {
+    if(err) { return done(err); }
+
+    console.log('prepareDeployDrivers');
+    return done();
+  });
+}
+
+function executeDeployDrivers(data, done) {
+  console.log('executeDeployDrivers');
+  return done();
 }
 
 function loadToolboxItem(item) {

@@ -119,32 +119,28 @@ class Projects {
     });
   }
 
-  prepareDeployVPanel(project, done) {
-    return common.loadOnlineCoreEntities((err) => {
-      if(err) { return done(err); }
+  vpanelPrepareDeployVPanel(project, done) {
+    return vpanel.prepareDeployVPanel(project, done);
+  }
 
-      console.log('prepareDeployVPanel');
+  vpanelExecuteDeployVPanel(data, done) {
+    return vpanel.executeDeployVPanel(project, (err) => {
+      if(err) { return done(err); }
+      ProjectActionCreators.refresh(project);
       return done();
     });
   }
 
-  prepareDeployDrivers(project, done) {
-    return common.loadOnlineCoreEntities((err) => {
-      if(err) { return done(err); }
+  vpanelPrepareDeployDrivers(project, done) {
+    return vpanel.prepareDeployDrivers(project, done);
+  }
 
-      console.log('prepareDeployDrivers');
+  vpanelExecuteDeployDrivers(data, done) {
+    return vpanel.executeDeployDrivers(project, (err) => {
+      if(err) { return done(err); }
+      ProjectActionCreators.refresh(project);
       return done();
     });
-  }
-
-  executeDeployVPanel(project, done) {
-    console.log('executeDeployVPanel');
-    return done();
-  }
-
-  executeDeployDrivers(project, done) {
-    console.log('executeDeployDrivers');
-    return done();
   }
 }
 

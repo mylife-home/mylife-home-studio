@@ -91,17 +91,23 @@ class Toolbox extends React.Component {
 
   deployVPanel() {
     const project = this.props.project;
-    // TODO
-    Facade.projects.prepareDeployVPanel(project, (err) => {
+    DialogsActionCreators.setBusy('Preparing deploy');
+    Facade.projects.vpanelPrepareDeployVPanel(project, (err, data) => {
+      DialogsActionCreators.unsetBusy();
       if(err) { return DialogsActionCreators.error(err); }
+
+      // TODO
     });
   }
 
   deployDrivers() {
     const project = this.props.project;
-    // TODO
-    Facade.projects.prepareDeployDrivers(project, (err) => {
+    DialogsActionCreators.setBusy('Preparing deploy');
+    Facade.projects.vpanelPrepareDeployDrivers(project, (err, data) => {
       if(err) { return DialogsActionCreators.error(err); }
+      DialogsActionCreators.unsetBusy();
+
+      // TODO
     });
   }
 
