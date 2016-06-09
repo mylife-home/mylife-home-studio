@@ -6,7 +6,7 @@ import {EventEmitter} from 'events';
 
 const CHANGE_EVENT = 'change';
 
-class OnlineStore extends EventEmitter {
+class ErrorStore extends EventEmitter {
 
   constructor() {
     super();
@@ -49,4 +49,4 @@ class OnlineStore extends EventEmitter {
   }
 };
 
-export default new OnlineStore();
+export default new ErrorStore();
