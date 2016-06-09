@@ -175,7 +175,7 @@ function prepareDeployVPanel(project, done) {
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
       const onlineComponents = getOnlineComponents();
 
-      //const operation = { id, enable: true, description, data: { ... } };
+      //const operation = { id, enabled: true, description, action };
 
       console.log('prepareDeployVPanel');
     } catch(err) {
@@ -207,8 +207,11 @@ function prepareDeployDrivers(project, done) {
 }
 
 function executeDeploy(data, done) {
-  console.log('executeDeploy');
-  return done();
+  const actions = data.operations.filter(o => o.enabled).map(o => o.action);
+  async.series(actions, (err) => {
+    if(err) { return done(err); }
+    return common.loadOnlineCoreEntities(done);
+  });
 }
 
 function loadToolboxItem(item) {
@@ -378,4 +381,20 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
   if(diff.count) {
     throw new Error('plugins are outdated');
   }
+}
+
+function createActionDeleteBinding(entityId, componentId, binding) {
+
+}
+
+function createActionDeleteComponent(entityId, componentId) {
+
+}
+
+function createActionCreateComponent(component) {
+
+}
+
+function createActionCreateBinding(component, binding) {
+
 }
