@@ -123,20 +123,12 @@ class Projects {
     return vpanel.prepareDeployVPanel(project, done);
   }
 
-  vpanelExecuteDeployVPanel(data, done) {
-    return vpanel.executeDeployVPanel(project, (err) => {
-      if(err) { return done(err); }
-      ProjectActionCreators.refresh(project);
-      return done();
-    });
-  }
-
   vpanelPrepareDeployDrivers(project, done) {
     return vpanel.prepareDeployDrivers(project, done);
   }
 
-  vpanelExecuteDeployDrivers(data, done) {
-    return vpanel.executeDeployDrivers(project, (err) => {
+  vpanelExecuteDeploy(data, done) {
+    return vpanel.executeDeploy(project, (err) => {
       if(err) { return done(err); }
       ProjectActionCreators.refresh(project);
       return done();

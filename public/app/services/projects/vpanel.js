@@ -14,9 +14,8 @@ export default {
   executeImportToolbox,
   importDriverComponents,
   prepareDeployVPanel,
-  executeDeployVPanel,
   prepareDeployDrivers,
-  executeDeployDrivers
+  executeDeploy
 };
 
 function createNew(project) {
@@ -134,11 +133,8 @@ function importDriverComponents(project, done) {
     try {
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = getOnlinePlugins();
+      checkPluginsUpToDate(projectPlugins, onlinePlugins);
       const onlineComponents = getOnlineComponents();
-      const diff = pluginsDiff(projectPlugins, onlinePlugins);
-      if(diff.count) {
-        throw new Error('plugins are outdated');
-      }
 
       for(const [ id, value ] of onlineComponents.entries()) {
         if(findComponent(project, id)) { continue; }
@@ -172,27 +168,46 @@ function prepareDeployVPanel(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
-    console.log('prepareDeployVPanel');
-    return done();
-  });
-}
+    let ret;
+    try {
+      const projectPlugins = getProjectPlugins(project);
+      const onlinePlugins = getOnlinePlugins();
+      checkPluginsUpToDate(projectPlugins, onlinePlugins);
+      const onlineComponents = getOnlineComponents();
 
-function executeDeployVPanel(data, done) {
-  console.log('executeDeployVPanel');
-  return done();
+      console.log('prepareDeployVPanel');
+    } catch(err) {
+      return done(err);
+    }
+
+    //const operation = { id, enable: true, description, data: { ... } };
+
+    return done(null, ret);
+  });
 }
 
 function prepareDeployDrivers(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
-    console.log('prepareDeployDrivers');
-    return done();
+    let ret;
+    try {
+      const projectPlugins = getProjectPlugins(project);
+      const onlinePlugins = getOnlinePlugins();
+      checkPluginsUpToDate(projectPlugins, onlinePlugins);
+      const onlineComponents = getOnlineComponents();
+
+      console.log('prepareDeployDrivers');
+    } catch(err) {
+      return done(err);
+    }
+
+    return done(null, ret);
   });
 }
 
-function executeDeployDrivers(data, done) {
-  console.log('executeDeployDrivers');
+function executeDeploy(data, done) {
+  console.log('executeDeploy');
   return done();
 }
 
@@ -356,4 +371,11 @@ function pluginsDiff(projectPlugins, onlinePlugins) {
               ret.modified.length;
 
   return ret;
+}
+
+function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
+  const diff = pluginsDiff(projectPlugins, onlinePlugins);
+  if(diff.count) {
+    throw new Error('plugins are outdated');
+  }
 }
