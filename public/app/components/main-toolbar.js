@@ -142,7 +142,9 @@ class MainToolbar extends React.Component {
     }
 
     // need to get content .. TODO: Flux pattern to do that ?
+    DialogsActionCreators.setBusy('Loading project');
     return ResourcesActionCreators.resourceGetQuery(entity.id, resource, (err, content) => {
+      DialogsActionCreators.unsetBusy();
       if(err) { return DialogsActionCreators.error(err); }
       return load(content);
     });

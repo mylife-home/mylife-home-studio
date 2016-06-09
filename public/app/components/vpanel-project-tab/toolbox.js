@@ -36,7 +36,9 @@ class Toolbox extends React.Component {
 
   importOnlineToolbox() {
     const project = this.props.project;
+    DialogsActionCreators.setBusy('Preparing import');
     Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
+      DialogsActionCreators.unsetBusy();
       if(err) { return DialogsActionCreators.error(err); }
 
       if(data.messages && data.messages.length) {
@@ -61,7 +63,9 @@ class Toolbox extends React.Component {
   }
 
   executeImportOnlineToolbox(data) {
+    DialogsActionCreators.setBusy('Executing import');
     Facade.projects.vpanelExecuteImportOnlineToolbox(data, (err) => {
+      DialogsActionCreators.unsetBusy();
       if(err) { return DialogsActionCreators.error(err); }
 
       this.setState({
@@ -74,7 +78,9 @@ class Toolbox extends React.Component {
 
   importOnlineDriverComponents() {
     const project = this.props.project;
+    DialogsActionCreators.setBusy('Executing import');
     Facade.projects.vpanelImportOnlineDriverComponents(project, (err) => {
+      DialogsActionCreators.unsetBusy();
       if(err) { return DialogsActionCreators.error(err); }
 
       this.setState({
