@@ -276,7 +276,7 @@ function prepareDeployDrivers(project, done) {
 
         for(const [id, value] of onlineComponents) {
           if(value.entity.id !== entityId) { continue; }
-          const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+          const plugin = findPlugin(project, value.entity.id, value.component.library, value.component.type);
           if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
           onlineIds.push(id);
         }
@@ -311,7 +311,7 @@ function prepareDeployDrivers(project, done) {
 
         // only new components
         for(const projectComponent of projectComponents) {
-          if(onlineId.includes(projectComponent.id)) { continue; }
+          if(onlineIds.includes(projectComponent.id)) { continue; }
 
           componentsToCreate.set(projectComponent.id, projectComponent);
         }
@@ -509,7 +509,7 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
 
 function componentsAreSame(onlineComponent, projectComponent) {
   if(onlineComponent.component.id !== projectComponent.id) { return false; }
-  if(onlineComponent.entity.id !== projectComponent.plugin.entityId) { returb false; }
+  if(onlineComponent.entity.id !== projectComponent.plugin.entityId) { return false; }
   if(onlineComponent.component.library !== projectComponent.library) { return false; }
   if(onlineComponent.component.type !== projectComponent.type) { return false; }
   if(!mapAreSame(common.loadMapOnline(onlineComponent.component.designer), projectComponent.designer)) { return false; }
