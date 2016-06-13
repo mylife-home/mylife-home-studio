@@ -6,6 +6,7 @@ import AppConstants from '../constants/app-constants';
 export default {
 
   error: function(err) {
+    console.log(err);
     AppDispatcher.dispatch({
       type: AppConstants.ActionTypes.DIALOG_ERROR,
       error: err
