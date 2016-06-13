@@ -98,7 +98,7 @@ class Toolbox extends React.Component {
       if(err) { return DialogsActionCreators.error(err); }
 
       this.setState({
-        showOperationSelect: data
+        showOperationSelect: data.operations
       });
     });
   }
@@ -111,19 +111,29 @@ class Toolbox extends React.Component {
       if(err) { return DialogsActionCreators.error(err); }
 
       this.setState({
-        showOperationSelect: data
+        showOperationSelect: data.operations
       });
     });
   }
 
   executeOperations() {
-    const operations = this.state.showOperationSelect;
+    const data = {
+      project: this.props.project,
+      operations: this.state.showOperationSelect
+    };
     this.setState({
       showOperationSelect: null
     });
 
-    // TODO
-    console.log('executeOperations', operations);
+    DialogsActionCreators.setBusy('Executing deploy');
+    Facade.projects.vpanelExecuteDeploy(data, (err) => {
+      DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
+
+      this.setState({
+        showInfo: ['Deploy done']
+      });
+    });
   }
 
   cancelExecuteOperations() {

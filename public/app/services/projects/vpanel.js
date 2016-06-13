@@ -1,5 +1,6 @@
 'use strict';
 
+import async from 'async';
 import Metadata from '../metadata/index';
 import common from './common';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
@@ -247,7 +248,7 @@ function prepareDeployVPanel(project, done) {
       return done(err);
     }
 
-    return done(null, operations);
+    return done(null, { project, operations });
   });
 }
 
@@ -341,11 +342,12 @@ function prepareDeployDrivers(project, done) {
       return done(err);
     }
 
-    return done(null, operations);
+    return done(null, { project, operations });
   });
 }
 
 function executeDeploy(data, done) {
+  console.log('executeDeploy', data);
   const actions = data.operations.filter(o => o.enabled).map(o => o.action);
   async.series(actions, (err) => {
     if(err) { return done(err); }

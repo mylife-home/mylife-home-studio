@@ -128,9 +128,9 @@ class Projects {
   }
 
   vpanelExecuteDeploy(data, done) {
-    return vpanel.executeDeploy(project, (err) => {
+    return vpanel.executeDeploy(data, (err) => {
       if(err) { return done(err); }
-      ProjectActionCreators.refresh(project);
+      ProjectActionCreators.refresh(data.project);
       return done();
     });
   }
