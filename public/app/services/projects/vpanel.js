@@ -287,6 +287,7 @@ function prepareDeployDrivers(project, done) {
           projectComponents.push(component);
         }
 
+        const bindingsToDelete = new Map();
         const componentToDelete = new Map();
         const componentsToCreate = new Map();
 
@@ -317,12 +318,25 @@ function prepareDeployDrivers(project, done) {
           componentsToCreate.set(projectComponent.id, projectComponent);
         }
 
-        //TODO: componentToDelete componentsToCreate
-        console.log(entityId, componentToDelete, componentsToCreate);
+        for(const compId of componentToDelete) {
+          // remove targetBindings
+          for(const [key, value] of getOnlineTargetBindings(onlineComponents, compId).entries()) {
+            bindingsToDelete.set(key, value);
+          }
+        }
 
+        for(const value of bindingsToDelete.values()) {
+          operations.push(createOperationDeleteBinding(value.entity.id, value.component.id, value.binding));
+        }
+
+        for(const value of componentToDelete.values()) {
+          operations.push(createOperationDeleteComponent(value.entity.id, value.component.id));
+        }
+
+        for(const value of componentsToCreate.values()) {
+          operations.push(createOperationCreateComponent(value));
+        }
       }
-
-      console.log('prepareDeployDrivers');
     } catch(err) {
       return done(err);
     }
@@ -529,6 +543,21 @@ function mapAreSame(map1, map2) {
     if(map1[key] !== map2[key]) { return false; }
   }
   return true;
+}
+
+function getOnlineTargetBindings(onlineComponents, remoteId) {
+  const ret = new Map();
+  for(const [id, value] of onlineComponents) {
+    for(const binding of value.component.bindings) {
+      if(binding.remote_id === remoteId) { continue; }
+      ret.set(`${binding.remote_id}.${binding.remote_attribute}->${id}.${binding.local_action}`, {
+        entity: value.entity,
+        component: value.component,
+        binding
+      });
+    }
+  }
+  return ret;
 }
 
 function createOperationDeleteBinding(entityId, componentId, binding) {
