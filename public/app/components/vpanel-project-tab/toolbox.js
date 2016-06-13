@@ -96,6 +96,7 @@ class Toolbox extends React.Component {
       DialogsActionCreators.unsetBusy();
       if(err) { return DialogsActionCreators.error(err); }
 
+      console.log(data);
       // TODO
     });
   }
@@ -107,6 +108,7 @@ class Toolbox extends React.Component {
       if(err) { return DialogsActionCreators.error(err); }
       DialogsActionCreators.unsetBusy();
 
+      console.log(data);
       // TODO
     });
   }
