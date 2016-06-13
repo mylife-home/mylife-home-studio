@@ -266,16 +266,26 @@ function prepareDeployDrivers(project, done) {
       operations = [];
 
       // we deploy each entity in a separate way
-      const entityIds = project.components.map(c => c.plugin.entityId);
+      const entityIds = project.components.
+        filter(c => c.plugin.usage === metadata.pluginUsage.driver).
+        map(c => c.plugin.entityId);
+
       for(const entityId of entityIds) {
+        const onlineIds = [];
+        const projectComponents = [];
 
         for(const [id, value] of onlineComponents) {
           if(value.entity.id !== entityId) { continue; }
           const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
           if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
-
-          // TODO
+          onlineIds.push(id);
         }
+
+        for(const component of project.components) {
+          if(component.plugin.usage !== metadata.pluginUsage.driver) { continue; }
+          projectComponents.push(component);
+        }
+        // componentsAreSame
 
         // TODO: removed changed components
         // TODO: if remove component, remove targets bindings too
@@ -466,6 +476,15 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
   if(diff.count) {
     throw new Error('plugins are outdated');
   }
+}
+
+function componentsAreSame(onlineComponent, projectComponent) {
+  if(onlineComponent.id !== projectComponent.id) { return false; }
+  if(onlineComponent.library !== projectComponent.library) { return false; }
+  if(onlineComponent.type !== projectComponent.type) { return false; }
+  console.log(onlineComponent, projectComponent);
+  // TODO: designer, config
+  return true;
 }
 
 function createOperationDeleteBinding(entityId, componentId, binding) {
