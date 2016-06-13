@@ -266,9 +266,9 @@ function prepareDeployDrivers(project, done) {
       operations = [];
 
       // we deploy each entity in a separate way
-      const entityIds = project.components.
+      const entityIds = new Set(project.components.
         filter(c => c.plugin.usage === metadata.pluginUsage.driver).
-        map(c => c.plugin.entityId);
+        map(c => c.plugin.entityId));
 
       for(const entityId of entityIds) {
         const onlineIds = [];
@@ -283,6 +283,7 @@ function prepareDeployDrivers(project, done) {
 
         for(const component of project.components) {
           if(component.plugin.usage !== metadata.pluginUsage.driver) { continue; }
+          if(component.plugin.entityId !== entityId) { continue; }
           projectComponents.push(component);
         }
 
@@ -510,8 +511,8 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
 function componentsAreSame(onlineComponent, projectComponent) {
   if(onlineComponent.component.id !== projectComponent.id) { return false; }
   if(onlineComponent.entity.id !== projectComponent.plugin.entityId) { return false; }
-  if(onlineComponent.component.library !== projectComponent.library) { return false; }
-  if(onlineComponent.component.type !== projectComponent.type) { return false; }
+  if(onlineComponent.component.library !== projectComponent.plugin.library) { return false; }
+  if(onlineComponent.component.type !== projectComponent.plugin.type) { return false; }
   if(!mapAreSame(common.loadMapOnline(onlineComponent.component.config), projectComponent.config)) { return false; }
   return true;
 }
@@ -522,7 +523,7 @@ function mapAreSame(map1, map2) {
   if(keys1.length !== keys2.length) { return false; }
   keys1.sort();
   keys2.sort();
-  for(let i=0; i<key1.length; ++i) {
+  for(let i=0; i<keys1.length; ++i) {
     if(keys1[i] !== keys2[i]) { return false; }
     const key = keys1[i];
     if(map1[key] !== map2[key]) { return false; }
