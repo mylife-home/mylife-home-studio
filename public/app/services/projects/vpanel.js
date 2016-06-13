@@ -152,7 +152,7 @@ function importDriverComponents(project, done) {
           bindings: [],
           bindingTargets: [],
           config: common.loadMapOnline(onlineComponent.config),
-          designer: common.loadMapOnline(onlineComponent.designer),
+          designer: [], // TODO: location
           plugin
         };
 
@@ -512,7 +512,6 @@ function componentsAreSame(onlineComponent, projectComponent) {
   if(onlineComponent.entity.id !== projectComponent.plugin.entityId) { return false; }
   if(onlineComponent.component.library !== projectComponent.library) { return false; }
   if(onlineComponent.component.type !== projectComponent.type) { return false; }
-  if(!mapAreSame(common.loadMapOnline(onlineComponent.component.designer), projectComponent.designer)) { return false; }
   if(!mapAreSame(common.loadMapOnline(onlineComponent.component.config), projectComponent.config)) { return false; }
   return true;
 }
@@ -569,7 +568,7 @@ function createOperationCreateComponent(component) {
           library: component.plugin.library,
           comp_type: component.plugin.type,
           config: mapToAction(component.config),
-          designer: mapToAction(component.designer)
+          designer: []
       }, done);
     }
   };
