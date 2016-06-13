@@ -105,8 +105,8 @@ class Toolbox extends React.Component {
     const project = this.props.project;
     DialogsActionCreators.setBusy('Preparing deploy');
     Facade.projects.vpanelPrepareDeployDrivers(project, (err, data) => {
-      if(err) { return DialogsActionCreators.error(err); }
       DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
 
       console.log(data);
       // TODO
