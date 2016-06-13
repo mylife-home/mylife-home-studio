@@ -479,11 +479,26 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
 }
 
 function componentsAreSame(onlineComponent, projectComponent) {
-  if(onlineComponent.id !== projectComponent.id) { return false; }
-  if(onlineComponent.library !== projectComponent.library) { return false; }
-  if(onlineComponent.type !== projectComponent.type) { return false; }
-  console.log(onlineComponent, projectComponent);
-  // TODO: designer, config
+  if(onlineComponent.component.id !== projectComponent.id) { return false; }
+  if(onlineComponent.entity.id !== projectComponent.plugin.entityId) { returb false; }
+  if(onlineComponent.component.library !== projectComponent.library) { return false; }
+  if(onlineComponent.component.type !== projectComponent.type) { return false; }
+  if(!mapAreSame(common.loadMapOnline(onlineComponent.component.designer), projectComponent.designer)) { return false; }
+  if(!mapAreSame(common.loadMapOnline(onlineComponent.component.config), projectComponent.config)) { return false; }
+  return true;
+}
+
+function mapAreSame(map1, map2) {
+  const keys1 = Object.keys(map1);
+  const keys2 = Object.keys(map2);
+  if(keys1.length !== keys2.length) { return false; }
+  keys1.sort();
+  keys2.sort();
+  for(let i=0; i<key1.length; ++i) {
+    if(keys1[i] !== keys2[i]) { return false; }
+    const key = keys1[i];
+    if(map1[key] !== map2[key]) { return false; }
+  }
   return true;
 }
 
