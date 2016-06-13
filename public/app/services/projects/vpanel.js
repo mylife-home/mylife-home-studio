@@ -172,21 +172,82 @@ function prepareDeployVPanel(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
-    let ret;
+    let operations;
     try {
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = getOnlinePlugins();
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
+
       const onlineComponents = getOnlineComponents();
+      const usages = [metadata.pluginUsage.vpanel, metadata.pluginUsage.ui];
 
-      //const operation = { id, enabled: true, description, action };
+      const bindingsToDelete = new Map();
+      const componentsToDelete = new Map();
+      const componentsToCreate = new Map();
+      const bindingsToCreate = new Map();
 
-      console.log('prepareDeployVPanel');
+      for(const [id, value] of onlineComponents.entries()) {
+        const onlineComponent = value.component;
+
+        for(const binding of onlineComponent.bindings) {
+          const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${id}.${binding.local_action}`;
+          bindingsToDelete.set(bindingId, {
+            entityId: value.entity.id,
+            component: onlineComponent,
+            binding
+          });
+        }
+
+        const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+        if(!usages.includes(plugin.usage)) { continue; }
+        componentsToDelete.set(id, {
+          entityId: value.entity.id,
+          component: onlineComponent
+        });
+      }
+
+      for(const projectComponent of project.components) {
+
+        for(const binding of projectComponent.bindings) {
+          const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${projectComponent.id}.${binding.local_action}`;
+          bindingsToCreate.set(bindingId, {
+            entityId: projectComponent.plugin.entityId,
+            component: projectComponent,
+            binding
+          });
+        }
+
+        if(!usages.includes(projectComponent.plugin.usage)) { continue; }
+        componentsToCreate.set(projectComponent.id, {
+          entityId: projectComponent.plugin.entityId,
+          component: projectComponent
+        });
+      }
+
+      // TODO: avoid delete all/rebuild all
+
+      operations = [];
+
+      for(const value of bindingsToDelete.values()) {
+        operations.push(createOperationDeleteBinding(value.entityId, value.component.id, value.binding));
+      }
+
+      for(const value of componentsToDelete.values()) {
+        operations.push(createOperationDeleteComponent(value.entityId, value.component.id));
+      }
+
+      for(const value of componentsToCreate.values()) {
+        operations.push(createOperationCreateComponent(value.component));
+      }
+
+      for(const value of bindingsToCreate.values()) {
+        operations.push(createOperationCreateBinding(value.component, value.binding));
+      }
     } catch(err) {
       return done(err);
     }
 
-    return done(null, ret);
+    return done(null, operations);
   });
 }
 
@@ -194,19 +255,22 @@ function prepareDeployDrivers(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
-    let ret;
+    let operations;
     try {
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = getOnlinePlugins();
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
+
       const onlineComponents = getOnlineComponents();
+
+      operations = [];
 
       console.log('prepareDeployDrivers');
     } catch(err) {
       return done(err);
     }
 
-    return done(null, ret);
+    return done(null, operations);
   });
 }
 
@@ -435,12 +499,12 @@ function createOperationCreateBinding(component, binding) {
   return {
     id: ++operationId,
     enabled: true,
-    description: `Create binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
+    description: `Create binding ${binding.remote_id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
     action: (done) => {
       return resources.queryComponentBind(component.plugin.entityId, {
         remote_id: binding.remote_id,
         remote_attribute: binding.remote_attribute,
-        local_id: Component.id,
+        local_id: component.id,
         local_action: binding.local_action
       }, done);
     }
