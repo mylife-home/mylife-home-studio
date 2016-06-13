@@ -285,11 +285,40 @@ function prepareDeployDrivers(project, done) {
           if(component.plugin.usage !== metadata.pluginUsage.driver) { continue; }
           projectComponents.push(component);
         }
-        // componentsAreSame
 
-        // TODO: removed changed components
-        // TODO: if remove component, remove targets bindings too
-        // TODO: add changed component
+        const componentToDelete = new Map();
+        const componentsToCreate = new Map();
+
+        for(const onlineId of onlineIds) {
+          const projectComponent = projectComponents.find(c => c.id === onlineId);
+          const onlineComponent = onlineComponents.get(onlineId);
+
+          // does not exist anymore
+          if(!projectComponent) {
+            componentIdsToDelete.set(onlineId, onlineComponent);
+            continue;
+          }
+
+          // no changes -> skip
+          if(componentsAreSame(onlineComponent, projectComponent)) {
+            continue;
+          }
+
+          // still exist but changes -> recreate
+          componentToDelete.set(onlineId, onlineComponent);
+          componentsToCreate.set(projectComponent.id, projectComponent);
+        }
+
+        // only new components
+        for(const projectComponent of projectComponents) {
+          if(onlineId.includes(projectComponent.id)) { continue; }
+
+          componentsToCreate.set(projectComponent.id, projectComponent);
+        }
+
+        //TODO: componentToDelete componentsToCreate
+        console.log(entityId, componentToDelete, componentsToCreate);
+
       }
 
       console.log('prepareDeployDrivers');
