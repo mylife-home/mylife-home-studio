@@ -265,6 +265,23 @@ function prepareDeployDrivers(project, done) {
 
       operations = [];
 
+      // we deploy each entity in a separate way
+      const entityIds = project.components.map(c => c.plugin.entityId);
+      for(const entityId of entityIds) {
+
+        for(const [id, value] of onlineComponents) {
+          if(value.entity.id !== entityId) { continue; }
+          const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+          if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
+
+          // TODO
+        }
+
+        // TODO: removed changed components
+        // TODO: if remove component, remove targets bindings too
+        // TODO: add changed component
+      }
+
       console.log('prepareDeployDrivers');
     } catch(err) {
       return done(err);
