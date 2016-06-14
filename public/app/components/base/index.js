@@ -1,6 +1,7 @@
 'use strict';
 
 import icons from './icons';
+import utils from './utils';
 import DialogError from './dialog-error';
 import DialogBusy from './dialog-busy';
 import DialogSelect from './dialog-select';
@@ -14,6 +15,7 @@ import DetailsTitle from './details-title';
 
 export default {
   icons,
+  utils,
   DialogError,
   DialogBusy,
   DialogSelect,
