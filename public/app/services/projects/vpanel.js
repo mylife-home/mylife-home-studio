@@ -90,8 +90,33 @@ function validate(project, msgs) {
 
 function serialize(project) {
   common.serialize(project);
-  throw new Error('not implemented')
-  // TODO
+
+  project.raw.Components = project.components.map(component => ({
+    Component : {
+      id       : component.id,
+      library  : component.plugin.library,
+      type     : component.plugin.type,
+      bindings : component.bindings.map(binding => ({
+        local_action    : binding.local_action,
+        remote_attribute: binding.remote_attribute,
+        remote_id       : binding.remote_id })),
+      config   : common.serializeMap(component.config),
+      designer : common.serializeMap(component.designer)
+    },
+    EntityName : component.plugin.entityId
+  }));
+
+  project.raw.Toolbox = project.toolbox.map(item => ({
+    EntityName : item.entityId,
+    Plugins    : item.plugins.map(plugin => ({
+      clazz   : plugin.rawClass,
+      config  : plugin.rawConfig,
+      library : plugin.library,
+      type    : plugin.type,
+      usage   : plugin.usage,
+      version : plugin.version
+    }))
+  }));
 }
 
 function prepareImportToolbox(project, done) {
