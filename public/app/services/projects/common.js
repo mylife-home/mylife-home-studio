@@ -9,6 +9,7 @@ import Resources from '../resources';
 const resources = new Resources(); // TODO: how to use facade ?
 
 export default {
+  dirtify,
   loadDate,
   loadMap,
   loadMapOnline,
@@ -17,6 +18,11 @@ export default {
   validateHandler,
   serialize
 };
+
+function dirtify(project) {
+  project.dirty = true;
+  project.lastUpdate = new Date();
+}
 
 function loadDate(raw) {
   raw = raw.substr(6, raw.length - 8);

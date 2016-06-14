@@ -72,6 +72,11 @@ class Projects {
     return project;
   }
 
+  dirtify(project) {
+    common.dirtify(project);
+    ProjectActionCreators.refresh(project);
+  }
+
   validate(project) {
     const msgs = [];
 

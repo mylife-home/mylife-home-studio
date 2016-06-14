@@ -111,18 +111,18 @@ function executeImportToolbox(data, done) {
     for(const binding of data.bindingsToDelete) {
       arrayRemoveByValue(binding.local.bindings, binding);
       arrayRemoveByValue(binding.remote.bindingTargets, binding);
-      data.project.dirty = true;
+      common.dirtify(data.project);
     }
 
     for(const component of data.componentsToDelete) {
       arrayRemoveByValue(data.project.components, component);
-      data.project.dirty = true;
+      common.dirtify(data.project);
     }
 
     for(const del of data.deleted.concat(data.modified)) {
       const { item, plugin } = data.projectPlugins.get(del);
       arrayRemoveByValue(item.plugins, plugin);
-      data.project.dirty = true;
+      common.dirtify(data.project);
     }
 
     for(const add of data.added.concat(data.modified)) {
@@ -130,7 +130,7 @@ function executeImportToolbox(data, done) {
       const entityId = entity.id;
       const item = getToolboxItem(data.project, entityId);
       item.plugins.push(loadPlugin(entityId, plugin));
-      data.project.dirty = true;
+      common.dirtify(data.project);
     }
 
     // clean empty toolbox items
@@ -172,7 +172,7 @@ function importDriverComponents(project, done) {
         };
 
         project.components.push(component);
-        project.dirty = true;
+        common.dirtify(project);
       }
 
     } catch(err) {
