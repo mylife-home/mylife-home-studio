@@ -1,5 +1,6 @@
 'use strict';
 
+import async from 'async';
 import React from 'react';
 import * as mui from 'material-ui';
 import base from './base/index';
@@ -8,6 +9,8 @@ import DialogsActionCreators from '../actions/dialogs-action-creators';
 import ResourcesActionCreators from '../actions/resources-action-creators';
 
 import OnlineStore from '../stores/online-store';
+import ProjectStore from '../stores/project-store';
+import ActiveTabStore from '../stores/active-tab-store';
 
 import Facade from '../services/facade';
 
@@ -150,8 +153,39 @@ class MainToolbar extends React.Component {
     });
   }
 
+  saveAll() {
+    const projects = ProjectStore.getAll();
+    DialogsActionCreators.setBusy('Saving projects');
+    async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, cb), (err) => {
+      DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
+    });
+  }
+
+  saveOnline() {
+    const project = this.getActiveTabProject();
+    DialogsActionCreators.setBusy('Saving project');
+    Facade.projects.saveOnline(project, (err) => {
+      DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
+    });
+  }
+
+  saveAs() {
+    const project = this.getActiveTabProject();
+    DialogsActionCreators.error(new Error('not implemented'));
+  }
+
+  getActiveTabProject() {
+    const activeTabId = ActiveTabStore.getActiveTab();
+    const projects = ProjectStore.getAll();
+    return projects.find(p => p.id === activeTabId);
+  }
+
   render() {
     const iconStyle = Object.assign({}, styles.icon, { fill: this.state.muiTheme.toolbar.iconColor});
+    const project = this.getActiveTabProject();
+
     return (
     <mui.Toolbar>
       <mui.ToolbarGroup float="left">
@@ -197,13 +231,21 @@ class MainToolbar extends React.Component {
 
         <mui.ToolbarSeparator />
 
-        <mui.IconButton tooltip="save all" style={styles.button}>
+        <mui.IconButton tooltip="save all"
+                        style={styles.button}
+                        onClick={this.saveAll.bind(this)}>
           <base.icons.actions.SaveAll />
         </mui.IconButton>
-        <mui.IconButton tooltip="save" style={styles.button}>
+        <mui.IconButton tooltip="save online"
+                        style={styles.button}
+                        disabled={!project}
+                        onClick={this.saveOnline.bind(this)}>
           <base.icons.actions.Save />
         </mui.IconButton>
-        <mui.IconButton tooltip="save as" style={styles.button}>
+        <mui.IconButton tooltip="save as"
+                        style={styles.button}
+                        disabled={!project}
+                        onClick={this.saveAs.bind(this)}>
           <base.icons.actions.SaveAs />
         </mui.IconButton>
       </mui.ToolbarGroup>
