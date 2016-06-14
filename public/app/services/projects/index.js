@@ -96,7 +96,7 @@ class Projects {
   saveOnline(project, done) {
     const key = `project.${project.type}.${project.name}`;
     const entityId = OnlineStore.getResourceEntity().id;
-    return this.save(project, (content, done) => resources.queryResourceSet(entityId, key, content, done));
+    return this.save(project, (content, cb) => resources.queryResourceSet(entityId, key, content, cb), done);
   }
 
   save(project, writer, done) {
@@ -105,11 +105,11 @@ class Projects {
 
       switch(project.type) {
         case 'vpanel':
-          vpanel.serialize(project, msgs);
+          vpanel.serialize(project);
           break;
 
         case 'ui':
-          ui.serialize(project, msgs);
+          ui.serialize(project);
           break;
       }
 
