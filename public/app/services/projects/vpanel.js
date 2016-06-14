@@ -39,8 +39,52 @@ function open(project, data) {
 
 function validate(project, msgs) {
   common.validate(project, msgs);
-  throw new Error('not implemented')
-  // TODO
+
+  // component id set and unique
+  const ids = new Set();
+  const idsdup = new Set();
+  let noidCount = 0;
+  for(const comp of project.components) {
+    const id = comp.id;
+    if(!id) {
+      ++noidCount;
+      continue;
+    }
+
+    if(ids.has(id)) {
+      idsdup.add(id);
+      continue;
+    }
+
+    ids.add(id);
+  }
+
+  if(noidCount > 0) {
+    msgs.push(`${noidCount} components have no id`);
+  }
+  for(const id of idsdup) {
+    msgs.push(`Duplicate component id: ${id}`);
+  }
+
+  // no binding duplicate
+  for(const comp of project.components) {
+    const bindings = new Set();
+    const duplicates = new Set();
+
+    for(const binding of comp.bindings) {
+      const bindingId = `${binding.remote_id}.${binding.remote_attribute} -> ${comp.id}.${binding.local_action}`;
+      if(bindings.has(bindingId)) {
+        duplicates.add(bindingId);
+        continue;
+      }
+
+      bindings.add(bindingId);
+    }
+
+    for(const binding of duplicates) {
+      msgs.push(`Duplicate binding: ${bindingId}`);
+    }
+  }
 }
 
 function serialize(project) {
