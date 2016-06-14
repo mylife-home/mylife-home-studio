@@ -11,7 +11,9 @@ const resources = new Resources(); // TODO: how to use facade ?
 export default {
   dirtify,
   loadDate,
+  serializeDate,
   loadMap,
+  serializeMap,
   loadMapOnline,
   loadOnlineCoreEntities,
   validate,
@@ -67,6 +69,10 @@ function loadMap(map) {
     ret[item.Key] = item.Value;
   }
   return ret;
+}
+
+function serializeMap(map) {
+  return Object.keys(map).map(key => ({ Key: key, Value: map[key] }));
 }
 
 function loadMapOnline(map) {
