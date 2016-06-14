@@ -96,29 +96,14 @@ class Projects {
   saveOnline(project, done) {
     const key = `project.${project.type}.${project.name}`;
     const entityId = OnlineStore.getResourceEntity().id;
-    return this.save(project, (content, cb) => resources.queryResourceSet(entityId, key, content, cb), done);
-  }
-
-  save(project, writer, done) {
+    let content;
     try {
-      this.validate(project);
-
-      switch(project.type) {
-        case 'vpanel':
-          vpanel.serialize(project);
-          break;
-
-        case 'ui':
-          ui.serialize(project);
-          break;
-      }
-
+      content = this.serialize(project);
     } catch(err) {
       return done(err);
     }
 
-    const content = JSON.stringify(project.raw);
-    writer(content, (err) => {
+    return resources.queryResourceSet(entityId, key, content, (err) => {
       if(err) { return done(err); }
 
       project.dirty = false;
@@ -126,6 +111,22 @@ class Projects {
       ProjectActionCreators.refresh(project);
       return done();
     });
+  }
+
+  serialize(project) {
+    this.validate(project);
+
+    switch(project.type) {
+      case 'vpanel':
+        vpanel.serialize(project);
+        break;
+
+      case 'ui':
+        ui.serialize(project);
+        break;
+    }
+
+    return JSON.stringify(project.raw);
   }
 
   vpanelPrepareImportOnlineToolbox(project, done) {
