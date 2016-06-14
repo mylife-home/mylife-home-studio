@@ -31,6 +31,7 @@ function createNew(project) {
 }
 
 function open(project, data) {
+  data = JSON.parse(JSON.stringify(data));
   project.toolbox = data.Toolbox.map(loadToolboxItem);
   project.components = data.Components.map(loadComponent.bind(null, project));
   validateOpen(project);

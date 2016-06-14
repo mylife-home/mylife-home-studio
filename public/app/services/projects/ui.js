@@ -9,7 +9,8 @@ export default {
 function createNew(project) {
 }
 
-function open(project) {
+function open(project, data) {
+  data = JSON.parse(JSON.stringify(data));
 
 }
 
