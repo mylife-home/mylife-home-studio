@@ -8,7 +8,7 @@ const CHANGE_EVENT = 'change';
 
 const DEFAULT_TAB = 'online';
 
-class ProjectStore extends EventEmitter {
+class ActiveTabStore extends EventEmitter {
 
   constructor() {
     super();
@@ -52,4 +52,4 @@ class ProjectStore extends EventEmitter {
   }
 };
 
-export default new ProjectStore();
+export default new ActiveTabStore();
