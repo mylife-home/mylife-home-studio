@@ -438,10 +438,12 @@ function getToolboxItem(project, entityId) {
 }
 
 function loadPlugin(entityId, plugin) {
-  const ret    = Object.assign({}, plugin);
-  ret.rawClass = plugin.clazz;
-  ret.clazz    = metadata.parseClass(plugin.clazz);
-  ret.entityId = entityId;
+  const ret     = Object.assign({}, plugin);
+  ret.rawClass  = plugin.clazz;
+  ret.rawConfig = plugin.config;
+  ret.clazz     = metadata.parseClass(plugin.clazz);
+  ret.config    = metadata.parseConfig(plugin.config);
+  ret.entityId  = entityId;
   return ret;
 }
 
