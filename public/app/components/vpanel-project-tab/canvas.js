@@ -15,7 +15,6 @@ class Canvas extends React.Component {
   render() {
     const project = this.props.project;
 
-    // {JSON.stringify(project._raw)}
     return (
       <div>
         CANVAS
