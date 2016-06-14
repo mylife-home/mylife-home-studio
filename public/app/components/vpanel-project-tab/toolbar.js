@@ -22,7 +22,7 @@ const styles = {
   }
 };
 
-class Toolbox extends React.Component {
+class Toolbar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -147,21 +147,6 @@ class Toolbox extends React.Component {
 
     return (
       <div>
-        TOOLBOX
-        <ul>
-          {project.toolbox.map((item) => (
-            <li key={item.entityId}>
-              {item.entityId}
-              <ul>
-                {item.plugins.map((plugin) => (
-                  <li key={plugin.library + ':' + plugin.type}>
-                    {plugin.library + ':' + plugin.type}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
         <mui.Toolbar>
           <mui.ToolbarGroup float="left">
 
@@ -213,8 +198,8 @@ class Toolbox extends React.Component {
   }
 }
 
-Toolbox.propTypes = {
+Toolbar.propTypes = {
   project: React.PropTypes.object.isRequired,
 };
 
-export default Toolbox;
+export default Toolbar;
