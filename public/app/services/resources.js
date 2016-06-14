@@ -69,14 +69,18 @@ class Resources {
       });
   }
 
-  queryResourceSet(entityId, resourceId, resourceContent) {
+  queryResourceSet(entityId, resourceId, resourceContent, cb) {
     debug(`queryResourceSet(${entityId}, ${resourceId}, <content>)`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'set', key: resourceId, value: resourceContent })
       .end((err, res) => {
-        if(err) { return console.error(err); }
+        if(err) {
+          if(!cb) { return console.error(err); }
+          return cb(err);
+        }
         ResourcesActionCreators.resourceSetResult(entityId, resourceId);
+        if(cb) { cb(); }
       });
   }
 
