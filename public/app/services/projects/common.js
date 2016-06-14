@@ -57,8 +57,8 @@ function loadDate(raw) {
   return date;
 }
 
-function saveDate(value) {
-  return `Date(${value.valueOf()})`;
+function serializeDate(value) {
+  return `/Date(${value.valueOf()})/`;
 }
 
 function loadMap(map) {
@@ -105,7 +105,7 @@ function validateHandler(msgs) {
 function serialize(project) {
   project.raw = {
     Name         : project.name,
-    CreationDate : saveDate(project.creationDate),
-    LastUpdate   : saveDate(project.lastUpdate)
+    CreationDate : serializeDate(project.creationDate),
+    LastUpdate   : serializeDate(project.lastUpdate)
   };
 }
