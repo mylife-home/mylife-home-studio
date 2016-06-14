@@ -6,6 +6,8 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import Toolbar from './toolbar';
+
 class Explorer extends React.Component {
 
   constructor(props) {
@@ -13,9 +15,12 @@ class Explorer extends React.Component {
   }
 
   render() {
+    const project = this.props.project;
+
     return (
       <div>
         EXPLORER
+        <Toolbar project={project} />
       </div>
     );
   }

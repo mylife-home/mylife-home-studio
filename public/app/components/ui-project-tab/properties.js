@@ -13,6 +13,8 @@ class Properties extends React.Component {
   }
 
   render() {
+    const project = this.props.project;
+
     return (
       <div>
         PROPERTIES
