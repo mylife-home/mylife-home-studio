@@ -64,6 +64,7 @@ class Projects {
         break;
 
       case 'ui':
+        ui.open(project, data);
         break;
     }
 
