@@ -12,7 +12,10 @@ export default {
   loadDate,
   loadMap,
   loadMapOnline,
-  loadOnlineCoreEntities
+  loadOnlineCoreEntities,
+  validate,
+  validateHandler,
+  serialize
 };
 
 function loadDate(raw) {
@@ -74,4 +77,22 @@ function loadOnlineCoreEntities(done) {
   }
 
   async.parallel(funcs, done);
+}
+
+
+function validate(project, msgs) {
+  if(!project.name) { msgs.push('No name given'); }
+}
+
+function validateHandler(msgs) {
+  if(!msgs.length) { return; }
+
+  const err = new Error('Project is not valid');
+  err.validationErrors = msgs;
+  throw err;
+}
+
+function serialize(project) {
+  throw new Error('not implemented')
+  // TODO
 }

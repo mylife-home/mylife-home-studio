@@ -15,6 +15,8 @@ let operationId = 0;
 export default {
   createNew,
   open,
+  validate,
+  serialize,
   prepareImportToolbox,
   executeImportToolbox,
   importDriverComponents,
@@ -33,6 +35,18 @@ function open(project, data) {
   project.components = data.Components.map(loadComponent.bind(null, project));
   validateOpen(project);
   createLinks(project);
+}
+
+function validate(project, msgs) {
+  common.validate(project, msgs);
+  throw new Error('not implemented')
+  // TODO
+}
+
+function serialize(project) {
+  common.serialize(project);
+  throw new Error('not implemented')
+  // TODO
 }
 
 function prepareImportToolbox(project, done) {

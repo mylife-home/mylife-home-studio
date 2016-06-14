@@ -4,10 +4,14 @@ import uuid from 'uuid';
 import debugLib from 'debug';
 import RepositoryActionCreators from '../../actions/repository-action-creators';
 import ProjectActionCreators from '../../actions/project-action-creators';
+import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
+import Resources from '../resources';
 
 import vpanel from './vpanel';
 import ui from './ui';
 import common from './common';
+
+const resources = new Resources(); // TODO: how to use facade ?
 
 const debug = debugLib('mylife:home:studio:services:projects');
 
@@ -45,7 +49,7 @@ class Projects {
     const data = JSON.parse(content);
     const id = uuid.v4();
     const project = {
-      _raw: data,
+      raw: data,
       id,
       type,
       name: data.Name,
@@ -68,35 +72,55 @@ class Projects {
     return project;
   }
 
-  save(project, serializer, done) {
+  validate(project) {
+    const msgs = [];
+
+    switch(project.type) {
+      case 'vpanel':
+        vpanel.validate(project, msgs);
+        break;
+
+      case 'ui':
+        ui.validate(project, msgs);
+        break;
+    }
+
+    common.validateHandler(msgs);
+  }
+
+  saveOnline(project, done) {
+    const key = `project.${project.type}.${project.name}`;
+    const entityId = OnlineStore.getResourceEntity().id;
+    return this.save(project, (content, done) => resources.queryResourceSet(entityId, key, content, done));
+  }
+
+  save(project, writer, done) {
     try {
       this.validate(project);
+
+      switch(project.type) {
+        case 'vpanel':
+          vpanel.serialize(project, msgs);
+          break;
+
+        case 'ui':
+          ui.serialize(project, msgs);
+          break;
+      }
+
     } catch(err) {
       return done(err);
     }
 
-    return done(new Error('not implemented'));
-/*
-    const data = project._data;
-    const content = JSON.stringify(data);
-    serializer(project.name, content, (err) => {
+    const content = JSON.stringify(project.raw);
+    writer(content, (err) => {
       if(err) { return done(err); }
-      project._save();
+
+      project.dirty = false;
+      debug('project saved', project.id);
+      ProjectActionCreators.refresh(project);
       return done();
     });
-*/
-  }
-
-  validate(project) {
-    const msgs = [];
-
-    if(!project.name) { msgs.push('No name given'); }
-
-    if(!msgs.length) { return; }
-
-    const err = new Error('Project is not valid');
-    err.validationErrors = msgs;
-    throw err;
   }
 
   vpanelPrepareImportOnlineToolbox(project, done) {

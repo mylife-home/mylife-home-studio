@@ -2,12 +2,17 @@
 
 export default {
   createNew,
-  open
+  open,
+  serialize
 };
 
 function createNew(project) {
 }
 
 function open(project) {
+
+}
+
+function serialize(project) {
 
 }
