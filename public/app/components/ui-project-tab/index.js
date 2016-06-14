@@ -6,7 +6,13 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import Properties from './properties';
+import Explorer from './explorer';
+import Toolbox from './toolbox';
+import Canvas from './canvas';
+
 import ProjectActionCreators from '../../actions/project-action-creators';
+import ProjectStore from '../../stores/project-store';
 
 import tabStyles from '../base/tab-styles';
 
@@ -14,6 +20,21 @@ class UiProjectTab extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = { };
+  }
+
+  componentDidMount() {
+    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  handleStoreChange() {
+    const project = this.props.project;
+    let projectVersion = project && project.version;
+    this.setState({ projectVersion });
   }
 
   render() {
@@ -24,10 +45,15 @@ class UiProjectTab extends React.Component {
         <bs.Row style={tabStyles.fullHeight}>
           <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
             <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              TOOLBOX
+              <Toolbox project={project} />
             </mui.Paper>
           </bs.Col>
-          <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
+          <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
+            <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+              <Explorer project={project} />
+            </mui.Paper>
+          </bs.Col>
+          <bs.Col sm={6} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
             <div>
               <base.DetailsTitle
                 center={project.name}
@@ -37,12 +63,12 @@ class UiProjectTab extends React.Component {
                     <base.icons.actions.Close />
                   </mui.IconButton>
                 }/>
-              TODO
+              <Canvas project={project} />
             </div>
           </bs.Col>
           <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
             <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              PROPERTIES
+              <Properties project={project} />
             </mui.Paper>
           </bs.Col>
         </bs.Row>
