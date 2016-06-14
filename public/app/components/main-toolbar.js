@@ -174,6 +174,7 @@ class MainToolbar extends React.Component {
   saveAs() {
     const project = this.getActiveTabProject();
     DialogsActionCreators.error(new Error('not implemented'));
+    // TODO: just download raw content, do not save (not unmark dirty)
   }
 
   getActiveTabProject() {
