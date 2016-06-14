@@ -57,6 +57,10 @@ function loadDate(raw) {
   return date;
 }
 
+function saveDate(value) {
+  return `Date(${value.valueOf()})`;
+}
+
 function loadMap(map) {
   const ret = {};
   for(const item of map) {
@@ -99,6 +103,9 @@ function validateHandler(msgs) {
 }
 
 function serialize(project) {
-  throw new Error('not implemented')
-  // TODO
+  project.raw = {
+    Name         : project.name,
+    CreationDate : saveDate(project.creationDate),
+    LastUpdate   : saveDate(project.lastUpdate)
+  };
 }
