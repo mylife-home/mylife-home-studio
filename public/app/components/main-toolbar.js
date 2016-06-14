@@ -173,8 +173,14 @@ class MainToolbar extends React.Component {
 
   saveAs() {
     const project = this.getActiveTabProject();
-    DialogsActionCreators.error(new Error('not implemented'));
-    // TODO: just download raw content, do not save (not unmark dirty)
+    let content;
+    try {
+      content = Facade.projects.serialize(project);
+    } catch(err) {
+      return DialogsActionCreators.error(err);
+    }
+
+    base.utils.download(content, 'application/json', project.name + '.json');
   }
 
   getActiveTabProject() {
