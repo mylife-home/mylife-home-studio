@@ -31,7 +31,7 @@ function createNew(project) {
 function open(project, data) {
   project.toolbox = data.Toolbox.map(loadToolboxItem);
   project.components = data.Components.map(loadComponent.bind(null, project));
-  validate(project);
+  validateOpen(project);
   createLinks(project);
 }
 
@@ -408,7 +408,7 @@ function createLinks(project) {
   }
 }
 
-function validate(project) {
+function validateOpen(project) {
   removeDuplicates(project.components, c => c.id);
   for(const comp of project.components) {
     removeDuplicates(comp.bindings, b => `${b.remote_id}:${b.remote_attribute}:${b.local_action}`);
