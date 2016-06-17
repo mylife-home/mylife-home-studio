@@ -93,6 +93,21 @@ function loadDisplayMapItem(project, item) {
 function loadText(project, text) {
   if(!text) { return null; }
   // TODO
+/*
+
+      "text": { // mutuellement exclusif avec display
+        "format": "toto, avec des #data_id#", // toto en javascript, avec des valeur_de_data_id
+        "context": [
+          {
+                    "component_id": "cid",
+                    "component_attribute": "attr",
+                    "id": "data_id"
+          }
+        ]
+      },
+
+*/
+
 }
 
 function loadAction(project, action) {
