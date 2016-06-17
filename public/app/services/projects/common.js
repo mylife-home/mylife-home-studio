@@ -4,8 +4,10 @@ import async from 'async';
 
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 import shared from '../../shared/index';
+import Metadata from '../metadata/index';
 import Resources from '../resources';
 
+const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
 
 export default {
