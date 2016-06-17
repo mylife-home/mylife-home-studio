@@ -447,7 +447,7 @@ function loadToolboxItem(item) {
   const entityId = item.EntityName;
   return {
     entityId,
-    plugins: (plugin) => item.Plugins.map(common.loadPlugin(plugin, entityId))
+    plugins: item.Plugins.map((plugin) => common.loadPlugin(plugin, entityId))
   };
 }
 
