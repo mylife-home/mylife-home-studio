@@ -92,22 +92,18 @@ function loadDisplayMapItem(project, item) {
 
 function loadText(project, text) {
   if(!text) { return null; }
-  // TODO
-/*
+  return {
+    format: text.format,
+    context: text.context.map(loadTextContextItem.bind(null, project))
+  };
+}
 
-      "text": { // mutuellement exclusif avec display
-        "format": "toto, avec des #data_id#", // toto en javascript, avec des valeur_de_data_id
-        "context": [
-          {
-                    "component_id": "cid",
-                    "component_attribute": "attr",
-                    "id": "data_id"
-          }
-        ]
-      },
-
-*/
-
+function loadTextContextItem(project, item) {
+  return {
+    component: findComponent(project, item.component_id),
+    attribute: item.component_attribute,
+    id: item.id
+  };
 }
 
 function loadAction(project, action) {
