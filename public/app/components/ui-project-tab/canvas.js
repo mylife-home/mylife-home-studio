@@ -18,6 +18,7 @@ class Canvas extends React.Component {
     return (
       <div>
         CANVAS
+        {JSON.stringify(project.raw)}
       </div>
     );
   }
