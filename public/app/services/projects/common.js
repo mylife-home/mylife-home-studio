@@ -16,6 +16,7 @@ export default {
   serializeMap,
   loadMapOnline,
   loadOnlineCoreEntities,
+  loadPlugin,
   validate,
   validateHandler,
   serialize
@@ -95,6 +96,17 @@ function loadOnlineCoreEntities(done) {
   async.parallel(funcs, done);
 }
 
+function loadPlugin(plugin, entityId) {
+  const ret     = Object.assign({}, plugin);
+  ret.rawClass  = plugin.clazz;
+  ret.rawConfig = plugin.config;
+  ret.clazz     = metadata.parseClass(plugin.clazz);
+  ret.config    = metadata.parseConfig(plugin.config);
+  if(entityId) {
+    ret.entityId  = entityId;
+  }
+  return ret;
+}
 
 function validate(project, msgs) {
   if(!project.name) { msgs.push('No name given'); }

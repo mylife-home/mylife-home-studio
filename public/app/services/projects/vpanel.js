@@ -199,7 +199,7 @@ function executeImportToolbox(data, done) {
       const {entity, plugin } = data.onlinePlugins.get(add);
       const entityId = entity.id;
       const item = getToolboxItem(data.project, entityId);
-      item.plugins.push(loadPlugin(entityId, plugin));
+      item.plugins.push(common.loadPlugin(plugin, entityId));
       common.dirtify(data.project);
     }
 
@@ -447,7 +447,7 @@ function loadToolboxItem(item) {
   const entityId = item.EntityName;
   return {
     entityId,
-    plugins: item.Plugins.map(loadPlugin.bind(null, entityId))
+    plugins: (plugin) => item.Plugins.map(common.loadPlugin(plugin, entityId))
   };
 }
 
@@ -459,16 +459,6 @@ function getToolboxItem(project, entityId) {
   }
   const ret = { entityId, plugins: [] };
   project.toolbox.push(ret);
-  return ret;
-}
-
-function loadPlugin(entityId, plugin) {
-  const ret     = Object.assign({}, plugin);
-  ret.rawClass  = plugin.clazz;
-  ret.rawConfig = plugin.config;
-  ret.clazz     = metadata.parseClass(plugin.clazz);
-  ret.config    = metadata.parseConfig(plugin.config);
-  ret.entityId  = entityId;
   return ret;
 }
 
