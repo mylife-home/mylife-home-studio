@@ -101,7 +101,9 @@ function serialize(project) {
         remote_attribute: binding.remote_attribute,
         remote_id       : binding.remote_id })),
       config   : common.serializeMap(component.config),
-      designer : common.serializeMap(component.designer)
+      designer : common.serializeMap({
+        Location: `${component.designer.location.x},${component.designer.location.y}`
+      })
     },
     EntityName : component.plugin.entityId
   }));
@@ -237,7 +239,9 @@ function importDriverComponents(project, done) {
           bindings: [],
           bindingTargets: [],
           config: common.loadMapOnline(onlineComponent.config),
-          designer: [], // TODO: location
+          designer: [
+            { location: { x: 0, y: 0 } }
+          ],
           plugin
         };
 
@@ -468,9 +472,24 @@ function loadComponent(project, component) {
     bindings: component.Component.bindings,
     bindingTargets: [],
     config: common.loadMap(component.Component.config),
-    designer: common.loadMap(component.Component.designer),
+    designer: loadComponentDesigner(component.Component.designer),
     plugin: findPlugin(project, component.EntityName, component.Component.library, component.Component.type)
   };
+}
+
+function loadComponentDesigner(designer) {
+  const map = common.loadMap(designer);
+  const ret = {};
+
+  if(map.Location) {
+    const split = map.Location.split(',');
+    ret.location = {
+      x: parseInt(split[0]),
+      y: parseInt(split[1])
+    };
+  }
+
+  return ret;
 }
 
 function createLinks(project) {
