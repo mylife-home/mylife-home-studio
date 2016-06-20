@@ -28,5 +28,9 @@ export default {
     PROJECT_REFRESH: null,
 
     TAB_ACTIVATE: null,
+  }),
+
+  DragTypes: keyMirror({
+    VPANEL_PLUGIN: null
   })
 };

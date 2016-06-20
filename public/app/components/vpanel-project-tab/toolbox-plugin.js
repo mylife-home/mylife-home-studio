@@ -4,7 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
+import * as dnd from 'react-dnd';
 import base from '../base/index';
+
+import AppConstants from '../../constants/app-constants';
 
 import Toolbar from './toolbar';
 
@@ -15,17 +18,42 @@ class ToolboxPlugin extends React.Component {
   }
 
   render() {
-    const plugin = this.props.plugin;
+    const { connectDragSource, isDragging, plugin } = this.props;
 
-    return (
-      <div>{plugin.library + ':' + plugin.type}</div>
+    return connectDragSource(
+      <div style={{
+        opacity: isDragging ? 0.5 : 1,
+        cursor: 'move'
+      }}>
+        {plugin.library + ':' + plugin.type}
+      </div>
     );
   }
 }
 
 ToolboxPlugin.propTypes = {
   plugin: React.PropTypes.object.isRequired,
+  connectDragSource: React.PropTypes.func.isRequired,
+  isDragging: React.PropTypes.bool.isRequired
 };
 
-export default ToolboxPlugin;
+const pluginSource = {
+  beginDrag(props) {
+    const plugin = props.plugin;
+    return {
+      entityId: plugin.entityId,
+      library: plugin.library,
+      type: plugin.type
+    };
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  }
+}
+
+export default dnd.DragSource(AppConstants.DragTypes.VPANEL_PLUGIN, pluginSource, collect)(ToolboxPlugin);
 
