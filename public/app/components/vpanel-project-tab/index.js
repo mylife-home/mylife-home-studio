@@ -48,7 +48,7 @@ class VPanelProjectTab extends React.Component {
             </mui.Paper>
           </bs.Col>
           <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
-            <div>
+            <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
               <base.DetailsTitle
                 center={project.name}
                 left={<base.icons.tabs.VPanel />}

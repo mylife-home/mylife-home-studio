@@ -4,7 +4,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
+import * as dnd from 'react-dnd';
 import base from '../base/index';
+
+import AppConstants from '../../constants/app-constants';
+
+import CanvasCompoment from './canvas-component';
+
+import tabStyles from '../base/tab-styles';
+
+const styles = {
+  canvas: {
+    position: 'relative',
+    height: 'calc(100% - 80px)',
+    overflow: 'scroll'
+  }
+};
 
 class Canvas extends React.Component {
 
@@ -13,35 +28,24 @@ class Canvas extends React.Component {
   }
 
   render() {
-    const project = this.props.project;
+    const { project, connectDropTarget, isOver } = this.props;
 
-    return (
-      <div>
-        CANVAS
-        <ul>
-          {project.components.map((component) => (
-            <li key={component.id}>
-              {component.id}
-              <table>
-                <tbody>
-                  <tr><td>entity</td><td>&nbsp;</td><td>{component.plugin.entityId}</td></tr>
-                  <tr><td>plugin</td><td>&nbsp;</td><td>{component.plugin.library + ':' + component.plugin.type}</td></tr>
-                  <tr><td>bindings</td><td>&nbsp;</td><td>
-                    <ul>
-                    {component.bindings.map((binding) => (
-                      <li key={binding.local_action + ':' + binding.remote_id + ':' + binding.remote_attribute}>
-                        {binding.remote_id + ':' + binding.remote_attribute + ' -> ' + binding.local_action}
-                      </li>
-                    ))}
-                    </ul>
-                  </td></tr>
-                  <tr><td>config</td><td>&nbsp;</td><td>{JSON.stringify(component.config)}</td></tr>
-                  <tr><td>designer</td><td>&nbsp;</td><td>{JSON.stringify(component.designer)}</td></tr>
-                </tbody>
-              </table>
-            </li>
-          ))}
-        </ul>
+    return connectDropTarget(
+      <div style={styles.canvas}>
+        {isOver &&
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            zIndex: 1,
+            opacity: 0.5,
+            backgroundColor: 'lightgray',
+          }} />
+        }
+
+        {project.components.map((component) => (<CanvasCompoment key={component.id} component={component} />))}
       </div>
     );
   }
@@ -49,6 +53,22 @@ class Canvas extends React.Component {
 
 Canvas.propTypes = {
   project: React.PropTypes.object.isRequired,
+  connectDropTarget: React.PropTypes.func.isRequired,
+  isOver: React.PropTypes.bool.isRequired
 };
 
-export default Canvas;
+const canvasTarget = {
+  drop(props, monitor) {
+    // TODO
+    console.log('TODO DROP', props, monitor.getClientOffset(), monitor.getSourceClientOffset());
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  };
+}
+
+export default dnd.DropTarget(AppConstants.DragTypes.VPANEL_PLUGIN, canvasTarget, collect)(Canvas);
