@@ -3,6 +3,8 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import * as muiStyles from 'material-ui/styles/index';
+import * as dnd from 'react-dnd';
+import dndHTML5Backend from 'react-dnd-html5-backend';
 import base from './base/index';
 
 import MainToolbar from './main-toolbar';
@@ -116,4 +118,4 @@ class Application extends React.Component {
   }
 }
 
-export default Application;
+export default dnd.DragDropContext(dndHTML5Backend)(Application);
