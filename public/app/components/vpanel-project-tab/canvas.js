@@ -14,10 +14,17 @@ import CanvasCompoment from './canvas-component';
 import tabStyles from '../base/tab-styles';
 
 const styles = {
+  container: {
+    position : 'relative',
+    height   : 'calc(100% - 80px)',
+    overflow : 'scroll'
+  },
   canvas: {
-    position: 'relative',
-    height: 'calc(100% - 80px)',
-    overflow: 'scroll'
+    position : 'absolute',
+    top      : 0,
+    left     : 0,
+    height   : '10000px',
+    width    : '10000px'
   }
 };
 
@@ -31,21 +38,23 @@ class Canvas extends React.Component {
     const { project, connectDropTarget, isOver } = this.props;
 
     return connectDropTarget(
-      <div style={styles.canvas}>
-        {isOver &&
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100%',
-            zIndex: 1,
-            opacity: 0.5,
-            backgroundColor: 'lightgray',
-          }} />
-        }
+      <div style={styles.container}>
+        <div style={styles.canvas}>
+          {isOver &&
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              height: '100%',
+              width: '100%',
+              zIndex: 1,
+              opacity: 0.5,
+              backgroundColor: 'lightgray',
+            }} />
+          }
 
-        {project.components.map((component) => (<CanvasCompoment key={component.id} component={component} />))}
+          {project.components.map((component) => (<CanvasCompoment key={component.id} component={component} />))}
+        </div>
       </div>
     );
   }
