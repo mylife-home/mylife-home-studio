@@ -65,36 +65,42 @@ class Toolbar extends React.Component {
           <mui.ToolbarGroup float="left">
 
             <mui.IconButton tooltip="New image"
+                            tooltipPosition="top-right"
                             onClick={this.newImage.bind(this)}
                             style={styles.button}>
               <base.icons.actions.New />
             </mui.IconButton>
 
             <mui.IconButton tooltip="New window"
+                            tooltipPosition="top-right"
                             onClick={this.newWindow.bind(this)}
                             style={styles.button}>
               <base.icons.actions.New />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Import UI components from online entities"
+                            tooltipPosition="top-center"
                             onClick={this.importOnline.bind(this)}
                             style={styles.button}>
               <base.icons.actions.Refresh />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Import UI components from online project"
+                            tooltipPosition="top-center"
                             onClick={this.importProjectOnline.bind(this)}
                             style={styles.button}>
               <base.icons.actions.OpenOnline />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Import UI components from file project"
+                            tooltipPosition="top-center"
                             onClick={this.importProjectFile.bind(this)}
                             style={styles.button}>
               <base.icons.actions.OpenFile />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Deploy project"
+                            tooltipPosition="top-center"
                             onClick={this.deploy.bind(this)}
                             style={styles.button}>
               <base.icons.tabs.Online />

@@ -151,24 +151,28 @@ class Toolbar extends React.Component {
           <mui.ToolbarGroup float="left">
 
             <mui.IconButton tooltip="Import toolbox from online entities"
+                            tooltipPosition="top-right"
                             onClick={this.importOnlineToolbox.bind(this)}
                             style={styles.button}>
               <base.icons.PluginDriver />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Import driver components from online entities"
+                            tooltipPosition="top-right"
                             onClick={this.importOnlineDriverComponents.bind(this)}
                             style={styles.button}>
               <base.icons.Component />
             </mui.IconButton>
 
-            <mui.IconButton tooltip="Deploy vpanel project (replace vpanel and ui components on all entities)"
+            <mui.IconButton tooltip={<div>Deploy vpanel project<br/>(replace vpanel and ui components on all entities)</div>}
+                            tooltipPosition="top-center"
                             onClick={this.deployVPanel.bind(this)}
                             style={styles.button}>
               <base.icons.tabs.Online />
             </mui.IconButton>
 
-            <mui.IconButton tooltip="Deploy driver project (replace driver components on targeted entities)"
+            <mui.IconButton tooltip={<div>Deploy driver project<br/>(replace driver components on targeted entities)</div>}
+                            tooltipPosition="top-center"
                             onClick={this.deployDrivers.bind(this)}
                             style={styles.button}>
               <base.icons.tabs.Online />
