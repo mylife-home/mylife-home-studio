@@ -45,6 +45,8 @@
       "node-events": "npm:node-events@^0.0.2",
       "react": "npm:react@^15.0.1",
       "react-bootstrap": "npm:react-bootstrap@^0.28.5",
+      "react-dnd": "npm:react-dnd@^2.1.4",
+      "react-dnd-html5-backend": "npm:react-dnd-html5-backend@^2.1.2",
       "react-dom": "npm:react-dom@^15.0.1",
       "react-tap-event-plugin": "npm:react-tap-event-plugin@^1.0.0",
       "socket.io-client": "github:socketio/socket.io-client@^1.4.5",
