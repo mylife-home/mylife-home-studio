@@ -9,8 +9,6 @@ import base from '../base/index';
 
 import AppConstants from '../../constants/app-constants';
 
-import Toolbar from './toolbar';
-
 class ToolboxPlugin extends React.Component {
 
   constructor(props) {
