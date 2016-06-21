@@ -7,6 +7,8 @@ import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
 
+import AppConstants from '../../constants/app-constants';
+
 class CanvasComponent extends React.Component {
 
   constructor(props) {
@@ -14,14 +16,17 @@ class CanvasComponent extends React.Component {
   }
 
   render() {
-    const { component } = this.props;
+    const { component, connectDragSource, isDragging } = this.props;
     const location = component.designer.location;
 
-    return (
+    return connectDragSource(
       <div style={{
         position : 'absolute',
         left    : location.x + 'px',
-        top     : location.y + 'px'
+        top     : location.y + 'px',
+        opacity : isDragging ? 0 : 1,
+        height  : isDragging ? 0 : '',
+        cursor  : 'move'
       }}>
         <mui.Paper>
           {component.id}
@@ -49,7 +54,26 @@ class CanvasComponent extends React.Component {
 }
 
 CanvasComponent.propTypes = {
-  component: React.PropTypes.object.isRequired
+  component: React.PropTypes.object.isRequired,
+  connectDragSource: React.PropTypes.func.isRequired,
+  isDragging: React.PropTypes.bool.isRequired
 };
 
-export default CanvasComponent;
+
+const componentSource = {
+  beginDrag(props) {
+    const component = props.component;
+    return {
+      id: component.id
+    };
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  }
+}
+
+export default dnd.DragSource(AppConstants.DragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent);;

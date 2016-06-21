@@ -69,7 +69,7 @@ Canvas.propTypes = {
 const canvasTarget = {
   drop(props, monitor) {
     // TODO
-    console.log('TODO DROP', props, monitor.getClientOffset(), monitor.getSourceClientOffset());
+    console.log('TODO DROP', monitor.getItemType(), props, monitor.getClientOffset(), monitor.getSourceClientOffset());
   }
 };
 
@@ -80,4 +80,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DropTarget(AppConstants.DragTypes.VPANEL_PLUGIN, canvasTarget, collect)(Canvas);
+export default dnd.DropTarget([AppConstants.DragTypes.VPANEL_PLUGIN, AppConstants.DragTypes.VPANEL_COMPONENT], canvasTarget, collect)(Canvas);
