@@ -7,6 +7,7 @@ import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
 
+import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 
 class CanvasComponent extends React.Component {
@@ -59,6 +60,7 @@ class CanvasComponent extends React.Component {
 }
 
 CanvasComponent.propTypes = {
+  project: React.PropTypes.object.isRequired,
   component: React.PropTypes.object.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
   connectDragPreview: React.PropTypes.func.isRequired,
@@ -72,6 +74,20 @@ const componentSource = {
     return {
       id: component.id
     };
+  },
+
+  endDrag(props, monitor) {
+    if(!monitor.didDrop()) { return; }
+
+    const { component, project } = props;
+
+    const location = component.designer.location;
+    const result = monitor.getDropResult();
+    location.x += Math.round(result.delta.x);
+    location.y += Math.round(result.delta.y);
+
+    // keep ui fluid
+    window.setTimeout(() => Facade.projects.dirtify(project), 0);
   }
 };
 
