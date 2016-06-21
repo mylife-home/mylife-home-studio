@@ -16,20 +16,25 @@ class CanvasComponent extends React.Component {
   }
 
   render() {
-    const { component, connectDragSource, isDragging } = this.props;
+    const { component, connectDragSource, connectDragPreview, isDragging } = this.props;
     const location = component.designer.location;
 
-    return connectDragSource(
+    if(isDragging) {
+      return null;
+    }
+
+    return connectDragPreview(
       <div style={{
         position : 'absolute',
-        left    : location.x + 'px',
-        top     : location.y + 'px',
-        opacity : isDragging ? 0 : 1,
-        height  : isDragging ? 0 : '',
-        cursor  : 'move'
+        left    : location.x,
+        top     : location.y
       }}>
         <mui.Paper>
-          {component.id}
+          {connectDragSource(
+            <div style={{ cursor: 'move' }}>
+              {component.id}
+            </div>
+          )}
           <table>
             <tbody>
               <tr><td>entity</td><td>&nbsp;</td><td>{component.plugin.entityId}</td></tr>
@@ -56,6 +61,7 @@ class CanvasComponent extends React.Component {
 CanvasComponent.propTypes = {
   component: React.PropTypes.object.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
+  connectDragPreview: React.PropTypes.func.isRequired,
   isDragging: React.PropTypes.bool.isRequired
 };
 
@@ -72,6 +78,7 @@ const componentSource = {
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
   }
 }
