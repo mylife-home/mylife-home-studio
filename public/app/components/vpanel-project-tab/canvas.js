@@ -35,12 +35,12 @@ class Canvas extends React.Component {
   }
 
   render() {
-    const { project, connectDropTarget, isOver } = this.props;
+    const { project, connectDropTarget, isHighlighted } = this.props;
 
     return connectDropTarget(
       <div style={styles.container}>
         <div style={styles.canvas}>
-          {isOver &&
+          {isHighlighted &&
             <div style={{
               position: 'absolute',
               top: 0,
@@ -63,7 +63,7 @@ class Canvas extends React.Component {
 Canvas.propTypes = {
   project: React.PropTypes.object.isRequired,
   connectDropTarget: React.PropTypes.func.isRequired,
-  isOver: React.PropTypes.bool.isRequired
+  isHighlighted: React.PropTypes.bool.isRequired
 };
 
 const canvasTarget = {
@@ -76,7 +76,7 @@ const canvasTarget = {
 function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
+    isHighlighted: monitor.canDrop()
   };
 }
 
