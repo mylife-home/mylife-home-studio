@@ -25,6 +25,9 @@ const styles = {
     left     : 0,
     height   : '10000px',
     width    : '10000px'
+  },
+  canvasHighlight: {
+    backgroundColor: 'lightgray'
   }
 };
 
@@ -37,22 +40,13 @@ class Canvas extends React.Component {
   render() {
     const { project, connectDropTarget, isHighlighted } = this.props;
 
+    const canvasStyle = isHighlighted ?
+      Object.assign({}, styles.canvas, styles.canvasHighlight) :
+      Object.assign({}, styles.canvas);
+
     return connectDropTarget(
       <div style={styles.container}>
-        <div style={styles.canvas}>
-          {isHighlighted &&
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              height: '100%',
-              width: '100%',
-              zIndex: 1,
-              opacity: 0.5,
-              backgroundColor: 'lightgray',
-            }} />
-          }
-
+        <div style={canvasStyle}>
           {project.components.map((component) => (<CanvasCompoment key={component.id} component={component} />))}
         </div>
       </div>
