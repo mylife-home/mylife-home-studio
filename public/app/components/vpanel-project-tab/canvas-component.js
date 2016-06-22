@@ -12,13 +12,27 @@ import AppConstants from '../../constants/app-constants';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
+function getStyles(props, state) {
+  const { muiTheme, isSelected } = state;
+  const { baseTheme } = muiTheme;
+//console.log(baseTheme);
+
+  return {
+    title: {
+      cursor: 'move',
+      background: (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color)
+    }
+  };
+}
+
 class CanvasComponent extends React.Component {
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
 
     this.state = {
-      isSelected: false
+      isSelected: false,
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
   }
 
@@ -49,6 +63,7 @@ class CanvasComponent extends React.Component {
     const { project, component, connectDragSource, connectDragPreview, isDragging } = this.props;
     const { isSelected } = this.state;
     const location = component.designer.location;
+    const styles = getStyles(this.props, this.state);
 
     if(isDragging) {
       return null;
@@ -62,7 +77,7 @@ class CanvasComponent extends React.Component {
       }} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <mui.Paper>
           {connectDragSource(
-            <div style={{ cursor: 'move', background: (isSelected ? 'green' : 'gray') }}>
+            <div style={styles.title}>
               {component.id}
             </div>
           )}
@@ -97,6 +112,13 @@ CanvasComponent.propTypes = {
   isDragging: React.PropTypes.bool.isRequired
 };
 
+CanvasComponent.contextTypes = {
+  muiTheme: React.PropTypes.object
+};
+
+CanvasComponent.childContextTypes = {
+  muiTheme: React.PropTypes.object
+};
 
 const componentSource = {
   beginDrag(props, monitor, uiComponent) {
