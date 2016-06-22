@@ -24,4 +24,11 @@ export default {
       project
     });
   },
+
+  stateChange: function(project) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.PROJECT_STATE_REFRESH,
+      project
+    });
+  }
 };
