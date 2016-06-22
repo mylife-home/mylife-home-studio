@@ -35,6 +35,14 @@ class ProjectStateStore extends EventEmitter {
     this.emit(CHANGE_EVENT);
   }
 
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  }
+
+  removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+
   getProjectState(project) {
     let state = this.states.get(project.id);
     if(state) { return state; }
