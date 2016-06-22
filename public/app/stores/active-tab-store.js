@@ -24,6 +24,7 @@ class ActiveTabStore extends EventEmitter {
         break;
 
       case AppConstants.ActionTypes.PROJECT_CLOSE:
+        if(action.project.id !== this.activeTab) { return; }
         this.activeTab = DEFAULT_TAB;
         this.emitChange();
         break;
