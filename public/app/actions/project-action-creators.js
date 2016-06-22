@@ -25,7 +25,7 @@ export default {
     });
   },
 
-  stateChange: function(project) {
+  stateRefresh: function(project) {
     AppDispatcher.dispatch({
       type: AppConstants.ActionTypes.PROJECT_STATE_REFRESH,
       project
