@@ -17,7 +17,6 @@ class ProjectStateStore extends EventEmitter {
   handleDispatch(action) {
     switch(action.type) {
       case AppConstants.ActionTypes.PROJECT_LOAD:
-        this.states.set(action.project.id, {});
         this.emitChange();
         break;
 
@@ -37,7 +36,10 @@ class ProjectStateStore extends EventEmitter {
   }
 
   getProjectState(project) {
-    return this.states.get(project.id);
+    let state = this.states.get(project.id);
+    if(state) { return state; }
+    this.states.set(project.id, (state = {}));
+    return state;
   }
 };
 
