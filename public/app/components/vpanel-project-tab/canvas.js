@@ -8,6 +8,8 @@ import * as dnd from 'react-dnd';
 import base from '../base/index';
 
 import AppConstants from '../../constants/app-constants';
+import ProjectStateStore from '../../stores/project-state-store';
+import ProjectActionCreators from '../../actions/project-action-creators';
 
 import CanvasCompoment from './canvas-component';
 
@@ -37,6 +39,13 @@ class Canvas extends React.Component {
     super(props);
   }
 
+  select() {
+    const project = this.props.project;
+    const state = ProjectStateStore.getProjectState(project);
+    state.selection = null;
+    ProjectActionCreators.stateRefresh(project);
+  }
+
   render() {
     const { project, connectDropTarget, isHighlighted } = this.props;
 
@@ -46,7 +55,7 @@ class Canvas extends React.Component {
 
     return connectDropTarget(
       <div style={styles.container}>
-        <div style={canvasStyle}>
+        <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
           {project.components.map((component) => (<CanvasCompoment key={component.id} project={project} component={component}/>))}
         </div>
       </div>

@@ -9,15 +9,45 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
+import ProjectStateStore from '../../stores/project-state-store';
+import ProjectActionCreators from '../../actions/project-action-creators';
 
 class CanvasComponent extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      isSelected: false
+    };
+  }
+
+  componentDidMount() {
+    ProjectStateStore.addChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    ProjectStateStore.removeChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  handleStoreChange() {
+    const { project, component } = this.props;
+    const projectState = ProjectStateStore.getProjectState(project);
+    this.setState({
+      isSelected: projectState.selection === component.id
+    });
+  }
+
+  select() {
+    const project = this.props.project;
+    const projectState = ProjectStateStore.getProjectState(project);
+    projectState.selection = this.props.component.id;
+    ProjectActionCreators.stateRefresh(project);
   }
 
   render() {
-    const { component, connectDragSource, connectDragPreview, isDragging } = this.props;
+    const { project, component, connectDragSource, connectDragPreview, isDragging } = this.props;
+    const { isSelected } = this.state;
     const location = component.designer.location;
 
     if(isDragging) {
@@ -29,10 +59,10 @@ class CanvasComponent extends React.Component {
         position : 'absolute',
         left    : location.x,
         top     : location.y
-      }}>
+      }} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <mui.Paper>
           {connectDragSource(
-            <div style={{ cursor: 'move' }}>
+            <div style={{ cursor: 'move', background: (isSelected ? 'green' : 'gray') }}>
               {component.id}
             </div>
           )}
@@ -69,7 +99,8 @@ CanvasComponent.propTypes = {
 
 
 const componentSource = {
-  beginDrag(props) {
+  beginDrag(props, monitor, uiComponent) {
+    uiComponent.select();
     const component = props.component;
     return {
       id: component.id
