@@ -36,8 +36,8 @@ class ProjectStateStore extends EventEmitter {
     this.emit(CHANGE_EVENT);
   }
 
-  getProjectState(id) {
-    return this.states(id);
+  getProjectState(project) {
+    return this.states.get(project.id);
   }
 };
 
