@@ -8,6 +8,14 @@ function download(content, mime, filename) {
   document.removeChild(pom);
 }
 
+function stopPropagationWrapper(func) {
+  return (e) => {
+    if(e) { e.stopPropagation(); }
+    func();
+  }
+}
+
 export default {
-  download
+  download,
+  stopPropagationWrapper
 };
