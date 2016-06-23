@@ -55,7 +55,7 @@ class Canvas extends React.Component {
 
     return connectDropTarget(
       <div style={styles.container}>
-        <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
+        <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))} ref="canvas">
           {project.components.map((component) => (<CanvasCompoment key={component.id} project={project} component={component}/>))}
         </div>
       </div>
@@ -70,12 +70,14 @@ Canvas.propTypes = {
 };
 
 const canvasTarget = {
-  drop(props, monitor) {
+  drop(props, monitor, component) {
     switch(monitor.getItemType()) {
     case AppConstants.DragTypes.VPANEL_PLUGIN:
-      // TODO
-      console.log('TODO DROP', props);
-      break;
+      const canvasRect = component.refs.canvas.getBoundingClientRect();
+      const dropOffset = monitor.getClientOffset();
+      const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
+      // handled in ToolboxPlugin/endDrag
+      return { location };
 
     case AppConstants.DragTypes.VPANEL_COMPONENT:
       // handled in CanvasComponent/endDrag
