@@ -45,7 +45,13 @@ class Properties extends React.Component {
       return (<div>PROJECT</div>);
     }
 
-    return (<div>COMPONENT {selection}</div>);
+    switch(selection.type) {
+    case 'component':
+      return (<div>COMPONENT {selection.id}</div>);
+
+    case 'binding':
+      return (<div>BINDING</div>);
+    }
   }
 
   render() {
