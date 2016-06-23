@@ -119,7 +119,7 @@ const pluginSource = {
     const { project } = props;
     const { location } = monitor.getDropResult();
 
-    const component = Facade.projects.vpanelCreateComponent(project, location, plugin);
+    const component = Facade.projects.vpanelCreateComponent(project, base.utils.snapToGrid(location), plugin);
 
     const projectState = ProjectStateStore.getProjectState(project);
     projectState.selection = component.id;

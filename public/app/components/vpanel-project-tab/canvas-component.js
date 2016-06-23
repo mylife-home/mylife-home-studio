@@ -138,6 +138,7 @@ const componentSource = {
     const { delta } = monitor.getDropResult();
     location.x += Math.round(delta.x);
     location.y += Math.round(delta.y);
+    base.utils.snapToGrid(location, true);
 
     // keep ui fluid
     window.setTimeout(() => Facade.projects.dirtify(project), 0);
