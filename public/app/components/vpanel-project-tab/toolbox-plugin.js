@@ -8,8 +8,9 @@ import * as dnd from 'react-dnd';
 import base from '../base/index';
 
 import Facade from '../../services/facade';
-
 import AppConstants from '../../constants/app-constants';
+import ProjectStateStore from '../../stores/project-state-store';
+import ProjectActionCreators from '../../actions/project-action-creators';
 
 const styles = {
   iconContainer: {
@@ -109,6 +110,20 @@ const pluginSource = {
       library: plugin.library,
       type: plugin.type
     };
+  },
+
+  endDrag(props, monitor) {
+    if(!monitor.didDrop()) { return; }
+
+    const plugin = monitor.getItem();
+    const { project } = props;
+    const { location } = monitor.getDropResult();
+
+    const component = Facade.projects.vpanelCreateComponent(project, location, plugin);
+
+    const projectState = ProjectStateStore.getProjectState(project);
+    projectState.selection = component.id;
+    ProjectActionCreators.stateRefresh(project);
   }
 };
 
