@@ -37,7 +37,7 @@ class Toolbox extends React.Component {
       item.plugins.forEach(plugin => {
         items.push(
           <mui.ListItem key={`${entityId}:${plugin.library}:${plugin.type}`}>
-            <ToolboxPlugin plugin={plugin}></ToolboxPlugin>
+            <ToolboxPlugin project={project} plugin={plugin}></ToolboxPlugin>
           </mui.ListItem>
         );
       });

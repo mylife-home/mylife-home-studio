@@ -94,6 +94,7 @@ class ToolboxPlugin extends React.Component {
 }
 
 ToolboxPlugin.propTypes = {
+  project: React.PropTypes.object.isRequired,
   plugin: React.PropTypes.object.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
   connectDragPreview: React.PropTypes.func.isRequired,
