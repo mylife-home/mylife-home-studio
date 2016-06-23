@@ -135,9 +135,9 @@ const componentSource = {
     const { component, project } = props;
 
     const location = component.designer.location;
-    const result = monitor.getDropResult();
-    location.x += Math.round(result.delta.x);
-    location.y += Math.round(result.delta.y);
+    const { delta } = monitor.getDropResult();
+    location.x += Math.round(delta.x);
+    location.y += Math.round(delta.y);
 
     // keep ui fluid
     window.setTimeout(() => Facade.projects.dirtify(project), 0);
