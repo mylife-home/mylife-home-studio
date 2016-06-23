@@ -13,10 +13,10 @@ const pluginUsage = Object.freeze({
 });
 
 const configType = Object.freeze({
-  string  :  's',
-  integer :  'i',
-  number  :  'n',
-  boolean :  'b',
+  string  :  { id: 's', defaultValue: ''},
+  integer :  { id: 'i', defaultValue: '0' },
+  number  :  { id: 'n', defaultValue: '0' },
+  boolean :  { id: 'b', defaultValue: 'false' },
 });
 
 class Metadata {
@@ -33,10 +33,15 @@ class Metadata {
 
   getConfigTypeName(value) {
     for(const name of Object.keys(configType)) {
-      if(configType[name] === value) {
+      if(configType[name].id === value) {
         return name;
       }
     }
+  }
+
+  getConfigTypeDefaultValue(value) {
+    const name = this.getConfigTypeName(value);
+    return configType[name].defaultValue;
   }
 
   parseType(value) {
