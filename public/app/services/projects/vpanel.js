@@ -462,6 +462,7 @@ function createComponent(project, location, pluginData) {
     plugin
   };
   project.components.push(component);
+  return component;
 }
 
 function loadToolboxItem(item) {

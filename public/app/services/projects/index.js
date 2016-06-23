@@ -167,8 +167,9 @@ class Projects {
   }
 
   vpanelCreateComponent(project, location, pluginData) {
-    vpanel.createComponent(project, location, pluginData);
+    const component = vpanel.createComponent(project, location, pluginData);
     ProjectActionCreators.refresh(project);
+    return component;
   }
 }
 
