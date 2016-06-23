@@ -461,7 +461,10 @@ function createComponent(project, location, pluginData) {
     designer: { location },
     plugin
   };
+
   project.components.push(component);
+  common.dirtify(project);
+
   return component;
 }
 
