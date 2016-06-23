@@ -21,7 +21,8 @@ export default {
   loadPlugin,
   validate,
   validateHandler,
-  serialize
+  serialize,
+  uid
 };
 
 function dirtify(project) {
@@ -128,4 +129,8 @@ function serialize(project) {
     CreationDate : serializeDate(project.creationDate),
     LastUpdate   : serializeDate(project.lastUpdate)
   };
+}
+
+function uid() {
+  return Math.floor((1 + Math.random()) * 0x10000000).toString(16);
 }
