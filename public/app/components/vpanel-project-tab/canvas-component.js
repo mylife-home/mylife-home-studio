@@ -15,12 +15,48 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
   const { baseTheme } = muiTheme;
-//console.log(baseTheme);
 
   return {
-    title: {
-      cursor: 'move',
-      background: (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color)
+    titleContainer: {
+      cursor     : 'move',
+      background : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
+      color      : (isSelected ? baseTheme.palette.alternateTextColor : baseTheme.palette.textColor),
+    },
+    titleText: {
+      whiteSpace    : 'nowrap',
+      overflow      : 'hidden',
+      textOverflow  : 'ellipsis',
+      margin        : 0,
+      paddingTop    : 2,
+      paddingLeft   : 8,
+      paddingRight  : 8,
+      letterSpacing : 0,
+      fontSize      : 16,
+      fontWeight    : 'normal',
+      height        : '25px',
+      lineHeight    : '25px'
+    },
+    titleIconContainer: {
+      float  : 'left',
+      width  : '25px',
+      height : '25px'
+    },
+    titleIcon: {
+      textAlign     : 'center',
+      height        : '25px',
+      lineHeight    : '25px',
+      verticalAlign : 'middle'
+    },
+    detailsContainer: {
+      paddingLeft  : 4,
+      paddingRight : 4,
+//      fontStyle    : 'italic'
+    },
+    detailsIcon: {
+      textAlign     : 'center',
+      height        : '12px',
+      lineHeight    : '12px',
+      verticalAlign : 'middle'
     }
   };
 }
@@ -59,8 +95,88 @@ class CanvasComponent extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
+  renderIcon(styles) {
+    const { component } = this.props;
+    const iconColor = styles.titleContainer.color;
+
+    switch(component.plugin.usage) {
+    case Facade.metadata.pluginUsage.driver:
+      return (
+        <base.icons.PluginDriver color={iconColor} style={styles.titleIcon} />
+      );
+
+    case Facade.metadata.pluginUsage.vpanel:
+      return (
+        <base.icons.PluginVPanel color={iconColor} style={styles.titleIcon} />
+      );
+
+    case Facade.metadata.pluginUsage.ui:
+      return (
+        <base.icons.PluginUi color={iconColor} style={styles.titleIcon} />
+      );
+
+    default:
+      return null;
+    }
+  }
+
+  renderTitle(styles) {
+    const { component, connectDragSource } = this.props;
+
+    return connectDragSource(
+      <div style={styles.titleContainer}>
+        <div style={styles.titleIconContainer}>{this.renderIcon(styles)}</div>
+        <div style={styles.titleText}>{component.id}</div>
+      </div>
+    );
+  }
+
+  renderDetails(styles) {
+    const { component } = this.props;
+    const entityHost = component.plugin.entityId.split('_')[1];
+    const plugin = component.plugin;
+
+    return (
+      <div style={styles.detailsContainer}>
+        <div>
+          <base.icons.Plugin style={styles.detailsIcon} />
+          {`${entityHost} - ${plugin.library}:${component.plugin.type}`}
+        </div>
+        {Object.keys(component.config).map(name => (
+          <div key={name}>
+            <base.icons.NetConfig style={styles.detailsIcon} />
+            {`${name} : ${component.config[name]}`}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  renderMembers(styles) {
+    const { component } = this.props;
+    const plugin = component.plugin;
+
+    // TODO
+    return (
+      <div style={styles.detailsContainer}>
+        {plugin.clazz.attributes.map(attribute => (
+          <div key={attribute.name}>
+            <base.icons.NetAttribute style={styles.detailsIcon} />
+            {`${attribute.name} (${attribute.type})`}
+          </div>
+        ))}
+        {plugin.clazz.actions.map(action => (
+          <div key={action.name}>
+            <base.icons.NetAction style={styles.detailsIcon} />
+            {`${action.name} (${action.types})`}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   render() {
-    const { project, component, connectDragSource, connectDragPreview, isDragging } = this.props;
+    const { project, component, connectDragPreview, connectDragSource, isDragging } = this.props;
     const { isSelected } = this.state;
     const location = component.designer.location;
     const styles = getStyles(this.props, this.state);
@@ -76,15 +192,18 @@ class CanvasComponent extends React.Component {
         top     : location.y
       }} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <mui.Paper>
-          {connectDragSource(
-            <div style={styles.title}>
-              {component.id}
-            </div>
-          )}
+          {this.renderTitle(styles)}
+          {this.renderDetails(styles)}
+          {this.renderMembers(styles)}
+        </mui.Paper>
+      </div>
+    );
+  }
+}
+
+/*
           <table>
             <tbody>
-              <tr><td>entity</td><td>&nbsp;</td><td>{component.plugin.entityId}</td></tr>
-              <tr><td>plugin</td><td>&nbsp;</td><td>{component.plugin.library + ':' + component.plugin.type}</td></tr>
               <tr><td>bindings</td><td>&nbsp;</td><td>
                 <ul>
                 {component.bindings.map((binding) => (
@@ -94,15 +213,9 @@ class CanvasComponent extends React.Component {
                 ))}
                 </ul>
               </td></tr>
-              <tr><td>config</td><td>&nbsp;</td><td>{JSON.stringify(component.config)}</td></tr>
-              <tr><td>designer</td><td>&nbsp;</td><td>{JSON.stringify(component.designer)}</td></tr>
             </tbody>
           </table>
-        </mui.Paper>
-      </div>
-    );
-  }
-}
+*/
 
 CanvasComponent.propTypes = {
   project: React.PropTypes.object.isRequired,
