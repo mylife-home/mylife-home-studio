@@ -12,6 +12,9 @@ import AppConstants from '../../constants/app-constants';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
+import CanvasComponentAttribute from './canvas-component-attribute';
+import CanvasComponentAction from './canvas-component-action';
+
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
   const { baseTheme } = muiTheme;
@@ -153,23 +156,23 @@ class CanvasComponent extends React.Component {
   }
 
   renderMembers(styles) {
-    const { component } = this.props;
+    const { project, component } = this.props;
     const plugin = component.plugin;
 
     // TODO
     return (
       <div style={styles.detailsContainer}>
         {plugin.clazz.attributes.map(attribute => (
-          <div key={attribute.name}>
-            <base.icons.NetAttribute style={styles.detailsIcon} />
-            {`${attribute.name} (${attribute.type})`}
-          </div>
+          <CanvasComponentAttribute key={attribute.name}
+                                    project={project}
+                                    component={component}
+                                    attribute={attribute} />
         ))}
         {plugin.clazz.actions.map(action => (
-          <div key={action.name}>
-            <base.icons.NetAction style={styles.detailsIcon} />
-            {`${action.name} (${action.types})`}
-          </div>
+          <CanvasComponentAction key={action.name}
+                                 project={project}
+                                 component={component}
+                                 action={action} />
         ))}
       </div>
     );
@@ -266,4 +269,4 @@ function collect(connect, monitor) {
   }
 }
 
-export default dnd.DragSource(AppConstants.DragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent);;
+export default dnd.DragSource(AppConstants.DragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent);
