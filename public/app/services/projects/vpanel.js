@@ -22,7 +22,8 @@ export default {
   importDriverComponents,
   prepareDeployVPanel,
   prepareDeployDrivers,
-  executeDeploy
+  executeDeploy,
+  createComponent
 };
 
 function createNew(project) {
@@ -445,6 +446,22 @@ function executeDeploy(data, done) {
     if(err) { return done(err); }
     return common.loadOnlineCoreEntities(done);
   });
+}
+
+function createComponent(project, location, pluginData) {
+  const plugin = findPlugin(project, pluginData.entityId, pluginData.library, pluginData.type);
+  const config = {};
+  plugin.config.forEach(item => config[item.name] = metadata.getConfigTypeDefaultValue(item.type));
+
+  const component = {
+    id: `component_${common.uid()}`,
+    bindings: [],
+    bindingTargets: [],
+    config,
+    designer: { location },
+    plugin
+  };
+  project.components.push(component);
 }
 
 function loadToolboxItem(item) {

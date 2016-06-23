@@ -165,6 +165,11 @@ class Projects {
       return done();
     });
   }
+
+  vpanelCreateComponent(project, location, pluginData) {
+    vpanel.createComponent(project, location, pluginData);
+    ProjectActionCreators.refresh(project);
+  }
 }
 
 export default Projects;
