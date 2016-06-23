@@ -6,18 +6,56 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import ProjectStore from '../../stores/project-store';
+import ProjectStateStore from '../../stores/project-state-store';
+import ProjectActionCreators from '../../actions/project-action-creators';
+
 class Properties extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      selection: null
+    };
+  }
+
+  componentDidMount() {
+    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStateStore.addChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStateStore.removeChangeListener(this.handleStoreChange.bind(this));
+  }
+
+  handleStoreChange() {
+    const { project } = this.props;
+    const projectState = ProjectStateStore.getProjectState(project);
+    this.setState({
+      selection : projectState.selection
+    });
+  }
+
+  renderTitle() {
+    const { selection } = this.state;
+
+    if(!selection) {
+      return (<div>PROJECT</div>);
+    }
+
+    return (<div>COMPONENT {selection}</div>);
   }
 
   render() {
-    const project = this.props.project;
+    const { project } = this.props;
+    const { selection } = this.state;
 
     return (
       <div>
         PROPERTIES
+        {this.renderTitle()}
       </div>
     );
   }
