@@ -505,8 +505,16 @@ function createBinding(project, remoteComponentId, remoteAttributeName, localCom
   const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
 
   const binding = {
+    remote: remoteComponent,
+    local: localComponent,
+    remote_attribute: remoteAttributeName,
+    local_action: localActionName
+  };
+  localComponent.bindings.push(binding);
+  remoteComponent.bindingTargets.push(binding);
 
-  }
+  common.dirtify(project);
+  return binding;
 }
 
 function loadToolboxItem(item) {
