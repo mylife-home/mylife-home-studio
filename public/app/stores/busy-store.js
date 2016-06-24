@@ -10,6 +10,7 @@ class BusyStore extends EventEmitter {
 
   constructor() {
     super();
+    this.setMaxListeners(0);
     this.busyText = null;
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }

@@ -10,6 +10,7 @@ class ProjectStateStore extends EventEmitter {
 
   constructor() {
     super();
+    this.setMaxListeners(0);
     this.states = new Map();
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }

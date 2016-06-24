@@ -10,6 +10,7 @@ class ErrorStore extends EventEmitter {
 
   constructor() {
     super();
+    this.setMaxListeners(0);
     this.error = null;
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }

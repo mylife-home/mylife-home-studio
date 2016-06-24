@@ -10,6 +10,7 @@ class OnlineStore extends EventEmitter {
 
   constructor() {
     super();
+    this.setMaxListeners(0);
     this.entities = new Map();
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
