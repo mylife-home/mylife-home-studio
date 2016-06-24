@@ -11,15 +11,7 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
-
-const styles = {
-  icon: {
-    textAlign     : 'center',
-    height        : '12px',
-    lineHeight    : '12px',
-    verticalAlign : 'middle'
-  }
-};
+import styles from './canvas-component-styles';
 
 class CanvasComponentAttribute extends React.Component {
 
@@ -42,9 +34,9 @@ class CanvasComponentAttribute extends React.Component {
     const { project, component, attribute, connectDragPreview, connectDragSource, isDragging } = this.props;
 
     return connectDragSource(
-      <div>
-        {connectDragPreview(<div><base.icons.NetAttribute style={styles.icon} /></div>)}
-        {`${attribute.name} (${attribute.type})`}
+      <div style={styles.detailsContainer}>
+        {connectDragPreview(<div style={styles.detailsIconContainer}><base.icons.NetAttribute style={styles.detailsIcon} /></div>)}
+        <div style={styles.detailsText}>{`${attribute.name} (${attribute.type})`}</div>
       </div>
     );
   }

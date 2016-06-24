@@ -14,12 +14,13 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 
 import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
+import commonStyles from './canvas-component-styles';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
   const { baseTheme } = muiTheme;
 
-  return {
+  return Object.assign({
     titleContainer: {
       cursor     : 'move',
       background : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
@@ -50,18 +51,11 @@ function getStyles(props, state) {
       lineHeight    : '25px',
       verticalAlign : 'middle'
     },
-    detailsContainer: {
-      paddingLeft  : 4,
-      paddingRight : 4,
-//      fontStyle    : 'italic'
-    },
-    detailsIcon: {
-      textAlign     : 'center',
-      height        : '12px',
-      lineHeight    : '12px',
-      verticalAlign : 'middle'
+    details: {
+      paddingTop    : '2px',
+      paddingBottom : '2px'
     }
-  };
+  }, commonStyles);
 }
 
 class CanvasComponent extends React.Component {
@@ -123,66 +117,13 @@ class CanvasComponent extends React.Component {
     }
   }
 
-  renderTitle(styles) {
-    const { component, connectDragSource } = this.props;
-
-    return connectDragSource(
-      <div style={styles.titleContainer}>
-        <div style={styles.titleIconContainer}>{this.renderIcon(styles)}</div>
-        <div style={styles.titleText}>{component.id}</div>
-      </div>
-    );
-  }
-
-  renderDetails(styles) {
-    const { component } = this.props;
-    const entityHost = component.plugin.entityId.split('_')[1];
-    const plugin = component.plugin;
-
-    return (
-      <div style={styles.detailsContainer}>
-        <div>
-          <base.icons.Plugin style={styles.detailsIcon} />
-          {`${entityHost} - ${plugin.library}:${component.plugin.type}`}
-        </div>
-        {Object.keys(component.config).map(name => (
-          <div key={name}>
-            <base.icons.NetConfig style={styles.detailsIcon} />
-            {`${name} : ${component.config[name]}`}
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  renderMembers(styles) {
-    const { project, component } = this.props;
-    const plugin = component.plugin;
-
-    // TODO
-    return (
-      <div style={styles.detailsContainer}>
-        {plugin.clazz.attributes.map(attribute => (
-          <CanvasComponentAttribute key={attribute.name}
-                                    project={project}
-                                    component={component}
-                                    attribute={attribute} />
-        ))}
-        {plugin.clazz.actions.map(action => (
-          <CanvasComponentAction key={action.name}
-                                 project={project}
-                                 component={component}
-                                 action={action} />
-        ))}
-      </div>
-    );
-  }
-
   render() {
     const { project, component, connectDragPreview, connectDragSource, isDragging } = this.props;
     const { isSelected } = this.state;
     const location = component.designer.location;
     const styles = getStyles(this.props, this.state);
+    const entityHost = component.plugin.entityId.split('_')[1];
+    const plugin = component.plugin;
 
     if(isDragging) {
       return null;
@@ -195,9 +136,38 @@ class CanvasComponent extends React.Component {
         top     : location.y
       }} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <mui.Paper>
-          {this.renderTitle(styles)}
-          {this.renderDetails(styles)}
-          {this.renderMembers(styles)}
+          {/* title */}
+          {connectDragSource(
+            <div style={styles.titleContainer}>
+              <div style={styles.titleIconContainer}>{this.renderIcon(styles)}</div>
+              <div style={styles.titleText}>{component.id}</div>
+            </div>
+          )}
+          {/* details */}
+          <div style={styles.details}>
+            <div style={styles.detailsContainer}>
+              <div style={styles.detailsIconContainer}><base.icons.Plugin style={styles.detailsIcon} /></div>
+              <div style={styles.detailsText}>{`${entityHost} - ${plugin.library}:${component.plugin.type}`}</div>
+            </div>
+            {Object.keys(component.config).map(name => (
+              <div key={name} style={styles.detailsContainer}>
+                <div style={styles.detailsIconContainer}><base.icons.NetConfig style={styles.detailsIcon} /></div>
+                <div style={styles.detailsText}>{`${name} : ${component.config[name]}`}</div>
+              </div>
+            ))}
+            {plugin.clazz.attributes.map(attribute => (
+              <CanvasComponentAttribute key={attribute.name}
+                                        project={project}
+                                        component={component}
+                                        attribute={attribute} />
+            ))}
+            {plugin.clazz.actions.map(action => (
+              <CanvasComponentAction key={action.name}
+                                     project={project}
+                                     component={component}
+                                     action={action} />
+            ))}
+          </div>
         </mui.Paper>
       </div>
     );

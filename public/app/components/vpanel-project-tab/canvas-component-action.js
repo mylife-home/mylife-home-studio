@@ -11,15 +11,7 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
-
-const styles = {
-  icon: {
-    textAlign     : 'center',
-    height        : '12px',
-    lineHeight    : '12px',
-    verticalAlign : 'middle'
-  }
-};
+import styles from './canvas-component-styles';
 
 class CanvasComponentAction extends React.Component {
 
@@ -42,9 +34,9 @@ class CanvasComponentAction extends React.Component {
     const { project, component, action, connectDropTarget, isHighlighted } = this.props;
 
     return connectDropTarget(
-      <div>
-        <base.icons.NetAction style={styles.icon} />
-        {`${action.name} (${action.types})`}
+      <div style={styles.detailsContainer}>
+        <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
+        <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
       </div>
     );
   }
