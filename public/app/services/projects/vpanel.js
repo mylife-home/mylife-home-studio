@@ -558,6 +558,7 @@ function createLinks(project) {
   for(const component of project.components) {
     for(const binding of component.bindings) {
       const remoteComponent = findComponent(project, binding.remote_id);
+      delete binding.remote_id;
       binding.local = component;
       binding.remote = remoteComponent
       remoteComponent.bindingTargets.push(binding);
