@@ -100,7 +100,7 @@ function serialize(project) {
       bindings : component.bindings.map(binding => ({
         local_action    : binding.local_action,
         remote_attribute: binding.remote_attribute,
-        remote_id       : binding.remote_id })),
+        remote_id       : binding.remote.id })),
       config   : common.serializeMap(component.config),
       designer : common.serializeMap({
         Location: `${component.designer.location.x},${component.designer.location.y}`
