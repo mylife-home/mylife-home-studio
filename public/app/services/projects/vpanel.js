@@ -23,7 +23,9 @@ export default {
   prepareDeployVPanel,
   prepareDeployDrivers,
   executeDeploy,
-  createComponent
+  createComponent,
+  canCreateBinding,
+  createBinding
 };
 
 function createNew(project) {
@@ -466,6 +468,45 @@ function createComponent(project, location, pluginData) {
   common.dirtify(project);
 
   return component;
+}
+
+function canCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
+  const remoteComponent = findComponent(project, remoteComponentId);
+  const localComponent  = findComponent(project, localComponentId);
+  const remoteAttribute = remoteComponent.plugin.clazz.attributes.find(a => a.name === remoteAttributeName);
+  const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
+
+  // check types
+  if(localAction.types.length !== 1 || localAction.types[0] !== remoteAttribute.type) {
+    return false;
+  }
+
+  // cannot bind on self
+  if(remoteComponent.id === localComponent.id) {
+    return false;
+  }
+
+  // check if a binding already exists
+  for(const binding of localComponent.bindings) {
+    if(binding.remote.id === remoteComponent.id &&
+       binding.remote_attribute === remoteAttribute.name &&
+       binding.local_action === localAction.name) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function createBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
+  const remoteComponent = findComponent(project, remoteComponentId);
+  const localComponent  = findComponent(project, localComponentId);
+  const remoteAttribute = remoteComponent.plugin.clazz.attributes.find(a => a.name === remoteAttributeName);
+  const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
+
+  const binding = {
+
+  }
 }
 
 function loadToolboxItem(item) {

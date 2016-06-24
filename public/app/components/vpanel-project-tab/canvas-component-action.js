@@ -11,7 +11,13 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
-import styles from './canvas-component-styles';
+import commonStyles from './canvas-component-styles';
+
+const styles = Object.assign({
+  highlight: {
+    backgroundColor: 'lightgray'
+  }
+}, commonStyles);
 
 class CanvasComponentAction extends React.Component {
 
@@ -33,8 +39,12 @@ class CanvasComponentAction extends React.Component {
   render() {
     const { project, component, action, connectDropTarget, isHighlighted } = this.props;
 
+    const containerStyle = isHighlighted ?
+      Object.assign({}, styles.detailsContainer, styles.highlight) :
+      Object.assign({}, styles.detailsContainer);
+
     return connectDropTarget(
-      <div style={styles.detailsContainer}>
+      <div style={containerStyle}>
         <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
         <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
       </div>
@@ -51,8 +61,19 @@ CanvasComponentAction.propTypes = {
 };
 
 const actionTarget = {
-  drop(props, monitor, component) {
-    console.log('TODO drop');
+  drop(props) {
+    const { component, action } = props;
+    return {
+      componentId: component.id,
+      actionName: action.name
+    };
+  },
+
+  canDrop(props, monitor) {
+    const { project, component, action } = props;
+    const { componentId, attributeName } = monitor.getItem();
+
+    return Facade.projects.vpanelCanCreateBinding(project, componentId, attributeName, component.id, action.name);
   }
 };
 

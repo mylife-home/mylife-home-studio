@@ -171,6 +171,16 @@ class Projects {
     ProjectActionCreators.refresh(project);
     return component;
   }
+
+  vpanelCanCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
+    return vpanel.canCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);
+  }
+
+  vpanelCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
+    const binding = vpanel.createBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);
+    ProjectActionCreators.refresh(project);
+    return binding;
+  }
 }
 
 export default Projects;

@@ -63,7 +63,20 @@ const attributeSource = {
   endDrag(props, monitor) {
     if(!monitor.didDrop()) { return; }
 
-    console.log('TODO endDrag');
+    const { project, component, attribute } = props;
+    const { componentId, actionName } = monitor.getDropResult();
+
+    const binding = Facade.projects.vpanelCreateBinding(project, component.id, attribute.name, componentId, actionName);
+
+    const projectState = ProjectStateStore.getProjectState(project);
+    projectState.selection = {
+      type: 'binding',
+      remoteId: binding.remote.id,
+      localId: binding.local.id,
+      remoteAttribute: binding.remote_attribute,
+      localAction: binding.local_action
+    };
+    ProjectActionCreators.stateRefresh(project);
   }
 };
 
