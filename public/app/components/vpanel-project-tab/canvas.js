@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
+import joint from 'jointjs';
 import base from '../base/index';
 
 import AppConstants from '../../constants/app-constants';
@@ -37,6 +38,22 @@ class Canvas extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    this.graph = new joint.dia.Graph();
+    this.paper = new joint.dia.Paper({
+      el: ReactDOM.findDOMNode(this.refs.canvas),
+      width: 10000,
+      height: 10000,
+      model: this.graph,
+      gridSize: 1
+    });
+  }
+
+  componentWillUnmount() {
+    this.paper = null;
+    this.graph = null;
   }
 
   select() {
