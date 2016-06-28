@@ -26,7 +26,7 @@ class Properties extends React.Component {
   }
 
   componentWillUnmount() {
-    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
     ProjectStateStore.removeChangeListener(this.handleStoreChange.bind(this));
   }
 
