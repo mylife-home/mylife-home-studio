@@ -33,6 +33,7 @@ System.config({
     "react-dnd-html5-backend": "npm:react-dnd-html5-backend@2.1.2",
     "react-dom": "npm:react-dom@15.1.0",
     "react-faux-dom": "npm:react-faux-dom@2.6.2",
+    "react-measure": "npm:react-measure@0.4.0",
     "react-tap-event-plugin": "npm:react-tap-event-plugin@1.0.0",
     "socket.io-client": "github:socketio/socket.io-client@1.4.6",
     "superagent": "npm:superagent@1.8.3",
@@ -126,6 +127,9 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:babel-runtime@5.8.38": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:batch-processor@1.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:bn.js@4.11.3": {
@@ -284,6 +288,10 @@ System.config({
     },
     "npm:domain-browser@1.1.7": {
       "events": "github:jspm/nodelibs-events@0.1.1"
+    },
+    "npm:element-resize-detector@1.1.4": {
+      "batch-processor": "npm:batch-processor@1.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:elliptic@6.2.5": {
       "bn.js": "npm:bn.js@4.11.3",
@@ -589,6 +597,13 @@ System.config({
       "query-selector": "npm:query-selector@1.0.9",
       "react": "npm:react@15.1.0",
       "style-attr": "npm:style-attr@1.1.0"
+    },
+    "npm:react-measure@0.4.0": {
+      "element-resize-detector": "npm:element-resize-detector@1.1.4",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "react": "npm:react@15.1.0",
+      "react-dom": "npm:react-dom@15.1.0"
     },
     "npm:react-overlays@0.6.3": {
       "classnames": "npm:classnames@2.2.5",
