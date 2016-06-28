@@ -20,6 +20,7 @@ System.config({
     "bootstrap": "github:twbs/bootstrap@3.3.6",
     "core-js": "npm:core-js@1.2.6",
     "css": "github:systemjs/plugin-css@0.1.21",
+    "d3": "npm:d3@3.5.17",
     "debug": "npm:debug@2.2.0",
     "events": "github:jspm/nodelibs-events@0.1.1",
     "flux": "npm:flux@2.1.1",
@@ -31,6 +32,7 @@ System.config({
     "react-dnd": "npm:react-dnd@2.1.4",
     "react-dnd-html5-backend": "npm:react-dnd-html5-backend@2.1.2",
     "react-dom": "npm:react-dom@15.1.0",
+    "react-faux-dom": "npm:react-faux-dom@2.6.2",
     "react-tap-event-plugin": "npm:react-tap-event-plugin@1.0.0",
     "socket.io-client": "github:socketio/socket.io-client@1.4.6",
     "superagent": "npm:superagent@1.8.3",
@@ -531,6 +533,12 @@ System.config({
     "npm:punycode@1.3.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:query-selector@1.0.9": {
+      "child_process": "github:jspm/nodelibs-child_process@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
     "npm:randombytes@2.0.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
@@ -576,6 +584,11 @@ System.config({
     },
     "npm:react-dom@15.1.0": {
       "react": "npm:react@15.1.0"
+    },
+    "npm:react-faux-dom@2.6.2": {
+      "query-selector": "npm:query-selector@1.0.9",
+      "react": "npm:react@15.1.0",
+      "style-attr": "npm:style-attr@1.1.0"
     },
     "npm:react-overlays@0.6.3": {
       "classnames": "npm:classnames@2.2.5",
