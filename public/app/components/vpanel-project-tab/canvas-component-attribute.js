@@ -19,17 +19,6 @@ class CanvasComponentAttribute extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    ProjectStateStore.addChangeListener(this.handleStoreChange.bind(this));
-  }
-
-  componentWillUnmount() {
-    ProjectStateStore.removeChangeListener(this.handleStoreChange.bind(this));
-  }
-
-  handleStoreChange() {
-  }
-
   render() {
     const { project, component, attribute, connectDragPreview, connectDragSource, isDragging } = this.props;
 
