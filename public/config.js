@@ -28,6 +28,7 @@ System.config({
     "material-ui": "npm:material-ui@0.15.0",
     "node-events": "npm:node-events@0.0.2",
     "react": "npm:react@15.1.0",
+    "react-addons-perf": "npm:react-addons-perf@15.1.0",
     "react-bootstrap": "npm:react-bootstrap@0.28.5",
     "react-dnd": "npm:react-dnd@2.1.4",
     "react-dnd-html5-backend": "npm:react-dnd-html5-backend@2.1.2",
@@ -553,6 +554,9 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:react-addons-create-fragment@15.1.0": {
+      "react": "npm:react@15.1.0"
+    },
+    "npm:react-addons-perf@15.1.0": {
       "react": "npm:react@15.1.0"
     },
     "npm:react-addons-transition-group@15.1.0": {

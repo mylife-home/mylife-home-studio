@@ -45,6 +45,7 @@
       "material-ui": "npm:material-ui@^0.15.0-alpha.2",
       "node-events": "npm:node-events@^0.0.2",
       "react": "npm:react@^15.0.1",
+      "react-addons-perf": "npm:react-addons-perf@^15.1.0",
       "react-bootstrap": "npm:react-bootstrap@^0.28.5",
       "react-dnd": "npm:react-dnd@^2.1.4",
       "react-dnd-html5-backend": "npm:react-dnd-html5-backend@^2.1.2",
