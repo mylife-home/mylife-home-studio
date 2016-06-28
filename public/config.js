@@ -23,7 +23,6 @@ System.config({
     "debug": "npm:debug@2.2.0",
     "events": "github:jspm/nodelibs-events@0.1.1",
     "flux": "npm:flux@2.1.1",
-    "jointjs": "npm:jointjs@0.9.10",
     "keymirror": "npm:keymirror@0.1.1",
     "material-ui": "npm:material-ui@0.15.0",
     "node-events": "npm:node-events@0.0.2",
@@ -126,10 +125,6 @@ System.config({
     },
     "npm:babel-runtime@5.8.38": {
       "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:backbone@1.3.3": {
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "underscore": "npm:underscore@1.8.3"
     },
     "npm:bn.js@4.11.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
@@ -259,11 +254,6 @@ System.config({
       "public-encrypt": "npm:public-encrypt@4.0.0",
       "randombytes": "npm:randombytes@2.0.3"
     },
-    "npm:dagre@0.7.4": {
-      "graphlib": "npm:graphlib@1.0.7",
-      "lodash": "npm:lodash@3.10.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:debug@2.2.0": {
       "ms": "npm:ms@0.7.1"
     },
@@ -376,10 +366,6 @@ System.config({
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:graphlib@1.0.7": {
-      "lodash": "npm:lodash@3.10.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:hash.js@1.0.3": {
       "inherits": "npm:inherits@2.0.1"
     },
@@ -408,15 +394,6 @@ System.config({
       "node-fetch": "npm:node-fetch@1.5.3",
       "whatwg-fetch": "npm:whatwg-fetch@1.0.0"
     },
-    "npm:jointjs@0.9.10": {
-      "backbone": "npm:backbone@1.3.3",
-      "dagre": "npm:dagre@0.7.4",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "graphlib": "npm:graphlib@1.0.7",
-      "jquery": "npm:jquery@2.2.4",
-      "lodash": "npm:lodash@3.10.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:lodash-compat@3.10.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -440,9 +417,6 @@ System.config({
     },
     "npm:lodash.throttle@4.0.1": {
       "lodash.debounce": "npm:lodash.debounce@4.0.6"
-    },
-    "npm:lodash@3.10.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:lodash@4.12.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

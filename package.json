@@ -40,7 +40,6 @@
       "debug": "npm:debug@^2.2.0",
       "events": "github:jspm/nodelibs-events@^0.1.1",
       "flux": "npm:flux@^2.1.1",
-      "jointjs": "npm:jointjs@^0.9.10",
       "keymirror": "npm:keymirror@^0.1.1",
       "material-ui": "npm:material-ui@^0.15.0-alpha.2",
       "node-events": "npm:node-events@^0.0.2",
