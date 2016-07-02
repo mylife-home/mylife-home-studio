@@ -6,6 +6,7 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
+import dia from './dia/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
@@ -23,9 +24,13 @@ class CanvasComponentAttribute extends React.Component {
     const { project, component, attribute, connectDragPreview, connectDragSource, isDragging } = this.props;
 
     return connectDragSource(
-      <div style={styles.detailsContainer}>
-        {connectDragPreview(<div style={styles.detailsIconContainer}><base.icons.NetAttribute style={styles.detailsIcon} /></div>)}
-        <div style={styles.detailsText}>{`${attribute.name} (${attribute.type})`}</div>
+      <div>
+        <dia.LinkSource>
+          <div style={styles.detailsContainer}>
+            {connectDragPreview(<div style={styles.detailsIconContainer}><base.icons.NetAttribute style={styles.detailsIcon} /></div>)}
+            <div style={styles.detailsText}>{`${attribute.name} (${attribute.type})`}</div>
+          </div>
+        </dia.LinkSource>
       </div>
     );
   }
