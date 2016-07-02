@@ -87,7 +87,20 @@ class CanvasComponent extends React.Component {
   }
 
   measureChanged(dim) {
+    const { component } = this.props;
+    const plugin = component.plugin;
+    const members = plugin.clazz.attributes.map(a => a.name).
+      concat(plugin.clazz.actions.map(a => a.name));
 
+    // TODO
+    console.log(component.id, members.map(m => ({m, rect: this.measureMember(m)})));
+  }
+
+  measureMember(name) {
+    const node = this.refs[name];
+    // may be not yet rendered
+    if(!node) { return; }
+    return node.getBoundingClientRect();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -171,16 +184,18 @@ class CanvasComponent extends React.Component {
                       </div>
                     ))}
                     {plugin.clazz.attributes.map(attribute => (
-                      <CanvasComponentAttribute key={attribute.name}
-                                                project={project}
-                                                component={component}
-                                                attribute={attribute} />
+                      <div ref={attribute.name} key={attribute.name}>
+                        <CanvasComponentAttribute project={project}
+                                                  component={component}
+                                                  attribute={attribute} />
+                      </div>
                     ))}
                     {plugin.clazz.actions.map(action => (
-                      <CanvasComponentAction key={action.name}
-                                             project={project}
-                                             component={component}
-                                             action={action} />
+                      <div ref={action.name} key={action.name}>
+                        <CanvasComponentAction project={project}
+                                               component={component}
+                                               action={action} />
+                      </div>
                     ))}
                   </div>
                 </mui.Paper>
