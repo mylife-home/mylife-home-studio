@@ -2,7 +2,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Measure from 'react-measure';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
@@ -33,14 +32,9 @@ class CanvasComponentAction extends React.Component {
       Object.assign({}, styles.detailsContainer);
 
     return connectDropTarget(
-      <div>
-    {/* TODO: create connectors! */}
-        <Measure onMeasure={(dimensions) => console.log(component.id, action.name, dimensions)}>
-          <div style={containerStyle}>
-            <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
-            <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
-          </div>
-        </Measure>
+      <div style={containerStyle}>
+        <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
+        <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
       </div>
     );
   }
