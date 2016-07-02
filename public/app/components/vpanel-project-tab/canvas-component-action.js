@@ -6,7 +6,6 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
-import dia from './dia/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
@@ -33,13 +32,9 @@ class CanvasComponentAction extends React.Component {
       Object.assign({}, styles.detailsContainer);
 
     return connectDropTarget(
-      <div>
-        <dia.LinkTarget>
-          <div style={containerStyle}>
-            <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
-            <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
-          </div>
-        </dia.LinkTarget>
+      <div style={containerStyle}>
+        <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
+        <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
       </div>
     );
   }
