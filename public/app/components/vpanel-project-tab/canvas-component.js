@@ -16,6 +16,7 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
 import commonStyles from './canvas-component-styles';
+import measureHelper from './measure-helper';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
@@ -86,14 +87,11 @@ class CanvasComponent extends React.Component {
     });
   }
 
-  measureChanged(dim) {
-    const { component } = this.props;
-    const plugin = component.plugin;
-    const members = plugin.clazz.attributes.map(a => a.name).
-      concat(plugin.clazz.actions.map(a => a.name));
+  handleMeasureChange(dim) {
+    const { project, component } = this.props;
+    const projectState = ProjectStateStore.getProjectState(project);
 
-    // TODO
-    console.log(component.id, members.map(m => ({m, rect: this.measureMember(m)})));
+    measureHelper.componentOnMeasureChanged(this, component, projectState, dim);
   }
 
   measureMember(name) {
@@ -159,7 +157,7 @@ class CanvasComponent extends React.Component {
         left    : location.x,
         top     : location.y
       }} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
-        <Measure onMeasure={this.measureChanged(this)}>
+        <Measure onMeasure={this.handleMeasureChange.bind(this)}>
           <div>
             {connectDragPreview(
               <div>
