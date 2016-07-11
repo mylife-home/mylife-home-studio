@@ -3,24 +3,37 @@
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 export default {
-  componentOnMeasureChanged
+  version,
+  componentOnMeasureChanged,
 };
+
+function projectMeasures(projectState) {
+
+  if(!projectState.measures) {
+    projectState.measures = {
+      version: 0
+    };
+  }
+
+  return projectState.measures;
+}
+
+function version(projectState) {
+  return projectMeasures(projectState).version;
+}
 
 function componentOnMeasureChanged(uiComponent, component, project, projectState, dim) {
 
-  if(!projectState.measures) {
-    projectState.measures = {};
-  }
-
+  const measures = projectMeasures(projectState);
   const plugin = component.plugin;
   const members = plugin.clazz.attributes.map(a => a.name).
     concat(plugin.clazz.actions.map(a => a.name));
 
-  const oldMeasure = projectState.measures[component.id];
+  const oldMeasure = measures[component.id];
 
   if(!componentShouldUpdateMeasure(dim, oldMeasure)) { return; }
 
-  const measure = oldMeasure || (projectState.measures[component.id] = {});
+  const measure = oldMeasure || (measures[component.id] = {});
   measure.__dim = dim;
   let containsNulls = false;
   for(const member of members) {
@@ -30,6 +43,7 @@ function componentOnMeasureChanged(uiComponent, component, project, projectState
   }
   measure.__containsNulls = containsNulls;
   if(!containsNulls) {
+    ++measures.version;
     ProjectActionCreators.stateRefresh(project);
   }
 }

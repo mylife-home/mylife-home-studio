@@ -19,11 +19,12 @@ class CanvasBinding extends React.Component {
   constructor(props, context) {
     super(props);
 
+    const projectState = ProjectStateStore.getProjectState(this.props.project);
+
     this.state = {
-      sourcePoint: null,
-      targetPoint: null,
-      isSelected: false,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+      isSelected:      false,
+      measuresVersion: measureHelper.version(projectState),
+      muiTheme:        context.muiTheme || muiStyles.getMuiTheme()
     };
   }
 
@@ -39,19 +40,19 @@ class CanvasBinding extends React.Component {
     const { project, binding } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
     this.setState({
-      isSelected: projectState.selection &&
-                  projectState.selection.type === 'binding' &&
-                  projectState.selection.remoteId === binding.remote.id &&
-                  projectState.selection.localId === binding.local.id &&
-                  projectState.selection.remoteAttribute === binding.remote_attribute &&
-                  projectState.selection.localAction === binding.local_action
-      // TODO: measures
+      isSelected:      projectState.selection &&
+                       projectState.selection.type === 'binding' &&
+                       projectState.selection.remoteId === binding.remote.id &&
+                       projectState.selection.localId === binding.local.id &&
+                       projectState.selection.remoteAttribute === binding.remote_attribute &&
+                       projectState.selection.localAction === binding.local_action,
+      measuresVersion: measureHelper.version(projectState)
     });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if(nextState.isSelected !== this.state.isSelected) { return true; }
-    // TODO: measures
+    if(nextState.measuresVersion !== this.state.measuresVersion) { return true; }
     return false;
   }
 
