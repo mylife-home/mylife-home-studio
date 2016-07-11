@@ -1,10 +1,12 @@
 'use strict';
 
+import ProjectActionCreators from '../../actions/project-action-creators';
+
 export default {
   componentOnMeasureChanged
 };
 
-function componentOnMeasureChanged(uiComponent, component, projectState, dim) {
+function componentOnMeasureChanged(uiComponent, component, project, projectState, dim) {
 
   if(!projectState.measures) {
     projectState.measures = {};
@@ -28,8 +30,7 @@ function componentOnMeasureChanged(uiComponent, component, projectState, dim) {
   }
   measure.__containsNulls = containsNulls;
   if(!containsNulls) {
-    // Emit event
-    console.log(component.id, 'measure changed');
+    ProjectActionCreators.stateRefresh(project);
   }
 }
 
