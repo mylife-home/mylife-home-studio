@@ -206,22 +206,6 @@ class CanvasComponent extends React.Component {
   }
 }
 
-/*
-          <table>
-            <tbody>
-              <tr><td>bindings</td><td>&nbsp;</td><td>
-                <ul>
-                {component.bindings.map((binding) => (
-                  <li key={binding.local_action + ':' + binding.remote_id + ':' + binding.remote_attribute}>
-                    {binding.remote_id + ':' + binding.remote_attribute + ' -> ' + binding.local_action}
-                  </li>
-                ))}
-                </ul>
-              </td></tr>
-            </tbody>
-          </table>
-*/
-
 CanvasComponent.propTypes = {
   project: React.PropTypes.object.isRequired,
   component: React.PropTypes.object.isRequired,

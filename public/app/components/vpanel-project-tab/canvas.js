@@ -11,7 +11,8 @@ import AppConstants from '../../constants/app-constants';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
-import CanvasCompoment from './canvas-component';
+import CanvasComponent from './canvas-component';
+import CanvasBinding from './canvas-binding';
 
 import tabStyles from '../base/tab-styles';
 
@@ -46,6 +47,21 @@ class Canvas extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
+  renderComponents(project) {
+    return project.components.map((component) => (<CanvasComponent key={component.id} project={project} component={component}/>));
+  }
+
+  renderBindings(project) {
+    const ret = [];
+    for(const component of project.components) {
+      component.bindings.forEach((binding) => {
+        const key = `${binding.local.id}:${binding.local_action}:${binding.remote.id}:${binding.remote_attribute}`;
+        ret.push(<CanvasBinding key={key} project={project} binding={binding}/>);
+      });
+    }
+    return ret;
+  }
+
   render() {
     const { project, connectDropTarget, isHighlighted } = this.props;
 
@@ -56,7 +72,8 @@ class Canvas extends React.Component {
     return connectDropTarget(
       <div style={styles.container}>
         <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))} ref="canvas">
-          {project.components.map((component) => (<CanvasCompoment key={component.id} project={project} component={component}/>))}
+          {this.renderComponents(project)}
+          {this.renderBindings(project)}
         </div>
       </div>
     );
