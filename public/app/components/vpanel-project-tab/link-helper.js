@@ -89,7 +89,7 @@ function componentMeasureMember(uiComponent, name) {
   const rect = uiComponent.measureMember(name);
   if(!rect) { return; }
 
-  const top = (rect.bottom - rect.top) / 2;
+  const top = rect.top + ((rect.bottom - rect.top) / 2);
   return {
     left : { x: rect.left, y: top },
     right: { x: rect.right, y: top }
