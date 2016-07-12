@@ -89,8 +89,12 @@ class CanvasBinding extends React.Component {
 
     console.log(path);
 
+    const start = path[0];
+    const end = path[path.length-1];
+
     return (
       <svg height={32000} width={32000} style={styles.container}>
+        <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} style={{stroke:'rgb(255,0,0)', strokeWidth:2}} />
       </svg>
     );
   }

@@ -179,6 +179,8 @@ function convertPathFromGrid(path) {
 
 function findPath(obstacleGrid, start, end) {
 
+  return convertPathFromGrid([start.left, end.left]);
+
   // TODO: better
   let startPoint;
   if(isPointFree(obstacleGrid, start.left)) {
@@ -186,6 +188,7 @@ function findPath(obstacleGrid, start, end) {
   } else if(isPointFree(obstacleGrid, start.right)) {
     startPoint = start.right;
   } else {
+    console.log('no start point', start, obstacleGrid);
     return null; // no start point
   }
 
@@ -196,6 +199,7 @@ function findPath(obstacleGrid, start, end) {
   } else if(isPointFree(obstacleGrid, end.right)) {
     endPoint = end.right;
   } else {
+    console.log('no end point');
     return null; // no end point
   }
 
