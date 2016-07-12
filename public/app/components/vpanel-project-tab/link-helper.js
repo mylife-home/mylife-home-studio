@@ -114,7 +114,6 @@ function rebuild(project, projectState) {
       const path = findPath(obstacleGrid, convertAnchorToGrid(start), convertAnchorToGrid(end));
       if(!path) { continue; } // TODO: fallback
 
-      console.log(binding, path);
       bindingPaths.set(binding, path);
     }
   }
