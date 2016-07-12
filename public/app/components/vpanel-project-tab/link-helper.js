@@ -14,7 +14,8 @@ const debouncedRebuild = debounce(100, rebuild);
 
 export default {
   version,
-  componentOnMeasureChanged,
+  bindingPath,
+  componentOnMeasureChanged
 };
 
 function data(projectState) {
@@ -23,7 +24,7 @@ function data(projectState) {
     projectState.linkData = {
       version: 0,
       measures: new Map(),
-      grid: null
+      bindingPaths: null
     };
   }
 
@@ -32,6 +33,12 @@ function data(projectState) {
 
 function version(projectState) {
   return data(projectState).version;
+}
+
+function bindingPath(projectState, binding) {
+  const { bindingPaths } = data(projectState);
+  if(!bindingPaths) { return null; }
+  return bindingPaths.get(binding);
 }
 
 function componentOnMeasureChanged(uiComponent, component, project, projectState, dim) {
@@ -163,6 +170,14 @@ function convertAnchorToGrid(anchor) {
   };
 }
 
+function convertPathFromGrid(path) {
+  if(!path) { return null; }
+  return path.map(point => ({
+    x: point.x * GRID_SIZE,
+    y: point.y * GRID_SIZE
+  }));
+}
+
 function findPath(obstacleGrid, start, end) {
 
   // TODO: better
@@ -195,7 +210,7 @@ function findPath(obstacleGrid, start, end) {
     //timeout
   });
 
-  return ret.status === 'success' && ret.path;
+  return ret.status === 'success' && convertPathFromGrid(ret.path);
 }
 
 function rectilinearDistance(a, b) {

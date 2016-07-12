@@ -69,6 +69,15 @@ class CanvasBinding extends React.Component {
   }
 
   render() {
+    const { project, binding } = this.props;
+    const projectState = ProjectStateStore.getProjectState(project);
+    const path = linkHelper.bindingPath(projectState, binding);
+
+    if(!path) {
+      return null;
+    }
+
+    console.log(path);
     return null;
   }
 }
