@@ -26,8 +26,8 @@ const styles = {
     position : 'absolute',
     top      : 0,
     left     : 0,
-    height   : '10000px',
-    width    : '10000px'
+    height   : '32000px',
+    width    : '32000px'
   },
   canvasHighlight: {
     backgroundColor: 'lightgray'
