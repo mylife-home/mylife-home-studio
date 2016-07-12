@@ -14,6 +14,7 @@ System.config({
   },
 
   map: {
+    "a-star": "npm:a-star@0.2.0",
     "async": "npm:async@2.0.0-rc.5",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
@@ -101,6 +102,12 @@ System.config({
     },
     "github:twbs/bootstrap@3.3.6": {
       "jquery": "npm:jquery@2.2.4"
+    },
+    "npm:a-star@0.2.0": {
+      "Set": "npm:Set@0.4.1",
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "dict": "npm:dict@1.4.0",
+      "heap": "npm:heap@0.2.6"
     },
     "npm:asap@2.0.4": {
       "domain": "github:jspm/nodelibs-domain@0.1.0",

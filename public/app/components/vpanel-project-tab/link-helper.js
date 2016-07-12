@@ -1,6 +1,7 @@
 'use strict';
 
 import { throttle, debounce } from 'throttle-debounce';
+import aStar from 'a-star';
 import base from '../base/index';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
