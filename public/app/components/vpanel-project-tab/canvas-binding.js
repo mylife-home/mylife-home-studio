@@ -13,6 +13,16 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 
 import linkHelper from './link-helper';
 
+const styles = {
+  container: {
+    position : 'absolute',
+    top      : 0,
+    left     : 0,
+    height   : '32000px',
+    width    : '32000px'
+  }
+};
+
 class CanvasBinding extends React.Component {
 
   constructor(props, context) {
@@ -78,7 +88,11 @@ class CanvasBinding extends React.Component {
     }
 
     console.log(path);
-    return null;
+
+    return (
+      <svg height={32000} width={32000} style={styles.container}>
+      </svg>
+    );
   }
 }
 
