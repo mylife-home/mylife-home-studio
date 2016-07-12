@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
-import Measure from 'react-measure';
 import base from '../base/index';
 
 import Facade from '../../services/facade';
@@ -12,7 +11,7 @@ import AppConstants from '../../constants/app-constants';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
-import measureHelper from './measure-helper';
+import linkHelper from './link-helper';
 
 class CanvasBinding extends React.Component {
 
@@ -23,7 +22,7 @@ class CanvasBinding extends React.Component {
 
     this.state = {
       isSelected:      false,
-      measuresVersion: measureHelper.version(projectState),
+      linkVersion: linkHelper.version(projectState),
       muiTheme:        context.muiTheme || muiStyles.getMuiTheme()
     };
   }
@@ -46,13 +45,13 @@ class CanvasBinding extends React.Component {
                        projectState.selection.localId === binding.local.id &&
                        projectState.selection.remoteAttribute === binding.remote_attribute &&
                        projectState.selection.localAction === binding.local_action,
-      measuresVersion: measureHelper.version(projectState)
+      linkVersion: linkHelper.version(projectState)
     });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if(nextState.isSelected !== this.state.isSelected) { return true; }
-    if(nextState.measuresVersion !== this.state.measuresVersion) { return true; }
+    if(nextState.linkVersion !== this.state.linkVersion) { return true; }
     return false;
   }
 

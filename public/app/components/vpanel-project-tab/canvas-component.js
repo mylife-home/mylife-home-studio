@@ -16,7 +16,7 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
 import commonStyles from './canvas-component-styles';
-import measureHelper from './measure-helper';
+import linkHelper from './link-helper';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
@@ -92,7 +92,7 @@ class CanvasComponent extends React.Component {
     const projectState = ProjectStateStore.getProjectState(project);
 
     setTimeout(
-      () => measureHelper.componentOnMeasureChanged(this, component, project, projectState, dim),
+      () => linkHelper.componentOnMeasureChanged(this, component, project, projectState, dim),
       0);
   }
 

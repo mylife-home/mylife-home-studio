@@ -1,39 +1,55 @@
 'use strict';
 
+import { throttle, debounce } from 'throttle-debounce';
+import base from '../base/index';
 import ProjectActionCreators from '../../actions/project-action-creators';
+
+const GRID_SIZE   = base.utils.GRID_SIZE;
+const CANVAS_SIZE = 32000;
+const GRID_ROWS   = CANVAS_SIZE / GRID_SIZE;
+const GRID_COLS   = CANVAS_SIZE / GRID_SIZE;
+
+const debouncedRebuild = debounce(100, rebuild);
 
 export default {
   version,
   componentOnMeasureChanged,
 };
 
-function projectMeasures(projectState) {
+function data(projectState) {
 
-  if(!projectState.measures) {
-    projectState.measures = {
-      version: 0
+  if(!projectState.linkData) {
+    projectState.linkData = {
+      version: 0,
+      measures: new Map(),
+      grid: null
     };
   }
 
-  return projectState.measures;
+  return projectState.linkData;
 }
 
 function version(projectState) {
-  return projectMeasures(projectState).version;
+  return data(projectState).version;
 }
 
 function componentOnMeasureChanged(uiComponent, component, project, projectState, dim) {
 
-  const measures = projectMeasures(projectState);
+  const measures = data(projectState).measures;
   const plugin = component.plugin;
   const members = plugin.clazz.attributes.map(a => a.name).
     concat(plugin.clazz.actions.map(a => a.name));
 
-  const oldMeasure = measures[component.id];
+  const oldMeasure = measures.get(component.id);
 
   if(!componentShouldUpdateMeasure(dim, oldMeasure)) { return; }
 
-  const measure = oldMeasure || (measures[component.id] = {});
+  let measure = oldMeasure;
+  if(!measure) {
+    measure = {};
+    measures.set(component.id, measure);
+  }
+
   measure.__dim = dim;
   let containsNulls = false;
   for(const member of members) {
@@ -43,8 +59,7 @@ function componentOnMeasureChanged(uiComponent, component, project, projectState
   }
   measure.__containsNulls = containsNulls;
   if(!containsNulls) {
-    ++measures.version;
-    ProjectActionCreators.stateRefresh(project);
+    debouncedRebuild(project, projectState);
   }
 }
 
@@ -71,4 +86,31 @@ function componentMeasureMember(uiComponent, name) {
     left : { x: rect.left, y: top },
     right: { x: rect.right, y: top }
   };
+}
+
+function rebuild(project, projectState) {
+  const linkData = data(projectState);
+  linkData.ObstacleGrid = buildObstacleGrid(linkData.measures);
+console.log('rebuild');
+  // TODO
+
+  ++linkData.version;
+  ProjectActionCreators.stateRefresh(project);
+}
+
+function buildObstacleGrid(measures) {
+  const grid = new Array(GRID_COLS);
+  for(let x=0; x<GRID_COLS; ++x) {
+    grid[x] = new Array(GRID_ROWS);
+    for(let y=0; y<GRID_ROWS; ++y) {
+      grid[x][y] = false;
+    }
+  }
+
+  for(const measure of measures.values()) {
+    const dim = measure.__dim;
+    // TODO
+  }
+
+  return grid;
 }
