@@ -91,7 +91,6 @@ function componentMeasureMember(uiComponent, name) {
 function rebuild(project, projectState) {
   const linkData = data(projectState);
   linkData.ObstacleGrid = buildObstacleGrid(linkData.measures);
-console.log('rebuild');
   // TODO
 
   ++linkData.version;
@@ -108,9 +107,25 @@ function buildObstacleGrid(measures) {
   }
 
   for(const measure of measures.values()) {
-    const dim = measure.__dim;
-    // TODO
+    const dim = convertToGrid(measure.__dim);
+    for(let x = dim.left; x <= dim.right; ++x) {
+      for(let y=dim.top; y <= dim.bottom; ++y) {
+        grid[x][y] = true;
+      }
+    }
   }
 
   return grid;
+}
+
+function convertToGrid(rect) {
+  const ret = {
+    top:    Math.floor(rect.top   / GRID_SIZE),
+    left:   Math.floor(rect.left  / GRID_SIZE),
+    right:  Math.ceil(rect.right  / GRID_SIZE),
+    bottom: Math.ceil(rect.bottom / GRID_SIZE),
+  }
+  ret.width = ret.right - ret.left;
+  ret.height = ret.bottom - ret.top;
+  return ret;
 }
