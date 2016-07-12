@@ -27,5 +27,6 @@ function snapToGrid(location, inPlace) {
 export default {
   download,
   stopPropagationWrapper,
-  snapToGrid
+  snapToGrid,
+  GRID_SIZE
 };
