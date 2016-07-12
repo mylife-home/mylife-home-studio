@@ -38,6 +38,7 @@ System.config({
     "react-tap-event-plugin": "npm:react-tap-event-plugin@1.0.0",
     "socket.io-client": "github:socketio/socket.io-client@1.4.6",
     "superagent": "npm:superagent@1.8.3",
+    "throttle-debounce": "npm:throttle-debounce@1.0.1",
     "uuid": "npm:uuid@2.0.2",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
