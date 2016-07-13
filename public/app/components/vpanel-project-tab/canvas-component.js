@@ -91,9 +91,7 @@ class CanvasComponent extends React.Component {
     const { project, component } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
 
-    setTimeout(
-      () => linkHelper.componentOnMeasureChanged(this, component, project, projectState, dim),
-      0);
+    linkHelper.componentOnMeasureChanged(this, component, project, projectState, dim);
   }
 
   measureMember(name) {
