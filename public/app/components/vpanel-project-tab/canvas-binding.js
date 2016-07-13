@@ -13,16 +13,38 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 
 import linkHelper from './link-helper';
 
-const styles = {
-  container: {
-    zIndex   : 1,
-    position : 'absolute',
-    top      : 0,
-    left     : 0,
-    height   : '32000px',
-    width    : '32000px'
-  }
-};
+function getStyles(props, state) {
+  const { muiTheme, isSelected } = state;
+  const { baseTheme } = muiTheme;
+
+  return {
+    container: {
+      position : 'absolute',
+      top      : 0,
+      left     : 0,
+      height   : '32000px',
+      width    : '32000px'
+    },
+    box: {
+      zIndex     : 2,
+      position   : 'absolute',
+      height     : '16px',
+      width      : '16px',
+      background : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
+    },
+    svg: {
+      position : 'absolute',
+      top      : 0,
+      left     : 0,
+      height   : '32000px',
+      width    : '32000px'
+    },
+    path: {
+      stroke      : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
+      strokeWidth : 2
+    }
+  };
+}
 
 class CanvasBinding extends React.Component {
 
@@ -83,39 +105,30 @@ class CanvasBinding extends React.Component {
     const { project, binding } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
     const path = linkHelper.bindingPath(projectState, binding);
+    const styles = getStyles(this.props, this.state);
 
     if(!path) {
       return null;
     }
 
-    console.log(path);
-
     const start = path[0];
     const end = path[path.length-1];
+    const middle = path[Math.round(path.length / 2) - 1];
 
     return (
-      <svg height={32000} width={32000} style={styles.container}>
-        <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} style={{stroke:'rgb(255,0,0)', strokeWidth:2}} />
-      </svg>
+      <div style={styles.container}>
+        <svg style={styles.svg}>
+          <g>
+            <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} style={styles.path} />
+          </g>
+        </svg>
+        <div style={Object.assign({left: `${middle.x - 8}px`, top: `${middle.y - 8}px`}, styles.box)}
+             onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
+        </div>
+      </div>
     );
   }
 }
-
-/*
-          <table>
-            <tbody>
-              <tr><td>bindings</td><td>&nbsp;</td><td>
-                <ul>
-                {component.bindings.map((binding) => (
-                  <li key={binding.local_action + ':' + binding.remote_id + ':' + binding.remote_attribute}>
-                    {binding.remote_id + ':' + binding.remote_attribute + ' -> ' + binding.local_action}
-                  </li>
-                ))}
-                </ul>
-              </td></tr>
-            </tbody>
-          </table>
-*/
 
 CanvasBinding.propTypes = {
   project: React.PropTypes.object.isRequired,
