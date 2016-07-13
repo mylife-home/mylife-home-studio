@@ -119,7 +119,7 @@ function componentMeasureMember(uiComponent, name) {
 function rebuild(project, projectState) {
   const linkData = data(projectState);
   const measures = linkData.measures;
-  const obstacleGrid = buildObstacleGrid(measures);
+//  const obstacleGrid = buildObstacleGrid(measures);
   const bindingPaths = new Map();
   linkData.bindingPaths = bindingPaths;
 
@@ -131,10 +131,16 @@ function rebuild(project, projectState) {
       const end = endMeasure && endMeasure[binding.local_action];
       if(!start || !end) { continue; }
 
-      const path = findPath(
-        obstacleGrid,
-        convertAnchorToGrid(measures.canvas, start),
-        convertAnchorToGrid(measures.canvas, end));
+// TODO: use this one
+//      const path = findPathAStar(
+//        obstacleGrid,
+//        convertAnchorToGrid(measures.canvas, start),
+//        convertAnchorToGrid(measures.canvas, end));
+
+      const path = findPathBasic(
+        convertAnchorToCanvas(measures.canvas, start),
+        convertAnchorToCanvas(measures.canvas, end));
+
       if(!path) { continue; } // TODO: fallback
 
       bindingPaths.set(binding, path);
@@ -192,6 +198,20 @@ function convertAnchorToGrid(canvasMeasure, anchor) {
   };
 }
 
+function convertAnchorToCanvas(canvasMeasure, anchor) {
+  const y = anchor.left.y - canvasMeasure.y;
+  return {
+    left: {
+      x: anchor.left.x - canvasMeasure.x,
+      y
+    },
+    right: {
+      x: anchor.right.x - canvasMeasure.x,
+      y
+    }
+  };
+}
+
 function convertPathFromGrid(path) {
   if(!path) { return null; }
   return path.map(point => ({
@@ -200,9 +220,25 @@ function convertPathFromGrid(path) {
   }));
 }
 
-function findPath(obstacleGrid, start, end) {
+function findPathBasic(start, end) {
+  const distances = [];
+  for(const startPoint of [start.left, start.right]) {
+    for(const endPoint of [end.left, end.right]) {
+      distances.push({
+        distance: euclideanDistance(startPoint, endPoint),
+        start: startPoint,
+        end: endPoint
+      });
+    }
+  }
+  distances.sort((a, b) => {
+    return a.distance - b.distance;
+  });
+  const shortest = distances[0];
+  return [shortest.start, shortest.end];
+}
 
-  return convertPathFromGrid([start.left, end.left]);
+function findPathAStar(obstacleGrid, start, end) {
 
   // TODO: better
   let startPoint;
@@ -243,6 +279,12 @@ function rectilinearDistance(a, b) {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   return Math.abs(dx) + Math.abs(dy);
+};
+
+function euclideanDistance(a, b) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  return Math.sqrt(dx * dx + dy * dy);
 };
 
 function isPointFree(obstacleGrid, point) {
