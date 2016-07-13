@@ -55,7 +55,7 @@ function getStyles(props, state) {
 class CanvasBinding extends React.Component {
 
   constructor(props, context) {
-    super(props);
+    super(props, context);
 
     const projectState = ProjectStateStore.getProjectState(this.props.project);
 
