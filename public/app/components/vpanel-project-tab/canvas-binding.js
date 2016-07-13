@@ -32,6 +32,12 @@ function getStyles(props, state) {
       width      : '16px',
       background : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
     },
+    boxIcon: {
+      margin        : '2px',
+      width         : '12px',
+      height        : '12px',
+      color         : (isSelected ? baseTheme.palette.alternateTextColor : baseTheme.palette.textColor),
+    },
     svg: {
       position : 'absolute',
       top      : 0,
@@ -124,6 +130,7 @@ class CanvasBinding extends React.Component {
         </svg>
         <div style={Object.assign({left: `${middle.x - 8}px`, top: `${middle.y - 8}px`}, styles.box)}
              onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
+          <base.icons.Binding color={styles.boxIcon.color} style={styles.boxIcon} />
         </div>
       </div>
     );

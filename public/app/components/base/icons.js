@@ -20,6 +20,7 @@ import HardwareRouter from 'material-ui/svg-icons/hardware/router';
 import NotificationPersonalVideo from 'material-ui/svg-icons/notification/personal-video';
 
 import SocialPublic from 'material-ui/svg-icons/social/public';
+import SocialShare from 'material-ui/svg-icons/social/share';
 
 import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
 import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
@@ -65,4 +66,6 @@ export default {
   NetAttribute    : ActionSearch,
 
   NetConfig       : ActionSettings,
+
+  Binding         : SocialShare,
 };
