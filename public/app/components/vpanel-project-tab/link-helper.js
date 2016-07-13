@@ -15,6 +15,7 @@ const debouncedRebuild = debounce(100, rebuild);
 export default {
   version,
   bindingPath,
+  canvasOnMeasureChanged,
   componentOnMeasureChanged
 };
 
@@ -23,7 +24,10 @@ function data(projectState) {
   if(!projectState.linkData) {
     projectState.linkData = {
       version: 0,
-      measures: new Map(),
+      measures: {
+        components: new Map(),
+        canvas: null
+      },
       bindingPaths: null
     };
   }
@@ -41,21 +45,37 @@ function bindingPath(projectState, binding) {
   return bindingPaths.get(binding);
 }
 
+function canvasOnMeasureChanged(project, projectState, dim) {
+  const measures = data(projectState).measures;
+
+  const newMeasure = {
+    x: dim.left,
+    y: dim.top
+  };
+
+  if(measures.canvas && pointEquals(measures.canvas, newMeasure)) {
+    return;
+  }
+
+  measures.canvas = newMeasure;
+  debouncedRebuild(project, projectState);
+}
+
 function componentOnMeasureChanged(uiComponent, component, project, projectState, dim) {
 
-  const measures = data(projectState).measures;
+  const componentMeasures = data(projectState).measures.components;
   const plugin = component.plugin;
   const members = plugin.clazz.attributes.map(a => a.name).
     concat(plugin.clazz.actions.map(a => a.name));
 
-  const oldMeasure = measures.get(component.id);
+  const oldMeasure = componentMeasures.get(component.id);
 
   if(!componentShouldUpdateMeasure(dim, oldMeasure)) { return; }
 
   let measure = oldMeasure;
   if(!measure) {
     measure = {};
-    measures.set(component.id, measure);
+    componentMeasures.set(component.id, measure);
   }
 
   measure.__dim = dim;
@@ -105,13 +125,16 @@ function rebuild(project, projectState) {
 
   for(const component of project.components) {
     for(const binding of component.bindings) {
-      const startMeasure = measures.get(binding.remote.id);
+      const startMeasure = measures.components.get(binding.remote.id);
       const start = startMeasure && startMeasure[binding.remote_attribute];
-      const endMeasure = measures.get(binding.local.id);
+      const endMeasure = measures.components.get(binding.local.id);
       const end = endMeasure && endMeasure[binding.local_action];
       if(!start || !end) { continue; }
 
-      const path = findPath(obstacleGrid, convertAnchorToGrid(start), convertAnchorToGrid(end));
+      const path = findPath(
+        obstacleGrid,
+        convertAnchorToGrid(measures.canvas, start),
+        convertAnchorToGrid(measures.canvas, end));
       if(!path) { continue; } // TODO: fallback
 
       bindingPaths.set(binding, path);
@@ -131,8 +154,8 @@ function buildObstacleGrid(measures) {
     }
   }
 
-  for(const measure of measures.values()) {
-    const dim = convertRectToGrid(measure.__dim);
+  for(const measure of measures.components.values()) {
+    const dim = convertRectToGrid(measures.canvas, measure.__dim);
     for(let x = dim.left; x <= dim.right; ++x) {
       for(let y=dim.top; y <= dim.bottom; ++y) {
         grid[x][y] = true;
@@ -143,27 +166,27 @@ function buildObstacleGrid(measures) {
   return grid;
 }
 
-function convertRectToGrid(rect) {
+function convertRectToGrid(canvasMeasure, rect) {
   const ret = {
-    top:    Math.floor(rect.top   / GRID_SIZE),
-    left:   Math.floor(rect.left  / GRID_SIZE),
-    right:  Math.ceil(rect.right  / GRID_SIZE),
-    bottom: Math.ceil(rect.bottom / GRID_SIZE),
+    top:    Math.floor((rect.top - canvasMeasure.y)   / GRID_SIZE),
+    left:   Math.floor((rect.left - canvasMeasure.x)  / GRID_SIZE),
+    right:  Math.ceil((rect.right - canvasMeasure.x)  / GRID_SIZE),
+    bottom: Math.ceil((rect.bottom - canvasMeasure.y) / GRID_SIZE),
   }
   ret.width = ret.right - ret.left;
   ret.height = ret.bottom - ret.top;
   return ret;
 }
 
-function convertAnchorToGrid(anchor) {
-  const y = Math.round(anchor.left.y / GRID_SIZE);
+function convertAnchorToGrid(canvasMeasure, anchor) {
+  const y = Math.round((anchor.left.y - canvasMeasure.y) / GRID_SIZE);
   return {
     left: {
-      x: Math.floor(anchor.left.x / GRID_SIZE),
+      x: Math.floor((anchor.left.x - canvasMeasure.x) / GRID_SIZE),
       y
     },
     right: {
-      x: Math.ceil(anchor.right.x / GRID_SIZE),
+      x: Math.ceil((anchor.right.x - canvasMeasure.x) / GRID_SIZE),
       y
     }
   };
