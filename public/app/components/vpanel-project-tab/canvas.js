@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
+import Measure from 'react-measure';
 import base from '../base/index';
 
 import AppConstants from '../../constants/app-constants';
@@ -13,6 +14,8 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 
 import CanvasComponent from './canvas-component';
 import CanvasBinding from './canvas-binding';
+
+import linkHelper from './link-helper';
 
 import tabStyles from '../base/tab-styles';
 
@@ -47,6 +50,13 @@ class Canvas extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
+  handleMeasureChange(dim) {
+    const { project } = this.props;
+    const projectState = ProjectStateStore.getProjectState(project);
+
+    linkHelper.canvasOnMeasureChanged(project, projectState, dim);
+  }
+
   renderComponents(project) {
     return project.components.map((component) => (<CanvasComponent key={component.id} project={project} component={component}/>));
   }
@@ -71,10 +81,12 @@ class Canvas extends React.Component {
 
     return connectDropTarget(
       <div style={styles.container}>
-        <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))} ref="canvas">
-          {this.renderComponents(project)}
-          {this.renderBindings(project)}
-        </div>
+        <Measure onMeasure={this.handleMeasureChange.bind(this)}>
+          <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))} ref="canvas">
+            {this.renderComponents(project)}
+            {this.renderBindings(project)}
+          </div>
+        </Measure>
       </div>
     );
   }
