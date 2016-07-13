@@ -235,7 +235,11 @@ function findPathBasic(start, end) {
     return a.distance - b.distance;
   });
   const shortest = distances[0];
-  return [shortest.start, shortest.end];
+  const middle = {
+    x: shortest.start.x + (shortest.end.x - shortest.start.x) / 2,
+    y: shortest.start.y + (shortest.end.y - shortest.start.y) / 2
+  };
+  return [shortest.start, middle, shortest.end];
 }
 
 function findPathAStar(obstacleGrid, start, end) {
