@@ -15,6 +15,7 @@ import linkHelper from './link-helper';
 
 const styles = {
   container: {
+    zIndex   : 1,
     position : 'absolute',
     top      : 0,
     left     : 0,

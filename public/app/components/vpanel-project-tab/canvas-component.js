@@ -153,6 +153,7 @@ class CanvasComponent extends React.Component {
 
     return (
       <div style={{
+        zIndex : 2,
         position : 'absolute',
         left    : location.x,
         top     : location.y
