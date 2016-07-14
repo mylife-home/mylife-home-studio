@@ -2,6 +2,7 @@
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
+import Facade from '../services/facade';
 
 export default {
   load: function(project) {
@@ -18,12 +19,12 @@ export default {
     });
   },
 
-  removeComponent: function(project, component) {
-console.log('TODO removeComponent', project, component);
+  deleteComponent: function(project, component) {
+    Facade.projects.vpanelDeleteComponent(project, component);
   },
 
-  removeBinding: function(project, binding) {
-console.log('TODO removeBinding', project, binding);
+  deleteBinding: function(project, binding) {
+    Facade.projects.vpanelDeleteBinding(project, binding);
   },
 
   refresh: function(project) {

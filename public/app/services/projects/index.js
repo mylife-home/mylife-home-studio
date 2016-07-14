@@ -181,6 +181,16 @@ class Projects {
     ProjectActionCreators.refresh(project);
     return binding;
   }
+
+  vpanelDeleteComponent(project, component) {
+    vpanel.deleteComponent(project, component);
+    ProjectActionCreators.refresh(project);
+  }
+
+  vpanelDeleteBinding(project, binding) {
+    vpanel.deleteBinding(project, binding);
+    ProjectActionCreators.refresh(project);
+  }
 }
 
 export default Projects;

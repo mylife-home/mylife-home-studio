@@ -80,6 +80,13 @@ class Properties extends React.Component {
     });
   }
 
+  selectProject() {
+    const project = this.props.project;
+    const state = ProjectStateStore.getProjectState(project);
+    state.selection = null;
+    ProjectActionCreators.stateRefresh(project);
+  }
+
   renderTitle(Icon, text, onDelete) {
     const styles = getStyles(this.props, this.state);
     return (
@@ -102,7 +109,10 @@ class Properties extends React.Component {
   }
 
   renderComponent(project, component) {
-    const onDelete = () => ProjectActionCreators.removeComponent(project, component);
+    const onDelete = () => {
+      this.selectProject();
+      ProjectActionCreators.deleteComponent(project, component);
+    }
     return (
       <div>
         {this.renderTitle(base.icons.Component, component.id, onDelete)}
@@ -112,7 +122,10 @@ class Properties extends React.Component {
 
   renderBinding(project, binding) {
     const key = `${binding.remote.id}:${binding.remote_attribute} -> ${binding.local.id}:${binding.local_action}`;
-    const onDelete = () => ProjectActionCreators.removeBinding(project, binding);
+    const onDelete = () => {
+      this.selectProject();
+      ProjectActionCreators.deleteBinding(project, binding);
+    }
     return (
       <div>
         {this.renderTitle(base.icons.Binding, key, onDelete)}

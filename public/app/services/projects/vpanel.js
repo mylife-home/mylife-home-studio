@@ -25,7 +25,9 @@ export default {
   executeDeploy,
   createComponent,
   canCreateBinding,
-  createBinding
+  createBinding,
+  deleteComponent,
+  deleteBinding
 };
 
 function createNew(project) {
@@ -415,7 +417,7 @@ function prepareDeployDrivers(project, done) {
         }
 
         for(const compId of componentToDelete) {
-          // remove targetBindings
+          // remove bindingTargets
           for(const [key, value] of getOnlineTargetBindings(onlineComponents, compId).entries()) {
             bindingsToDelete.set(key, value);
           }
@@ -515,6 +517,21 @@ function createBinding(project, remoteComponentId, remoteAttributeName, localCom
 
   common.dirtify(project);
   return binding;
+}
+
+function deleteComponent(project, component) {
+  for(const binding of component.bindings) {
+    deleteBinding(project, binding);
+  }
+  for(const binding of component.bindingTargets) {
+    deleteBinding(project, binding);
+  }
+  arrayRemoveValue(project.components, component);
+}
+
+function deleteBinding(project, binding) {
+  arrayRemoveValue(binding.local.bindings, binding);
+  arrayRemoveValue(binding.remote.bindingTargets, binding);
 }
 
 function loadToolboxItem(item) {
@@ -805,4 +822,11 @@ function mapToAction(map) {
     ret.push({ key, value });
   }
   return ret;
+}
+
+function arrayRemoveValue(arr, value) {
+  const index = arr.indexOf(value);
+  if(index === -1) { return false; }
+  arr.splice(index, 1);
+  return true;
 }
