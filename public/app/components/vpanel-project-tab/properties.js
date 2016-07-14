@@ -37,6 +37,11 @@ function getStyles(props, state) {
       width  : '25px',
       height : '25px'
     },
+    titleDeleteContainer: {
+      float  : 'right',
+      width  : '25px',
+      height : '25px'
+    },
     titleIcon: {
       textAlign     : 'center',
       height        : '25px',
@@ -75,13 +80,20 @@ class Properties extends React.Component {
     });
   }
 
-  renderTitle(Icon, text) {
+  renderTitle(Icon, text, onDelete) {
     const styles = getStyles(this.props, this.state);
     return (
       <div style={styles.titleContainer}>
         <div style={styles.titleIconContainer}>
           <Icon color={styles.titleContainer.color} style={styles.titleIcon} />
         </div>
+        {(() => {
+          if(!onDelete) { return; }
+          return (
+            <mui.IconButton onClick={onDelete} style={styles.titleDeleteContainer}>
+              <base.icons.actions.Close  color={styles.titleContainer.color} style={styles.titleIcon}/>
+            </mui.IconButton>);
+        })()}
         <div style={styles.titleText}>
           {text}
         </div>
@@ -89,19 +101,21 @@ class Properties extends React.Component {
     );
   }
 
-  renderComponent(component) {
+  renderComponent(project, component) {
+    const onDelete = () => ProjectActionCreators.removeComponent(project, component);
     return (
       <div>
-        {this.renderTitle(base.icons.Component, component.id)}
+        {this.renderTitle(base.icons.Component, component.id, onDelete)}
       </div>
     );
   }
 
-  renderBinding(binding) {
+  renderBinding(project, binding) {
     const key = `${binding.remote.id}:${binding.remote_attribute} -> ${binding.local.id}:${binding.local_action}`;
+    const onDelete = () => ProjectActionCreators.removeBinding(project, binding);
     return (
       <div>
-        {this.renderTitle(base.icons.Binding, key)}
+        {this.renderTitle(base.icons.Binding, key, onDelete)}
       </div>
     );
   }
@@ -125,7 +139,7 @@ class Properties extends React.Component {
     switch(selection && selection.type) {
       case 'component': {
         const component = this.findComponent(project, selection.id);
-        return this.renderComponent(component);
+        return this.renderComponent(project, component);
       }
 
       case 'binding': {
@@ -134,7 +148,7 @@ class Properties extends React.Component {
           b.remote.id === selection.remoteId &&
           b.remote_attribute === selection.remoteAttribute &&
           b.local_action === selection.localAction);
-        return this.renderBinding(binding);
+        return this.renderBinding(project, binding);
       }
     }
 

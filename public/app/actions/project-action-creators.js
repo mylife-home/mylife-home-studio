@@ -18,6 +18,14 @@ export default {
     });
   },
 
+  removeComponent: function(project, component) {
+console.log('TODO removeComponent', project, component);
+  },
+
+  removeBinding: function(project, binding) {
+console.log('TODO removeBinding', project, binding);
+  },
+
   refresh: function(project) {
     AppDispatcher.dispatch({
       type: AppConstants.ActionTypes.PROJECT_REFRESH,
