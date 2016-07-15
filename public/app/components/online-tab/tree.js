@@ -15,17 +15,20 @@ class Tree extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       entities: OnlineStore.getAll()
     }
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    OnlineStore.addChangeListener(this.handleStoreChange.bind(this));
+    OnlineStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    OnlineStore.removeChangeListener(this.handleStoreChange.bind(this));
+    OnlineStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {

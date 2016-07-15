@@ -11,17 +11,20 @@ class DialogBusy extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       text: BusyStore.get()
     }
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    BusyStore.addChangeListener(this.handleStoreChange.bind(this));
+    BusyStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    BusyStore.removeChangeListener(this.handleStoreChange.bind(this));
+    BusyStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {

@@ -60,16 +60,18 @@ class Properties extends React.Component {
       selection: null,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
-    ProjectStateStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
-    ProjectStateStore.removeChangeListener(this.handleStoreChange.bind(this));
+    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {

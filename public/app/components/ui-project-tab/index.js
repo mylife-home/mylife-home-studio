@@ -21,14 +21,16 @@ class UiProjectTab extends React.Component {
   constructor(props) {
     super(props);
     this.state = { };
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
+    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {

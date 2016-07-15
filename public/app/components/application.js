@@ -40,20 +40,23 @@ class Application extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       projects: ProjectStore.getAll(),
       activeTab: ActiveTabStore.getActiveTab()
     }
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.handleStoreChange.bind(this));
-    ActiveTabStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    ActiveTabStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.handleStoreChange.bind(this));
-    ActiveTabStore.removeChangeListener(this.handleStoreChange.bind(this));
+    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    ActiveTabStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {

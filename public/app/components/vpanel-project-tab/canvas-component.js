@@ -69,14 +69,16 @@ class CanvasComponent extends React.Component {
       isSelected: false,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    ProjectStateStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStateStore.removeChangeListener(this.handleStoreChange.bind(this));
+    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {

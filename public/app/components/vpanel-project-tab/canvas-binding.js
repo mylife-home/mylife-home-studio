@@ -64,14 +64,16 @@ class CanvasBinding extends React.Component {
       linkVersion: linkHelper.version(projectState),
       muiTheme:        context.muiTheme || muiStyles.getMuiTheme()
     };
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    ProjectStateStore.addChangeListener(this.handleStoreChange.bind(this));
+    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStateStore.removeChangeListener(this.handleStoreChange.bind(this));
+    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {

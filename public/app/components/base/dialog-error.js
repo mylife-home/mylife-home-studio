@@ -11,17 +11,20 @@ class DialogError extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       error: ErrorStore.get()
     }
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    ErrorStore.addChangeListener(this.handleStoreChange.bind(this));
+    ErrorStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ErrorStore.removeChangeListener(this.handleStoreChange.bind(this));
+    ErrorStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
