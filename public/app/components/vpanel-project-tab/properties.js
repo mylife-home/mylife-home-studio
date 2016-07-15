@@ -14,40 +14,34 @@ function getStyles(props, state) {
   const { baseTheme } = state.muiTheme;
 
   return {
-    titleContainer: {
-      background : baseTheme.palette.primary3Color,
-      color      : baseTheme.palette.textColor,
+    titleContainer : {
+      textAlign    : 'center',
+      background   : baseTheme.palette.primary3Color,
+      color        : baseTheme.palette.textColor,
     },
-    titleText: {
+    titleItem: {
+      verticalAlign : 'middle',
+      marginTop     : 0,
+      marginBottom  : 0,
       whiteSpace    : 'nowrap',
       overflow      : 'hidden',
       textOverflow  : 'ellipsis',
-      margin        : 0,
-      paddingTop    : 2,
-      paddingLeft   : 8,
-      paddingRight  : 8,
       letterSpacing : 0,
       fontSize      : 16,
       fontWeight    : 'normal',
-      height        : '25px',
-      lineHeight    : '25px'
     },
-    titleIconContainer: {
-      float  : 'left',
-      width  : '25px',
-      height : '25px'
+    titleLeft: {
+      float   : 'left',
+      height  : '48px',
+      width   : '48px',
+      padding : '12px',
     },
-    titleDeleteContainer: {
-      float  : 'right',
-      width  : '25px',
-      height : '25px'
+    titleRight: {
+      float: 'right',
     },
-    titleIcon: {
-      textAlign     : 'center',
-      height        : '25px',
-      lineHeight    : '25px',
-      verticalAlign : 'middle'
-    },
+    titleMain: {
+      lineHeight: '48px',
+    }
   };
 }
 
@@ -93,17 +87,17 @@ class Properties extends React.Component {
     const styles = getStyles(this.props, this.state);
     return (
       <div style={styles.titleContainer}>
-        <div style={styles.titleIconContainer}>
-          <Icon color={styles.titleContainer.color} style={styles.titleIcon} />
+        <div style={Object.assign({}, styles.titleItem, styles.titleLeft)}>
+          <Icon/>
         </div>
         {(() => {
           if(!onDelete) { return; }
           return (
-            <mui.IconButton onClick={onDelete} style={styles.titleDeleteContainer}>
-              <base.icons.actions.Close  color={styles.titleContainer.color} style={styles.titleIcon}/>
+            <mui.IconButton onClick={onDelete} style={Object.assign({}, styles.titleItem, styles.titleRight)}>
+              <base.icons.actions.Close/>
             </mui.IconButton>);
         })()}
-        <div style={styles.titleText}>
+        <div style={Object.assign({}, styles.titleItem, styles.titleMain)}>
           {text}
         </div>
       </div>
