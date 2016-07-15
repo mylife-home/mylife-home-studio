@@ -25,7 +25,7 @@ class Projects {
       id,
       type,
       name: id,
-      createDate: new Date(),
+      creationDate: new Date(),
       lastUpdate: new Date(),
       dirty: true
     };
