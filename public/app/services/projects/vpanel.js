@@ -527,11 +527,13 @@ function deleteComponent(project, component) {
     deleteBinding(project, binding);
   }
   arrayRemoveValue(project.components, component);
+  common.dirtify(project);
 }
 
 function deleteBinding(project, binding) {
   arrayRemoveValue(binding.local.bindings, binding);
   arrayRemoveValue(binding.remote.bindingTargets, binding);
+  common.dirtify(project);
 }
 
 function loadToolboxItem(item) {
