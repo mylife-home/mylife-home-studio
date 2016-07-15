@@ -86,6 +86,11 @@ class Properties extends React.Component {
       <div>
         <PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
         {/* details */}
+        <table>
+          <tbody>
+{/* TODO */}
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -100,6 +105,14 @@ class Properties extends React.Component {
       <div>
         <PropertiesTitle icon={<base.icons.Binding/>} text={key} onDelete={onDelete} />
         {/* details */}
+        <table>
+          <tbody>
+            <tr><td>Remote component</td><td>{binding.remote.id}</td></tr>
+            <tr><td>Remote attribute</td><td>{binding.remote_attribute}</td></tr>
+            <tr><td>Local component</td><td>{binding.local.id}</td></tr>
+            <tr><td>Local action</td><td>{binding.local_action}</td></tr>
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -109,6 +122,13 @@ class Properties extends React.Component {
       <div>
         <PropertiesTitle icon={<base.icons.tabs.VPanel/>} text={'Project'} />
         {/* details */}
+        <table>
+          <tbody>
+            <tr><td>Name</td><td>{project.name}</td></tr>
+            <tr><td>Creation</td><td>{project.creationDate.toString()}</td></tr>
+            <tr><td>Last update</td><td>{project.lastUpdate.toString()}</td></tr>
+          </tbody>
+        </table>
       </div>
     );
   }
