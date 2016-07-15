@@ -6,6 +6,8 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import PropertiesTitle from './properties-title.js';
+
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
@@ -13,36 +15,7 @@ import ProjectActionCreators from '../../actions/project-action-creators';
 function getStyles(props, state) {
   const { baseTheme } = state.muiTheme;
 
-  return {
-    titleContainer : {
-      textAlign    : 'center',
-      background   : baseTheme.palette.primary3Color,
-      color        : baseTheme.palette.textColor,
-    },
-    titleItem: {
-      verticalAlign : 'middle',
-      marginTop     : 0,
-      marginBottom  : 0,
-      whiteSpace    : 'nowrap',
-      overflow      : 'hidden',
-      textOverflow  : 'ellipsis',
-      letterSpacing : 0,
-      fontSize      : 16,
-      fontWeight    : 'normal',
-    },
-    titleLeft: {
-      float   : 'left',
-      height  : '48px',
-      width   : '48px',
-      padding : '12px',
-    },
-    titleRight: {
-      float: 'right',
-    },
-    titleMain: {
-      lineHeight: '48px',
-    }
-  };
+  return { };
 }
 
 class Properties extends React.Component {
@@ -111,7 +84,8 @@ class Properties extends React.Component {
     }
     return (
       <div>
-        {this.renderTitle(base.icons.Component, component.id, onDelete)}
+        <PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
+        {/* details */}
       </div>
     );
   }
@@ -124,7 +98,8 @@ class Properties extends React.Component {
     }
     return (
       <div>
-        {this.renderTitle(base.icons.Binding, key, onDelete)}
+        <PropertiesTitle icon={<base.icons.Binding/>} text={key} onDelete={onDelete} />
+        {/* details */}
       </div>
     );
   }
@@ -132,7 +107,8 @@ class Properties extends React.Component {
   renderProject(project) {
     return (
       <div>
-        {this.renderTitle(base.icons.tabs.VPanel, 'Project')}
+        <PropertiesTitle icon={<base.icons.tabs.VPanel/>} text={'Project'} />
+        {/* details */}
       </div>
     );
   }
