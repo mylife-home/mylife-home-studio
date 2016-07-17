@@ -163,9 +163,8 @@ class Resources {
 
 function checkResult(err, res, cb) {
   if(!err) {
-    const data = res.body.data;
-    if(data.type === 'error') {
-      err = new Error(data.error);
+    if(res.body.type === 'error') {
+      err = new Error(res.body.message);
     }
   }
   if(err) {
