@@ -85,14 +85,14 @@ class Resources {
   }
 
   queryComponentCreate(entityId, component, cb) {
-    debug(`queryComponentCreate(${entityId}, ${component.id})`);
+    debug(`queryComponentCreate(${entityId}, ${component.comp_id})`);
     request
       .post('/resources/' + entityId)
       .send({
         type: 'comp_create',
-        comp_id: component.id,
+        comp_id: component.comp_id,
         library: component.library,
-        comp_type: component.type,
+        comp_type: component.comp_type,
         config: component.config, // array of {key, value}
         designer: component.designer // array of {key, value}
       })
