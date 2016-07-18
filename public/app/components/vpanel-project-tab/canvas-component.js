@@ -176,7 +176,11 @@ class CanvasComponent extends React.Component {
                   <div style={styles.details}>
                     <div style={styles.detailsContainer}>
                       <div style={styles.detailsIconContainer}><base.icons.Plugin style={styles.detailsIcon} /></div>
-                      <div style={styles.detailsText}>{`${entityHost} - ${plugin.library}:${component.plugin.type}`}</div>
+                      <div style={styles.detailsText}>{entityHost}</div>
+                    </div>
+                    <div style={styles.detailsContainer}>
+                      <div style={styles.detailsIconContainer}><base.icons.Plugin style={styles.detailsIcon} /></div>
+                      <div style={styles.detailsText}>{`${plugin.library}:${component.plugin.type}`}</div>
                     </div>
                     {Object.keys(component.config).map(name => (
                       <div key={name} style={styles.detailsContainer}>
