@@ -13,7 +13,7 @@ function download(content, mime, filename) {
 function stopPropagationWrapper(func) {
   return (e) => {
     if(e) { e.stopPropagation(); }
-    func(e);
+    func.apply(this, arguments);
   }
 }
 
