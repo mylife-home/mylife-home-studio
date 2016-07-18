@@ -11,9 +11,10 @@ function download(content, mime, filename) {
 }
 
 function stopPropagationWrapper(func) {
-  return (e) => {
+  const self = this;
+  return function(e) {
     if(e) { e.stopPropagation(); }
-    func.apply(this, arguments);
+    func.apply(self, arguments);
   }
 }
 
