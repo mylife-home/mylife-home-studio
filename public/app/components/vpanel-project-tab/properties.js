@@ -7,6 +7,7 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import PropertiesTitle from './properties-title.js';
+import PropertiesEditor from './properties-editor.js';
 
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
@@ -124,7 +125,7 @@ class Properties extends React.Component {
         {/* details */}
         <table>
           <tbody>
-            <tr><td>Name</td><td>{project.name}</td></tr>
+            <tr><td>Name</td><td><PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td></tr>
             <tr><td>Creation</td><td>{project.creationDate.toString()}</td></tr>
             <tr><td>Last update</td><td>{project.lastUpdate.toString()}</td></tr>
           </tbody>
