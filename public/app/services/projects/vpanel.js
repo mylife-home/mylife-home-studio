@@ -1,6 +1,7 @@
 'use strict';
 
 import async from 'async';
+import uuid from 'uuid';
 import Metadata from '../metadata/index';
 import common from './common';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
@@ -458,6 +459,7 @@ function createComponent(project, location, pluginData) {
   plugin.config.forEach(item => config[item.name] = metadata.getConfigTypeDefaultValue(item.type));
 
   const component = {
+    uid: uuid.v4(),
     id: `component_${common.uid()}`,
     bindings: [],
     bindingTargets: [],
@@ -507,6 +509,7 @@ function createBinding(project, remoteComponentId, remoteAttributeName, localCom
   const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
 
   const binding = {
+    uid: uuid.v4(),
     remote: remoteComponent,
     local: localComponent,
     remote_attribute: remoteAttributeName,
@@ -557,6 +560,7 @@ function getToolboxItem(project, entityId) {
 
 function loadComponent(project, component) {
   return {
+    uid: uuid.v4(),
     id: component.Component.id,
     bindings: component.Component.bindings,
     bindingTargets: [],
@@ -586,6 +590,7 @@ function createLinks(project) {
     for(const binding of component.bindings) {
       const remoteComponent = findComponent(project, binding.remote_id);
       delete binding.remote_id;
+      binding.uid = uuid.v4();
       binding.local = component;
       binding.remote = remoteComponent
       remoteComponent.bindingTargets.push(binding);
