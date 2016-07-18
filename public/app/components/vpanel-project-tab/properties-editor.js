@@ -22,7 +22,7 @@ class PropertiesEditor extends React.Component {
       <mui.TextField
         id={`${project.id}:${property}`}
         value={object[property]}
-        onChange={this.onStringChange.bind(this)} />
+        onChange={base.utils.stopPropagationWrapper(this.onStringChange.bind(this))} />
     );
   }
 
