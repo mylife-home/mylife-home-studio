@@ -82,7 +82,7 @@ class CanvasComponent extends React.Component {
 
   componentWillUnmount() {
     ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
-    Projecttore.removeChangeListener(this.boundHandleStoreChange);
+    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
