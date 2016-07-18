@@ -30,6 +30,42 @@ class PropertiesEditor extends React.Component {
     this.changeProp(event.target.value);
   }
 
+  renderInteger() {
+    const { project, object, property } = this.props;
+    return (
+      <mui.TextField
+        id={`${project.uid}:${property}`}
+        value={object[property]}
+        onChange={base.utils.stopPropagationWrapper(this.onIntegerChange.bind(this))}
+        type='number' />
+    );
+  }
+
+  onIntegerChange(event) {
+    const value = parseInt(event.target.value, 10);
+    if(!isNaN(value)) {
+      this.changeProp(event.target.value);
+    }
+  }
+
+  renderNumber() {
+    const { project, object, property } = this.props;
+    return (
+      <mui.TextField
+        id={`${project.uid}:${property}`}
+        value={object[property]}
+        onChange={base.utils.stopPropagationWrapper(this.onNumberChange.bind(this))}
+        type='number' />
+    );
+  }
+
+  onNumberChange(event) {
+    const value = parseFloat(event.target.value);
+    if(!isNaN(value)) {
+      this.changeProp(event.target.value);
+    }
+  }
+
   renderBoolean() {
     const { project, object, property } = this.props;
     return (
@@ -60,13 +96,16 @@ class PropertiesEditor extends React.Component {
     switch(type) {
     case 's':
       return this.renderString();
+    case 'i':
+      return this.renderInteger();
+    case 'n':
+      return this.renderNumber();
     case 'b':
       return this.renderBoolean();
     default:
       return (<div>{`unsupported type: ${type}`}</div>);
     }
   }
-
 }
 
 PropertiesEditor.propTypes = {
