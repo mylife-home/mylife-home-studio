@@ -127,15 +127,14 @@ function rebuild(project, projectState) {
   const bindingPaths = new Map();
   linkData.bindingPaths = bindingPaths;
 
-  for(const component of project.components) {
-    for(const binding of component.bindings) {
-      const startMeasure = measures.components.get(binding.remote.id);
-      const start = startMeasure && startMeasure[binding.remote_attribute];
-      const endMeasure = measures.components.get(binding.local.id);
-      const end = endMeasure && endMeasure[binding.local_action];
-      if(!start || !end) { continue; }
+  for(const binding of project.bindings) {
+    const startMeasure = measures.components.get(binding.remote.id);
+    const start = startMeasure && startMeasure[binding.remote_attribute];
+    const endMeasure = measures.components.get(binding.local.id);
+    const end = endMeasure && endMeasure[binding.local_action];
+    if(!start || !end) { continue; }
 
-      let path;
+    let path;
 
 // TODO: use this one
 //      path = findPathAStar(
@@ -143,10 +142,9 @@ function rebuild(project, projectState) {
 //        convertAnchorToGrid(measures.canvas, start),
 //        convertAnchorToGrid(measures.canvas, end));
 
-      if(!path) { path = findPathBasic(start, end); }
+    if(!path) { path = findPathBasic(start, end); }
 
-      bindingPaths.set(binding, path);
-    }
+    bindingPaths.set(binding, path);
   }
 
   ++linkData.version;
