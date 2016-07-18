@@ -527,10 +527,10 @@ function createBinding(project, remoteComponentId, remoteAttributeName, localCom
 }
 
 function deleteComponent(project, component) {
-  for(const binding of component.bindings) {
+  for(const binding of component.bindings.slice()) {
     deleteBinding(project, binding);
   }
-  for(const binding of component.bindingTargets) {
+  for(const binding of component.bindingTargets.slice()) {
     deleteBinding(project, binding);
   }
   arrayRemoveValue(project.components, component);
