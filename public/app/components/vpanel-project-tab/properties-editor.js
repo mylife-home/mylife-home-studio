@@ -27,7 +27,27 @@ class PropertiesEditor extends React.Component {
   }
 
   onStringChange(event) {
-    const text = event.target.value;
+    this.changeProp(event.target.value);
+  }
+
+  renderBoolean() {
+    const { project, object, property } = this.props;
+    return (
+      <mui.Checkbox
+        id={`${project.id}:${property}`}
+        checked={object[property] === 'true'}
+        onCheck={base.utils.stopPropagationWrapper(this.onBooleanChange.bind(this))} />
+    );
+  }
+
+  onBooleanChange(event, isInputChecked) {
+    setTimeout(
+      () => this.changeProp(isInputChecked ? 'true' : 'false'),
+      0
+    );
+  }
+
+  changeProp(text) {
     const { project, object, property } = this.props;
 
     object[property] = text;
@@ -40,9 +60,10 @@ class PropertiesEditor extends React.Component {
     switch(type) {
     case 's':
       return this.renderString();
+    case 'b':
+      return this.renderBoolean();
     default:
-      console.log(type);
-      return null;
+      return (<div>{`unsupported type: ${type}`}</div>);
     }
   }
 
