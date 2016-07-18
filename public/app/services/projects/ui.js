@@ -1,5 +1,6 @@
 'use strict';
 
+import uuid from 'uuid';
 import common from './common';
 
 export default {
@@ -34,6 +35,7 @@ function loadComponent(comp) {
 
 function loadImage(img) {
   return {
+    uid: uuid.v4(),
     id: img.id,
     content: img.content
   };
@@ -41,6 +43,7 @@ function loadImage(img) {
 
 function loadWindow(project, win) {
   return {
+    uid: uuid.v4(),
     id: win.id,
     height: win.height,
     width: win.width,
@@ -58,6 +61,7 @@ function loadWindowControls(project, data, projectWindow, index) {
 
 function loadControl(project, ctrl) {
   return {
+    uid: uuid.v4(),
     id: ctrl.id,
     height: ctrl.height,
     width: ctrl.width,
@@ -83,6 +87,7 @@ function loadDisplay(project, disp) {
 
 function loadDisplayMapItem(project, item) {
   return {
+    uid: uuid.v4(),
     max: item.max,
     min: item.min,
     resource: findResource(project, item.resource_id),
@@ -100,6 +105,7 @@ function loadText(project, text) {
 
 function loadTextContextItem(project, item) {
   return {
+    uid: uuid.v4(),
     component: findComponent(project, item.component_id),
     attribute: item.component_attribute,
     id: item.id
