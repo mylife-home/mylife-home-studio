@@ -85,7 +85,7 @@ class CanvasComponent extends React.Component {
     const { project, component } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'component' && projectState.selection.id === component.id
+      isSelected: projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid
     });
   }
 
@@ -112,7 +112,7 @@ class CanvasComponent extends React.Component {
   select() {
     const { project, component } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
-    projectState.selection = { type: 'component', id: component.id };
+    projectState.selection = { type: 'component', uid: component.uid };
     ProjectActionCreators.stateRefresh(project);
   }
 

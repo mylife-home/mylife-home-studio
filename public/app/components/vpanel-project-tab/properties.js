@@ -150,8 +150,12 @@ class Properties extends React.Component {
     );
   }
 
-  findComponent(project, componentId) {
-    return project.components.find(c => c.id === componentId);
+  findComponent(project, uid) {
+    return project.components.find(c => c.uid === uid);
+  }
+
+  findBinding(project, uid) {
+    return project.bindings.find(b => b.uid === uid);
   }
 
   render() {
@@ -160,16 +164,12 @@ class Properties extends React.Component {
 
     switch(selection && selection.type) {
       case 'component': {
-        const component = this.findComponent(project, selection.id);
+        const component = this.findComponent(project, selection.uid);
         return this.renderComponent(project, component);
       }
 
       case 'binding': {
-        const component = this.findComponent(project, selection.localId);
-        const binding = component.bindings.find(b =>
-          b.remote.id === selection.remoteId &&
-          b.remote_attribute === selection.remoteAttribute &&
-          b.local_action === selection.localAction);
+        const binding = this.findBinding(project, selection.uid);
         return this.renderBinding(project, binding);
       }
     }

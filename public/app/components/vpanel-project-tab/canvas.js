@@ -89,18 +89,11 @@ class Canvas extends React.Component {
   }
 
   renderComponents(project) {
-    return project.components.map((component) => (<CanvasComponent key={component.id} project={project} component={component}/>));
+    return project.components.map(component => (<CanvasComponent key={component.uid} project={project} component={component}/>));
   }
 
   renderBindings(project) {
-    const ret = [];
-    for(const component of project.components) {
-      for(const binding of component.bindings) {
-        const key = `${binding.local.id}:${binding.local_action}:${binding.remote.id}:${binding.remote_attribute}`;
-        ret.push(<CanvasBinding key={key} project={project} binding={binding}/>);
-      }
-    }
-    return ret;
+    return project.bindings.map(binding => (<CanvasBinding key={binding.uid} project={project} binding={binding}/>));
   }
 
   render() {

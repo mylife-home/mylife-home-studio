@@ -80,12 +80,7 @@ class CanvasBinding extends React.Component {
     const { project, binding } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
     this.setState({
-      isSelected:      projectState.selection &&
-                       projectState.selection.type === 'binding' &&
-                       projectState.selection.remoteId === binding.remote.id &&
-                       projectState.selection.localId === binding.local.id &&
-                       projectState.selection.remoteAttribute === binding.remote_attribute &&
-                       projectState.selection.localAction === binding.local_action,
+      isSelected: projectState.selection && projectState.selection.type === 'binding' && projectState.selection.uid === binding.uid,
       linkVersion: linkHelper.version(projectState)
     });
   }
@@ -99,13 +94,7 @@ class CanvasBinding extends React.Component {
   select() {
     const { project, binding } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
-    projectState.selection = {
-      type: 'binding',
-      remoteId: binding.remote.id,
-      localId: binding.local.id,
-      remoteAttribute: binding.remote_attribute,
-      localAction: binding.local_action
-    };
+    projectState.selection = { type: 'binding', uid: binding.uid };
     ProjectActionCreators.stateRefresh(project);
   }
 
