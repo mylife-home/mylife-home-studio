@@ -598,7 +598,7 @@ function createLinks(project) {
 
       binding.uid = uuid.v4();
       binding.local = component;
-      binding.remote = remoteComponent
+      binding.remote = remoteComponent;
       remoteComponent.bindingTargets.push(binding);
       project.bindings.push(binding);
     }
