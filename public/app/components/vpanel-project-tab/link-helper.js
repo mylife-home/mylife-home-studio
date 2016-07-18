@@ -48,27 +48,27 @@ function bindingPath(projectState, binding) {
 function canvasOnMeasureChanged(project, projectState, dim) {
   const measures = data(projectState).measures;
 
-  const newMeasure = {
+  measures.canvas = {
     x: dim.left,
     y: dim.top
   };
-
-  if(measures.canvas && pointEquals(measures.canvas, newMeasure)) {
-    return;
-  }
-
-  measures.canvas = newMeasure;
-  debouncedRebuild(project, projectState);
 }
 
 function componentOnMeasureChanged(uiComponent, component, project, projectState, dim) {
+  const measures = data(projectState).measures;
 
-  const componentMeasures = data(projectState).measures.components;
+  // TODO: remove this horror and find a better way to have canvasOnMeasureChanged called before componentOnMeasureChanged
+  if(!measures.canvas) {
+    return setTimeout(componentOnMeasureChanged, 100, uiComponent, component, project, projectState, dim);
+  }
+
+  const componentMeasures = measures.components;
   const plugin = component.plugin;
   const members = plugin.clazz.attributes.map(a => a.name).
     concat(plugin.clazz.actions.map(a => a.name));
 
   const oldMeasure = componentMeasures.get(component.id);
+  dim = convertRectToCanvas(measures.canvas, dim);
 
   if(!componentShouldUpdateMeasure(dim, oldMeasure)) { return; }
 
@@ -82,8 +82,12 @@ function componentOnMeasureChanged(uiComponent, component, project, projectState
   let containsNulls = false;
   for(const member of members) {
     const memberMeasure = componentMeasureMember(uiComponent, member);
-    measure[member] = memberMeasure;
-    if(!memberMeasure) { containsNulls = true; }
+    if(!memberMeasure) {
+      measure[member] = null;
+      containsNulls = true;
+      continue;
+    }
+    measure[member] = convertAnchorToCanvas(measures.canvas, memberMeasure);
   }
   measure.__containsNulls = containsNulls;
   if(!containsNulls) {
@@ -131,17 +135,15 @@ function rebuild(project, projectState) {
       const end = endMeasure && endMeasure[binding.local_action];
       if(!start || !end) { continue; }
 
+      let path;
+
 // TODO: use this one
-//      const path = findPathAStar(
+//      path = findPathAStar(
 //        obstacleGrid,
 //        convertAnchorToGrid(measures.canvas, start),
 //        convertAnchorToGrid(measures.canvas, end));
 
-      const path = findPathBasic(
-        convertAnchorToCanvas(measures.canvas, start),
-        convertAnchorToCanvas(measures.canvas, end));
-
-      if(!path) { continue; } // TODO: fallback
+      if(!path) { path = findPathBasic(start, end); }
 
       bindingPaths.set(binding, path);
     }
@@ -172,30 +174,16 @@ function buildObstacleGrid(measures) {
   return grid;
 }
 
-function convertRectToGrid(canvasMeasure, rect) {
+function convertRectToCanvas(canvasMeasure, rect) {
   const ret = {
-    top:    Math.floor((rect.top - canvasMeasure.y)   / GRID_SIZE),
-    left:   Math.floor((rect.left - canvasMeasure.x)  / GRID_SIZE),
-    right:  Math.ceil((rect.right - canvasMeasure.x)  / GRID_SIZE),
-    bottom: Math.ceil((rect.bottom - canvasMeasure.y) / GRID_SIZE),
+    top:    rect.top - canvasMeasure.y,
+    left:   rect.left - canvasMeasure.x,
+    right:  rect.right - canvasMeasure.x,
+    bottom: rect.bottom - canvasMeasure.y,
   }
   ret.width = ret.right - ret.left;
   ret.height = ret.bottom - ret.top;
   return ret;
-}
-
-function convertAnchorToGrid(canvasMeasure, anchor) {
-  const y = Math.round((anchor.left.y - canvasMeasure.y) / GRID_SIZE);
-  return {
-    left: {
-      x: Math.floor((anchor.left.x - canvasMeasure.x) / GRID_SIZE),
-      y
-    },
-    right: {
-      x: Math.ceil((anchor.right.x - canvasMeasure.x) / GRID_SIZE),
-      y
-    }
-  };
 }
 
 function convertAnchorToCanvas(canvasMeasure, anchor) {
@@ -207,6 +195,32 @@ function convertAnchorToCanvas(canvasMeasure, anchor) {
     },
     right: {
       x: anchor.right.x - canvasMeasure.x,
+      y
+    }
+  };
+}
+
+function convertRectToGrid(canvasMeasure, rect) {
+  const ret = {
+    top:    Math.floor(rect.top   / GRID_SIZE),
+    left:   Math.floor(rect.left  / GRID_SIZE),
+    right:  Math.ceil(rect.right  / GRID_SIZE),
+    bottom: Math.ceil(rect.bottom / GRID_SIZE),
+  }
+  ret.width = ret.right - ret.left;
+  ret.height = ret.bottom - ret.top;
+  return ret;
+}
+
+function convertAnchorToGrid(canvasMeasure, anchor) {
+  const y = Math.round(anchor.left.y / GRID_SIZE);
+  return {
+    left: {
+      x: Math.floor(anchor.left.x / GRID_SIZE),
+      y
+    },
+    right: {
+      x: Math.ceil(anchor.right.x / GRID_SIZE),
       y
     }
   };

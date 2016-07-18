@@ -9,6 +9,7 @@ import Measure from 'react-measure';
 import base from '../base/index';
 
 import AppConstants from '../../constants/app-constants';
+import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
@@ -22,7 +23,11 @@ import tabStyles from '../base/tab-styles';
 const styles = {
   container: {
     position : 'relative',
-    height   : 'calc(100% - 80px)',
+    height   : 'calc(100% - 80px)'
+  },
+  scrollbox: {
+    position : 'relative',
+    height   : '100%',
     overflow : 'scroll'
   },
   canvas: {
@@ -41,6 +46,11 @@ class Canvas extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = { };
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
+    this.boundHandleMeasureChange = this.handleMeasureChange.bind(this);
   }
 
   select() {
@@ -50,9 +60,30 @@ class Canvas extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
-  handleMeasureChange(dim) {
+  componentDidMount() {
+    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.refs.scrollbox.addEventListener('scroll', this.boundHandleMeasureChange);
+  }
+
+  componentWillUnmount() {
+    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.refs.scrollbox.removeEventListener('scroll', this.boundHandleMeasureChange);
+  }
+
+  handleStoreChange() {
+    const project = this.props.project;
+    let projectVersion = project && project.version;
+    this.setState({ projectVersion });
+  }
+
+  handleMeasureChange() {
     const { project } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
+
+    const node = this.refs.canvas;
+    // may be not yet rendered
+    if(!node) { return; }
+    const dim = node.getBoundingClientRect();
 
     linkHelper.canvasOnMeasureChanged(project, projectState, dim);
   }
@@ -81,12 +112,16 @@ class Canvas extends React.Component {
 
     return connectDropTarget(
       <div style={styles.container}>
-        <Measure onMeasure={this.handleMeasureChange.bind(this)}>
+        <div style={styles.scrollbox} ref="scrollbox">
           <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))} ref="canvas">
-            {this.renderComponents(project)}
-            {this.renderBindings(project)}
+            <Measure onMeasure={this.handleMeasureChange.bind(this)}>
+              <div>
+                {this.renderComponents(project)}
+                {this.renderBindings(project)}
+              </div>
+            </Measure>
           </div>
-        </Measure>
+        </div>
       </div>
     );
   }
