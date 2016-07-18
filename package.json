@@ -22,7 +22,7 @@
     "bower": "*",
     "chai": "*",
     "jshint": "*",
-    "mocha": "*",
+    "mocha": "*"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha test/*.js",
