@@ -34,12 +34,14 @@ export default {
 function createNew(project) {
   project.toolbox = [];
   project.components = [];
+  project.bindings = [];
 }
 
 function open(project, data) {
   data = JSON.parse(JSON.stringify(data));
   project.toolbox = data.Toolbox.map(loadToolboxItem);
   project.components = data.Components.map(loadComponent.bind(null, project));
+  project.bindings = [];
   validateOpen(project);
   createLinks(project);
 }
@@ -515,8 +517,10 @@ function createBinding(project, remoteComponentId, remoteAttributeName, localCom
     remote_attribute: remoteAttributeName,
     local_action: localActionName
   };
+
   localComponent.bindings.push(binding);
   remoteComponent.bindingTargets.push(binding);
+  project.bindings.push(binding);
 
   common.dirtify(project);
   return binding;
@@ -536,6 +540,7 @@ function deleteComponent(project, component) {
 function deleteBinding(project, binding) {
   arrayRemoveValue(binding.local.bindings, binding);
   arrayRemoveValue(binding.remote.bindingTargets, binding);
+  arrayRemoveValue(project.bindings, binding);
   common.dirtify(project);
 }
 
@@ -590,10 +595,12 @@ function createLinks(project) {
     for(const binding of component.bindings) {
       const remoteComponent = findComponent(project, binding.remote_id);
       delete binding.remote_id;
+
       binding.uid = uuid.v4();
       binding.local = component;
       binding.remote = remoteComponent
       remoteComponent.bindingTargets.push(binding);
+      project.bindings.push(binding);
     }
   }
 }
