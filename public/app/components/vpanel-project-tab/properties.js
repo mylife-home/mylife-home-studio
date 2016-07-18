@@ -13,20 +13,34 @@ import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
-function getStyles(props, state) {
-  const { baseTheme } = state.muiTheme;
 
-  return { };
-}
+const styles = {
+  cell: {
+    display: 'inline-block',
+    fontSize: '16px',
+    lineHeight: '24px',
+    marginLeft: '10px',
+    marginRight: '30px'
+  },
+  valueContainer: {
+    display: 'inline-block',
+    fontSize: '16px',
+    lineHeight: '24px',
+    height: '48px',
+  },
+  value: {
+    marginTop: '12px',
+    marginBottom: '12px',
+  },
+};
 
 class Properties extends React.Component {
 
   constructor(props, context) {
-    super(props);
+    super(props, context);
 
     this.state = {
       selection: null,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -78,6 +92,20 @@ class Properties extends React.Component {
     );
   }
 
+  renderCellLabel(text) {
+    return (<div style={styles.cell}>{text}</div>);
+  }
+
+  renderCellValue(text) {
+    return (
+      <div style={styles.valueContainer}>
+        <div style={styles.value}>
+          {text}
+        </div>
+      </div>
+    );
+  }
+
   renderComponent(project, component) {
     const onDelete = () => {
       this.selectProject();
@@ -91,11 +119,11 @@ class Properties extends React.Component {
         {/* details */}
         <table>
           <tbody>
-            <tr><td>Id</td><td><PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td></tr>
+            <tr><td>{this.renderCellLabel('Id')}</td><td><PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td></tr>
             {pluginConfig.map(prop => (
               <tr key={prop.name}>
                 <td>
-                  {prop.name}
+                  {this.renderCellLabel(prop.name)}
                 </td>
                 <td>
                   <PropertiesEditor
@@ -124,10 +152,10 @@ class Properties extends React.Component {
         {/* details */}
         <table>
           <tbody>
-            <tr><td>Remote component</td><td>{binding.remote.id}</td></tr>
-            <tr><td>Remote attribute</td><td>{binding.remote_attribute}</td></tr>
-            <tr><td>Local component</td><td>{binding.local.id}</td></tr>
-            <tr><td>Local action</td><td>{binding.local_action}</td></tr>
+            <tr><td>{this.renderCellLabel('Remote component')}</td><td>{this.renderCellValue(binding.remote.id)}</td></tr>
+            <tr><td>{this.renderCellLabel('Remote attribute')}</td><td>{this.renderCellValue(binding.remote_attribute)}</td></tr>
+            <tr><td>{this.renderCellLabel('Local component')}</td><td>{this.renderCellValue(binding.local.id)}</td></tr>
+            <tr><td>{this.renderCellLabel('Local action')}</td><td>{this.renderCellValue(binding.local_action)}</td></tr>
           </tbody>
         </table>
       </div>
@@ -141,9 +169,9 @@ class Properties extends React.Component {
         {/* details */}
         <table>
           <tbody>
-            <tr><td>Name</td><td><PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td></tr>
-            <tr><td>Creation</td><td>{project.creationDate.toString()}</td></tr>
-            <tr><td>Last update</td><td>{project.lastUpdate.toString()}</td></tr>
+            <tr><td>{this.renderCellLabel('Name')}</td><td><PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td></tr>
+            <tr><td>{this.renderCellLabel('Creation')}</td><td>{this.renderCellValue(project.creationDate.toISOString())}</td></tr>
+            <tr><td>{this.renderCellLabel('Last update')}</td><td>{this.renderCellValue(project.lastUpdate.toISOString())}</td></tr>
           </tbody>
         </table>
       </div>
@@ -180,14 +208,6 @@ class Properties extends React.Component {
 
 Properties.propTypes = {
   project: React.PropTypes.object.isRequired,
-};
-
-Properties.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-Properties.childContextTypes = {
-  muiTheme: React.PropTypes.object
 };
 
 export default Properties;
