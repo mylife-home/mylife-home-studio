@@ -20,7 +20,7 @@ class PropertiesEditor extends React.Component {
     const { project, object, property } = this.props;
     return (
       <mui.TextField
-        id={`${project.id}:${property}`}
+        id={`${project.uid}:${property}`}
         value={object[property]}
         onChange={base.utils.stopPropagationWrapper(this.onStringChange.bind(this))} />
     );
@@ -34,7 +34,7 @@ class PropertiesEditor extends React.Component {
     const { project, object, property } = this.props;
     return (
       <mui.Checkbox
-        id={`${project.id}:${property}`}
+        id={`${project.uid}:${property}`}
         checked={object[property] === 'true'}
         onCheck={base.utils.stopPropagationWrapper(this.onBooleanChange.bind(this))} />
     );

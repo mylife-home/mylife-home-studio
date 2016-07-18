@@ -20,11 +20,11 @@ class Projects {
   }
 
   new(type) {
-    const id = uuid.v4();
+    const uid = uuid.v4();
     const project = {
-      id,
+      uid,
       type,
-      name: id,
+      name: uid,
       creationDate: new Date(),
       lastUpdate: new Date(),
       dirty: true
@@ -40,17 +40,17 @@ class Projects {
         break;
     }
 
-    debug('project created', project.id);
+    debug('project created', project.uid);
     ProjectActionCreators.load(project);
     return project;
   }
 
   open(type, content) {
     const data = JSON.parse(content);
-    const id = uuid.v4();
+    const uid = uuid.v4();
     const project = {
       raw: data,
-      id,
+      uid,
       type,
       name: data.Name,
       creationDate: common.loadDate(data.CreationDate),
@@ -68,7 +68,7 @@ class Projects {
         break;
     }
 
-    debug('project created', project.id);
+    debug('project created', project.uid);
     ProjectActionCreators.load(project);
     return project;
   }
@@ -108,7 +108,7 @@ class Projects {
       if(err) { return done(err); }
 
       project.dirty = false;
-      debug('project saved', project.id);
+      debug('project saved', project.uid);
       ProjectActionCreators.refresh(project);
       return done();
     });

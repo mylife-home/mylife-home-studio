@@ -73,8 +73,8 @@ class Application extends React.Component {
       switch(project.type) {
       case 'vpanel':
         return (
-          <mui.Tab value={project.id}
-                   key={project.id}
+          <mui.Tab value={project.uid}
+                   key={project.uid}
                    label={title}
                    icon={<base.icons.tabs.VPanel />}>
             <VPanelProjectTab project={project} />
@@ -83,8 +83,8 @@ class Application extends React.Component {
 
       case 'ui':
         return (
-          <mui.Tab value={project.id}
-                   key={project.id}
+          <mui.Tab value={project.uid}
+                   key={project.uid}
                    label={title}
                    icon={<base.icons.tabs.Ui />}>
             <UiProjectTab project={project} />

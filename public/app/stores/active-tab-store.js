@@ -20,12 +20,12 @@ class ActiveTabStore extends EventEmitter {
   handleDispatch(action) {
     switch(action.type) {
       case AppConstants.ActionTypes.PROJECT_LOAD:
-        this.activeTab = action.project.id;
+        this.activeTab = action.project.uid;
         this.emitChange();
         break;
 
       case AppConstants.ActionTypes.PROJECT_CLOSE:
-        if(action.project.id !== this.activeTab) { return; }
+        if(action.project.uid !== this.activeTab) { return; }
         this.activeTab = DEFAULT_TAB;
         this.emitChange();
         break;

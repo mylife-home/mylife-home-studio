@@ -22,7 +22,7 @@ class ProjectStateStore extends EventEmitter {
         break;
 
       case AppConstants.ActionTypes.PROJECT_CLOSE:
-        this.states.delete(action.project.id);
+        this.states.delete(action.project.uid);
         this.emitChange();
         break;
 
@@ -45,9 +45,9 @@ class ProjectStateStore extends EventEmitter {
   }
 
   getProjectState(project) {
-    let state = this.states.get(project.id);
+    let state = this.states.get(project.uid);
     if(state) { return state; }
-    this.states.set(project.id, (state = {}));
+    this.states.set(project.uid, (state = {}));
     return state;
   }
 };

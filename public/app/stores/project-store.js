@@ -20,7 +20,7 @@ class ProjectStore extends EventEmitter {
       case AppConstants.ActionTypes.PROJECT_LOAD:
         {
           const project = action.project;
-          this.projects.set(project.id, project);
+          this.projects.set(project.uid, project);
           project.version = 1;
           this.emitChange();
         }
@@ -28,7 +28,7 @@ class ProjectStore extends EventEmitter {
       case AppConstants.ActionTypes.PROJECT_CLOSE:
         {
           const project = action.project;
-          this.projects.delete(project.id);
+          this.projects.delete(project.uid);
           this.emitChange();
         }
         break;
