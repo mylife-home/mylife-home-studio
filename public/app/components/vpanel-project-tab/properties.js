@@ -82,14 +82,30 @@ class Properties extends React.Component {
     const onDelete = () => {
       this.selectProject();
       ProjectActionCreators.deleteComponent(project, component);
-    }
+    };
+    const pluginConfig = component.plugin.config;
+
     return (
       <div>
         <PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
-{/* TODO */}
+            <tr><td>Id</td><td><PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td></tr>
+            {pluginConfig.map(prop => (
+              <tr key={prop.name}>
+                <td>
+                  {prop.name}
+                </td>
+                <td>
+                  <PropertiesEditor
+                    project={project}
+                    object={component.config}
+                    property={prop.name}
+                    type={prop.type} />
+                </td>
+              </tr>))
+            }
           </tbody>
         </table>
       </div>
