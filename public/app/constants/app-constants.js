@@ -34,6 +34,8 @@ export default {
   DragTypes: keyMirror({
     VPANEL_PLUGIN: null,
     VPANEL_COMPONENT: null,
-    VPANEL_COMPONENT_ATTRIBUTE: null
+    VPANEL_COMPONENT_ATTRIBUTE: null,
+
+    UI_TOOLBOX_CONTROL: null
   })
 };

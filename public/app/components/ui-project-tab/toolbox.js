@@ -6,6 +6,8 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import ToolboxControl from './toolbox-control';
+
 class Toolbox extends React.Component {
 
   constructor(props) {
@@ -16,9 +18,14 @@ class Toolbox extends React.Component {
     const project = this.props.project;
 
     return (
-      <div>
-        TOOLBOX
-      </div>
+      <mui.List>
+        <mui.ListItem key={'text'}>
+          <ToolboxControl project={project} type={'text'}></ToolboxControl>
+        </mui.ListItem>
+        <mui.ListItem key={'image'}>
+          <ToolboxControl project={project} type={'image'}></ToolboxControl>
+        </mui.ListItem>
+      </mui.List>
     );
   }
 }
