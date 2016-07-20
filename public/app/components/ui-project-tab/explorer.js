@@ -22,16 +22,40 @@ class Explorer extends React.Component {
     super(props);
   }
 
-  render() {
+  renderComponents() {
     const project = this.props.project;
 
+    return project.components.map(comp => (
+      <mui.ListItem key={`component:${comp.id}`} primaryText={comp.id} leftIcon={<base.icons.Component />} />
+    ));
+  }
+
+  renderImages() {
+    const project = this.props.project;
+
+    return project.images.map(img => (
+      <mui.ListItem key={`image:${img.uid}`} primaryText={img.id} leftIcon={<base.icons.UiImage />} />
+    ));
+  }
+
+  renderWindows() {
+    const project = this.props.project;
+
+    return project.windows.map(window => (
+      <mui.ListItem key={`window:${window.uid}`} primaryText={window.id} leftIcon={<base.icons.UiWindow />} />
+    ));
+  }
+
+  render() {
+    const project = this.props.project;
+console.log(project);
     return (
       <div style={Object.assign({}, tabStyles.fullHeight)}>
         <mui.List style={Object.assign({}, tabStyles.scrollable, styles.mainList)}>
           <mui.ListItem key={'project'} primaryText={'Project'} leftIcon={<base.icons.tabs.Ui />} />
-          <mui.ListItem key={'components'} primaryText={'Components'} leftIcon={<base.icons.Component />} />
-          <mui.ListItem key={'images'} primaryText={'Images'} leftIcon={<base.icons.UiImage />} />
-          <mui.ListItem key={'windows'} primaryText={'Windows'} leftIcon={<base.icons.UiWindow />} />
+          <mui.ListItem key={'components'} primaryText={'Components'} leftIcon={<base.icons.Component />} nestedItems={this.renderComponents()} />
+          <mui.ListItem key={'images'} primaryText={'Images'} leftIcon={<base.icons.UiImage />} nestedItems={this.renderImages()} />
+          <mui.ListItem key={'windows'} primaryText={'Windows'} leftIcon={<base.icons.UiWindow />} nestedItems={this.renderWindows()} />
         </mui.List>
         <Toolbar project={project} />
       </div>
