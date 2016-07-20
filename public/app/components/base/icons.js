@@ -8,24 +8,29 @@ import ActionInfo from 'material-ui/svg-icons/action/info';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 import ActionSubject from 'material-ui/svg-icons/action/subject';
+import ActionOpenInBrowser from 'material-ui/svg-icons/action/open-in-browser';
 
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import ContentSave from 'material-ui/svg-icons/content/save';
 
 import CommunicationImportContacts from 'material-ui/svg-icons/communication/import-contacts';
+
+import EditorTextFields from 'material-ui/svg-icons/editor/text-fields';
+
+import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
+import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
 
 import HardwareMemory from 'material-ui/svg-icons/hardware/memory';
 import HardwareDeveloperBoard from 'material-ui/svg-icons/hardware/developer-board';
 import HardwareRouter from 'material-ui/svg-icons/hardware/router';
 
+import ImageImage from 'material-ui/svg-icons/image/image';
+
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+
 import NotificationPersonalVideo from 'material-ui/svg-icons/notification/personal-video';
 
 import SocialPublic from 'material-ui/svg-icons/social/public';
 import SocialShare from 'material-ui/svg-icons/social/share';
-
-import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
-import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
-import ActionOpenInBrowser from 'material-ui/svg-icons/action/open-in-browser';
-import ContentSave from 'material-ui/svg-icons/content/save';
 
 export default {
 
@@ -68,4 +73,7 @@ export default {
   NetConfig       : ActionSettings,
 
   Binding         : SocialShare,
+
+  UiImage         : ImageImage,
+  UiText          : EditorTextFields,
 };
