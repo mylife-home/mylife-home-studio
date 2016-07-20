@@ -46,16 +46,16 @@ class UiProjectTab extends React.Component {
       <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
         <bs.Row style={tabStyles.fullHeight}>
           <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
-            <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              <Toolbox project={project} />
-            </mui.Paper>
+            <div>
+              <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+                <Toolbox project={project} />
+              </mui.Paper>
+              <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+                <Explorer project={project} />
+              </mui.Paper>
+            </div>
           </bs.Col>
-          <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
-            <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              <Explorer project={project} />
-            </mui.Paper>
-          </bs.Col>
-          <bs.Col sm={6} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
+          <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
             <div>
               <base.DetailsTitle
                 center={project.name}
