@@ -23,6 +23,7 @@ import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
 import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
 
 import HardwareMemory from 'material-ui/svg-icons/hardware/memory';
+import HardwareDesktopWindows from 'material-ui/svg-icons/hardware/desktop-windows';
 import HardwareDeveloperBoard from 'material-ui/svg-icons/hardware/developer-board';
 import HardwareRouter from 'material-ui/svg-icons/hardware/router';
 
@@ -81,4 +82,5 @@ export default {
 
   UiImage         : ImageImage,
   UiText          : EditorTextFields,
+  UiWindow        : HardwareDesktopWindows,
 };
