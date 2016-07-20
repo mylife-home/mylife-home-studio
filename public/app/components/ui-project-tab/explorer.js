@@ -11,7 +11,7 @@ import Toolbar from './toolbar';
 import tabStyles from '../base/tab-styles';
 
 const styles = {
-  mainList: {
+  listHeight: {
     height: 'calc(100% - 74px)'
   }
 };
@@ -51,7 +51,7 @@ class Explorer extends React.Component {
 console.log(project);
     return (
       <div style={Object.assign({}, tabStyles.fullHeight)}>
-        <mui.List style={Object.assign({}, tabStyles.scrollable, styles.mainList)}>
+        <mui.List style={Object.assign({}, tabStyles.scrollable, styles.listHeight)}>
           <mui.ListItem key={'project'} primaryText={'Project'} leftIcon={<base.icons.tabs.Ui />} />
           <mui.ListItem key={'components'} primaryText={'Components'} leftIcon={<base.icons.Component />} nestedItems={this.renderComponents()} />
           <mui.ListItem key={'images'} primaryText={'Images'} leftIcon={<base.icons.UiImage />} nestedItems={this.renderImages()} />

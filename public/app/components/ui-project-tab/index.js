@@ -16,6 +16,12 @@ import ProjectStore from '../../stores/project-store';
 
 import tabStyles from '../base/tab-styles';
 
+const styles = {
+  explorerHeight : {
+    height: 'calc(100% - 144px)'
+  }
+};
+
 class UiProjectTab extends React.Component {
 
   constructor(props) {
@@ -46,11 +52,11 @@ class UiProjectTab extends React.Component {
       <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
         <bs.Row style={tabStyles.fullHeight}>
           <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
-            <div>
-              <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+            <div style={tabStyles.fullHeight}>
+              <mui.Paper>
                 <Toolbox project={project} />
               </mui.Paper>
-              <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+              <mui.Paper style={Object.assign({}, tabStyles.scrollable, styles.explorerHeight)}>
                 <Explorer project={project} />
               </mui.Paper>
             </div>
