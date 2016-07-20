@@ -15,7 +15,7 @@ const styles = {
   pluginList: {
     height: 'calc(100% - 74px)'
   }
-}
+};
 
 class Toolbox extends React.Component {
 
