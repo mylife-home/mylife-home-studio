@@ -68,14 +68,14 @@ class Toolbar extends React.Component {
                             tooltipPosition="top-right"
                             onClick={this.newImage.bind(this)}
                             style={styles.button}>
-              <base.icons.actions.New />
+              <base.icons.actions.NewImage />
             </mui.IconButton>
 
             <mui.IconButton tooltip="New window"
                             tooltipPosition="top-right"
                             onClick={this.newWindow.bind(this)}
                             style={styles.button}>
-              <base.icons.actions.New />
+              <base.icons.actions.NewWindow />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Import UI components from online entities"

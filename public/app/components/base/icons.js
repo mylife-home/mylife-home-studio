@@ -10,11 +10,14 @@ import ActionSettings from 'material-ui/svg-icons/action/settings';
 import ActionSubject from 'material-ui/svg-icons/action/subject';
 import ActionOpenInBrowser from 'material-ui/svg-icons/action/open-in-browser';
 
+import AvAddToQueue from 'material-ui/svg-icons/av/add-to-queue';
+
 import ContentSave from 'material-ui/svg-icons/content/save';
 
 import CommunicationImportContacts from 'material-ui/svg-icons/communication/import-contacts';
 
 import EditorTextFields from 'material-ui/svg-icons/editor/text-fields';
+import EditorInsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
 
 import FileCreateNewFolder from 'material-ui/svg-icons/file/create-new-folder';
 import FileFolderOpen from 'material-ui/svg-icons/file/folder-open';
@@ -44,6 +47,8 @@ export default {
     Refresh       : ActionAutorenew,
     Info          : ActionInfo,
     Close         : NavigationClose,
+    NewWindow     : AvAddToQueue,
+    NewImage      : EditorInsertPhoto,
   },
 
   tabs: {
