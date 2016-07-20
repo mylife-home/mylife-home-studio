@@ -28,7 +28,7 @@ function open(project, data) {
 
 function loadComponent(comp) {
   return {
-    id: comp.id,
+    id: comp.Id,
     plugin: common.loadPlugin(comp.Plugin)
   };
 }
@@ -36,8 +36,8 @@ function loadComponent(comp) {
 function loadImage(img) {
   return {
     uid: uuid.v4(),
-    id: img.id,
-    content: img.content
+    id: img.Id,
+    content: img.Content
   };
 }
 
