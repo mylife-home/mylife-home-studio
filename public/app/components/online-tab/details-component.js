@@ -41,6 +41,24 @@ class DetailsComponent extends React.Component {
     );
   }
 
+  renderBinding(binding) {
+    const key = `${binding.remote_id}:${binding.remote_attribute}:${binding.local_action}`;
+    return (
+      <div key={key}>
+        <base.icons.Binding style={{verticalAlign: 'middle'}}/>
+        &nbsp;
+        Binding:
+        &nbsp;
+        {`${binding.remote_id}.${binding.remote_attribute}`}
+        &nbsp;
+        ->
+        &nbsp;
+        {binding.local_action}
+        <mui.Divider />
+      </div>
+    );
+  }
+
   render() {
     const entity = this.props.entity;
     const component = this.props.component;
@@ -69,6 +87,7 @@ class DetailsComponent extends React.Component {
           }/>
         <DetailsContainer>
           {component.config.map(this.renderConfig, this)}
+          {component.bindings.map(this.renderBinding, this)}
         </DetailsContainer>
       </div>
     );
