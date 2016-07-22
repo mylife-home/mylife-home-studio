@@ -147,7 +147,7 @@ class Resources {
   }
 
   queryCompSetDesigner(entityId, componentId, designer, cb) {
-    debug(`queryComponentUnbind(${entityId}, ${binding.remote_id}.${binding.remote_attribute} -> ${binding.local_id}.${binding.local_action})`);
+    debug(`queryCompSetDesigner(${entityId}, ${componentId})`);
     request
       .post('/resources/' + entityId)
       .send({
