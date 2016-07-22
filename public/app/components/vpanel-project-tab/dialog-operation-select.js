@@ -14,8 +14,19 @@ class DialogOperationSelect extends React.Component {
   createOperationCheckHandler(op) {
     return (event, isInputChecked) => {
       op.enabled = isInputChecked;
-      this.setState({ useless: {} }); // trigger change to re-draw
+      this.redraw();
     };
+  }
+
+  setAll(value) {
+    for(const op of this.props.operations) {
+      op.enabled = value;
+    }
+    this.redraw();
+  }
+
+  redraw() {
+    this.setState({ useless: {} }); // trigger change to re-draw
   }
 
   render() {
@@ -23,6 +34,12 @@ class DialogOperationSelect extends React.Component {
       <mui.Dialog
           title="Select operations to execute"
           actions={<div>
+                    <mui.FlatButton
+                      label="Select all"
+                      onTouchTap={() => this.setAll(true)} />
+                    <mui.FlatButton
+                      label="Unselect all"
+                      onTouchTap={() => this.setAll(false)} />
                     <mui.FlatButton
                       label="OK"
                       onTouchTap={() => this.props.ok()} />
