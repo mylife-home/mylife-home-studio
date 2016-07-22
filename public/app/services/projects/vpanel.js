@@ -817,7 +817,7 @@ function createOperationCreateBinding(component, binding) {
   return {
     id: ++operationId,
     enabled: true,
-    description: `Create binding ${binding.remote_id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
+    description: `Create binding ${binding.remote.id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
     action: (done) => {
       return resources.queryComponentBind(component.plugin.entityId, {
         remote_id: binding.remote.id,
