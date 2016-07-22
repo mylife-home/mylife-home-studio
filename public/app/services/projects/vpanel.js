@@ -81,7 +81,7 @@ function validate(project, msgs) {
     const duplicates = new Set();
 
     for(const binding of comp.bindings) {
-      const bindingId = `${binding.remote_id}.${binding.remote_attribute} -> ${comp.id}.${binding.local_action}`;
+      const bindingId = `${binding.remote.id}.${binding.remote_attribute} -> ${comp.id}.${binding.local_action}`;
       if(bindings.has(bindingId)) {
         duplicates.add(bindingId);
         continue;
@@ -161,7 +161,7 @@ function prepareImportToolbox(project, done) {
       });
 
       bindingsToDelete.forEach(binding => messages.push(
-        `Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote_id}:${binding.remote_attribute}`));
+        `Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote.id}:${binding.remote_attribute}`));
 
       componentsToDelete.forEach(comp => messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`));
 
@@ -308,7 +308,7 @@ function prepareDeployVPanel(project, done) {
       for(const projectComponent of project.components) {
 
         for(const binding of projectComponent.bindings) {
-          const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${projectComponent.id}.${binding.local_action}`;
+          const bindingId = `${binding.remote.id}.${binding.remote_attribute}->${projectComponent.id}.${binding.local_action}`;
           bindingsToCreate.set(bindingId, {
             entityId: projectComponent.plugin.entityId,
             component: projectComponent,
