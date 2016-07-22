@@ -11,10 +11,6 @@ class DialogSelect extends React.Component {
     this.state = {};
   }
 
-  handleSelect(item) {
-    this.props.select(item);
-  }
-
   render() {
     return (
       <mui.Dialog

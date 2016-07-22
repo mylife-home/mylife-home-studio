@@ -11,10 +11,6 @@ class DialogOperationSelect extends React.Component {
     this.state = {};
   }
 
-  handleSelect(item) {
-    this.props.select(item);
-  }
-
   createOperationCheckHandler(op) {
     return (event, isInputChecked) => {
       op.enabled = isInputChecked;
