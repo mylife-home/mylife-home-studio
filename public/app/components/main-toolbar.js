@@ -72,13 +72,13 @@ class MainToolbar extends React.Component {
 
   openOnlineVPanelProjectDialog() {
     this.setState({
-      openOnlineVPanelProjectItems: OnlineStore.getResourceNames('project.vpanel.')
+      openOnlineVPanelProjectItems: OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length))
     });
   }
 
   openOnlineUiProjectDialog() {
     this.setState({
-      openOnlineUiProjectItems: OnlineStore.getResourceNames('project.ui.')
+      openOnlineUiProjectItems: OnlineStore.getResourceNames('project.ui.').map(name => name.substring('project.ui.'.length))
     });
   }
 
@@ -87,7 +87,7 @@ class MainToolbar extends React.Component {
       openOnlineVPanelProjectItems: null
     });
     if(!name) { return; }
-    this.loadProjectOnline(name, 'vpanel');
+    this.loadProjectOnline('project.vpanel.' + name, 'vpanel');
   }
 
   handleOpenOnlineUiProject(name) {
@@ -95,7 +95,7 @@ class MainToolbar extends React.Component {
       openOnlineUiProjectItems: null
     });
     if(!name) { return; }
-    this.loadProjectOnline(name, 'ui');
+    this.loadProjectOnline('project.ui.' + name, 'ui');
   }
 
   loadNewProject(type) {
