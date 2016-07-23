@@ -185,8 +185,7 @@ class MainToolbar extends React.Component {
 
   getActiveTabProject() {
     const activeTabId = ActiveTabStore.getActiveTab();
-    const projects = ProjectStore.getAll();
-    return projects.find(p => p.id === activeTabId);
+    return ProjectStore.get(activeTabId);
   }
 
   render() {

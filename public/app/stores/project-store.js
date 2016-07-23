@@ -57,6 +57,11 @@ class ProjectStore extends EventEmitter {
   getAll() {
     return Array.from(this.projects.values());
   }
+
+  get(uid) {
+    return this.projects.get(uid);
+  }
+
 };
 
 export default new ProjectStore();
