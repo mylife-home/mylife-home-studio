@@ -98,6 +98,13 @@ class CanvasComponent extends React.Component {
     const { project, component } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
 
+    if(!dim) {
+      const node = this.refs.component;
+      // may be not yet rendered
+      if(!node) { return; }
+      dim = node.getBoundingClientRect();
+    }
+
     linkHelper.componentOnMeasureChanged(this, component, project, projectState, dim);
   }
 
