@@ -255,8 +255,7 @@ const componentSource = {
     location.y += Math.round(delta.y);
     base.utils.snapToGrid(location, true);
 
-    // keep ui fluid
-    window.setTimeout(() => Facade.projects.dirtify(project), 0);
+    Facade.projects.dirtify(project);
   }
 };
 
