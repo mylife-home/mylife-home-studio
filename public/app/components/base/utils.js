@@ -7,7 +7,6 @@ function download(content, mime, filename) {
   pom.setAttribute('href', `data:${mime};charset=utf-8, ${encodeURIComponent(content)}`);
   pom.setAttribute('download', filename);
   pom.click();
-  document.removeChild(pom);
 }
 
 function stopPropagationWrapper(func) {
