@@ -26,12 +26,21 @@ const styles = {
     right:0,
   },
   tabs: {
-    height : 'calc(100% - 120px)',
+    height : 'calc(100% - 56px)',
     position: 'relative',
     zIndex : -1, // need that for toolbar tooltips ?!
   },
   tabContainer: {
-    height : 'calc(100% - 54px)',
+    height : 'calc(100% - 30px)',
+  },
+  tabLabelIcon: {
+    float: 'left'
+  },
+  tabLabelText: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    lineHeight: '24px',
+    marginLeft: '10px'
   },
   theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
@@ -66,6 +75,15 @@ class Application extends React.Component {
     });
   }
 
+  renderTabLabel(text, icon) {
+    return(
+      <div>
+        <div style={styles.tabLabelIcon}>{icon}</div>
+        <div style={styles.tabLabelText}>{text}</div>
+      </div>
+    );
+  }
+
   render() {
     const tabs = this.state.projects.map((project) => {
       let title = project.name;
@@ -75,8 +93,7 @@ class Application extends React.Component {
         return (
           <mui.Tab value={project.uid}
                    key={project.uid}
-                   label={title}
-                   icon={<base.icons.tabs.VPanel />}>
+                   label={this.renderTabLabel(title, (<base.icons.tabs.VPanel />))}>
             <VPanelProjectTab project={project} />
           </mui.Tab>
         );
@@ -85,8 +102,7 @@ class Application extends React.Component {
         return (
           <mui.Tab value={project.uid}
                    key={project.uid}
-                   label={title}
-                   icon={<base.icons.tabs.Ui />}>
+                   label={this.renderTabLabel(title, (<base.icons.tabs.Ui />))}>
             <UiProjectTab project={project} />
           </mui.Tab>
         );
@@ -99,7 +115,6 @@ class Application extends React.Component {
     return (
       <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
         <div style={styles.root}>
-          <mui.AppBar title="MyLife Home Studio" showMenuIconButton={false}/>
           <MainToolbar />
           <mui.Tabs value={this.state.activeTab}
                     onChange={(value) => TabActionCreators.activate(value)}
@@ -107,8 +122,7 @@ class Application extends React.Component {
                     contentContainerStyle={styles.tabContainer}
                     tabTemplate={base.TabTemplate}>
             <mui.Tab value="online"
-                     label="Online"
-                     icon={<base.icons.tabs.Online />}>
+                     label={this.renderTabLabel('Online', (<base.icons.tabs.Online />))}>
               <OnlineTab />
             </mui.Tab>
             {tabs}

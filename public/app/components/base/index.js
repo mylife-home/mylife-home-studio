@@ -25,5 +25,5 @@ export default {
   SelectableListItem,
   TooltipContainer,
   TabTemplate,
-  DetailsTitle,
+  DetailsTitle
 };
