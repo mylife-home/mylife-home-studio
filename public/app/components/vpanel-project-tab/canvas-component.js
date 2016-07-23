@@ -162,16 +162,13 @@ class CanvasComponent extends React.Component {
     const entityHost = component.plugin.entityId.split('_')[1];
     const plugin = component.plugin;
 
-    if(isDragging) {
-      return null;
-    }
-
     return (
-      <div style={{
+      <div ref={'component'} style={{
         zIndex : 2,
         position : 'absolute',
         left    : location.x,
-        top     : location.y
+        top     : location.y,
+        opacity : isDragging ? 0.5 : 1
       }} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <Measure onMeasure={this.handleMeasureChange.bind(this)}>
           <div>
@@ -251,7 +248,7 @@ const componentSource = {
     };
   },
 
-  endDrag(props, monitor) {
+  endDrag(props, monitor, uiComponent) {
     if(!monitor.didDrop()) { return; }
 
     const { component, project } = props;
@@ -263,6 +260,8 @@ const componentSource = {
     base.utils.snapToGrid(location, true);
 
     Facade.projects.dirtify(project);
+
+    uiComponent.handleMeasureChange();
   }
 };
 
