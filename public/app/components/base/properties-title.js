@@ -3,8 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
-import base from '../base/index';
+import icons from './icons';
 
 function getStyles(props, state) {
   const { baseTheme } = state.muiTheme;
@@ -64,7 +63,7 @@ class PropertiesTitle extends React.Component {
           if(!onDelete) { return; }
           return (
             <mui.IconButton onClick={onDelete} style={Object.assign({}, styles.titleItem, styles.titleRight)}>
-              <base.icons.actions.Close/>
+              <icons.actions.Close/>
             </mui.IconButton>);
         })()}
         <div style={Object.assign({}, styles.titleItem, styles.titleMain)}>

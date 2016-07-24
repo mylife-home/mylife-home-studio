@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
-import base from '../base/index';
+import utils from './utils';
 
 import Facade from '../../services/facade';
 
@@ -22,7 +22,7 @@ class PropertiesEditor extends React.Component {
       <mui.TextField
         id={`${project.uid}:${property}`}
         value={object[property]}
-        onChange={base.utils.stopPropagationWrapper(this.onStringChange.bind(this))} />
+        onChange={utils.stopPropagationWrapper(this.onStringChange.bind(this))} />
     );
   }
 
@@ -36,7 +36,7 @@ class PropertiesEditor extends React.Component {
       <mui.TextField
         id={`${project.uid}:${property}`}
         value={object[property]}
-        onChange={base.utils.stopPropagationWrapper(this.onIntegerChange.bind(this))}
+        onChange={utils.stopPropagationWrapper(this.onIntegerChange.bind(this))}
         type='number' />
     );
   }
@@ -54,7 +54,7 @@ class PropertiesEditor extends React.Component {
       <mui.TextField
         id={`${project.uid}:${property}`}
         value={object[property]}
-        onChange={base.utils.stopPropagationWrapper(this.onNumberChange.bind(this))}
+        onChange={utils.stopPropagationWrapper(this.onNumberChange.bind(this))}
         type='number' />
     );
   }
@@ -72,7 +72,7 @@ class PropertiesEditor extends React.Component {
       <mui.Checkbox
         id={`${project.uid}:${property}`}
         checked={object[property] === 'true'}
-        onCheck={base.utils.stopPropagationWrapper(this.onBooleanChange.bind(this))} />
+        onCheck={utils.stopPropagationWrapper(this.onBooleanChange.bind(this))} />
     );
   }
 

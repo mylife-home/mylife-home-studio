@@ -12,6 +12,10 @@ import SelectableListItem from './selectable-list-item';
 import TooltipContainer from './tooltip-container';
 import TabTemplate from './tab-template';
 import DetailsTitle from './details-title';
+import PropertiesEditor from './properties-editor';
+import PropertiesTitle from './properties-title';
+import PropertiesLabel from './properties-label';
+import PropertiesValue from './properties-value';
 
 export default {
   icons,
@@ -25,5 +29,9 @@ export default {
   SelectableListItem,
   TooltipContainer,
   TabTemplate,
-  DetailsTitle
+  DetailsTitle,
+  PropertiesEditor,
+  PropertiesTitle,
+  PropertiesLabel,
+  PropertiesValue
 };

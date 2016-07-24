@@ -6,13 +6,9 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import PropertiesTitle from './properties-title.js';
-import PropertiesEditor from './properties-editor.js';
-
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
-
 
 const styles = {
   cell: {
@@ -115,18 +111,18 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
+        <base.PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
-            <tr><td>{this.renderCellLabel('Id')}</td><td><PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td></tr>
+            <tr><td>{this.renderCellLabel('Id')}</td><td><base.PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td></tr>
             {pluginConfig.map(prop => (
               <tr key={prop.name}>
                 <td>
                   {this.renderCellLabel(prop.name)}
                 </td>
                 <td>
-                  <PropertiesEditor
+                  <base.PropertiesEditor
                     project={project}
                     object={component.config}
                     property={prop.name}
@@ -148,14 +144,26 @@ class Properties extends React.Component {
     }
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.Binding/>} text={key} onDelete={onDelete} />
+        <base.PropertiesTitle icon={<base.icons.Binding/>} text={key} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
-            <tr><td>{this.renderCellLabel('Remote component')}</td><td>{this.renderCellValue(binding.remote.id)}</td></tr>
-            <tr><td>{this.renderCellLabel('Remote attribute')}</td><td>{this.renderCellValue(binding.remote_attribute)}</td></tr>
-            <tr><td>{this.renderCellLabel('Local component')}</td><td>{this.renderCellValue(binding.local.id)}</td></tr>
-            <tr><td>{this.renderCellLabel('Local action')}</td><td>{this.renderCellValue(binding.local_action)}</td></tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Remote component'}/></td>
+              <td><base.PropertiesValue value={binding.remote.id}/></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Remote attribute'}/></td>
+              <td><base.PropertiesValue value={binding.remote_attribute}/></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Local component'}/></td>
+              <td><base.PropertiesValue value={binding.local.id}/></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Local action'}/></td>
+              <td><base.PropertiesValue value={binding.local_action}/></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -165,13 +173,22 @@ class Properties extends React.Component {
   renderProject(project) {
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.tabs.VPanel/>} text={'Project'} />
+        <base.PropertiesTitle icon={<base.icons.tabs.VPanel/>} text={'Project'} />
         {/* details */}
         <table>
           <tbody>
-            <tr><td>{this.renderCellLabel('Name')}</td><td><PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td></tr>
-            <tr><td>{this.renderCellLabel('Creation')}</td><td>{this.renderCellValue(project.creationDate.toISOString())}</td></tr>
-            <tr><td>{this.renderCellLabel('Last update')}</td><td>{this.renderCellValue(project.lastUpdate.toISOString())}</td></tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Name'}/></td>
+              <td><base.PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Creation'}/></td>
+              <td><base.PropertiesValue value={project.creationDate.toISOString()}/></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Last update'}/></td>
+              <td><base.PropertiesValue value={project.lastUpdate.toISOString()}/></td>
+            </tr>
           </tbody>
         </table>
       </div>
