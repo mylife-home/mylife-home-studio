@@ -48,7 +48,7 @@ class Explorer extends React.Component {
 
   render() {
     const project = this.props.project;
-console.log(project);
+
     return (
       <div style={Object.assign({}, tabStyles.fullHeight)}>
         <mui.List style={Object.assign({}, tabStyles.scrollable, styles.listHeight)}>
