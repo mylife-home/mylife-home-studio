@@ -52,10 +52,25 @@ class Explorer extends React.Component {
     return (
       <div style={Object.assign({}, tabStyles.fullHeight)}>
         <mui.List style={Object.assign({}, tabStyles.scrollable, styles.listHeight)}>
-          <mui.ListItem key={'project'} primaryText={'Project'} leftIcon={<base.icons.tabs.Ui />} />
-          <mui.ListItem key={'components'} primaryText={'Components'} leftIcon={<base.icons.Component />} disabled={true} nestedItems={this.renderComponents()} />
-          <mui.ListItem key={'images'} primaryText={'Images'} leftIcon={<base.icons.UiImage />} disabled={true} nestedItems={this.renderImages()} />
-          <mui.ListItem key={'windows'} primaryText={'Windows'} leftIcon={<base.icons.UiWindow />} disabled={true} nestedItems={this.renderWindows()} />
+          <mui.ListItem key={'project'}
+                        primaryText={'Project'}
+                        leftIcon={<base.icons.tabs.Ui />}
+                        onClick={() => console.log('project')} />
+          <mui.ListItem key={'components'}
+                        primaryText={'Components'}
+                        leftIcon={<base.icons.Component />}
+                        disabled={true}
+                        nestedItems={this.renderComponents()} />
+          <mui.ListItem key={'images'}
+                        primaryText={'Images'}
+                        leftIcon={<base.icons.UiImage />}
+                        disabled={true}
+                        nestedItems={this.renderImages()} />
+          <mui.ListItem key={'windows'}
+                        primaryText={'Windows'}
+                        leftIcon={<base.icons.UiWindow />}
+                        disabled={true}
+                        nestedItems={this.renderWindows()} />
         </mui.List>
         <Toolbar project={project} />
       </div>
