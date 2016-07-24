@@ -9,6 +9,23 @@ import base from '../base/index';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 
+import DataImage from './data-image';
+
+const styles = {
+  container: {
+    position : 'relative',
+    height   : 'calc(100% - 80px)'
+  },
+  imageContent : {
+    position : 'absolute',
+    top      : 0,
+    left     : 0,
+    right    : 0,
+    bottom   : 0,
+    margin   : 'auto'
+  }
+};
+
 class Canvas extends React.Component {
 
   constructor(props) {
@@ -46,7 +63,11 @@ class Canvas extends React.Component {
   }
 
   renderImage(image) {
-    return <div>image</div>;
+    return (
+      <div style={styles.container}>
+        <DataImage style={styles.imageContent} data={image.content} />
+      </div>
+    );
   }
 
   renderWindow(window) {
