@@ -81,6 +81,7 @@ class Explorer extends React.Component {
     const project = this.props.project;
     const state = ProjectStateStore.getProjectState(project);
     state.activeContent = data;
+    state.selection = data;
     ProjectActionCreators.stateRefresh(project);
   }
 
