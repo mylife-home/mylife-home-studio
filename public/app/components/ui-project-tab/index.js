@@ -86,7 +86,7 @@ class UiProjectTab extends React.Component {
             </div>
           </bs.Col>
           <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
-            <div>
+            <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
               <base.DetailsTitle
                 center={title}
                 left={<base.icons.tabs.Ui />}
