@@ -13,6 +13,7 @@ import Canvas from './canvas';
 
 import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
+import ProjectStateStore from '../../stores/project-state-store';
 
 import tabStyles from '../base/tab-styles';
 
@@ -33,20 +34,43 @@ class UiProjectTab extends React.Component {
 
   componentDidMount() {
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     const project = this.props.project;
-    let projectVersion = project && project.version;
-    this.setState({ projectVersion });
+    const projectVersion = project && project.version;
+    const state = ProjectStateStore.getProjectState(project);
+    const activeContent = state.activeContent;
+    this.setState({ projectVersion, activeContent });
   }
 
   render() {
     const project = this.props.project;
+    const activeContent = this.state.activeContent;
+
+    let title = project.name;
+    if(activeContent) {
+      switch(activeContent.type) {
+        case 'component':
+          const component = project.components.find(comp => comp.uid === activeContent.uid);
+          title += ` - ${component.id}`;
+          break;
+        case 'image':
+          const image = project.images.find(img => img.uid === activeContent.uid);
+          title += ` - ${image.id}`;
+          break;
+        case 'window':
+          const window = project.windows.find(wnd => wnd.uid === activeContent.uid);
+          title += ` - ${window.id}`;
+          break;
+      }
+    }
 
     return (
       <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
@@ -64,7 +88,7 @@ class UiProjectTab extends React.Component {
           <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
             <div>
               <base.DetailsTitle
-                center={project.name}
+                center={title}
                 left={<base.icons.tabs.Ui />}
                 right={
                   <mui.IconButton onClick={() => ProjectActionCreators.close(project)}>
