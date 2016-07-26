@@ -88,20 +88,6 @@ class Properties extends React.Component {
     );
   }
 
-  renderCellLabel(text) {
-    return (<div style={styles.cell}>{text}</div>);
-  }
-
-  renderCellValue(text) {
-    return (
-      <div style={styles.valueContainer}>
-        <div style={styles.value}>
-          {text}
-        </div>
-      </div>
-    );
-  }
-
   renderComponent(project, component) {
     const onDelete = () => {
       this.selectProject();
@@ -115,11 +101,14 @@ class Properties extends React.Component {
         {/* details */}
         <table>
           <tbody>
-            <tr><td>{this.renderCellLabel('Id')}</td><td><base.PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td></tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><base.PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td>
+            </tr>
             {pluginConfig.map(prop => (
               <tr key={prop.name}>
                 <td>
-                  {this.renderCellLabel(prop.name)}
+                  <base.PropertiesLabel text={prop.name} />
                 </td>
                 <td>
                   <base.PropertiesEditor
