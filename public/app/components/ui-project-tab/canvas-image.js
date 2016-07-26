@@ -5,12 +5,9 @@ import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
+import commonStyles from './canvas-styles';
 
-const styles = {
-  container: {
-    position : 'relative',
-    height   : 'calc(100% - 80px)'
-  },
+const styles = Object.assign({
   imageContent : {
     position : 'absolute',
     top      : 0,
@@ -19,7 +16,7 @@ const styles = {
     bottom   : 0,
     margin   : 'auto'
   }
-};
+}, commonStyles);
 
 class CanvasImage extends React.Component {
 

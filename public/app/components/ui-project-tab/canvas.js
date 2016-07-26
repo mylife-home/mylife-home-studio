@@ -12,12 +12,10 @@ import ProjectStateStore from '../../stores/project-state-store';
 import CanvasComponent from './canvas-component';
 import CanvasImage from './canvas-image';
 
-const styles = {
-  container: {
-    position : 'relative',
-    height   : 'calc(100% - 80px)'
-  }
-};
+import commonStyles from './canvas-styles';
+
+const styles = Object.assign({
+}, commonStyles);
 
 class Canvas extends React.Component {
 
