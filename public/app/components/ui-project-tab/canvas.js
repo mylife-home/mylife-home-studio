@@ -10,6 +10,7 @@ import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 
 import DataImage from './data-image';
+import CanvasComponent from './canvas-component';
 
 const styles = {
   container: {
@@ -54,11 +55,6 @@ class Canvas extends React.Component {
     this.setState({ projectVersion, activeContent });
   }
 
-
-  renderComponent(component) {
-    return <div>component</div>;
-  }
-
   renderImage(image) {
     return (
       <div style={styles.container}>
@@ -78,8 +74,8 @@ class Canvas extends React.Component {
     if(activeContent) {
       switch(activeContent.type) {
         case 'component':
-          return this.renderComponent(component);
           const component = project.components.find(comp => comp.id === activeContent.id);
+          return (<CanvasComponent component={component} />);
 
         case 'image':
           const image = project.images.find(img => img.uid === activeContent.uid);
