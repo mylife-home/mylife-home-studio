@@ -100,32 +100,16 @@ class TooltipContainer extends React.Component {
     }
   }
 
-  _handleKeyboardFocus(event, keyboardFocused) {
-    if (keyboardFocused) {
-      this._showTooltip();
-      if (this.props.onFocus) {
-        this.props.onFocus(event);
-      }
-    } else if (!this.state.hovered) {
-      this._hideTooltip();
-      if (this.props.onBlur) {
-        this.props.onBlur(event);
-      }
-    }
-
-    if (this.props.onKeyboardFocus) {
-      this.props.onKeyboardFocus(event, keyboardFocused);
-    }
-  }
-
   render() {
     const {
+      touch,
       tooltip,
-      touch
+      tooltipPosition,
+      ...otherProps
     } = this.props;
 
     const styles = getStyles(this.props, this.state);
-    const tooltipPosition = this.props.tooltipPosition.split('-');
+    const splittedTooltipPosition = tooltipPosition.split('-');
 
     const tooltipElement = tooltip ? (
       <Tooltip
@@ -134,21 +118,19 @@ class TooltipContainer extends React.Component {
         show={this.state.tooltipShown}
         touch={touch}
         style={Object.assign(styles.tooltip, this.props.tooltipStyles)}
-        verticalPosition={tooltipPosition[0]}
-        horizontalPosition={tooltipPosition[1]}
+        verticalPosition={splittedTooltipPosition[0]}
+        horizontalPosition={splittedTooltipPosition[1]}
       />
     ) : null;
 
     return (
       <div
-        {...this.props}
-        {...this.state}
+        {...otherProps}
         onBlur={this._handleBlur.bind(this)}
         onFocus={this._handleFocus.bind(this)}
         onMouseLeave={this._handleMouseLeave.bind(this)}
         onMouseEnter={this._handleMouseEnter.bind(this)}
         onMouseOut={this._handleMouseOut.bind(this)}
-        onKeyboardFocus={this._handleKeyboardFocus.bind(this)}
       >
         {tooltipElement}
         {this.props.children}
