@@ -54,9 +54,6 @@ class Canvas extends React.Component {
     this.setState({ projectVersion, activeContent });
   }
 
-  renderProject(project) {
-    return null;
-  }
 
   renderComponent(component) {
     return <div>component</div>;
@@ -94,7 +91,7 @@ class Canvas extends React.Component {
       }
     }
 
-    return this.renderProject(project);
+    return null; // project -> no render
   }
 }
 
