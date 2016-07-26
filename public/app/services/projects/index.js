@@ -130,6 +130,8 @@ class Projects {
     return JSON.stringify(project.raw);
   }
 
+  // -----------------------------------------------------------------------------
+
   vpanelPrepareImportOnlineToolbox(project, done) {
     return vpanel.prepareImportToolbox(project, done);
   }
@@ -189,6 +191,35 @@ class Projects {
 
   vpanelDeleteBinding(project, binding) {
     vpanel.deleteBinding(project, binding);
+    ProjectActionCreators.refresh(project);
+  }
+
+  // -----------------------------------------------------------------------------
+
+  uiCreateImage(project) {
+    const image = ui.createImage(project);
+    ProjectActionCreators.refresh(project);
+    return image;
+  }
+
+  uiCreateWindow(project) {
+    const window = ui.createWindow(project);
+    ProjectActionCreators.refresh(project);
+    return window;
+  }
+
+  uiDeleteComponent(project, component) {
+    ui.deleteComponent(project, component);
+    ProjectActionCreators.refresh(project);
+  }
+
+  uiDeleteImage(project, image) {
+    ui.deleteImage(project, image);
+    ProjectActionCreators.refresh(project);
+  }
+
+  uiDeleteWindow(project, window) {
+    ui.deleteWindow(project, window);
     ProjectActionCreators.refresh(project);
   }
 }

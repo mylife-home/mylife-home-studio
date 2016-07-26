@@ -20,11 +20,30 @@ export default {
   },
 
   deleteComponent: function(project, component) {
-    Facade.projects.vpanelDeleteComponent(project, component);
+    switch(project.type) {
+      case 'vpanel':
+        Facade.projects.vpanelDeleteComponent(project, component);
+        break;
+      case 'ui':
+        Facade.projects.uiDeleteComponent(project, component);
+        break;
+    }
   },
 
   deleteBinding: function(project, binding) {
     Facade.projects.vpanelDeleteBinding(project, binding);
+  },
+
+  deleteImage: function(project, image) {
+    Facade.projects.uiDeleteImage(project, image);
+  },
+
+  deleteWindow: function(project, window) {
+    Facade.projects.uiDeleteWindow(project, window);
+  },
+
+  deleteControl: function(project, window, control) {
+    Facade.projects.uiDeleteControl(project, window, control);
   },
 
   refresh: function(project) {

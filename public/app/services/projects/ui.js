@@ -7,7 +7,12 @@ export default {
   createNew,
   open,
   validate,
-  serialize
+  serialize,
+  createImage,
+  createWindow,
+  deleteComponent,
+  deleteImage,
+  deleteWindow
 };
 
 function createNew(project) {
@@ -153,8 +158,56 @@ function findWindow(project, id) {
 
 function validate(project, msgs) {
   common.validate(project, msgs);
+  // TODO
+  throw new Error('TODO');
 }
 
 function serialize(project) {
+  // TODO
+  throw new Error('TODO');
+}
+
+function createImage(project) {
+  const image = {
+    uid: uuid.v4(),
+    id: `image_${common.uid()}`,
+    content: null
+  };
+
+  project.images.push(image);
+  common.dirtify(project);
+
+  return image;
+}
+
+function createWindow(project) {
+  const window = {
+    uid: uuid.v4(),
+    id: `window_${common.uid()}`,
+    height: 500,
+    width: 500,
+    style: '',
+    backgroundResource: null,
+    controls: []
+  };
+
+  project.windows.push(window);
+  common.dirtify(project);
+
+  return window;
+}
+
+function deleteComponent(project, component) {
+  // TODO: usage
+}
+
+function deleteImage(project, image) {
+  // TODO: usage
 
 }
+
+function deleteWindow(project, window) {
+  // TODO: usage
+
+}
+
