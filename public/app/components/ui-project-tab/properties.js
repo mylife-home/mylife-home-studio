@@ -9,6 +9,7 @@ import base from '../base/index';
 import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
+import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 class Properties extends React.Component {
 
@@ -37,24 +38,146 @@ class Properties extends React.Component {
     this.setState({ projectVersion, selection });
   }
 
+  select(data) {
+    const project = this.props.project;
+    const state = ProjectStateStore.getProjectState(project);
+    state.activeContent = data;
+    state.selection = data;
+    ProjectActionCreators.stateRefresh(project);
+  }
+
   renderProject(project) {
-    return <div>project</div>;
+    return (
+      <div>
+        <base.PropertiesTitle icon={<base.icons.tabs.Ui/>} text={'Project'} />
+        {/* details */}
+        <table>
+          <tbody>
+            <tr>
+              <td><base.PropertiesLabel text={'Name'}/></td>
+              <td><base.PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Creation'}/></td>
+              <td><base.PropertiesValue value={project.creationDate.toISOString()}/></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Last update'}/></td>
+              <td><base.PropertiesValue value={project.lastUpdate.toISOString()}/></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Default window'}/></td>
+              <td><base.PropertiesValue value={'TODO'}/></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
   }
 
-  renderComponent(component) {
-    return <div>component</div>;
+
+  renderComponent(project, component) {
+    const onDelete = () => {
+      try {
+        this.select(null);
+        ProjectActionCreators.deleteComponent(project, component);
+      } catch(err) {
+        DialogsActionCreators.error(err);
+      }
+    };
+
+    return (
+      <div>
+        <base.PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
+        {/* details */}
+        <table>
+          <tbody>
+            <tr>
+              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><base.PropertiesValue value={component.id} /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
   }
 
-  renderImage(image) {
-    return <div>image</div>;
+  renderImage(project, image) {
+    const onDelete = () => {
+      try {
+        this.select(null);
+        ProjectActionCreators.deleteImage(project, image);
+      } catch(err) {
+        DialogsActionCreators.error(err);
+      }
+    };
+
+    return (
+      <div>
+        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={image.id} onDelete={onDelete} />
+        {/* details */}
+        <table>
+          <tbody>
+            <tr>
+              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><base.PropertiesEditor project={project} object={image} property={'id'} type={'s'} /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
   }
 
-  renderWindow(window) {
-    return <div>window</div>;
+  renderWindow(project, window) {
+    const onDelete = () => {
+      try {
+        this.select(null);
+        ProjectActionCreators.deleteWindow(project, window);
+      } catch(err) {
+        DialogsActionCreators.error(err);
+      }
+    };
+
+    return (
+      <div>
+        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={window.id} onDelete={onDelete} />
+        {/* details */}
+        <table>
+          <tbody>
+            <tr>
+              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><base.PropertiesEditor project={project} object={window} property={'id'} type={'s'} /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
   }
 
-  renderControl(window, control) {
-    return <div>control</div>;
+  renderControl(project, window, control) {
+    const onDelete = () => {
+      try {
+        this.select({ type: 'window', uid: window.uid });
+        ProjectActionCreators.deleteControl(project, window, control);
+      } catch(err) {
+        DialogsActionCreators.error(err);
+      }
+    };
+
+    return (
+      <div>
+        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={window.id} onDelete={onDelete} />
+        {/* details */}
+        <table>
+          <tbody>
+            <tr>
+              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><base.PropertiesEditor project={project} object={window} property={'id'} type={'s'} /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
   }
 
   render() {
@@ -65,23 +188,23 @@ class Properties extends React.Component {
       switch(selection.type) {
         case 'component': {
           const component = project.components.find(comp => comp.uid === selection.uid);
-          return this.renderComponent(component);
+          return this.renderComponent(project, component);
         }
 
         case 'image': {
           const image = project.images.find(img => img.uid === selection.uid);
-          return this.renderImage(image);
+          return this.renderImage(project, image);
         }
 
         case 'window': {
           const window = project.windows.find(wnd => wnd.uid === selection.uid);
-          return this.renderWindow(window);
+          return this.renderWindow(project, window);
         }
 
         case 'control': {
           const window = project.windows.find(wnd => wnd.uid === selection.windowUid);
           const control = window.controls.find(ctrl => ctrl.uid === selection.controlUid);
-          return this.renderControl(window, control);
+          return this.renderControl(project, window, control);
         }
       }
     }
