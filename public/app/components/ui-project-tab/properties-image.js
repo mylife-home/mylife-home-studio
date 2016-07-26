@@ -11,6 +11,19 @@ import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
+const styles = {
+  fileInput: {
+    cursor: 'pointer',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    width: '100%',
+    opacity: 0,
+  },
+};
+
 class PropertiesImage extends React.Component {
 
   constructor(props) {
@@ -42,6 +55,33 @@ class PropertiesImage extends React.Component {
     state.activeContent = null;
     state.selection = null;
     ProjectActionCreators.stateRefresh(project);
+  }
+
+  openImageFileDialog() {
+    this.refs.openImageFile.click();
+  }
+
+  handleOpenImageFile(e) {
+    const file = e.target.files[0];
+    e.target.value = '';
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const err = reader.error;
+      if(err) { return DialogsActionCreators.error(err); }
+
+      let data = reader.result;
+      const marker = 'base64,';
+      const start = data.indexOf(marker) + marker.length;
+      data = data.substring(start);
+
+      const image = this.props.image;
+      image.content = data;
+      ProjectActionCreators.refresh(this.props.project);
+    };
+
+    reader.readAsDataURL(file);
   }
 
   render() {
@@ -78,8 +118,19 @@ class PropertiesImage extends React.Component {
               <td><base.PropertiesLabel text={'Height'} /></td>
               <td><base.PropertiesValue value={height} /></td>
             </tr>
+            <tr>
+              <td colSpan={2} align={'center'}>
+                <mui.RaisedButton label={'Change'} onClick={this.openImageFileDialog.bind(this)} />
+              </td>
+            </tr>
           </tbody>
         </table>
+
+        <input
+          ref="openImageFile"
+          type="file"
+          style={{"display" : "none"}}
+          onChange={this.handleOpenImageFile.bind(this)}/>
       </div>
     );
   }
