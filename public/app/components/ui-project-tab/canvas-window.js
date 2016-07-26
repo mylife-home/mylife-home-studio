@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
+import rr from 'react-resizable';
 import base from '../base/index';
 import commonStyles from './canvas-styles';
 
@@ -17,7 +18,13 @@ class CanvasWindow extends React.Component {
   }
 
   render() {
-    return (<div>window</div>);
+    const { window } = this.props;
+
+    return (
+      <rr.ResizableBox width={window.width} height={window.height}>
+        window
+      </rr.ResizableBox>
+    );
   }
 }
 
