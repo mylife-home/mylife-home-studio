@@ -3,6 +3,7 @@
 export default {
   container: {
     position : 'relative',
-    height   : 'calc(100% - 80px)'
+    height   : 'calc(100% - 80px)',
+    overflow : 'auto'
   }
 };
