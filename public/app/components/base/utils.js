@@ -9,6 +9,15 @@ function download(content, mime, filename) {
   pom.click();
 }
 
+function imageSize(content, cb) {
+  const img = document.createElement("img");
+  img.src = `data:image/png;base64,${content}`;
+  img.onload = () => cb(null, {
+      height: img.height,
+      width: img.width
+    });
+}
+
 function stopPropagationWrapper(func) {
   const self = this;
   return function(e) {
@@ -26,6 +35,7 @@ function snapToGrid(location, inPlace) {
 
 export default {
   download,
+  imageSize,
   stopPropagationWrapper,
   snapToGrid,
   GRID_SIZE

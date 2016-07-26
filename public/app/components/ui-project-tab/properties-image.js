@@ -17,25 +17,12 @@ class PropertiesImage extends React.Component {
     super(props);
     this.state = { };
 
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
-  }
-
-  handleStoreChange() {
-    const project = this.props.project;
-    const projectVersion = project && project.version;
-    const state = ProjectStateStore.getProjectState(project);
-    const selection = state.selection;
-    this.setState({ projectVersion, selection });
+    const image = this.props.image;
+    if(image && image.content) {
+      base.utils.imageSize(image.content, (err, size) => {
+        this.setState({ size });
+      });
+    }
   }
 
   selectProject() {
@@ -49,6 +36,9 @@ class PropertiesImage extends React.Component {
   render() {
     const project = this.props.project;
     const image = this.props.image;
+    const size = this.state.size;
+    const width = ((size && size.width) || 0).toString();
+    const height = ((size && size.height) || 0).toString();
 
     const onDelete = () => {
       try {
@@ -68,6 +58,14 @@ class PropertiesImage extends React.Component {
             <tr>
               <td><base.PropertiesLabel text={'Id'} /></td>
               <td><base.PropertiesEditor project={project} object={image} property={'id'} type={'s'} /></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Width'} /></td>
+              <td><base.PropertiesValue value={width} /></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Height'} /></td>
+              <td><base.PropertiesValue value={height} /></td>
             </tr>
           </tbody>
         </table>
