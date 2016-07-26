@@ -55,7 +55,7 @@ class Canvas extends React.Component {
   }
 
   renderProject(project) {
-    return <div>project</div>;
+    return null;
   }
 
   renderComponent(component) {
