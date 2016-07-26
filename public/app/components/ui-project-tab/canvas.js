@@ -11,11 +11,7 @@ import ProjectStateStore from '../../stores/project-state-store';
 
 import CanvasComponent from './canvas-component';
 import CanvasImage from './canvas-image';
-
-import commonStyles from './canvas-styles';
-
-const styles = Object.assign({
-}, commonStyles);
+import CanvasWindow from './canvas-window';
 
 class Canvas extends React.Component {
 
@@ -45,10 +41,6 @@ class Canvas extends React.Component {
     this.setState({ projectVersion, activeContent });
   }
 
-  renderWindow(window) {
-    return <div>window</div>;
-  }
-
   render() {
     const project = this.props.project;
     const activeContent = this.state.activeContent;
@@ -65,7 +57,7 @@ class Canvas extends React.Component {
 
         case 'window':
           const window = project.windows.find(wnd => wnd.uid === activeContent.uid);
-          return this.renderWindow(window);
+          return (<CanvasWindow window={window} />);
       }
     }
 
