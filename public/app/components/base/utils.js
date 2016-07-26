@@ -11,7 +11,7 @@ function download(content, mime, filename) {
 
 function imageSize(content, cb) {
   const img = document.createElement("img");
-  img.src = `data:image/png;base64,${content}`;
+  img.src = `data:;base64,${content}`;
   img.onload = () => cb(null, {
       height: img.height,
       width: img.width

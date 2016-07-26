@@ -26,7 +26,7 @@ class CanvasImage extends React.Component {
 
   render() {
     const image = this.props.image;
-    const url = image.content ? `data:image/png;base64,${image.content}` : null;
+    const url = image.content ? `data:;base64,${image.content}` : null;
 
     return (
       <div style={styles.container}>
