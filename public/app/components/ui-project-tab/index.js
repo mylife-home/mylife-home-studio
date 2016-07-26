@@ -58,7 +58,7 @@ class UiProjectTab extends React.Component {
     if(activeContent) {
       switch(activeContent.type) {
         case 'component':
-          const component = project.components.find(comp => comp.uid === activeContent.uid);
+          const component = project.components.find(comp => comp.id === activeContent.id);
           title += ` - ${component.id}`;
           break;
         case 'image':

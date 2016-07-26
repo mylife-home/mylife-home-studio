@@ -81,8 +81,8 @@ class Canvas extends React.Component {
     if(activeContent) {
       switch(activeContent.type) {
         case 'component':
-          const component = project.components.find(comp => comp.uid === activeContent.uid);
           return this.renderComponent(component);
+          const component = project.components.find(comp => comp.id === activeContent.id);
 
         case 'image':
           const image = project.images.find(img => img.uid === activeContent.uid);
