@@ -18,6 +18,22 @@ function imageSize(content, cb) {
     });
 }
 
+// https://gist.github.com/jlong/2428561
+function parseUrl(url) {
+  const parser = document.createElement('a');
+  parser.href = url;
+
+  return {
+    protocol: parser.protocol,
+    hostname: parser.hostname,
+    port: parser.port,
+    pathname: parser.pathname,
+    search: parser.search,
+    hash: parser.hash,
+    host: parser.host
+  };
+}
+
 function stopPropagationWrapper(func) {
   const self = this;
   return function(e) {
@@ -36,6 +52,7 @@ function snapToGrid(location, inPlace) {
 export default {
   download,
   imageSize,
+  parseUrl,
   stopPropagationWrapper,
   snapToGrid,
   GRID_SIZE
