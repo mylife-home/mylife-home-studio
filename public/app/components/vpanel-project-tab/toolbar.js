@@ -148,7 +148,7 @@ class Toolbar extends React.Component {
     return (
       <div>
         <mui.Toolbar>
-          <mui.ToolbarGroup float="left">
+          <mui.ToolbarGroup>
 
             <mui.IconButton tooltip="Import toolbox from online entities"
                             tooltipPosition="top-right"

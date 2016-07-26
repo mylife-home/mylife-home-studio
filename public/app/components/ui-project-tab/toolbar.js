@@ -79,7 +79,7 @@ class Toolbar extends React.Component {
     return (
       <div>
         <mui.Toolbar>
-          <mui.ToolbarGroup float="left">
+          <mui.ToolbarGroup>
 
             <mui.IconButton tooltip="New image"
                             tooltipPosition="top-right"
