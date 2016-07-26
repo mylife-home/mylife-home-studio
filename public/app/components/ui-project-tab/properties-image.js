@@ -130,7 +130,7 @@ class PropertiesImage extends React.Component {
           ref="openImageFile"
           type="file"
           style={{"display" : "none"}}
-          onChange={this.handleOpenImageFile.bind(this)}/>
+          onChange={base.utils.stopPropagationWrapper(this.handleOpenImageFile.bind(this))}/>
       </div>
     );
   }
