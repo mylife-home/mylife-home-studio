@@ -6,10 +6,6 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
-
-
 const styles = {
   text: {
     padding: '10px',
