@@ -6,6 +6,9 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import ProjectStore from '../../stores/project-store';
+import ProjectStateStore from '../../stores/project-state-store';
+import ProjectActionCreators from '../../actions/project-action-creators';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import Facade from '../../services/facade';
@@ -32,28 +35,42 @@ class Toolbar extends React.Component {
     this.setState({ showInfo: null });
   }
 
-  newImage() {
+  select(data) {
+    const project = this.props.project;
+    const state = ProjectStateStore.getProjectState(project);
+    state.activeContent = data;
+    state.selection = data;
+    ProjectActionCreators.stateRefresh(project);
+  }
 
+  newImage() {
+    const project = this.props.project;
+    const image = Facade.projects.uiCreateImage(project);
+
+    this.select({ type: 'image', uid: image.uid });
   }
 
   newWindow() {
+    const project = this.props.project;
+    const window = Facade.projects.uiCreateWindow(project);
 
+    this.select({ type: 'window', uid: window.uid });
   }
 
   importOnline() {
-
+    // TODO
   }
 
   importProjectOnline() {
-
+    // TODO
   }
 
   importProjectFile() {
-
+    // TODO
   }
 
   deploy() {
-
+    // TODO
   }
 
   render() {
