@@ -199,15 +199,16 @@ function createWindow(project) {
 
 function deleteComponent(project, component) {
   // TODO: usage
+  // TODO: delete
 }
 
 function deleteImage(project, image) {
   // TODO: usage
-
+  // TODO: delete
 }
 
 function deleteWindow(project, window) {
   // TODO: usage
-
+  // TODO: delete
 }
 
