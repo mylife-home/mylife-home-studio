@@ -9,8 +9,8 @@ import base from '../base/index';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 
-import DataImage from './data-image';
 import CanvasComponent from './canvas-component';
+import CanvasImage from './canvas-image';
 
 const styles = {
   container: {
@@ -79,7 +79,7 @@ class Canvas extends React.Component {
 
         case 'image':
           const image = project.images.find(img => img.uid === activeContent.uid);
-          return this.renderImage(image);
+          return (<CanvasImage image={image} />);
 
         case 'window':
           const window = project.windows.find(wnd => wnd.uid === activeContent.uid);
