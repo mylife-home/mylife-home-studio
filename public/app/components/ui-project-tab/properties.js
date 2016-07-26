@@ -11,6 +11,8 @@ import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
+import PropertiesImage from './properties-image';
+
 class Properties extends React.Component {
 
   constructor(props) {
@@ -193,7 +195,7 @@ class Properties extends React.Component {
 
         case 'image': {
           const image = project.images.find(img => img.uid === selection.uid);
-          return this.renderImage(project, image);
+          return (<PropertiesImage project={project} image={image} />);
         }
 
         case 'window': {
