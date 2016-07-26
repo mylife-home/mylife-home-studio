@@ -45,14 +45,6 @@ class Canvas extends React.Component {
     this.setState({ projectVersion, activeContent });
   }
 
-  renderImage(image) {
-    return (
-      <div style={styles.container}>
-        <DataImage style={styles.imageContent} data={image.content} />
-      </div>
-    );
-  }
-
   renderWindow(window) {
     return <div>window</div>;
   }
