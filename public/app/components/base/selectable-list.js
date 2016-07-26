@@ -47,8 +47,10 @@ class SelectableList extends React.Component {
 
   render() {
 
+    const {selectedValueChanged, selectedNode, ...otherProps } = this.props;
+
     return (
-      <mui.List {...this.props} {...this.state}>
+      <mui.List {...otherProps}>
         {this.props.children}
       </mui.List>
     );

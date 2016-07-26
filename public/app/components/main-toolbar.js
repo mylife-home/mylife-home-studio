@@ -194,7 +194,7 @@ class MainToolbar extends React.Component {
 
     return (
     <mui.Toolbar>
-      <mui.ToolbarGroup float="left">
+      <mui.ToolbarGroup>
         <base.icons.tabs.VPanel style={iconStyle} />
         <mui.ToolbarTitle text="vpanel" />
 
