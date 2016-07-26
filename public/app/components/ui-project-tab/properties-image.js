@@ -18,6 +18,17 @@ class PropertiesImage extends React.Component {
     this.state = { };
 
     const image = this.props.image;
+    this.calculateSize(image);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ size : null });
+
+    const image = nextProps.image;
+    this.calculateSize(image);
+  }
+
+  calculateSize(image) {
     if(image && image.content) {
       base.utils.imageSize(image.content, (err, size) => {
         this.setState({ size });
