@@ -36,7 +36,7 @@ System.config({
     "react-dom": "npm:react-dom@15.2.1",
     "react-faux-dom": "npm:react-faux-dom@2.7.1",
     "react-measure": "npm:react-measure@0.4.1",
-    "react-resizable": "npm:react-resizable@1.4.2",
+    "react-resizable-box": "npm:react-resizable-box@1.4.3",
     "react-tap-event-plugin": "npm:react-tap-event-plugin@1.0.0",
     "socket.io-client": "github:socketio/socket.io-client@1.4.8",
     "superagent": "npm:superagent@1.8.3",
@@ -412,9 +412,12 @@ System.config({
     },
     "npm:isomorphic-fetch@2.2.1": {
       "node-fetch": "npm:node-fetch@1.5.3",
-      "whatwg-fetch": "npm:whatwg-fetch@0.9.0"
+      "whatwg-fetch": "npm:whatwg-fetch@1.0.0"
     },
     "npm:lodash-compat@3.10.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.isequal@4.3.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:loose-envify@1.2.0": {
@@ -572,10 +575,6 @@ System.config({
     "npm:react-dom@15.2.1": {
       "react": "npm:react@15.2.1"
     },
-    "npm:react-draggable@2.1.2": {
-      "classnames": "npm:classnames@2.2.5",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:react-event-listener@0.2.1": {
       "fbjs": "npm:fbjs@0.8.3"
     },
@@ -602,10 +601,10 @@ System.config({
     "npm:react-prop-types@0.3.2": {
       "warning": "npm:warning@2.1.0"
     },
-    "npm:react-resizable@1.4.2": {
+    "npm:react-resizable-box@1.4.3": {
+      "lodash.isequal": "npm:lodash.isequal@4.3.0",
       "react": "npm:react@15.2.1",
-      "react-dom": "npm:react-dom@15.2.1",
-      "react-draggable": "npm:react-draggable@2.1.2"
+      "react-dom": "npm:react-dom@15.2.1"
     },
     "npm:react-tap-event-plugin@1.0.0": {
       "fbjs": "npm:fbjs@0.2.1",
@@ -626,6 +625,16 @@ System.config({
       "isarray": "npm:isarray@0.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0",
+      "string_decoder": "npm:string_decoder@0.10.31"
+    },
+    "npm:readable-stream@1.1.14": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "core-util-is": "npm:core-util-is@1.0.2",
+      "events": "github:jspm/nodelibs-events@0.1.1",
+      "inherits": "npm:inherits@2.0.1",
+      "isarray": "npm:isarray@0.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "stream-browserify": "npm:stream-browserify@1.0.0",
       "string_decoder": "npm:string_decoder@0.10.31"
     },
     "npm:readable-stream@2.1.4": {
@@ -668,7 +677,7 @@ System.config({
     "npm:stream-browserify@1.0.0": {
       "events": "github:jspm/nodelibs-events@0.1.1",
       "inherits": "npm:inherits@2.0.1",
-      "readable-stream": "npm:readable-stream@1.0.27-1"
+      "readable-stream": "npm:readable-stream@1.1.14"
     },
     "npm:string_decoder@0.10.31": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
