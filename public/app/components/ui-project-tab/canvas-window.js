@@ -21,9 +21,11 @@ class CanvasWindow extends React.Component {
     const { window } = this.props;
 
     return (
-      <rr.ResizableBox width={window.width} height={window.height}>
-        window
-      </rr.ResizableBox>
+      <div style={styles.container}>
+        <rr.ResizableBox width={window.width} height={window.height}>
+          window
+        </rr.ResizableBox>
+      </div>
     );
   }
 }
