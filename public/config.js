@@ -403,7 +403,7 @@ System.config({
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:inline-style-prefixer@2.0.1": {
-      "bowser": "npm:bowser@1.4.2",
+      "bowser": "npm:bowser@1.4.3",
       "hyphenate-style-name": "npm:hyphenate-style-name@1.0.1"
     },
     "npm:invariant@2.2.1": {
