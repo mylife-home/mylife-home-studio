@@ -57,7 +57,7 @@ class Canvas extends React.Component {
 
         case 'window':
           const window = project.windows.find(wnd => wnd.uid === activeContent.uid);
-          return (<CanvasWindow window={window} />);
+          return (<CanvasWindow project={project} window={window} />);
       }
     }
 
