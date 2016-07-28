@@ -104,32 +104,6 @@ class Properties extends React.Component {
     );
   }
 
-  renderImage(project, image) {
-    const onDelete = () => {
-      try {
-        this.select(null);
-        ProjectActionCreators.deleteImage(project, image);
-      } catch(err) {
-        DialogsActionCreators.error(err);
-      }
-    };
-
-    return (
-      <div>
-        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={image.id} onDelete={onDelete} />
-        {/* details */}
-        <table>
-          <tbody>
-            <tr>
-              <td><base.PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={image} property={'id'} type={'s'} /></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-
   renderWindow(project, window) {
     const onDelete = () => {
       try {
