@@ -70,9 +70,11 @@ class CanvasWindow extends React.Component {
   }
 
   windowResize(dir, size, rect, delta) {
+    const { project, window } = this.props;
+
     window.height = size.height;
     window.width = size.width;
-    ProjectActionCreators.refresh(this.props.project);
+    ProjectActionCreators.refresh(project);
   }
 
   render() {
