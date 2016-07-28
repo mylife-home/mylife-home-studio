@@ -59,6 +59,16 @@ class CanvasWindow extends React.Component {
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { project, window } = nextProps;
+    const projectState = ProjectStateStore.getProjectState(project);
+
+    this.setState({
+      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
+      lastUpdate: project.lastUpdate
+    });
+  }
+
   handleStoreChange() {
     const { project, window } = this.props;
     const projectState = ProjectStateStore.getProjectState(project);
