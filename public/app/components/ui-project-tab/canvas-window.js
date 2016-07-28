@@ -24,6 +24,9 @@ function getStyles(props, state) {
     window: {
       height: '100%',
       border: '1px solid ' + backColor
+    },
+    windowContainer: {
+      margin: '10px'
     }
   }, commonStyles);
 }
@@ -78,13 +81,15 @@ class CanvasWindow extends React.Component {
 
     return (
       <div style={styles.container}>
-        <ResizableBox width={window.width}
-                      height={window.height}
-                      onResize={this.debouncedWindowResize}>
-          <div style={styles.window}>
-            window
-          </div>
-        </ResizableBox>
+        <div style={styles.windowContainer}>
+          <ResizableBox width={window.width}
+                        height={window.height}
+                        onResize={this.debouncedWindowResize}>
+            <div style={styles.window}>
+              window
+            </div>
+          </ResizableBox>
+        </div>
       </div>
     );
   }
