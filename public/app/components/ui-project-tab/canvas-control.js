@@ -9,6 +9,7 @@ import ResizableBox from 'react-resizable-box';
 import { throttle, debounce } from 'throttle-debounce';
 import base from '../base/index';
 
+import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
@@ -147,6 +148,7 @@ CanvasControl.childContextTypes = {
 const controlSource = {
   beginDrag(props, monitor, uiControl) {
     uiControl.select();
+    return {};
   },
 
   endDrag(props, monitor, uiControl) {
