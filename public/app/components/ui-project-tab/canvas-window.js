@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
+import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { throttle, debounce } from 'throttle-debounce';
 import base from '../base/index';
@@ -11,6 +12,7 @@ import commonStyles from './canvas-styles';
 
 import CanvasControl from './canvas-control';
 
+import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
@@ -90,17 +92,26 @@ class CanvasWindow extends React.Component {
     ProjectActionCreators.refresh(project);
   }
 
-  render() {
+  select() {
     const { project, window } = this.props;
+    const projectState = ProjectStateStore.getProjectState(project);
+    projectState.selection = { type: 'window', uid: window.uid };
+    ProjectActionCreators.stateRefresh(project);
+  }
+
+  render() {
+    const { project, window, connectDropTarget } = this.props;
     const styles = getStyles(this.props, this.state);
 
-    return (
-      <div style={styles.container}>
+    return connectDropTarget(
+      <div style={styles.container}
+           onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <div style={styles.windowContainer}>
           <ResizableBox width={window.width}
                         height={window.height}
                         onResize={this.debouncedWindowResize}>
-            <div style={styles.window}>
+            <div ref="canvas"
+                 style={styles.window}>
               {/* TODO: background */}
               {window.controls.map((ctrl) => (
                 <CanvasControl project={project} window={window} control={ctrl} />))}
@@ -115,6 +126,7 @@ class CanvasWindow extends React.Component {
 CanvasWindow.propTypes = {
   project: React.PropTypes.object.isRequired,
   window: React.PropTypes.object.isRequired,
+  connectDropTarget: React.PropTypes.func.isRequired,
 };
 
 CanvasWindow.contextTypes = {
@@ -125,4 +137,27 @@ CanvasWindow.childContextTypes = {
   muiTheme: React.PropTypes.object
 };
 
-export default CanvasWindow;
+const canvasTarget = {
+  drop(props, monitor, component) {
+    switch(monitor.getItemType()) {
+    case AppConstants.DragTypes.UI_TOOLBOX_CONTROL:
+      const canvasRect = component.refs.canvas.getBoundingClientRect();
+      const dropOffset = monitor.getClientOffset();
+      const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
+      // handled in ToolboxControl/endDrag
+      return { location };
+
+    case AppConstants.DragTypes.UI_CONTROL:
+      // handled in CanvasControl/endDrag
+      return { delta: monitor.getDifferenceFromInitialOffset() };
+    }
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget()
+  };
+}
+
+export default dnd.DropTarget([AppConstants.DragTypes.UI_TOOLBOX_CONTROL, AppConstants.DragTypes.UI_CONTROL], canvasTarget, collect)(CanvasWindow);

@@ -36,6 +36,7 @@ export default {
     VPANEL_COMPONENT: null,
     VPANEL_COMPONENT_ATTRIBUTE: null,
 
-    UI_TOOLBOX_CONTROL: null
+    UI_TOOLBOX_CONTROL: null,
+    UI_CONTROL: null
   })
 };

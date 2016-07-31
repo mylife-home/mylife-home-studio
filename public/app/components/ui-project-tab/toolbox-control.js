@@ -119,6 +119,7 @@ const pluginSource = {
     const { project, type } = props;
     const { location } = monitor.getDropResult();
 
+    console.log('TODO: drop at', location);
     // TODO
   }
 };

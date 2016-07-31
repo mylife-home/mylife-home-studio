@@ -4,10 +4,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
+import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { throttle, debounce } from 'throttle-debounce';
 import base from '../base/index';
 
+import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
@@ -21,8 +23,6 @@ function getStyles(props, state) {
   const foreColor = (isSelected ? baseTheme.palette.alternateTextColor : baseTheme.palette.textColor);
   const left = (window.width * control.x) - (control.width / 2);
   const top = (window.height * control.y) - (control.height / 2);
-
-console.log(control);
 
   return Object.assign({
     controlContainer: {
@@ -38,7 +38,7 @@ console.log(control);
   });
 }
 
-class CanvasWindow extends React.Component {
+class CanvasControl extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -47,7 +47,7 @@ class CanvasWindow extends React.Component {
     const projectState = ProjectStateStore.getProjectState(project);
 
     this.state = {
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.uid === control.uid,
+      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
       lastUpdate: props.project.lastUpdate,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
@@ -71,7 +71,7 @@ class CanvasWindow extends React.Component {
     const projectState = ProjectStateStore.getProjectState(project);
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.uid === control.uid,
+      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
       lastUpdate: project.lastUpdate
     });
   }
@@ -81,7 +81,7 @@ class CanvasWindow extends React.Component {
     const projectState = ProjectStateStore.getProjectState(project);
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.uid === control.uid,
+      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
       lastUpdate: project.lastUpdate
     });
   }
@@ -94,12 +94,28 @@ class CanvasWindow extends React.Component {
     ProjectActionCreators.refresh(project);
   }
 
+  select() {
+    const { project, window, control } = this.props;
+    const projectState = ProjectStateStore.getProjectState(project);
+    projectState.selection = {
+      type: 'control',
+      windowUid: window.uid,
+      controlUid: control.uid
+    };
+    ProjectActionCreators.stateRefresh(project);
+  }
+
   render() {
-    const { control } = this.props;
+    const { control, connectDragSource, isDragging } = this.props;
     const styles = getStyles(this.props, this.state);
 
-    return (
-      <div style={styles.controlContainer}>
+    if(isDragging) {
+      return null;
+    }
+
+    return connectDragSource(
+      <div style={styles.controlContainer}
+           onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <ResizableBox width={control.width}
                       height={control.height}
                       onResize={this.debouncedControlResize}>
@@ -112,18 +128,44 @@ class CanvasWindow extends React.Component {
   }
 }
 
-CanvasWindow.propTypes = {
+CanvasControl.propTypes = {
   project: React.PropTypes.object.isRequired,
   window: React.PropTypes.object.isRequired,
   control: React.PropTypes.object.isRequired,
+  connectDragSource: React.PropTypes.func.isRequired,
+  isDragging: React.PropTypes.bool.isRequired
 };
 
-CanvasWindow.contextTypes = {
+CanvasControl.contextTypes = {
   muiTheme: React.PropTypes.object
 };
 
-CanvasWindow.childContextTypes = {
+CanvasControl.childContextTypes = {
   muiTheme: React.PropTypes.object
 };
 
-export default CanvasWindow;
+const controlSource = {
+  beginDrag(props, monitor, uiControl) {
+    uiControl.select();
+  },
+
+  endDrag(props, monitor, uiControl) {
+    if(!monitor.didDrop()) { return; }
+
+    const { project, window, control } = props;
+
+    const { delta } = monitor.getDropResult();
+    control.x += delta.x / window.width;
+    control.y += delta.y / window.height;
+    Facade.projects.dirtify(project);
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  }
+}
+
+export default dnd.DragSource(AppConstants.DragTypes.UI_CONTROL, controlSource, collect)(CanvasControl);
