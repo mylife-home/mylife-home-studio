@@ -114,7 +114,7 @@ class CanvasWindow extends React.Component {
                  style={styles.window}>
               {/* TODO: background */}
               {window.controls.map((ctrl) => (
-                <CanvasControl project={project} window={window} control={ctrl} />))}
+                <CanvasControl key={ctrl.uid} project={project} window={window} control={ctrl} />))}
             </div>
           </ResizableBox>
         </div>
