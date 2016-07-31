@@ -107,7 +107,7 @@ class CanvasControl extends React.Component {
   }
 
   render() {
-    const { control, connectDragSource, isDragging } = this.props;
+    const { control, connectDragSource, connectDragPreview, isDragging } = this.props;
     const styles = getStyles(this.props, this.state);
 
     if(isDragging) {
@@ -120,9 +120,11 @@ class CanvasControl extends React.Component {
         <ResizableBox width={control.width}
                       height={control.height}
                       onResize={this.debouncedControlResize}>
-          <div style={styles.control}>
-            TODO
-          </div>
+          {connectDragPreview(
+            <div style={styles.control}>
+              TODO
+            </div>
+          )}
         </ResizableBox>
       </div>
     );
@@ -134,6 +136,7 @@ CanvasControl.propTypes = {
   window: React.PropTypes.object.isRequired,
   control: React.PropTypes.object.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
+  connectDragPreview: React.PropTypes.func.isRequired,
   isDragging: React.PropTypes.bool.isRequired
 };
 
@@ -166,6 +169,7 @@ const controlSource = {
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
   }
 }
