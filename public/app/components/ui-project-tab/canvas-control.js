@@ -36,6 +36,16 @@ function getStyles(props, state) {
       border: '1px solid ' + backColor,
       position: 'relative'
     },
+    moveHandle: {
+      backgroundColor: backColor,
+      position: 'absolute',
+      width: '15px',
+      height: '15px',
+      display: 'inline-block',
+      top: '10px',
+      left: '10px',
+      cursor: 'move'
+    }
   });
 }
 
@@ -114,15 +124,16 @@ class CanvasControl extends React.Component {
       return null;
     }
 
-    return connectDragSource(
+    return (
       <div style={styles.controlContainer}
            onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
         <ResizableBox width={control.width}
                       height={control.height}
-                      onResize={this.debouncedControlResize}>
+                      onResize={this.debouncedControlResize}
+                      isResizable={{ right: true, bottom: true, bottomRight: true }}>
           {connectDragPreview(
             <div style={styles.control}>
-              TODO
+              {connectDragSource(<div style={styles.moveHandle}/>)}
             </div>
           )}
         </ResizableBox>
