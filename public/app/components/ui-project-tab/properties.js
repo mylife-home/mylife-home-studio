@@ -12,6 +12,7 @@ import ProjectStateStore from '../../stores/project-state-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImage from './properties-image';
+import PropertiesControl from './properties-control';
 
 class Properties extends React.Component {
 
@@ -77,7 +78,6 @@ class Properties extends React.Component {
     );
   }
 
-
   renderComponent(project, component) {
     const onDelete = () => {
       try {
@@ -138,48 +138,6 @@ class Properties extends React.Component {
     );
   }
 
-  renderControl(project, window, control) {
-    const onDelete = () => {
-      try {
-        this.select({ type: 'window', uid: window.uid });
-        ProjectActionCreators.deleteControl(project, window, control);
-      } catch(err) {
-        DialogsActionCreators.error(err);
-      }
-    };
-
-    return (
-      <div>
-        <base.PropertiesTitle icon={control.text ? <base.icons.UiText/> : <base.icons.UiImage/>} text={control.id} onDelete={onDelete} />
-        {/* details */}
-        <table>
-          <tbody>
-            <tr>
-              <td><base.PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'id'} type={'s'} /></td>
-            </tr>
-            <tr>
-              <td><base.PropertiesLabel text={'X'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'x'} type={'n'} /></td>
-            </tr>
-            <tr>
-              <td><base.PropertiesLabel text={'Y'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'y'} type={'n'} /></td>
-            </tr>
-            <tr>
-              <td><base.PropertiesLabel text={'Width'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'width'} type={'i'} /></td>
-            </tr>
-            <tr>
-              <td><base.PropertiesLabel text={'Height'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'height'} type={'i'} /></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-
   render() {
     const project = this.props.project;
     const selection = this.state.selection;
@@ -204,7 +162,7 @@ class Properties extends React.Component {
         case 'control': {
           const window = project.windows.find(wnd => wnd.uid === selection.windowUid);
           const control = window.controls.find(ctrl => ctrl.uid === selection.controlUid);
-          return this.renderControl(project, window, control);
+          return (<PropertiesControl project={project} window={window} control={control} />);
         }
       }
     }
