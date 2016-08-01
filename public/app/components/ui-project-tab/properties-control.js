@@ -56,6 +56,32 @@ class PropertiesControl extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
+  renderDisplay(project, control) {
+    return [
+      (<tr key="Default image">
+        <td><base.PropertiesLabel text={'Default image'} /></td>
+        <td><base.PropertiesValue value={'TODO'} /></td>
+      </tr>),
+      (<tr key="Mapping">
+        <td><base.PropertiesLabel text={'Mapping'} /></td>
+        <td><base.PropertiesValue value={'TODO'} /></td>
+      </tr>)
+    ];
+  }
+
+  renderText(project, control) {
+    return [
+      (<tr key="Format">
+        <td><base.PropertiesLabel text={'Format'} /></td>
+        <td><base.PropertiesEditor project={project} object={control.text} property={'format'} type={'s'} /></td>
+      </tr>),
+      (<tr key="Context">
+        <td><base.PropertiesLabel text={'Context'} /></td>
+        <td><base.PropertiesValue value={'TODO'} /></td>
+      </tr>)
+    ];
+  }
+
   render() {
     const { project, window, control } = this.props;
 
@@ -93,6 +119,15 @@ class PropertiesControl extends React.Component {
             <tr>
               <td><base.PropertiesLabel text={'Height'} /></td>
               <td><base.PropertiesEditor project={project} object={control} property={'height'} type={'i'} /></td>
+            </tr>
+            {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
+            <tr>
+              <td><base.PropertiesLabel text={'Prinary action'} /></td>
+              <td><base.PropertiesValue value={'TODO'} /></td>
+            </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Secondary action'} /></td>
+              <td><base.PropertiesValue value={'TODO'} /></td>
             </tr>
           </tbody>
         </table>
