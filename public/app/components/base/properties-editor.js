@@ -20,7 +20,7 @@ class PropertiesEditor extends React.Component {
     const { project, object, property } = this.props;
     return (
       <mui.TextField
-        id={`${project.uid}:${property}`}
+        id={`${project.uid}:${object.uid || object.id}:${property}`}
         value={object[property]}
         onChange={utils.stopPropagationWrapper(this.onStringChange.bind(this))} />
     );
@@ -34,7 +34,7 @@ class PropertiesEditor extends React.Component {
     const { project, object, property } = this.props;
     return (
       <mui.TextField
-        id={`${project.uid}:${property}`}
+        id={`${project.uid}:${object.uid || object.id}:${property}`}
         value={object[property]}
         onChange={utils.stopPropagationWrapper(this.onIntegerChange.bind(this))}
         type='number' />
@@ -52,7 +52,7 @@ class PropertiesEditor extends React.Component {
     const { project, object, property } = this.props;
     return (
       <mui.TextField
-        id={`${project.uid}:${property}`}
+        id={`${project.uid}:${object.uid || object.id}:${property}`}
         value={object[property]}
         onChange={utils.stopPropagationWrapper(this.onNumberChange.bind(this))}
         type='number' />
@@ -70,7 +70,7 @@ class PropertiesEditor extends React.Component {
     const { project, object, property } = this.props;
     return (
       <mui.Checkbox
-        id={`${project.uid}:${property}`}
+        id={`${project.uid}:${object.uid || object.id}:${property}`}
         checked={object[property] === 'true'}
         onCheck={utils.stopPropagationWrapper(this.onBooleanChange.bind(this))} />
     );
@@ -91,7 +91,11 @@ class PropertiesEditor extends React.Component {
   }
 
   render() {
-    const { type } = this.props;
+    const { object, property, type } = this.props;
+
+    if(!object.hasOwnProperty(property)) {
+      throw new Error(`object ${object.uid || object.id} does not have such property: ${property}`);
+    }
 
     switch(type) {
     case 's':
