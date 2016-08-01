@@ -22,7 +22,7 @@ class DataImage extends React.Component {
 }
 
 DataImage.propTypes = {
-  image: React.PropTypes.object.isRequired,
+  image: React.PropTypes.object,
 };
 
 export default DataImage;
