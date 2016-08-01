@@ -150,13 +150,13 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={window.id} onDelete={onDelete} />
+        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={control.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
             <tr>
               <td><base.PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={window} property={'id'} type={'s'} /></td>
+              <td><base.PropertiesEditor project={project} object={control} property={'id'} type={'s'} /></td>
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Left'} /></td>
