@@ -118,9 +118,17 @@ const pluginSource = {
 
     const { project, type } = props;
     const { location } = monitor.getDropResult();
+    const projectState = ProjectStateStore.getProjectState(project);
+    const window = project.windows.find(wnd => wnd.uid === projectState.activeContent.uid);
 
-    console.log('TODO: drop at', location);
-    // TODO
+    const control = Facade.projects.uiCreateControl(project, window, location, type);
+
+    projectState.selection = {
+      type: 'control',
+      windowUid: window.uid,
+      controlUid: control.uid
+    };
+    ProjectActionCreators.stateRefresh(project);
   }
 };
 

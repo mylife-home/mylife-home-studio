@@ -10,9 +10,11 @@ export default {
   serialize,
   createImage,
   createWindow,
+  createControl,
   deleteComponent,
   deleteImage,
-  deleteWindow
+  deleteWindow,
+  deleteControl
 };
 
 function createNew(project) {
@@ -197,6 +199,53 @@ function createWindow(project) {
   return window;
 }
 
+function createControl(project, window, location, type) {
+  const height = 50;
+  const width = 50;
+  const x = location.x / window.width;
+  const y = location.y / window.height;
+
+  const control = {
+    uid: uuid.v4(),
+    id: `control_${common.uid()}`,
+    height,
+    width,
+    x,
+    y,
+    style: '',
+    text: null,
+    display: null,
+    primaryAction: null,
+    secondaryAction: null
+  };
+
+  switch(type) {
+    case 'text':
+      control.text = {
+        format: '',
+        context: []
+      };
+      break;
+
+    case 'image':
+      control.display = {
+        component: null,
+        attribute: null,
+        defaultResource: null,
+        map: []
+      };
+      break;
+
+    default:
+        throw new Error(`Unsupported control type: ${type}`);
+  }
+
+  window.controls.push(control);
+  common.dirtify(project);
+
+  return control;
+}
+
 function deleteComponent(project, component) {
   // TODO: usage
   // TODO: delete
@@ -212,3 +261,6 @@ function deleteWindow(project, window) {
   // TODO: delete
 }
 
+function deleteControl(project, window, control) {
+  // TODO: delete
+}

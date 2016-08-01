@@ -208,6 +208,12 @@ class Projects {
     return window;
   }
 
+  uiCreateControl(project, window, location, type) {
+    const control = ui.createControl(project, window, location, type);
+    ProjectActionCreators.refresh(project);
+    return control;
+  }
+
   uiDeleteComponent(project, component) {
     ui.deleteComponent(project, component);
     ProjectActionCreators.refresh(project);
@@ -220,6 +226,11 @@ class Projects {
 
   uiDeleteWindow(project, window) {
     ui.deleteWindow(project, window);
+    ProjectActionCreators.refresh(project);
+  }
+
+  uiDeleteControl(project, window, control) {
+    ui.deleteControl(project, window, control);
     ProjectActionCreators.refresh(project);
   }
 }
