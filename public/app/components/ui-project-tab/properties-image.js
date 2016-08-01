@@ -119,7 +119,7 @@ class PropertiesImage extends React.Component {
               <td><base.PropertiesValue value={height} /></td>
             </tr>
             <tr>
-              <td colSpan={2} align={'center'}>
+              <td colSpan={2}>
                 <mui.RaisedButton label={'Change'} onClick={this.openImageFileDialog.bind(this)} />
               </td>
             </tr>
