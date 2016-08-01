@@ -134,7 +134,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Background'} /></td>
-              <td><base.Propertiesvalue value={'TODO'} /></td>
+              <td><base.PropertiesValue value={'TODO'} /></td>
             </tr>
           </tbody>
         </table>
