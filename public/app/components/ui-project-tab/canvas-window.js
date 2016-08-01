@@ -10,6 +10,7 @@ import { throttle, debounce } from 'throttle-debounce';
 import base from '../base/index';
 import commonStyles from './canvas-styles';
 
+import DataImage from './data-image';
 import CanvasControl from './canvas-control';
 
 import Facade from '../../services/facade';
@@ -34,6 +35,10 @@ function getStyles(props, state) {
       border: '1px solid ' + backColor,
       position: 'relative'
     },
+    background: {
+      height: '100%',
+      width: '100%'
+    }
   }, commonStyles);
 }
 
@@ -114,7 +119,7 @@ class CanvasWindow extends React.Component {
                         isResizable={{ right: true, bottom: true, bottomRight: true }}>
             <div ref="canvas"
                  style={styles.window}>
-              {/* TODO: background */}
+              <DataImage image={window.backgroundResource} style={styles.background}/>
               {window.controls.map((ctrl) => (
                 <CanvasControl key={ctrl.uid} project={project} window={window} control={ctrl} />))}
             </div>
