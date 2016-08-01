@@ -132,6 +132,10 @@ class Properties extends React.Component {
               <td><base.PropertiesLabel text={'Height'} /></td>
               <td><base.PropertiesEditor project={project} object={window} property={'height'} type={'i'} /></td>
             </tr>
+            <tr>
+              <td><base.PropertiesLabel text={'Background'} /></td>
+              <td><base.Propertiesvalue value={'TODO'} /></td>
+            </tr>
           </tbody>
         </table>
       </div>
