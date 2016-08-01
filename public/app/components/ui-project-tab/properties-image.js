@@ -85,9 +85,8 @@ class PropertiesImage extends React.Component {
   }
 
   render() {
-    const project = this.props.project;
-    const image = this.props.image;
-    const size = this.state.size;
+    const { project, image } = this.props;
+    const { size } = this.state;
     const width = ((size && size.width) || 0).toString();
     const height = ((size && size.height) || 0).toString();
 
