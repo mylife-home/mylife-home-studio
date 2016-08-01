@@ -12,6 +12,7 @@ import commonStyles from './canvas-styles';
 
 import CanvasControl from './canvas-control';
 
+import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
@@ -89,7 +90,7 @@ class CanvasWindow extends React.Component {
 
     window.height = size.height;
     window.width = size.width;
-    ProjectActionCreators.refresh(project);
+    Facade.projects.dirtify(project);
   }
 
   select() {

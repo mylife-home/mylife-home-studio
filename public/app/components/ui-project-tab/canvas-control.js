@@ -102,7 +102,7 @@ class CanvasControl extends React.Component {
 
     control.height = size.height;
     control.width = size.width;
-    ProjectActionCreators.refresh(project);
+    Facade.projects.dirtify(project);
   }
 
   select() {
