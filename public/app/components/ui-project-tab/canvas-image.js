@@ -7,6 +7,8 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 import commonStyles from './canvas-styles';
 
+import DataImage from './data-image';
+
 const styles = Object.assign({
   imageContent : {
     position : 'absolute',
@@ -26,11 +28,10 @@ class CanvasImage extends React.Component {
 
   render() {
     const image = this.props.image;
-    const url = image.content ? `data:;base64,${image.content}` : null;
 
     return (
       <div style={styles.container}>
-        <img src={url} style={styles.imageContent} />
+        <DataImage image={image} style={styles.imageContent} />
       </div>
     );
   }
