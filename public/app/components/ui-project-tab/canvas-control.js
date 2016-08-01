@@ -47,6 +47,10 @@ function getStyles(props, state) {
       top: '10px',
       left: '10px',
       cursor: 'move'
+    },
+    item: {
+      height: '100%',
+      width: '100%'
     }
   });
 }
@@ -118,12 +122,16 @@ class CanvasControl extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
-  renderText(control) {
-    return control.text.format;
+  renderText(control, styles) {
+    return (
+      <div style={Object.assign({ overflow: 'hidden' }, styles.item)}>
+        {control.text.format}
+      </div>
+    );
   }
 
-  renderDisplay(control) {
-    return (<DataImage image={control.display.defaultResource} style={{ height: '100%', width: '100%' }}/>);
+  renderDisplay(control, styles) {
+    return (<DataImage image={control.display.defaultResource} style={styles.item}/>);
   }
 
   render() {
@@ -143,7 +151,7 @@ class CanvasControl extends React.Component {
                       isResizable={{ right: true, bottom: true, bottomRight: true }}>
           {connectDragPreview(
             <div style={styles.control}>
-              {control.text ? this.renderText(control) : this.renderDisplay(control)}
+              {control.text ? this.renderText(control, styles) : this.renderDisplay(control, styles)}
               {connectDragSource(<div style={styles.moveHandle}/>)}
             </div>
           )}
