@@ -109,7 +109,8 @@ class CanvasWindow extends React.Component {
         <div style={styles.windowContainer}>
           <ResizableBox width={window.width}
                         height={window.height}
-                        onResize={this.debouncedWindowResize}>
+                        onResize={this.debouncedWindowResize}
+                        isResizable={{ right: true, bottom: true, bottomRight: true }}>
             <div ref="canvas"
                  style={styles.window}>
               {/* TODO: background */}
