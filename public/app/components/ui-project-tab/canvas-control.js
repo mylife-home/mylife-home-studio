@@ -9,6 +9,8 @@ import ResizableBox from 'react-resizable-box';
 import { throttle, debounce } from 'throttle-debounce';
 import base from '../base/index';
 
+import DataImage from './data-image';
+
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
@@ -116,6 +118,14 @@ class CanvasControl extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
+  renderText(control) {
+    return control.text.format;
+  }
+
+  renderDisplay(control) {
+    return (<DataImage image={control.display.defaultResource} style={{ height: '100%', width: '100%' }}/>);
+  }
+
   render() {
     const { control, connectDragSource, connectDragPreview, isDragging } = this.props;
     const styles = getStyles(this.props, this.state);
@@ -133,6 +143,7 @@ class CanvasControl extends React.Component {
                       isResizable={{ right: true, bottom: true, bottomRight: true }}>
           {connectDragPreview(
             <div style={styles.control}>
+              {control.text ? this.renderText(control) : this.renderDisplay(control)}
               {connectDragSource(<div style={styles.moveHandle}/>)}
             </div>
           )}
