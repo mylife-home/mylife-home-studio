@@ -116,7 +116,7 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={window.id} onDelete={onDelete} />
+        <base.PropertiesTitle icon={<base.icons.UiWindow/>} text={window.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
@@ -150,7 +150,7 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={control.id} onDelete={onDelete} />
+        <base.PropertiesTitle icon={control.text ? <base.icons.UiText/> : <base.icons.UiImage/>} text={control.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
