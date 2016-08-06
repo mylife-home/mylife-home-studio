@@ -122,7 +122,7 @@ class PropertiesControl extends React.Component {
             </tr>
             {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
             <tr>
-              <td><base.PropertiesLabel text={'Prinary action'} /></td>
+              <td><base.PropertiesLabel text={'Primary action'} /></td>
               <td><base.PropertiesValue value={'TODO'} /></td>
             </tr>
             <tr>
