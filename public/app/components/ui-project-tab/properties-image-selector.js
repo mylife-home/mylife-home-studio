@@ -66,6 +66,7 @@ class PropertiesImageSelector extends React.Component {
           <mui.Menu>
             {project.images.map(img => (
               <mui.MenuItem
+                key={img.uid}
                 primaryText={img.id}
                 icon={<DataImage image={img} width={20} height={20} />}
                 onTouchTap={this.handleSelect.bind(this, img)}/>
