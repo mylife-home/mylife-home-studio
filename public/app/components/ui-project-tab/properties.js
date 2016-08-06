@@ -14,6 +14,7 @@ import DialogsActionCreators from '../../actions/dialogs-action-creators';
 import PropertiesImage from './properties-image';
 import PropertiesControl from './properties-control';
 import PropertiesImageSelector from './properties-image-selector';
+import PropertiesWindowSelector from './properties-window-selector';
 
 class Properties extends React.Component {
 
@@ -71,7 +72,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Default window'}/></td>
-              <td><base.PropertiesValue value={'TODO'}/></td>
+              <td><PropertiesWindowSelector project={project} object={project} property={'defaultWindow'} /></td>
             </tr>
           </tbody>
         </table>
