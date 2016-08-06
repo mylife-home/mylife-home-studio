@@ -29,7 +29,7 @@ function open(project, data) {
   project.components = data.Components.map(loadComponent);
   project.images = data.Images.map(loadImage);
   project.windows = data.Windows.map(loadWindow.bind(null, project));
-  project.defaultWindow = data.DefaultWindow;
+  project.defaultWindow = project.windows.find(wnd => wnd.id === data.DefaultWindow);
   project.windows.forEach(loadWindowControls.bind(null, project, data));
 }
 
