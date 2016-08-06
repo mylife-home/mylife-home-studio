@@ -13,6 +13,7 @@ import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImage from './properties-image';
 import PropertiesControl from './properties-control';
+import PropertiesImageSelector from './properties-image-selector';
 
 class Properties extends React.Component {
 
@@ -134,7 +135,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Background'} /></td>
-              <td><base.PropertiesValue value={'TODO'} /></td>
+              <td><PropertiesImageSelector project={project} object={window} property={'backgroundResource'} /></td>
             </tr>
           </tbody>
         </table>
