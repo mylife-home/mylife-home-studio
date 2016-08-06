@@ -11,6 +11,8 @@ import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
+import PropertiesImageSelector from './properties-image-selector';
+
 const styles = {
   fileInput: {
     cursor: 'pointer',
@@ -60,7 +62,7 @@ class PropertiesControl extends React.Component {
     return [
       (<tr key="Default image">
         <td><base.PropertiesLabel text={'Default image'} /></td>
-        <td><base.PropertiesValue value={'TODO'} /></td>
+        <td><PropertiesImageSelector project={project} object={control.display} property={'defaultResource'} /></td>
       </tr>),
       (<tr key="Mapping">
         <td><base.PropertiesLabel text={'Mapping'} /></td>
