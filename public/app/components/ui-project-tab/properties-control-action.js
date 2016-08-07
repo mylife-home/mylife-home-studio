@@ -52,8 +52,8 @@ class PropertiesControlAction extends React.Component {
     this.handleRequestClose();
 
     object[property] = {
-      component: null,
-      window: {
+      window: null,
+      component: {
         component,
         action
       }
@@ -97,11 +97,21 @@ class PropertiesControlAction extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            <mui.MenuItem primaryText={'Component'} menuItems={project.windows.map(wnd => (
+            <mui.MenuItem primaryText={'Component'} menuItems={project.components.
+              filter(c => c.plugin.clazz.actions.filter(a => !a.types.length).length).
+              map(comp => (
               <mui.MenuItem
-                key={wnd.uid}
-                primaryText={wnd.id}
-                onTouchTap={this.handleSelectComponent.bind(this, wnd)}/>
+                key={comp.id}
+                primaryText={comp.id}
+                menuItems={comp.plugin.clazz.actions.
+                  filter(a => !a.types.length).
+                  map(action => (
+                  <mui.MenuItem
+                    key={action.name}
+                    primaryText={action.name}
+                    onTouchTap={this.handleSelectComponent.bind(this, comp, action.name)} />
+                  ))}
+                />
               ))}
             />
             <mui.MenuItem primaryText={'Window (change)'} menuItems={project.windows.map(wnd => (
