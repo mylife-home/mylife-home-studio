@@ -75,7 +75,7 @@ class PropertiesControl extends React.Component {
   renderText(project, control) {
     return [
       (<tr key="Format">
-        <td><base.PropertiesLabel text={'Format'} /></td>
+        <td><base.PropertiesLabel text={'Format (asdf #id# qwerty)'} /></td>
         <td><base.PropertiesEditor project={project} object={control.text} property={'format'} type={'s'} /></td>
       </tr>),
       (<tr key="Context">
