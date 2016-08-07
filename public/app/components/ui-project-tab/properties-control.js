@@ -12,6 +12,7 @@ import ProjectStateStore from '../../stores/project-state-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImageSelector from './properties-image-selector';
+import PropertiesControlAction from './properties-control-action';
 
 const styles = {
   fileInput: {
@@ -125,11 +126,11 @@ class PropertiesControl extends React.Component {
             {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
             <tr>
               <td><base.PropertiesLabel text={'Primary action'} /></td>
-              <td><base.PropertiesValue value={'TODO'} /></td>
+              <td><PropertiesControlAction project={project} object={control} property={'primaryAction'} /></td>
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Secondary action'} /></td>
-              <td><base.PropertiesValue value={'TODO'} /></td>
+              <td><PropertiesControlAction project={project} object={control} property={'secondaryAction'} /></td>
             </tr>
           </tbody>
         </table>
