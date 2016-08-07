@@ -6,6 +6,8 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
+import Facade from '../../services/facade';
+
 import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
 import ProjectStateStore from '../../stores/project-state-store';
@@ -13,6 +15,7 @@ import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesControlAction from './properties-control-action';
+import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
 
 const styles = {
   fileInput: {
@@ -59,15 +62,27 @@ class PropertiesControl extends React.Component {
     ProjectActionCreators.stateRefresh(project);
   }
 
+  handleComponentChange(component, attribute) {
+    const { project, control } = this.props;
+
+    control.display.component = component;
+    control.display.attribute = attribute;
+    Facade.projects.dirtify(project);
+  }
+
   renderDisplay(project, control) {
     return [
       (<tr key="Default image">
         <td><base.PropertiesLabel text={'Default image'} /></td>
         <td><PropertiesImageSelector project={project} object={control.display} property={'defaultResource'} /></td>
       </tr>),
-      (<tr key="Component">
-        <td><base.PropertiesLabel text={'Component'} /></td>
-        <td><base.PropertiesValue value={'TODO'} /></td>
+      (<tr key="Component/Attribute">
+        <td><base.PropertiesLabel text={'Component/Attribute'} /></td>
+        <td><PropertiesComponentAttributeSelector
+          project={project}
+          component={control.display.component}
+          attribute={control.display.attribute}
+          onChange={this.handleComponentChange.bind(this)} /></td>
       </tr>),
       (<tr key="Mapping">
         <td><base.PropertiesLabel text={'Mapping'} /></td>
