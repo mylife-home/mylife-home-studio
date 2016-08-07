@@ -233,6 +233,14 @@ class Projects {
     ui.deleteControl(project, window, control);
     ProjectActionCreators.refresh(project);
   }
+
+  uiCreateTextContextItem() {
+    return ui.createTextContextItem();
+  }
+
+  uiCreateDisplayMappingItem() {
+    return ui.createDisplayMappingItem();
+  }
 }
 
 export default Projects;

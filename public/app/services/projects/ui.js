@@ -14,7 +14,9 @@ export default {
   deleteComponent,
   deleteImage,
   deleteWindow,
-  deleteControl
+  deleteControl,
+  createTextContextItem,
+  createDisplayMappingItem
 };
 
 function createNew(project) {
@@ -264,3 +266,23 @@ function deleteWindow(project, window) {
 function deleteControl(project, window, control) {
   // TODO: delete
 }
+
+function createTextContextItem() {
+  return {
+    uid: uuid.v4(),
+    id: null,
+    component: null,
+    attribute: null
+  };
+}
+
+function createDisplayMappingItem() {
+  return {
+    uid: uuid.v4(),
+    max: null,
+    min: null,
+    resource: null,
+    value: null
+  };
+}
+
