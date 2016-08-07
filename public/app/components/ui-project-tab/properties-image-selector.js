@@ -51,7 +51,6 @@ class PropertiesImageSelector extends React.Component {
     return (
       <div>
         <mui.RaisedButton
-          onTouchTap={this.handleTouchTap}
           label={value ? value.id : '<none>'}
           icon={<DataImage image={value} width={20} height={20} />}
           onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}

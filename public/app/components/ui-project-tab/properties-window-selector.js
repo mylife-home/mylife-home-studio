@@ -51,7 +51,6 @@ class PropertiesWindowSelector extends React.Component {
     return (
       <div>
         <mui.RaisedButton
-          onTouchTap={this.handleTouchTap}
           label={value ? value.id : '<none>'}
           onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />

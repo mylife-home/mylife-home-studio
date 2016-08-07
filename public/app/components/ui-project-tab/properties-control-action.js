@@ -85,7 +85,6 @@ class PropertiesControlAction extends React.Component {
     return (
       <div>
         <mui.RaisedButton
-          onTouchTap={this.handleTouchTap}
           label={display}
           onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
