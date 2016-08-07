@@ -15,6 +15,7 @@ import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesControlAction from './properties-control-action';
+import PropertiesControlTextContext from './properties-control-text-context';
 import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
 
 const styles = {
@@ -99,7 +100,7 @@ class PropertiesControl extends React.Component {
       </tr>),
       (<tr key="Context">
         <td><base.PropertiesLabel text={'Context'} /></td>
-        <td><base.PropertiesValue value={'TODO'} /></td>
+        <td><PropertiesControlTextContext project={project} text={control.text} /></td>
       </tr>)
     ];
   }
