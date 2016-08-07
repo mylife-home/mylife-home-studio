@@ -65,6 +65,10 @@ class PropertiesControl extends React.Component {
         <td><base.PropertiesLabel text={'Default image'} /></td>
         <td><PropertiesImageSelector project={project} object={control.display} property={'defaultResource'} /></td>
       </tr>),
+      (<tr key="Component">
+        <td><base.PropertiesLabel text={'Component'} /></td>
+        <td><base.PropertiesValue value={'TODO'} /></td>
+      </tr>),
       (<tr key="Mapping">
         <td><base.PropertiesLabel text={'Mapping'} /></td>
         <td><base.PropertiesValue value={'TODO'} /></td>
