@@ -249,22 +249,103 @@ function createControl(project, window, location, type) {
 }
 
 function deleteComponent(project, component) {
-  // TODO: usage
-  // TODO: delete
+  const id = component.id;
+  const usage = [];
+  for(const window of project.windows) {
+    for(const control of window.controls) {
+      for(property of ['primaryAction', 'secondaryAction']) {
+        if(!control[property]) { continue; }
+        const actionComp = control[property].component;
+        if(actionComp && actionComp.component && actionComp.component.id === id) {
+          usage.push(` - ${window.id}/${control.id}/${property}`);
+        }
+      }
+
+      if(control.text) {
+        for(const item of control.text.context) {
+          if(item.component.id === id) {
+            usage.push(` - ${window.id}/${control.id}/text/${item.id}`);
+          }
+        }
+      }
+
+      if(control.display &&
+         control.display.component &&
+         control.display.component.id == id) {
+        usage.push(` - ${window.id}/${control.id}/display`);
+      }
+    }
+  }
+
+  if(usage.length) {
+    throw new Error(`The component ${component.id} is used:\n` + usage.join('\n'));
+  }
+
+  arrayRemoveValue(project.components, component);
+  common.dirtify(project);
 }
 
 function deleteImage(project, image) {
-  // TODO: usage
-  // TODO: delete
+  const uid = image.uid;
+  const usage = [];
+  for(const window of project.windows) {
+    if(window.backgroundResource && window.backgroundResource.uid === uid) {
+      usage.push(` - ${window.id}/backgroundResource`);
+    }
+
+    for(const control of window.controls) {
+      if(control.display) {
+        if(control.display.defaultResource && control.display.defaultResource.uid === uid) {
+          usage.push(` - ${window.id}/${control.id}/defaultResource`);
+        }
+
+        for(const item of control.display.map) {
+          if(item.resource.uid === uid) {
+            usage.push(` - ${window.id}/${control.id}/display/mapping`);
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  if(usage.length) {
+    throw new Error(`The image ${image.id} is used:\n` + usage.join('\n'));
+  }
+
+  arrayRemoveValue(project.images, image);
+  common.dirtify(project);
 }
 
 function deleteWindow(project, window) {
-  // TODO: usage
-  // TODO: delete
+  const uid = window.uid;
+  const usage = [];
+  if(project.defaultWindow && project.defaultWindow.uid === uid) {
+    usage.push(' - defaultWindow');
+  }
+  for(const iterWindow of project.windows) {
+    for(const control of iterWindow.controls) {
+      for(property of ['primaryAction', 'secondaryAction']) {
+        if(!control[property]) { continue; }
+        const actionWindow = control[property].window;
+        if(actionWindow && actionWindow.window && actionWindow.window.uid === uid) {
+          usage.push(` - ${iterWindow.id}/${control.id}/${property}`);
+        }
+      }
+    }
+  }
+
+  if(usage.length) {
+    throw new Error(`The window ${window.id} is used:\n` + usage.join('\n'));
+  }
+
+  arrayRemoveValue(project.windows, window);
+  common.dirtify(project);
 }
 
 function deleteControl(project, window, control) {
-  // TODO: delete
+  arrayRemoveValue(window.controls, control);
+  common.dirtify(project);
 }
 
 function createTextContextItem() {
@@ -286,3 +367,9 @@ function createDisplayMappingItem() {
   };
 }
 
+function arrayRemoveValue(arr, value) {
+  const index = arr.indexOf(value);
+  if(index === -1) { return false; }
+  arr.splice(index, 1);
+  return true;
+}
