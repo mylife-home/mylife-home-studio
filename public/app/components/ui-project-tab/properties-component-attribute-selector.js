@@ -37,7 +37,7 @@ class PropertiesComponentAttributeSelector extends React.Component {
   }
 
   render() {
-    const { project, component, attribute } = this.props;
+    const { project, component, attribute, nullable } = this.props;
     const display = (component && attribute) ? `${component.id}.${attribute}` : '<none>';
 
     return (
@@ -68,6 +68,11 @@ class PropertiesComponentAttributeSelector extends React.Component {
                 ))}
               />
             ))}
+            {nullable ? (
+              <mui.MenuItem
+                primaryText={'<none>'}
+                onTouchTap={this.handleSelectComponent.bind(this, null, null)} />
+            ) : null}
           </mui.Menu>
         </mui.Popover>
       </div>
@@ -79,6 +84,7 @@ PropertiesComponentAttributeSelector.propTypes = {
   project    : React.PropTypes.object.isRequired,
   component  : React.PropTypes.object,
   attribute  : React.PropTypes.string,
+  nullable   : React.PropTypes.bool,
   onChange   : React.PropTypes.func.isRequired,
 };
 

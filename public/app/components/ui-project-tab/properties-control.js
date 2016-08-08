@@ -16,6 +16,7 @@ import DialogsActionCreators from '../../actions/dialogs-action-creators';
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesControlAction from './properties-control-action';
 import PropertiesControlTextContext from './properties-control-text-context';
+import PropertiesControlDisplayMapping from './properties-control-display-mapping';
 import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
 
 const styles = {
@@ -83,11 +84,12 @@ class PropertiesControl extends React.Component {
           project={project}
           component={control.display.component}
           attribute={control.display.attribute}
+          nullable={true}
           onChange={this.handleComponentChange.bind(this)} /></td>
       </tr>),
       (<tr key="Mapping">
         <td><base.PropertiesLabel text={'Mapping'} /></td>
-        <td><base.PropertiesValue value={'TODO'} /></td>
+        <td><PropertiesControlDisplayMapping project={project} display={control.display} /></td>
       </tr>)
     ];
   }
