@@ -7,6 +7,7 @@ import DialogBusy from './dialog-busy';
 import DialogSelect from './dialog-select';
 import DialogConfirm from './dialog-confirm';
 import DialogInfo from './dialog-info';
+import DialogOperationSelect from './dialog-operation-select';
 import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import TooltipContainer from './tooltip-container';
@@ -25,6 +26,7 @@ export default {
   DialogSelect,
   DialogConfirm,
   DialogInfo,
+  DialogOperationSelect,
   SelectableList,
   SelectableListItem,
   TooltipContainer,

@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
-import DialogOperationSelect from './dialog-operation-select';
 
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
@@ -192,10 +191,10 @@ class Toolbar extends React.Component {
                             yes={this.confirmImportOnlineToolbox.bind(this)}
                             no={this.cancelImportOnlineToolbox.bind(this)}/>
 
-        <DialogOperationSelect open={!!this.state.showOperationSelect}
-                               operations={this.state.showOperationSelect || []}
-                               ok={this.executeOperations.bind(this)}
-                               cancel={this.cancelExecuteOperations.bind(this)}/>
+        <base.DialogOperationSelect open={!!this.state.showOperationSelect}
+                                    operations={this.state.showOperationSelect || []}
+                                    ok={this.executeOperations.bind(this)}
+                                    cancel={this.cancelExecuteOperations.bind(this)}/>
 
       </div>
     );
