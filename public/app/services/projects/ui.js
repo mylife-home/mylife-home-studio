@@ -171,6 +171,31 @@ function serialize(project) {
   throw new Error('TODO');
 }
 
+function prepareImportOnline(project, done) {
+  // TODO
+  throw new Error('TODO');
+}
+
+function prepareImportVpanelProject(project, vpanelProject) {
+  // TODO
+  throw new Error('TODO');
+}
+
+function executeImport(data) {
+  // TODO
+  throw new Error('TODO');
+}
+
+function prepareDeploy(project, done) {
+  // TODO
+  throw new Error('TODO');
+}
+
+function executeDeploy(data, done) {
+  // TODO
+  throw new Error('TODO');
+}
+
 function createImage(project) {
   const image = {
     uid: uuid.v4(),

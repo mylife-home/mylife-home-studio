@@ -196,6 +196,30 @@ class Projects {
 
   // -----------------------------------------------------------------------------
 
+  uiPrepareImportOnline(project, done) {
+    return ui.prepareImportOnline(project, done);
+  }
+
+  uiPrepareImportVpanelProject(project, vpanelProject) {
+    return ui.prepareImportVpanelProject(project, vpanelProject);
+  }
+
+  uiExecuteImport(data) {
+    return ui.executeImport(data);
+  }
+
+  uiPrepareDeploy(project, done) {
+    return ui.prepareDeploy(project, done);
+  }
+
+  uiExecuteDeploy(data, done) {
+    return ui.executeDeploy(data, (err) => {
+      if(err) { return done(err); }
+      ProjectActionCreators.refresh(data.project);
+      return done();
+    });
+  }
+
   uiCreateImage(project) {
     const image = ui.createImage(project);
     ProjectActionCreators.refresh(project);
