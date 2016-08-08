@@ -57,9 +57,7 @@ class Toolbar extends React.Component {
     this.select({ type: 'window', uid: window.uid });
   }
 
-  importOnline() {
-    // TODO
-  }
+  // import
 
   importProjectOnline() {
     // TODO
@@ -69,8 +67,85 @@ class Toolbar extends React.Component {
     // TODO
   }
 
+  importOnline() {
+    const project = this.props.project;
+    DialogsActionCreators.setBusy('Preparing import');
+    Facade.projects.uiPrepareImportOnline(project, (err, data) => {
+      DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
+
+      if(data.messages && data.messages.length) {
+        this.setState({
+          importComponentsConfirm: data
+        });
+        return;
+      }
+
+      this.executeImportComponents(data);
+    });
+  }
+
+  cancelImportOnlineToolbox() {
+    this.setState({ importComponentsConfirm: null });
+  }
+
+  confirmImportOnlineToolbox() {
+    const data = this.state.importComponentsConfirm;
+    this.setState({ importComponentsConfirm: null });
+    this.executeImportComponents(data);
+  }
+
+  executeImportComponents(data) {
+    DialogsActionCreators.setBusy('Executing import');
+    Facade.projects.uiExecuteImport(data, (err) => {
+      DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
+
+      this.setState({
+        showInfo: ['Toolbox imported']
+      });
+    });
+  }
+
+  // deploy
+
   deploy() {
-    // TODO
+    const project = this.props.project;
+    DialogsActionCreators.setBusy('Preparing deploy');
+    Facade.projects.uiPrepareDeploy(project, (err, data) => {
+      DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
+
+      this.setState({
+        showOperationSelect: data.operations
+      });
+    });
+  }
+
+  executeOperations() {
+    const data = {
+      project: this.props.project,
+      operations: this.state.showOperationSelect
+    };
+    this.setState({
+      showOperationSelect: null
+    });
+
+    DialogsActionCreators.setBusy('Executing deploy');
+    Facade.projects.uiExecuteDeploy(data, (err) => {
+      DialogsActionCreators.unsetBusy();
+      if(err) { return DialogsActionCreators.error(err); }
+
+      this.setState({
+        showInfo: ['Deploy done']
+      });
+    });
+  }
+
+  cancelExecuteOperations() {
+    this.setState({
+      showOperationSelect: null
+    });
   }
 
   render() {
@@ -125,6 +200,17 @@ class Toolbar extends React.Component {
 
           </mui.ToolbarGroup>
         </mui.Toolbar>
+
+        <base.DialogOperationSelect open={!!this.state.showOperationSelect}
+                                    operations={this.state.showOperationSelect || []}
+                                    ok={this.executeOperations.bind(this)}
+                                    cancel={this.cancelExecuteOperations.bind(this)}/>
+
+        <base.DialogConfirm title="Confirm"
+                            open={!!this.state.importComponentsConfirm}
+                            lines={(this.state.importComponentsConfirm && this.state.importComponentsConfirm.messages) || []}
+                            yes={this.confirmImportComponents.bind(this)}
+                            no={this.cancelImportComponents.bind(this)}/>
 
         <base.DialogInfo title="Success"
                          open={!!this.state.showInfo}
