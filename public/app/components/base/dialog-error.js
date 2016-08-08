@@ -49,7 +49,9 @@ class DialogError extends React.Component {
                     onTouchTap={this.handleClose.bind(this)} />}
           modal={true}
           open={!!error}>
-        {errorText}
+          <div style={{whiteSpace: 'pre'}}>
+            {errorText}
+          </div>
         </mui.Dialog>
     );
   }
