@@ -10,14 +10,19 @@ class Resources {
   constructor() {
   }
 
-  queryResourcesList(entityId) {
+  queryResourcesList(entityId, cb) {
     debug(`queryResourcesList(${entityId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'enum' })
       .end((err, res) => {
-        if(err) { return console.error(err); }
-        ResourcesActionCreators.entityResourcesList(entityId, res.body.data);
+        if(err) {
+          if(!cb) { return console.error(err); }
+          return cb(err);
+        }
+        const data = res.body.data;
+        ResourcesActionCreators.entityResourcesList(entityId, data);
+        if(cb) { cb(null, data); }
       });
   }
 
