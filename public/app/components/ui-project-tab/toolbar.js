@@ -290,7 +290,7 @@ class Toolbar extends React.Component {
 
         <base.DialogConfirm title="Confirm"
                             open={!!this.state.importComponentsConfirm}
-                            lines={(this.state.importComponentsConfirm && this.state.importComponentsConfirm.messages) || []}
+                            lines={(this.state.importComponentsConfirm && ['The following elements will be lost:'].concat(this.state.importComponentsConfirm.messages)) || []}
                             yes={this.confirmImportComponents.bind(this)}
                             no={this.cancelImportComponents.bind(this)}/>
 
