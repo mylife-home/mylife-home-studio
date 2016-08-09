@@ -6,6 +6,8 @@ import Metadata from '../metadata/index';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
+let operationId = 0;
+
 export default {
   createNew,
   open,
@@ -312,9 +314,22 @@ function executeImport(data) {
 }
 
 function prepareDeploy(project, done) {
-  // TODO
-  throw new Error('TODO');
+  return common.loadOnlineResourceNames((err, names) => {
+    if(err) { return done(err); }
 
+    let operations;
+    try {
+      common.checkSaved(project);
+
+console.log(names);
+      // TODO
+      throw new Error('TODO');
+    } catch(err) {
+      return done(err);
+    }
+
+    return done(null, { project, operations });
+  });
 }
 
 function createImage(project) {
