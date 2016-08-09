@@ -18,6 +18,8 @@ export default {
   serializeMap,
   loadMapOnline,
   loadOnlineCoreEntities,
+  getOnlinePlugins,
+  getOnlineComponents,
   loadPlugin,
   validate,
   validateHandler,
@@ -97,6 +99,34 @@ function loadOnlineCoreEntities(done) {
   }
 
   async.parallel(funcs, done);
+}
+
+function getOnlinePlugins() {
+  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+  const ret = new Map();
+  for(const entity of entities) {
+    for(const plugin of entity.plugins) {
+      ret.set(`${entity.id}:${plugin.library}:${plugin.type}`, {
+        entity,
+        plugin
+      });
+    }
+  }
+  return ret;
+}
+
+function getOnlineComponents() {
+  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+  const ret = new Map();
+  for(const entity of entities) {
+    for(const component of entity.components) {
+      ret.set(component.id, {
+        entity,
+        component
+      });
+    }
+  }
+  return ret;
 }
 
 function loadPlugin(plugin, entityId) {

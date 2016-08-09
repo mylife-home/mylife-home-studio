@@ -136,7 +136,7 @@ function prepareImportToolbox(project, done) {
     let ret;
     try {
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins();
       const diff = pluginsDiff(projectPlugins, onlinePlugins);
       const messages = [];
 
@@ -231,9 +231,9 @@ function importDriverComponents(project, done) {
 
     try {
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins();
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
-      const onlineComponents = getOnlineComponents();
+      const onlineComponents = common.getOnlineComponents();
 
       for(const [ id, value ] of onlineComponents.entries()) {
         if(findComponent(project, id)) { continue; }
@@ -274,10 +274,10 @@ function prepareDeployVPanel(project, done) {
       checkSaved(project);
 
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins();
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
-      const onlineComponents = getOnlineComponents();
+      const onlineComponents = common.getOnlineComponents();
       const usages = [metadata.pluginUsage.vpanel, metadata.pluginUsage.ui];
 
       const bindingsToDelete = new Map();
@@ -359,10 +359,10 @@ function prepareDeployDrivers(project, done) {
       checkSaved(project);
 
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins();
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
-      const onlineComponents = getOnlineComponents();
+      const onlineComponents = common.getOnlineComponents();
 
       operations = [];
 
@@ -665,34 +665,6 @@ function getProjectPlugins(project) {
       ret.set(`${item.entityId}:${plugin.library}:${plugin.type}`, {
         item,
         plugin
-      });
-    }
-  }
-  return ret;
-}
-
-function getOnlinePlugins() {
-  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
-  const ret = new Map();
-  for(const entity of entities) {
-    for(const plugin of entity.plugins) {
-      ret.set(`${entity.id}:${plugin.library}:${plugin.type}`, {
-        entity,
-        plugin
-      });
-    }
-  }
-  return ret;
-}
-
-function getOnlineComponents() {
-  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
-  const ret = new Map();
-  for(const entity of entities) {
-    for(const component of entity.components) {
-      ret.set(component.id, {
-        entity,
-        component
       });
     }
   }
