@@ -271,7 +271,7 @@ function prepareDeployVPanel(project, done) {
 
     let operations;
     try {
-      checkSaved(project);
+      common.checkSaved(project);
 
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = common.getOnlinePlugins();
@@ -356,7 +356,7 @@ function prepareDeployDrivers(project, done) {
 
     let operations;
     try {
-      checkSaved(project);
+      common.checkSaved(project);
 
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = common.getOnlinePlugins();
@@ -694,12 +694,6 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
   const diff = pluginsDiff(projectPlugins, onlinePlugins);
   if(diff.count) {
     throw new Error('plugins are outdated');
-  }
-}
-
-function checkSaved(project) {
-  if(project.dirty) {
-    throw new Error('project must be saved');
   }
 }
 

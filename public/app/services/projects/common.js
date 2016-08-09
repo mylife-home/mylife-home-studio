@@ -24,6 +24,7 @@ export default {
   validate,
   validateHandler,
   serialize,
+  checkSaved,
   uid
 };
 
@@ -159,6 +160,12 @@ function serialize(project) {
     CreationDate : serializeDate(project.creationDate),
     LastUpdate   : serializeDate(project.lastUpdate)
   };
+}
+
+function checkSaved(project) {
+  if(project.dirty) {
+    throw new Error('project must be saved');
+  }
 }
 
 function uid() {
