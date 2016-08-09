@@ -113,7 +113,10 @@ class MainToolbar extends React.Component {
 
     const reader = new FileReader();
 
+    DialogsActionCreators.setBusy('Loading project');
+
     reader.onloadend = () => {
+      DialogsActionCreators.unsetBusy();
       const err = reader.error;
       if(err) { return DialogsActionCreators.error(err); }
       const content = reader.result;
