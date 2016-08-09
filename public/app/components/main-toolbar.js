@@ -263,13 +263,13 @@ class MainToolbar extends React.Component {
         ref="openFileVPanelProject"
         type="file"
         style={{"display" : "none"}}
-        onChange={this.handleOpenFileVPanelProject.bind(this)}/>
+        onChange={base.utils.stopPropagationWrapper(this.handleOpenFileVPanelProject.bind(this))}/>
 
       <input
         ref="openFileUiProject"
         type="file"
         style={{"display" : "none"}}
-        onChange={this.handleOpenFileUiProject.bind(this)}/>
+        onChange={base.utils.stopPropagationWrapper(this.handleOpenFileUiProject.bind(this))}/>
 
       <base.DialogSelect title="Select VPanel Project"
                          open={!!this.state.openOnlineVPanelProjectItems}
