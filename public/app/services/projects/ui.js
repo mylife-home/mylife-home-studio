@@ -2,6 +2,9 @@
 
 import uuid from 'uuid';
 import common from './common';
+import Metadata from '../metadata/index';
+
+const metadata = new Metadata(); // TODO: how to use facade ?
 
 export default {
   createNew,
@@ -177,11 +180,45 @@ function serialize(project) {
 }
 
 function prepareImportOnline(project, done) {
-  // TODO
-  throw new Error('TODO');
+  return common.loadOnlineCoreEntities((err) => {
+    if(err) { return done(err); }
+
+    const onlinePlugins = common.getOnlinePlugins();
+    const onlineComponents = common.getOnlineComponents();
+
+    const plugins = Array.from(onlinePlugins.values())
+      .map(value => common.loadPlugin(value.plugin, value.entity.id))
+      .filter(p => p.usage === metadata.pluginUsage.ui);
+
+    const components = Array.from(onlineComponents.values())
+      .map(value => ({
+        id: value.component.id,
+        plugin: plugins.find(p =>
+          p.library === value.component.library &&
+          p.type === value.component.type &&
+          p.entityId === value.entity.id)
+      }))
+      .filter(c => c.plugin);
+
+    let data;
+    try {
+      data = prepareImport(project, components);
+    } catch(err) {
+      return done(err);
+    }
+
+    return done(null, data);
+  });
 }
 
 function prepareImportVpanelProject(project, vpanelProject) {
+  const components = vpanelProject.components
+    .filter(c => c.plugin.usage === metadata.pluginUsage.ui)
+    .map(c => ({ id: c.id, plugin: c.plugin }));
+  return prepareImport(project, components);
+}
+
+function prepareImport(project, newComponents) {
   // TODO
   throw new Error('TODO');
 }
