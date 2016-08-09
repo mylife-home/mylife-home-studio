@@ -268,17 +268,17 @@ class MainToolbar extends React.Component {
         style={{"display" : "none"}}
         onChange={this.handleOpenFileUiProject.bind(this)}/>
 
-        <base.DialogSelect title="Select VPanel Project"
-                           open={!!this.state.openOnlineVPanelProjectItems}
-                           items={this.state.openOnlineVPanelProjectItems || []}
-                           select={this.handleOpenOnlineVPanelProject.bind(this)}
-                           cancel={this.handleOpenOnlineVPanelProject.bind(this, null)}/>
+      <base.DialogSelect title="Select VPanel Project"
+                         open={!!this.state.openOnlineVPanelProjectItems}
+                         items={this.state.openOnlineVPanelProjectItems || []}
+                         select={this.handleOpenOnlineVPanelProject.bind(this)}
+                         cancel={this.handleOpenOnlineVPanelProject.bind(this, null)}/>
 
-        <base.DialogSelect title="Select UI Project"
-                           open={!!this.state.openOnlineUiProjectItems}
-                           items={this.state.openOnlineUiProjectItems || []}
-                           select={this.handleOpenOnlineUiProject.bind(this)}
-                           cancel={this.handleOpenOnlineUiProject.bind(this, null)}/>
+      <base.DialogSelect title="Select UI Project"
+                         open={!!this.state.openOnlineUiProjectItems}
+                         items={this.state.openOnlineUiProjectItems || []}
+                         select={this.handleOpenOnlineUiProject.bind(this)}
+                         cancel={this.handleOpenOnlineUiProject.bind(this, null)}/>
     </mui.Toolbar>
   ); }
 }
