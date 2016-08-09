@@ -18,6 +18,7 @@ export default {
   serializeMap,
   loadMapOnline,
   loadOnlineCoreEntities,
+  loadOnlineResourceNames,
   getOnlinePlugins,
   getOnlineComponents,
   loadPlugin,
@@ -100,7 +101,15 @@ function loadOnlineCoreEntities(done) {
     funcs.push((cb) => resources.queryComponentsList(entity.id, cb));
   }
 
-  async.parallel(funcs, done);
+  return async.parallel(funcs, done);
+}
+
+function loadOnlineResourceNames(done) {
+  const entity = OnlineStore.getAll().find(e => e.type === shared.EntityType.RESOURCES);
+  if(!entity) {
+    throw new Error('No resource entity on network');
+  }
+  return resources.queryResourcesList(entity.id, done);
 }
 
 function getOnlinePlugins() {
