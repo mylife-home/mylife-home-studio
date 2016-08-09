@@ -219,13 +219,97 @@ function prepareImportVpanelProject(project, vpanelProject) {
 }
 
 function prepareImport(project, newComponents) {
-  // TODO
-  throw new Error('TODO');
+
+  const messages = [];
+  const cleaners = [];
+  for(const window of project.windows) {
+    for(const control of window.controls) {
+      for(property of ['primaryAction', 'secondaryAction']) {
+        if(!control[property]) { continue; }
+        const actionComp = control[property].component;
+        if(actionComp && !importIsComponentAction(newComponents, actionComp.component, actionComp.action)) {
+          messages.push(` - ${window.id}/${control.id}/${property}`);
+          cleaners.push(importPropertyDeleter(control, property));
+        }
+      }
+
+      if(control.text) {
+        for(const item of control.text.context) {
+          if(!importIsComponentAttribute(newComponents, item.component, item.attribute)) {
+            messages.push(` - ${window.id}/${control.id}/text/${item.id}`);
+            cleaners.push(importArrayItemDeleter(control.text.context, item));
+          }
+        }
+      }
+
+      if(control.display && !importIsComponentAttribute(newComponents, control.display.component, control.display.attribute)) {
+        messages.push(` - ${window.id}/${control.id}/display`);
+        cleaners.push(importPropertyDeleter(control.display, 'component'));
+        cleaners.push(importPropertyDeleter(control.display, 'attribute'));
+      }
+    }
+  }
+
+  return {
+    project,
+    newComponents,
+    messages,
+    cleaners
+  };
+}
+
+function importIsComponentAction(newComponents, oldComponent, actionName) {
+  if(!oldComponent) { return true; }
+  const comp = newComponents.find(c => c.id === oldComponent.id);
+  if(!comp) { return false; }
+  if(!actionName) { return true; }
+  const action = comp.plugin.clazz.actions.find(a => a.name === actionName);
+  if(!action) { return false; }
+  if(action.types.length > 0) { return false; }
+  return true;
+}
+
+function importIsComponentAttribute(newComponents, oldComponent, attributeName) {
+  if(!oldComponent) { return true; }
+  const comp = newComponents.find(c => c.id === oldComponent.id);
+  if(!comp) { return false; }
+  if(!attributeName) { return true; }
+  const attribute = comp.plugin.clazz.attributes.find(a => a.name === attributeName);
+  if(!attribute) { return false; }
+  const oldAttribute = oldComponent.plugin.clazz.attributes.find(a => a.name === attributeName);
+  if(attribute.type !== oldAttribute.type) { return false; }
+  return true;
+}
+
+function importPropertyDeleter(object, property) {
+  return () => {
+    object[property] = null;
+  };
+}
+
+function importArrayItemDeleter(array, item) {
+  return () => {
+    arrayRemoveValue(context, item);
+  };
 }
 
 function executeImport(data) {
-  // TODO
-  throw new Error('TODO');
+
+  for(const cleaner of data.cleaners) {
+    cleaner();
+  }
+
+  for(const newComponent of data.newComponents) {
+    const actualComponent = data.project.components.find(c => c.id === newComponent.id);
+    if(actualComponent) {
+      actualComponent.plugin = newComponent.plugin;
+      continue;
+    }
+
+    data.project.components.push(newComponent);
+  }
+
+  common.dirtify(data.project);
 }
 
 function prepareDeploy(project, done) {
