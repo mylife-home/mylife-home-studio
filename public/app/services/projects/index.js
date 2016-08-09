@@ -45,7 +45,7 @@ class Projects {
     return project;
   }
 
-  open(type, content) {
+  open(type, content, internal) {
     const data = JSON.parse(content);
     const uid = uuid.v4();
     const project = {
@@ -69,7 +69,7 @@ class Projects {
     }
 
     debug('project created', project.uid);
-    ProjectActionCreators.load(project);
+    if(!internal) { ProjectActionCreators.load(project); }
     return project;
   }
 
