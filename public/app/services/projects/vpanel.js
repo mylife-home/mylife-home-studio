@@ -23,7 +23,6 @@ export default {
   importDriverComponents,
   prepareDeployVPanel,
   prepareDeployDrivers,
-  executeDeploy,
   createComponent,
   canCreateBinding,
   createBinding,
@@ -443,15 +442,6 @@ function prepareDeployDrivers(project, done) {
     }
 
     return done(null, { project, operations });
-  });
-}
-
-function executeDeploy(data, done) {
-  console.log('executeDeploy', data);
-  const actions = data.operations.filter(o => o.enabled).map(o => o.action);
-  async.series(actions, (err) => {
-    if(err) { return done(err); }
-    return common.loadOnlineCoreEntities(done);
   });
 }
 

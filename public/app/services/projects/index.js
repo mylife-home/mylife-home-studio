@@ -130,6 +130,14 @@ class Projects {
     return JSON.stringify(project.raw);
   }
 
+  executeDeploy(data, done) {
+    return common.executeDeploy(data, (err) => {
+      if(err) { return done(err); }
+      ProjectActionCreators.refresh(data.project);
+      return done();
+    });
+  }
+
   // -----------------------------------------------------------------------------
 
   vpanelPrepareImportOnlineToolbox(project, done) {
@@ -158,14 +166,6 @@ class Projects {
 
   vpanelPrepareDeployDrivers(project, done) {
     return vpanel.prepareDeployDrivers(project, done);
-  }
-
-  vpanelExecuteDeploy(data, done) {
-    return vpanel.executeDeploy(data, (err) => {
-      if(err) { return done(err); }
-      ProjectActionCreators.refresh(data.project);
-      return done();
-    });
   }
 
   vpanelCreateComponent(project, location, pluginData) {
@@ -211,14 +211,6 @@ class Projects {
 
   uiPrepareDeploy(project, done) {
     return ui.prepareDeploy(project, done);
-  }
-
-  uiExecuteDeploy(data, done) {
-    return ui.executeDeploy(data, (err) => {
-      if(err) { return done(err); }
-      ProjectActionCreators.refresh(data.project);
-      return done();
-    });
   }
 
   uiCreateImage(project) {

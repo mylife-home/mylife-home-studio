@@ -125,7 +125,7 @@ class Toolbar extends React.Component {
     });
 
     DialogsActionCreators.setBusy('Executing deploy');
-    Facade.projects.vpanelExecuteDeploy(data, (err) => {
+    Facade.projects.executeDeploy(data, (err) => {
       DialogsActionCreators.unsetBusy();
       if(err) { return DialogsActionCreators.error(err); }
 

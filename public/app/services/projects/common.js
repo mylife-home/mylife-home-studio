@@ -25,7 +25,8 @@ export default {
   validateHandler,
   serialize,
   checkSaved,
-  uid
+  uid,
+  executeDeploy
 };
 
 function dirtify(project) {
@@ -170,4 +171,13 @@ function checkSaved(project) {
 
 function uid() {
   return Math.floor((1 + Math.random()) * 0x10000000).toString(16);
+}
+
+function executeDeploy(data, done) {
+  console.log('executeDeploy', data);
+  const actions = data.operations.filter(o => o.enabled).map(o => o.action);
+  async.series(actions, (err) => {
+    if(err) { return done(err); }
+    return common.loadOnlineCoreEntities(done);
+  });
 }

@@ -15,7 +15,6 @@ export default {
   prepareImportVpanelProject,
   executeImport,
   prepareDeploy,
-  executeDeploy,
   createImage,
   createWindow,
   createControl,
@@ -315,11 +314,7 @@ function executeImport(data) {
 function prepareDeploy(project, done) {
   // TODO
   throw new Error('TODO');
-}
 
-function executeDeploy(data, done) {
-  // TODO
-  throw new Error('TODO');
 }
 
 function createImage(project) {
