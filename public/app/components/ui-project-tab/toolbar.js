@@ -178,14 +178,14 @@ class Toolbar extends React.Component {
   }
 
   executeImportComponents(data) {
-    DialogsActionCreators.setBusy('Executing import');
-    Facade.projects.uiExecuteImport(data, (err) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+    try {
+      Facade.projects.uiExecuteImport(data);
+    } catch(err) {
+      return DialogsActionCreators.error(err);
+    }
 
-      this.setState({
-        showInfo: ['Toolbox imported']
-      });
+    this.setState({
+      showInfo: ['Components imported']
     });
   }
 
