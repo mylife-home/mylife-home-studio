@@ -205,7 +205,8 @@ class Projects {
   }
 
   uiExecuteImport(data) {
-    return ui.executeImport(data);
+    ui.executeImport(data);
+    ProjectActionCreators.refresh(data.project);
   }
 
   uiPrepareDeploy(project, done) {
