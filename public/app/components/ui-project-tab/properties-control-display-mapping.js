@@ -67,8 +67,8 @@ class PropertiesControlDisplayMapping extends React.Component {
       return (<div>Select component/attribute</div>);
     }
 
-    const componentAttribute = display.component.plugin.clazz.attributes.find(a => a.name === display.attribute);
-    const isRange = componentAttribute.type.constructor.name === 'Range';
+    const attributeType = display.component.plugin.clazz.attributes.find(a => a.name === display.attribute).type;
+    const isRange = attributeType.constructor.name === 'Range';
     const mappingDisplay = mapping.map(item => {
       const key = isRange ? `[${item.min}-${item.max}]` : item.value;
       return `${key} => ${item.resource.id}`;
@@ -112,7 +112,7 @@ class PropertiesControlDisplayMapping extends React.Component {
                   key={it.uid}
                   project={project}
                   item={it}
-                  isRange={isRange}
+                  attributeType={attributeType}
                   isNew={false}
                   action={this.handleDelete.bind(this, it)}
                 />
@@ -121,7 +121,7 @@ class PropertiesControlDisplayMapping extends React.Component {
                 key={this.state.newItem.uid}
                 project={project}
                 item={this.state.newItem}
-                isRange={isRange}
+                attributeType={attributeType}
                 isNew={true}
                 action={this.handleCreate.bind(this)}
               />

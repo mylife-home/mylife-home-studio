@@ -8,6 +8,7 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 
 import PropertiesImageSelector from './properties-image-selector';
+import PropertiesEnumValueSelector from './properties-enum-value-selector';
 
 class PropertiesControlDisplayMappingRow extends React.Component {
 
@@ -30,10 +31,10 @@ class PropertiesControlDisplayMappingRow extends React.Component {
     this.setState({ open: false });
   }
 
-  handleValueChange(event) {
+  handleValueChange(value) {
     const { project, item } = this.props;
 
-    item.value = event.target.value;
+    item.value = value;
     Facade.projects.dirtify(project);
   }
 
@@ -58,7 +59,8 @@ class PropertiesControlDisplayMappingRow extends React.Component {
   }
 
   render() {
-    const { project, item, isRange, isNew, action } = this.props;
+    const { project, item, attributeType, isNew, action } = this.props;
+    const isRange = attributeType.constructor.name === 'Range';
 
     const imageRowColumn = (
       <mui.TableRowColumn>
@@ -103,10 +105,10 @@ class PropertiesControlDisplayMappingRow extends React.Component {
     ) : (
       <mui.TableRow>
         <mui.TableRowColumn>
-          <mui.TextField
-            id={`${item.uid}_value`}
-            value={item.value || ''}
-            onChange={base.utils.stopPropagationWrapper(this.handleValueChange.bind(this))} />
+          <PropertiesEnumValueSelector
+            values={attributeType.values}
+            value={item.value}
+            onChange={this.handleValueChange.bind(this)} />
         </mui.TableRowColumn>
         {imageRowColumn}
         {actionRowColumn}
@@ -116,11 +118,11 @@ class PropertiesControlDisplayMappingRow extends React.Component {
 }
 
 PropertiesControlDisplayMappingRow.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  item     : React.PropTypes.object.isRequired,
-  isRange  : React.PropTypes.bool.isRequired,
-  isNew    : React.PropTypes.bool.isRequired,
-  action   : React.PropTypes.func.isRequired,
+  project       : React.PropTypes.object.isRequired,
+  item          : React.PropTypes.object.isRequired,
+  attributeType : React.PropTypes.object.isRequired,
+  isNew         : React.PropTypes.bool.isRequired,
+  action        : React.PropTypes.func.isRequired,
 };
 
 export default PropertiesControlDisplayMappingRow;
