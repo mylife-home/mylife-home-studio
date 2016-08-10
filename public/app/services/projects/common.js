@@ -165,12 +165,13 @@ function validateHandler(msgs) {
   throw err;
 }
 
-function checkIds(array) {
+function checkIds(array, idAccessor) {
+  if(!idAccessor) { idAccessor = obj => obj.id; }
   const ids = new Set();
   const duplicates = new Set();
   let noIdCount = 0;
   for(const obj of array) {
-    const id = obj.id;
+    const id = idAccessor(obj);
     if(!id) {
       ++noIdCount;
       continue;
