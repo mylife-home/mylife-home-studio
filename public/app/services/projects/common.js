@@ -187,6 +187,6 @@ function executeDeploy(data, done) {
   const actions = data.operations.filter(o => o.enabled).map(o => o.action);
   async.series(actions, (err) => {
     if(err) { return done(err); }
-    return common.loadOnlineCoreEntities(done);
+    return loadOnlineCoreEntities(done);
   });
 }

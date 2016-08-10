@@ -3,10 +3,12 @@
 import uuid from 'uuid';
 import common from './common';
 import shared from '../../shared/index';
-import Metadata from '../metadata/index';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
+import Metadata from '../metadata/index';
+import Resources from '../resources';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
+const resources = new Resources(); // TODO: how to use facade ?
 
 let operationId = 0;
 
@@ -452,7 +454,7 @@ function prepareDeploy(project, done) {
       }
 
       for(const window of project.windows) {
-        const content = serializeWindow(window);
+        const content = JSON.stringify({ window: serializeWindow(window) });
         resources.set(`window.${window.id}`, content);
       }
 
