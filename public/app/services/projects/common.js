@@ -24,6 +24,7 @@ export default {
   loadPlugin,
   validate,
   validateHandler,
+  checkIds,
   serialize,
   checkSaved,
   uid,
@@ -162,6 +163,31 @@ function validateHandler(msgs) {
   const err = new Error('Project is not valid');
   err.validationErrors = msgs;
   throw err;
+}
+
+function checkIds(array) {
+  const ids = new Set();
+  const duplicates = new Set();
+  let noIdCount = 0;
+  for(const obj of array) {
+    const id = obj.id;
+    if(!id) {
+      ++noIdCount;
+      continue;
+    }
+
+    if(ids.has(id)) {
+      duplicates.add(id);
+      continue;
+    }
+
+    ids.add(id);
+  }
+
+  return {
+    noIdCount,
+    duplicates
+  };
 }
 
 function serialize(project) {

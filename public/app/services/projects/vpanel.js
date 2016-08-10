@@ -49,28 +49,11 @@ function validate(project, msgs) {
   common.validate(project, msgs);
 
   // component id set and unique
-  const ids = new Set();
-  const idsdup = new Set();
-  let noidCount = 0;
-  for(const comp of project.components) {
-    const id = comp.id;
-    if(!id) {
-      ++noidCount;
-      continue;
-    }
-
-    if(ids.has(id)) {
-      idsdup.add(id);
-      continue;
-    }
-
-    ids.add(id);
+  const { noIdCount, duplicates } = common.checkIds(project.components);
+  if(noIdCount > 0) {
+    msgs.push(`${noIdCount} components have no id`);
   }
-
-  if(noidCount > 0) {
-    msgs.push(`${noidCount} components have no id`);
-  }
-  for(const id of idsdup) {
+  for(const id of duplicates) {
     msgs.push(`Duplicate component id: ${id}`);
   }
 
