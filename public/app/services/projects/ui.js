@@ -2,7 +2,9 @@
 
 import uuid from 'uuid';
 import common from './common';
+import shared from '../../shared/index';
 import Metadata from '../metadata/index';
+import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -180,6 +182,96 @@ function serialize(project) {
   throw new Error('TODO');
 }
 
+function serializeObjectId(res) {
+  if(!res) { return null; }
+  return res.id;
+}
+
+function serializeWindow(win) {
+  return {
+    id: win.id,
+    height: win.height,
+    width: win.width,
+    style: win.style,
+    background_resource_id: serializeObjectId(win.backgroundResource),
+    controls: win.controls.map(serializeControl)
+  };
+}
+
+function serializeControl(ctrl) {
+  return {
+    id: ctrl.id,
+    height: ctrl.height,
+    width: ctrl.width,
+    x: ctrl.x,
+    y: ctrl.y,
+    style: ctrl.style,
+    display: serializeDisplay(ctrl.display),
+    text: serializeText(ctrl.text),
+    primary_action: serializeAction(ctrl.primaryAction),
+    secondary_action: serializeAction(ctrl.secondaryAction)
+  };
+}
+
+function serializeDisplay(disp) {
+  if(!disp) { return null; }
+  return {
+    component_id: serializeObjectId(disp.component),
+    component_attribute: disp.attribute,
+    default_resource_id: serializeObjectId(disp.defaultResource),
+    map: disp.map.map(serializeDisplayMapItem)
+  };
+}
+
+function serializeDisplayMapItem(item) {
+  return {
+    max: item.max,
+    min: item.min,
+    resource_id: serializeObjectId(item.resource),
+    value: item.value
+  };
+}
+
+function serializeText(text) {
+  if(!text) { return null; }
+  return {
+    format: text.format,
+    context: text.context.map(serializeTextContextItem)
+  };
+}
+
+function serializeTextContextItem(item) {
+  return {
+    component_id: serializeObjectId(item.component),
+    component_attribute: item.attribute,
+    id: item.id
+  };
+}
+
+function serializeAction(action) {
+  if(!action) { return null; }
+  return {
+    component: serializeActionComponent(action.component),
+    window: serializeActionWindow(action.window)
+  }
+}
+
+function serializeActionComponent(actionComponent) {
+  if(!actionComponent) { return null; }
+  return {
+    component_id: serializeObjectId(actionComponent.component),
+    component_action: actionComponent.action
+  };
+}
+
+function serializeActionWindow(actionWindow) {
+  if(!actionWindow) { return null; }
+  return {
+    id: serializeObjectId(actionWindow.window),
+    popup: actionWindow.popup
+  };
+}
+
 function prepareImportOnline(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
@@ -321,15 +413,48 @@ function prepareDeploy(project, done) {
     try {
       common.checkSaved(project);
 
-console.log(names);
-      // TODO
-      throw new Error('TODO');
+      const resources = new Map();
+      for(const name of names) {
+        // delete all image/window
+        // default_window will be reset too below
+        if(name.startsWith('image.') || name.startsWith('window.')) {
+          resources.set(name, '');
+        }
+      }
+
+      for(const image of project.images) {
+        resources.set(`image.${image.id}`, image.content);
+      }
+
+      for(const window of project.windows) {
+        const content = serializeWindow(window);
+        resources.set(`window.${window.id}`, content);
+      }
+
+      resources.set('default_window', project.defaultWindow.id);
+
+      const entity = OnlineStore.getAll().find(e => e.type === shared.EntityType.RESOURCES);
+      operations = [];
+      for(const [resourceId, resourceContent] of resources.entries()) {
+        operations.push(createOperationResourceSet(entity.id, resourceId, resourceContent));
+      }
     } catch(err) {
       return done(err);
     }
 
     return done(null, { project, operations });
   });
+}
+
+function createOperationResourceSet(entityId, resourceId, resourceContent) {
+  return {
+    id: ++operationId,
+    enabled: true,
+    description: `${resourceContent ? 'Set' : 'Delete'} resource ${resourceId}`,
+    action: (done) => {
+      return resources.queryResourceSet(entityId, resourceId, resourceContent, done);
+    }
+  };
 }
 
 function createImage(project) {
