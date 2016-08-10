@@ -69,6 +69,7 @@ class PropertiesControl extends React.Component {
 
     control.display.component = component;
     control.display.attribute = attribute;
+    control.display.map = [];
     Facade.projects.dirtify(project);
   }
 
