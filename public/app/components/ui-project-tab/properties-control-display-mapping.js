@@ -40,10 +40,17 @@ class PropertiesControlDisplayMapping extends React.Component {
 
   handleCreate() {
     const { project, display } = this.props;
+
+    const componentAttribute = display.component.plugin.clazz.attributes.find(a => a.name === display.attribute);
+    const isRange = componentAttribute.type.constructor.name === 'Range';
+
     const mapping = display.map;
     const newItem = this.state.newItem;
 
     if(!newItem.resource) {
+      return;
+    }
+    if(!isRange && !newItem.value) {
       return;
     }
 
