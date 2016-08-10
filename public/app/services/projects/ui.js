@@ -175,8 +175,85 @@ function findWindow(project, id) {
 
 function validate(project, msgs) {
   common.validate(project, msgs);
-  // TODO
-  throw new Error('TODO');
+
+  if(!project.defaultWindow) {
+    msgs.push('No default window');
+  }
+
+  {
+    const { noIdCount, duplicates } = common.checkIds(project.images);
+    if(noIdCount > 0) {
+      msgs.push(`${noIdCount} images have no id`);
+    }
+    for(const id of duplicates) {
+      msgs.push(`Duplicate image id: ${id}`);
+    }
+  }
+
+  {
+    const { noIdCount, duplicates } = common.checkIds(project.windows);
+    if(noIdCount > 0) {
+      msgs.push(`${noIdCount} windows have no id`);
+    }
+    for(const id of duplicates) {
+      msgs.push(`Duplicate window id: ${id}`);
+    }
+  }
+
+  for(const window of project.windows) {
+    {
+      const { noIdCount, duplicates } = common.checkIds(window.controls);
+      if(noIdCount > 0) {
+        msgs.push(`On window ${window.id}: ${noIdCount} controls have no id`);
+      }
+      for(const id of duplicates) {
+        msgs.push(`On window ${window.id}: duplicate control id: ${id}`);
+      }
+    }
+
+    for(const control of window.controls) {
+      if(control.text) {
+        const { noIdCount, duplicates } = common.checkIds(control.text.context);
+        if(noIdCount > 0) {
+          msgs.push(`On window ${window.id}: on control ${control.id}: ${noIdCount} text context items have no id`);
+        }
+        for(const id of duplicates) {
+          msgs.push(`On window ${window.id}: on control ${control.id}: duplicate text context item id: ${id}`);
+        }
+      }
+
+      if(control.display && control.display.component) {
+        const attributeType = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
+        if(attributeType.constructor.name === 'Enum') {
+          const { noIdCount, duplicates } = common.checkIds(control.display.map, item => item.value);
+          if(noIdCount > 0) {
+            msgs.push(`On window ${window.id}: on control ${control.id}: ${noIdCount} display map items have no value`);
+          }
+          for(const value of duplicates) {
+            msgs.push(`On window ${window.id}: on control ${control.id}: duplicate display map item value: ${value}`);
+          }
+        } else { // Range
+          const ranges = control.display.map.slice();
+          ranges.sort((a, b) => a.min - b.min);
+          let prevRange = null;
+          for(const range of ranges) {
+            if(range.min > range.max) {
+              msgs.push(`On window ${window.id}: on control ${control.id}: Range [${range.min}-${range.max}] is invalid`);
+              continue;
+            }
+            if(range.min < attributeType.min || range.max > attributeType.max) {
+              msgs.push(`On window ${window.id}: on control ${control.id}: Range [${range.min}-${range.max}] is outside attribute type boundaries [${attributeType.min}-${attributeType.max}]`);
+            }
+            if(prevRange && range.min <= prevRange.max) {
+              msgs.push(`On window ${window.id}: on control ${control.id}: Range [${range.min}-${range.max}] overlap range [${prevRange.min}-${prevRange.max}]`);
+            }
+
+            prevRange = range;
+          }
+        }
+      }
+    }
+  }
 }
 
 function serialize(project) {
