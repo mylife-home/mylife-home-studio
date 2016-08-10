@@ -160,9 +160,8 @@ function validate(project, msgs) {
 function validateHandler(msgs) {
   if(!msgs.length) { return; }
 
-  const err = new Error('Project is not valid');
-  err.validationErrors = msgs;
-  throw err;
+  const text = ['Project is not valid:'].concat(msgs.map(m => ` - ${m}`)).join('\n');
+  throw new Error(text);
 }
 
 function checkIds(array, idAccessor) {
