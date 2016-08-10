@@ -62,6 +62,19 @@ class PropertiesControlAction extends React.Component {
     Facade.projects.dirtify(project);
   }
 
+  handleSelectNone() {
+    const { project, object, property } = this.props;
+
+    this.handleRequestClose();
+
+    object[property] = {
+      window: null,
+      component: null
+    };
+
+    Facade.projects.dirtify(project);
+  }
+
   render() {
     const { project, object, property } = this.props;
 
@@ -127,6 +140,7 @@ class PropertiesControlAction extends React.Component {
                 onTouchTap={this.handleSelectWindow.bind(this, wnd, true)}/>
               ))}
             />
+            <mui.MenuItem primaryText={'<none>'} onTouchTap={this.handleSelectNone.bind(this)} />
           </mui.Menu>
         </mui.Popover>
       </div>
