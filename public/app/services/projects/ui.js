@@ -178,13 +178,38 @@ function validate(project, msgs) {
 }
 
 function serialize(project) {
-  // TODO
-  throw new Error('TODO');
+  common.serialize(project);
+
+  project.raw.Components = project.components.map(serializeComponent);
+  project.raw.Images = project.images.map(serializeImage);
+  project.raw.Windows = project.windows.map(serializeWindow);
+  project.raw.DefaultWindow = serializeObjectId(project.defaultWindow);
 }
 
 function serializeObjectId(res) {
   if(!res) { return null; }
   return res.id;
+}
+
+function serializeComponent(comp) {
+  return {
+    Id: comp.id,
+    Plugin: {
+      library: comp.plugin.library,
+      type: comp.plugin.type,
+      usage: comp.plugin.usage,
+      version: comp.plugin.version,
+      config: comp.plugin.rawConfig,
+      clazz: comp.plugin.rawClass
+    }
+  };
+}
+
+function serializeImage(img) {
+  return {
+    Id: img.id,
+    Content: img.content
+  };
 }
 
 function serializeWindow(win) {
