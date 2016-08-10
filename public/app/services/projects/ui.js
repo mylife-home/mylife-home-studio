@@ -90,7 +90,7 @@ function loadControl(project, ctrl) {
     text: loadText(project, ctrl.text),
     primaryAction: loadAction(project, ctrl.primary_action),
     secondaryAction: loadAction(project, ctrl.secondary_action)
-  }
+  };
 }
 
 function loadDisplay(project, disp) {
@@ -135,7 +135,7 @@ function loadAction(project, action) {
   return {
     component: loadActionComponent(project, action.component),
     window: loadActionWindow(project, action.window)
-  }
+  };
 }
 
 function loadActionComponent(project, actionComponent) {
