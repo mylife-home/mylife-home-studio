@@ -21,4 +21,4 @@ start:
 	$(NODE) bin/server.js
 
 bundle:
-	$(JSPM) bundle app/main public/build.js --inject --minify
+	$(JSPM) bundle app/main public/build.js
