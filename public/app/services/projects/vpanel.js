@@ -371,7 +371,7 @@ function prepareDeployDrivers(project, done) {
         }
 
         const bindingsToDelete = new Map();
-        const componentToDelete = new Map();
+        const componentsToDelete = new Map();
         const componentsToCreate = new Map();
 
         for(const onlineId of onlineIds) {
@@ -380,7 +380,7 @@ function prepareDeployDrivers(project, done) {
 
           // does not exist anymore
           if(!projectComponent) {
-            componentIdsToDelete.set(onlineId, onlineComponent);
+            componentsToDelete.set(onlineId, onlineComponent);
             continue;
           }
 
@@ -390,7 +390,7 @@ function prepareDeployDrivers(project, done) {
           }
 
           // still exist but changes -> recreate
-          componentToDelete.set(onlineId, onlineComponent);
+          componentsToDelete.set(onlineId, onlineComponent);
           componentsToCreate.set(projectComponent.id, projectComponent);
         }
 
@@ -401,7 +401,7 @@ function prepareDeployDrivers(project, done) {
           componentsToCreate.set(projectComponent.id, projectComponent);
         }
 
-        for(const compId of componentToDelete) {
+        for(const compId of componentsToDelete.keys()) {
           // remove bindingTargets
           for(const [key, value] of getOnlineTargetBindings(onlineComponents, compId).entries()) {
             bindingsToDelete.set(key, value);
@@ -412,7 +412,7 @@ function prepareDeployDrivers(project, done) {
           operations.push(createOperationDeleteBinding(value.entity.id, value.component.id, value.binding));
         }
 
-        for(const value of componentToDelete.values()) {
+        for(const value of componentsToDelete.values()) {
           operations.push(createOperationDeleteComponent(value.entity.id, value.component.id));
         }
 
