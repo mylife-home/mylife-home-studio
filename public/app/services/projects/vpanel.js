@@ -229,9 +229,7 @@ function importDriverComponents(project, done) {
           bindings: [],
           bindingTargets: [],
           config: common.loadMapOnline(onlineComponent.config),
-          designer: [
-            { location: { x: 0, y: 0 } }
-          ],
+          designer: { location: { x: 0, y: 0 } },
           plugin
         };
 
