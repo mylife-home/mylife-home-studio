@@ -225,6 +225,7 @@ function importDriverComponents(project, done) {
         if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
 
         const component = {
+          uid: uuid.v4(),
           id: onlineComponent.id,
           bindings: [],
           bindingTargets: [],
