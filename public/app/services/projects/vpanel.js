@@ -233,6 +233,7 @@ function importDriverComponents(project, done) {
           plugin
         };
 
+        validateConfig(component);
         project.components.push(component);
         common.dirtify(project);
       }
@@ -429,7 +430,6 @@ function prepareDeployDrivers(project, done) {
 function createComponent(project, location, pluginData) {
   const plugin = findPlugin(project, pluginData.entityId, pluginData.library, pluginData.type);
   const config = {};
-  plugin.config.forEach(item => config[item.name] = metadata.getConfigTypeDefaultValue(item.type));
 
   const component = {
     uid: uuid.v4(),
@@ -441,6 +441,7 @@ function createComponent(project, location, pluginData) {
     plugin
   };
 
+  validateConfig(component);
   project.components.push(component);
   common.dirtify(project);
 
@@ -581,6 +582,16 @@ function validateOpen(project) {
   for(const comp of project.components) {
     removeDuplicates(comp.bindings, b => `${b.remote_id}:${b.remote_attribute}:${b.local_action}`);
   }
+
+  project.components.forEach(validateConfig)
+}
+
+function validateConfig(component) {
+  const config = component.config;
+  component.plugin.config.forEach(item => {
+    if(config.hasOwnProperty(item.name)) { return; }
+    config[item.name] = metadata.getConfigTypeDefaultValue(item.type);
+  });
 }
 
 function removeDuplicates(array, itemValue) {
