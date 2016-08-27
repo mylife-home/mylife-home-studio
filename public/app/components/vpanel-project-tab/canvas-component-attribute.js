@@ -60,10 +60,7 @@ const attributeSource = {
     const projectState = ProjectStateStore.getProjectState(project);
     projectState.selection = {
       type: 'binding',
-      remoteId: binding.remote.id,
-      localId: binding.local.id,
-      remoteAttribute: binding.remote_attribute,
-      localAction: binding.local_action
+      uid: binding.uid
     };
     ProjectActionCreators.stateRefresh(project);
   }
