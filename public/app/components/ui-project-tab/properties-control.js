@@ -132,19 +132,19 @@ class PropertiesControl extends React.Component {
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'X'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'x'} type={'n'} /></td>
+              <td><base.PropertiesEditor project={project} object={control} property={'x'} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Y'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'y'} type={'n'} /></td>
+              <td><base.PropertiesEditor project={project} object={control} property={'y'} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Width'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'width'} type={'i'} /></td>
+              <td><base.PropertiesEditor project={project} object={control} property={'width'} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Height'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'height'} type={'i'} /></td>
+              <td><base.PropertiesEditor project={project} object={control} property={'height'} type={'i'} useRealType={true} /></td>
             </tr>
             {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
             <tr>
