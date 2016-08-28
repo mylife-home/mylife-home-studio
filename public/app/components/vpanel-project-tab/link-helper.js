@@ -16,7 +16,8 @@ export default {
   version,
   bindingPath,
   canvasOnMeasureChanged,
-  componentOnMeasureChanged
+  componentOnMeasureChanged,
+  rebuild: debouncedRebuild
 };
 
 function data(projectState) {
