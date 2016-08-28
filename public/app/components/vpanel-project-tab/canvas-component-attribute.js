@@ -13,6 +13,8 @@ import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 import styles from './canvas-component-styles';
 
+import linkHelper from './link-helper';
+
 class CanvasComponentAttribute extends React.Component {
 
   constructor(props) {
@@ -63,6 +65,7 @@ const attributeSource = {
       uid: binding.uid
     };
     ProjectActionCreators.stateRefresh(project);
+    linkHelper.rebuild(project, projectState);
   }
 };
 
