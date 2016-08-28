@@ -42,9 +42,10 @@ class PropertiesEditor extends React.Component {
   }
 
   onIntegerChange(event) {
+    const { useRealType } = this.props;
     const value = parseInt(event.target.value, 10);
     if(!isNaN(value)) {
-      this.changeProp(event.target.value);
+      this.changeProp(useRealType ? value : event.target.value);
     }
   }
 
@@ -60,9 +61,10 @@ class PropertiesEditor extends React.Component {
   }
 
   onNumberChange(event) {
+    const { useRealType } = this.props;
     const value = parseFloat(event.target.value);
     if(!isNaN(value)) {
-      this.changeProp(event.target.value);
+      this.changeProp(useRealType ? value : event.target.value);
     }
   }
 
@@ -77,8 +79,10 @@ class PropertiesEditor extends React.Component {
   }
 
   onBooleanChange(event, isInputChecked) {
+    const { useRealType } = this.props;
+    const value = useRealType ? isInputChecked : (isInputChecked ? 'true' : 'false');
     setTimeout(
-      () => this.changeProp(isInputChecked ? 'true' : 'false'),
+      () => this.changeProp(value),
       0
     );
   }
@@ -113,10 +117,11 @@ class PropertiesEditor extends React.Component {
 }
 
 PropertiesEditor.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  object   : React.PropTypes.object.isRequired,
-  property : React.PropTypes.string.isRequired,
-  type     : React.PropTypes.string.isRequired
+  project     : React.PropTypes.object.isRequired,
+  object      : React.PropTypes.object.isRequired,
+  property    : React.PropTypes.string.isRequired,
+  type        : React.PropTypes.string.isRequired,
+  useRealType : React.PropTypes.bool
 };
 
 export default PropertiesEditor;
