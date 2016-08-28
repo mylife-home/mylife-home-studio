@@ -128,11 +128,11 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Width'} /></td>
-              <td><base.PropertiesEditor project={project} object={window} property={'width'} type={'i'} /></td>
+              <td><base.PropertiesEditor project={project} object={window} property={'width'} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Height'} /></td>
-              <td><base.PropertiesEditor project={project} object={window} property={'height'} type={'i'} /></td>
+              <td><base.PropertiesEditor project={project} object={window} property={'height'} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><base.PropertiesLabel text={'Background'} /></td>
