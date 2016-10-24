@@ -53,7 +53,11 @@ function snapToGrid(location, inPlace) {
 
 function sortBy(array, key) {
   const ret = array.slice();
-  arraySort(ret, key);
+  if(key === undefined) {
+    ret.sort();
+  } else {
+    arraySort(ret, key);
+  }
   return ret;
 }
 
