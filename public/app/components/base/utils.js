@@ -52,7 +52,9 @@ function snapToGrid(location, inPlace) {
 }
 
 function sortBy(array, key) {
-  return arraySort(array, key);
+  const ret = array.slice();
+  arraySort(ret, key);
+  return ret;
 }
 
 export default {
