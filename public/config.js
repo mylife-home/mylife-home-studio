@@ -15,6 +15,7 @@ System.config({
 
   map: {
     "a-star": "npm:a-star@0.2.0",
+    "array-sort": "npm:array-sort@0.1.2",
     "async": "npm:async@2.0.1",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
@@ -78,7 +79,7 @@ System.config({
       "path-browserify": "npm:path-browserify@0.0.0"
     },
     "github:jspm/nodelibs-process@0.1.2": {
-      "process": "npm:process@0.11.7"
+      "process": "npm:process@0.11.9"
     },
     "github:jspm/nodelibs-querystring@0.1.0": {
       "querystring": "npm:querystring@0.2.0"
@@ -109,6 +110,10 @@ System.config({
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "dict": "npm:dict@1.4.0",
       "heap": "npm:heap@0.2.6"
+    },
+    "npm:array-sort@0.1.2": {
+      "get-value": "npm:get-value@2.0.6",
+      "kind-of": "npm:kind-of@2.0.1"
     },
     "npm:asap@2.0.4": {
       "domain": "github:jspm/nodelibs-domain@0.1.0",
@@ -208,7 +213,7 @@ System.config({
       "base64-js": "npm:base64-js@0.0.8",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "ieee754": "npm:ieee754@1.1.6",
+      "ieee754": "npm:ieee754@1.1.8",
       "isarray": "npm:isarray@1.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -410,9 +415,16 @@ System.config({
       "loose-envify": "npm:loose-envify@1.2.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:is-buffer@1.1.4": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0"
+    },
     "npm:isomorphic-fetch@2.2.1": {
       "node-fetch": "npm:node-fetch@1.6.0",
       "whatwg-fetch": "npm:whatwg-fetch@0.9.0"
+    },
+    "npm:kind-of@2.0.1": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "is-buffer": "npm:is-buffer@1.1.4"
     },
     "npm:lodash-compat@3.10.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
@@ -502,7 +514,7 @@ System.config({
     "npm:process-nextick-args@1.0.7": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:process@0.11.7": {
+    "npm:process@0.11.9": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "vm": "github:jspm/nodelibs-vm@0.1.0"

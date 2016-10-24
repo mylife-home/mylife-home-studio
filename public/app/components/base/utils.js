@@ -1,5 +1,7 @@
 'use strict';
 
+import arraySort from 'array-sort';
+
 const GRID_SIZE = 32;
 
 function download(content, mime, filename) {
@@ -49,11 +51,16 @@ function snapToGrid(location, inPlace) {
   return ret;
 }
 
+function sortBy(array, key) {
+  return arraySort(array, key);
+}
+
 export default {
   download,
   imageSize,
   parseUrl,
   stopPropagationWrapper,
   snapToGrid,
+  sortBy,
   GRID_SIZE
 };

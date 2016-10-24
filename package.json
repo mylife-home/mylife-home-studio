@@ -34,6 +34,7 @@
     },
     "dependencies": {
       "a-star": "npm:a-star@^0.2.0",
+      "array-sort": "npm:array-sort@^0.1.2",
       "async": "npm:async@^2.0.0-rc.5",
       "bootstrap": "github:twbs/bootstrap@^3.3.6",
       "css": "github:systemjs/plugin-css@^0.1.20",
