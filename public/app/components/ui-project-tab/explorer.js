@@ -47,7 +47,7 @@ class Explorer extends React.Component {
   renderComponents() {
     const project = this.props.project;
 
-    return project.components.map(comp => (
+    return base.utils.sortBy(project.components, 'id').map(comp => (
       <mui.ListItem key={`component:${comp.id}`}
                     primaryText={comp.id}
                     leftIcon={<base.icons.Component />}
@@ -58,7 +58,7 @@ class Explorer extends React.Component {
   renderImages() {
     const project = this.props.project;
 
-    return project.images.map(img => (
+    return base.utils.sortBy(project.images, 'id').map(img => (
       <mui.ListItem key={`image:${img.uid}`}
                     primaryText={img.id}
                     leftIcon={<base.icons.UiImage />}
@@ -69,7 +69,7 @@ class Explorer extends React.Component {
   renderWindows() {
     const project = this.props.project;
 
-    return project.windows.map(window => (
+    return base.utils.sortBy(project.windows, 'id').map(window => (
       <mui.ListItem key={`window:${window.uid}`}
                     primaryText={window.id}
                     leftIcon={<base.icons.UiWindow />}
