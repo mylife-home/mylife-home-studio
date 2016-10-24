@@ -54,13 +54,13 @@ class PropertiesComponentAttributeSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {project.components.
-              filter(c => c.plugin.clazz.attributes.length).
+            {base.utils.sortBy(project.components.
+              filter(c => c.plugin.clazz.attributes.length), 'id').
               map(comp => (
               <mui.MenuItem
                 key={comp.id}
                 primaryText={comp.id}
-                menuItems={comp.plugin.clazz.attributes.map(attribute => (
+                menuItems={base.utils.sortBy(comp.plugin.clazz.attributes, 'name').map(attribute => (
                   <mui.MenuItem
                     key={attribute.name}
                     primaryText={attribute.name}

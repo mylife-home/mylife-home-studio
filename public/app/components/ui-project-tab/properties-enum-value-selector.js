@@ -51,7 +51,7 @@ class PropertiesEnumValueSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {values.map(val => (
+            {base.utils.sortBy(values).map(val => (
               <mui.MenuItem
                 key={val}
                 primaryText={val}

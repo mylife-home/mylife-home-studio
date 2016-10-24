@@ -109,14 +109,14 @@ class PropertiesControlAction extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            <mui.MenuItem primaryText={'Component'} menuItems={project.components.
-              filter(c => c.plugin.clazz.actions.filter(a => !a.types.length).length).
+            <mui.MenuItem primaryText={'Component'} menuItems={base.utils.sortBy(project.components.
+              filter(c => c.plugin.clazz.actions.filter(a => !a.types.length).length), 'id').
               map(comp => (
               <mui.MenuItem
                 key={comp.id}
                 primaryText={comp.id}
-                menuItems={comp.plugin.clazz.actions.
-                  filter(a => !a.types.length).
+                menuItems={base.utils.sortBy(comp.plugin.clazz.actions.
+                  filter(a => !a.types.length), 'name').
                   map(action => (
                   <mui.MenuItem
                     key={action.name}
@@ -126,14 +126,14 @@ class PropertiesControlAction extends React.Component {
                 />
               ))}
             />
-            <mui.MenuItem primaryText={'Window (change)'} menuItems={project.windows.map(wnd => (
+            <mui.MenuItem primaryText={'Window (change)'} menuItems={base.utils.sortBy(project.windows, 'id').map(wnd => (
               <mui.MenuItem
                 key={wnd.uid}
                 primaryText={wnd.id}
                 onTouchTap={this.handleSelectWindow.bind(this, wnd, false)}/>
               ))}
             />
-            <mui.MenuItem primaryText={'Window (popup)'} menuItems={project.windows.map(wnd => (
+            <mui.MenuItem primaryText={'Window (popup)'} menuItems={base.utils.sortBy(project.windows, 'id').map(wnd => (
               <mui.MenuItem
                 key={wnd.uid}
                 primaryText={wnd.id}

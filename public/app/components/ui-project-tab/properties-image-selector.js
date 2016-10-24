@@ -63,7 +63,7 @@ class PropertiesImageSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {project.images.map(img => (
+            {base.utils.sortBy(project.images, 'id').map(img => (
               <mui.MenuItem
                 key={img.uid}
                 primaryText={img.id}
