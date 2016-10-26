@@ -314,7 +314,7 @@ function prepareDeployVPanel(project, done) {
         unchangedComponents.push(id);
       }
 
-      console.log('removed unchanged components', unchangedComponents);
+      console.log('removed unchanged components from operation list', unchangedComponents);
       for(const id of unchangedComponents) {
         componentsToDelete.delete(id);
         componentsToCreate.delete(id);
