@@ -306,6 +306,19 @@ function prepareDeployVPanel(project, done) {
       }
 
       // TODO: avoid delete all/rebuild all
+      const unchangedComponents = [];
+      for(const [id, componentDelete] of componentsToDelete.entries()) {
+        const componentCreate = componentsToCreate.get(id);
+        if(!componentCreate) { continue; }
+        if(!componentsAreSame(componentDelete, componentCreate.component)) { continue; }
+        unchangedComponents.push(id);
+      }
+
+      console.log('removed unchanged components', unchangedComponents);
+      for(const id of unchangedComponents) {
+        componentsToDelete.delete(id);
+        componentsToCreate.delete(id);
+      }
 
       operations = [];
 
@@ -681,8 +694,9 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
 }
 
 function componentsAreSame(onlineComponent, projectComponent) {
+  const onlineEntityId = onlineComponent.entityId || onlineComponent.entity.id;
   if(onlineComponent.component.id !== projectComponent.id) { return false; }
-  if(onlineComponent.entity.id !== projectComponent.plugin.entityId) { return false; }
+  if(onlineEntityId !== projectComponent.plugin.entityId) { return false; }
   if(onlineComponent.component.library !== projectComponent.plugin.library) { return false; }
   if(onlineComponent.component.type !== projectComponent.plugin.type) { return false; }
   if(!mapAreSame(common.loadMapOnline(onlineComponent.component.config), projectComponent.config)) { return false; }
