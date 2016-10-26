@@ -320,6 +320,24 @@ function prepareDeployVPanel(project, done) {
         componentsToCreate.delete(id);
       }
 
+      const unchangedBindings = [];
+
+      for(const [id, bindingDelete] of bindingsToDelete.entries()) {
+        const bindingCreate = bindingsToCreate.get(id);
+        if(!bindingCreate) { continue; }
+        const ownerId = bindingDelete.component.id;
+        if(componentsToDelete.get(ownerId)) { continue; }
+        if(componentsToCreate.get(ownerId)) { continue; }
+
+        unchangedBindings.push(id);
+      }
+
+      console.log('removed unchanged bindings from operation list', unchangedBindings);
+      for(const id of unchangedBindings) {
+        bindingsToDelete.delete(id);
+        bindingsToCreate.delete(id);
+      }
+
       operations = [];
 
       for(const value of bindingsToDelete.values()) {
