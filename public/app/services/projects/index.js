@@ -3,6 +3,7 @@
 import uuid from 'uuid';
 import debugLib from 'debug';
 import RepositoryActionCreators from '../../actions/repository-action-creators';
+import ResourcesActionCreators from '../../actions/resources-action-creators';
 import ProjectActionCreators from '../../actions/project-action-creators';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 import Resources from '../resources';
@@ -104,7 +105,7 @@ class Projects {
       return done(err);
     }
 
-    return resources.queryResourceSet(entityId, key, content, (err) => {
+    return ResourcesActionCreators.resourceSetQuery(entityId, key, content, (err) => {
       if(err) { return done(err); }
 
       project.dirty = false;

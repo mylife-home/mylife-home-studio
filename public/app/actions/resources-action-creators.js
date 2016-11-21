@@ -71,7 +71,7 @@ export default {
     });
   },
 
-  resourceSetQuery: function(entityId, resourceId, resourceContent) {
+  resourceSetQuery: function(entityId, resourceId, resourceContent, cb) {
     AppDispatcher.dispatch({
       type: AppConstants.ActionTypes.RESOURCE_SET_QUERY,
       entityId,
@@ -79,7 +79,7 @@ export default {
       resourceContent
     });
 
-    Facade.resources.queryResourceSet(entityId, resourceId, resourceContent);
+    Facade.resources.queryResourceSet(entityId, resourceId, resourceContent, cb);
   },
 
   resourceSetResult: function(entityId, resourceId) {
