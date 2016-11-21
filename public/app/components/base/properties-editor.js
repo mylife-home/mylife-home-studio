@@ -88,10 +88,15 @@ class PropertiesEditor extends React.Component {
   }
 
   changeProp(text) {
-    const { project, object, property } = this.props;
+    const { project, object, property, dirtifyComponent } = this.props;
 
     object[property] = text;
-    Facade.projects.dirtify(project);
+
+    if(dirtifyComponent) {
+      Facade.projects.vpanelDirtifyComponent(project, object);
+    } else {
+      Facade.projects.dirtify(project);
+    }
   }
 
   render() {
@@ -117,11 +122,12 @@ class PropertiesEditor extends React.Component {
 }
 
 PropertiesEditor.propTypes = {
-  project     : React.PropTypes.object.isRequired,
-  object      : React.PropTypes.object.isRequired,
-  property    : React.PropTypes.string.isRequired,
-  type        : React.PropTypes.string.isRequired,
-  useRealType : React.PropTypes.bool
+  project          : React.PropTypes.object.isRequired,
+  object           : React.PropTypes.object.isRequired,
+  property         : React.PropTypes.string.isRequired,
+  type             : React.PropTypes.string.isRequired,
+  useRealType      : React.PropTypes.bool,
+  dirtifyComponent : React.PropTypes.bool
 };
 
 export default PropertiesEditor;

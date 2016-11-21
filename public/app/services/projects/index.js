@@ -195,6 +195,15 @@ class Projects {
     ProjectActionCreators.refresh(project);
   }
 
+  vpanelDirtifyComponent(project, component) {
+    vpanel.dirtifyComponent(project, component);
+    this.dirtify(project);
+  }
+
+  vpanelGetComponentHash(project, component) {
+    return vpanel.getComponentHash(project, component);
+  }
+
   // -----------------------------------------------------------------------------
 
   uiPrepareImportOnline(project, done) {

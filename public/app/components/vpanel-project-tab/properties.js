@@ -103,7 +103,7 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><base.PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={component} property={'id'} type={'s'} /></td>
+              <td><base.PropertiesEditor project={project} object={component} property={'id'} type={'s'} dirtifyComponent={true} /></td>
             </tr>
             {pluginConfig.map(prop => (
               <tr key={prop.name}>
@@ -115,7 +115,8 @@ class Properties extends React.Component {
                     project={project}
                     object={component.config}
                     property={prop.name}
-                    type={prop.type} />
+                    type={prop.type}
+                    dirtifyComponent={true} />
                 </td>
               </tr>))
             }

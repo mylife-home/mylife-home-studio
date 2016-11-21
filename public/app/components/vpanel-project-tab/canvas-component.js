@@ -66,10 +66,12 @@ class CanvasComponent extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    const { project, component } = this.props;
+
     this.state = {
       isSelected: false,
-      lastUpdate: props.project.lastUpdate,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme(),
+      componentHash: Facade.projects.vpanelGetComponentHash(project, component)
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -90,7 +92,7 @@ class CanvasComponent extends React.Component {
     const projectState = ProjectStateStore.getProjectState(project);
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid,
-      lastUpdate: project.lastUpdate
+      componentHash: Facade.projects.vpanelGetComponentHash(project, component)
     });
   }
 
@@ -117,7 +119,6 @@ class CanvasComponent extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if(!!nextState.isSelected !== !!this.state.isSelected) { return true; }
-    if(nextState.lastUpdate !== this.state.lastUpdate) { return true; }
     if(!!nextProps.isDragging !== !!this.props.isDragging) { return true; }
     return false;
   }
@@ -259,7 +260,7 @@ const componentSource = {
     location.y += Math.round(delta.y);
     base.utils.snapToGrid(location, true);
 
-    Facade.projects.dirtify(project);
+    Facade.projects.vpanelDirtifyComponent(project, component);
 
     uiComponent.handleMeasureChange();
   }
