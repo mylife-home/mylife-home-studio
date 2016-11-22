@@ -120,6 +120,7 @@ class CanvasComponent extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if(!!nextState.isSelected !== !!this.state.isSelected) { return true; }
     if(!!nextProps.isDragging !== !!this.props.isDragging) { return true; }
+    if(nextState.componentHash !== this.state.componentHash) { return true; }
     return false;
   }
 
