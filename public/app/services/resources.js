@@ -2,7 +2,14 @@
 
 import debugLib from 'debug';
 import request from 'superagent';
-import ResourcesActionCreators from '../actions/resources-action-creators';
+
+import {
+  resourcesEntityResourcesList,
+  resourcesEntityPluginsList,
+  resourcesEntityComponentsList,
+  resourcesGetResult,
+  resourcesSetResult
+} from '../actions/index';
 
 const debug = debugLib('mylife:home:studio:services:resources');
 
@@ -21,7 +28,7 @@ class Resources {
           return cb(err);
         }
         const data = res.body.data;
-        ResourcesActionCreators.entityResourcesList(entityId, data);
+        resourcesEntityResourcesList(entityId, data);
         if(cb) { cb(null, data); }
       });
   }
@@ -37,7 +44,7 @@ class Resources {
           return cb(err);
         }
         const data = res.body.data;
-        ResourcesActionCreators.entityPluginsList(entityId, data);
+        resourcesEntityPluginsList(entityId, data);
         if(cb) { cb(null, data); }
       });
   }
@@ -53,7 +60,7 @@ class Resources {
           return cb(err);
         }
         const data = res.body.data;
-        ResourcesActionCreators.entityComponentsList(entityId, data);
+        resourcesEntityComponentsList(entityId, data);
         if(cb) { cb(null, data); }
       });
   }
@@ -69,7 +76,7 @@ class Resources {
           return cb(err);
         }
         const data = res.body.data;
-        ResourcesActionCreators.resourceGetResult(entityId, resourceId, data);
+        resourcesGetResult(entityId, resourceId, data);
         if(cb) { cb(null, data); }
       });
   }
@@ -84,7 +91,7 @@ class Resources {
           if(!cb) { return console.error(err); }
           return cb(err);
         }
-        ResourcesActionCreators.resourceSetResult(entityId, resourceId);
+        resourcesSetResult(entityId, resourceId);
         if(cb) { cb(); }
       });
   }

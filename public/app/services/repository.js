@@ -2,7 +2,7 @@
 
 import io from 'socket.io-client';
 import debugLib from 'debug';
-import RepositoryActionCreators from '../actions/repository-action-creators';
+import { repositoryClear, repositoryAdd, repositoryRemove } from '../actions/index';
 
 const debug = debugLib('mylife:home:studio:services:repository');
 
@@ -12,9 +12,9 @@ class Repository {
     this.socket.on('connect', ( ) => { debug('socket connected'); });
     this.socket.on('error',   (e) => { debug('socket error: ' + e); });
 
-    this.socket.on('repository:clear', RepositoryActionCreators.clear);
-    this.socket.on('repository:add', RepositoryActionCreators.add);
-    this.socket.on('repository:remove', RepositoryActionCreators.remove);
+    this.socket.on('repository:clear', () => repositoryClear());
+    this.socket.on('repository:add', (entity) => repositoryAdd(entity));
+    this.socket.on('repository:remove', (id) => repositoryRemove(id));
   }
 }
 

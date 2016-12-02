@@ -6,14 +6,19 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
-import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImage from './properties-image';
 import PropertiesControl from './properties-control';
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesWindowSelector from './properties-window-selector';
+
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+
+import {
+  dialogError,
+  projectStateSelectAndActiveContent, projectDeleteWindow, projectDeleteComponent
+} from '../../actions/index';
 
 class Properties extends React.Component {
 
@@ -42,7 +47,7 @@ class Properties extends React.Component {
 
   select(data) {
     const { project } = this.props;
-    ProjectActionCreators.stateSelectAndActiveContent(project, data, data);
+    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, data, data));
   }
 
   renderProject(project) {
@@ -78,9 +83,9 @@ class Properties extends React.Component {
     const onDelete = () => {
       try {
         this.select(null);
-        ProjectActionCreators.deleteComponent(project, component);
+        projectDeleteComponent(project, component);
       } catch(err) {
-        DialogsActionCreators.error(err);
+        AppDispatcher.dispatch(dialogError(err));
       }
     };
 
@@ -104,9 +109,9 @@ class Properties extends React.Component {
     const onDelete = () => {
       try {
         this.select(null);
-        ProjectActionCreators.deleteWindow(project, window);
+        projectDeleteWindow(project, window);
       } catch(err) {
-        DialogsActionCreators.error(err);
+        AppDispatcher.dispatch(dialogError(err));
       }
     };
 

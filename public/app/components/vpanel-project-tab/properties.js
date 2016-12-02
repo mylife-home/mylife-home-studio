@@ -7,7 +7,8 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect, projectDeleteBinding, projectDeleteComponent } from '../../actions/index';
 
 const styles = {
   cell: {
@@ -59,7 +60,7 @@ class Properties extends React.Component {
 
   selectProject() {
     const { project } = this.props;
-    ProjectActionCreators.stateSelect(project, null);
+    AppDispatcher.dispatch(projectStateSelect(project, null));
   }
 
   renderTitle(Icon, text, onDelete) {
@@ -86,7 +87,7 @@ class Properties extends React.Component {
   renderComponent(project, component) {
     const onDelete = () => {
       this.selectProject();
-      ProjectActionCreators.deleteComponent(project, component);
+      projectDeleteComponent(project, component);
     };
     const pluginConfig = component.plugin.config;
 
@@ -125,7 +126,7 @@ class Properties extends React.Component {
     const key = `${binding.remote.id}:${binding.remote_attribute} -> ${binding.local.id}:${binding.local_action}`;
     const onDelete = () => {
       this.selectProject();
-      ProjectActionCreators.deleteBinding(project, binding);
+      projectDeleteBinding(project, binding);
     }
     return (
       <div>

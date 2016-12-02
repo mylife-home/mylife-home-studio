@@ -11,7 +11,7 @@ import DetailsContainer from './details-container';
 
 import Facade from '../../services/facade';
 
-import ResourcesActionCreators from '../../actions/resources-action-creators';
+import { resourcesEntityQuery } from '../../actions/index';
 
 class DetailsEntity extends React.Component {
 
@@ -171,7 +171,7 @@ class DetailsEntity extends React.Component {
 
   render() {
     const entity = this.props.entity;
-    const refreshAction = () => ResourcesActionCreators.entityQuery(entity);
+    const refreshAction = () => resourcesEntityQuery(entity);
 
     return (
       <div>

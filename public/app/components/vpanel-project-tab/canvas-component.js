@@ -11,7 +11,8 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect } from '../../actions/index';
 
 import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
@@ -123,7 +124,7 @@ class CanvasComponent extends React.Component {
 
   select() {
     const { project, component } = this.props;
-    ProjectActionCreators.stateSelect(project, { type: 'component', uid: component.uid });
+    AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
   }
 
   renderIcon(styles) {

@@ -9,7 +9,6 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectActionCreators from '../../actions/project-action-creators';
 import commonStyles from './canvas-component-styles';
 
 const styles = Object.assign({

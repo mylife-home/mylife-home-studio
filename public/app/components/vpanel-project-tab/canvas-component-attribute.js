@@ -10,7 +10,8 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect } from '../../actions/index';
 import styles from './canvas-component-styles';
 
 import linkHelper from './link-helper';
@@ -59,10 +60,10 @@ const attributeSource = {
 
     const binding = Facade.projects.vpanelCreateBinding(project, component.id, attribute.name, componentId, actionName);
 
-    ProjectActionCreators.stateSelect(project, {
+    AppDispatcher.dispatch(projectStateSelect(project, {
       type: 'binding',
       uid: binding.uid
-    });
+    }));
     linkHelper.rebuild(project, projectState);
   }
 };

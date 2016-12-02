@@ -2,11 +2,11 @@
 
 import uuid from 'uuid';
 import debugLib from 'debug';
-import RepositoryActionCreators from '../../actions/repository-action-creators';
-import ResourcesActionCreators from '../../actions/resources-action-creators';
-import ProjectActionCreators from '../../actions/project-action-creators';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 import Resources from '../resources';
+
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectRefresh, projectLoad } from '../../actions/index';
 
 import vpanel from './vpanel';
 import ui from './ui';
@@ -42,7 +42,7 @@ class Projects {
     }
 
     debug('project created', project.uid);
-    ProjectActionCreators.load(project);
+    AppDispatcher.dispatch(projectLoad(project));
     return project;
   }
 
@@ -70,13 +70,13 @@ class Projects {
     }
 
     debug('project created', project.uid);
-    if(!internal) { ProjectActionCreators.load(project); }
+    if(!internal) { AppDispatcher.dispatch(projectLoad(project)); }
     return project;
   }
 
   dirtify(project) {
     common.dirtify(project);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   validate(project) {
@@ -105,12 +105,12 @@ class Projects {
       return done(err);
     }
 
-    return ResourcesActionCreators.resourceSetQuery(entityId, key, content, (err) => {
+    return resourcesSetQuery(entityId, key, content, (err) => {
       if(err) { return done(err); }
 
       project.dirty = false;
       debug('project saved', project.uid);
-      ProjectActionCreators.refresh(project);
+      AppDispatcher.dispatch(projectRefresh(project));
       return done();
     });
   }
@@ -134,7 +134,7 @@ class Projects {
   executeDeploy(data, done) {
     return common.executeDeploy(data, (err) => {
       if(err) { return done(err); }
-      ProjectActionCreators.refresh(data.project);
+      AppDispatcher.dispatch(projectRefresh(data.project));
       return done();
     });
   }
@@ -148,7 +148,7 @@ class Projects {
   vpanelExecuteImportOnlineToolbox(data, done) {
     return vpanel.executeImportToolbox(data, (err) => {
       if(err) { return done(err); }
-      ProjectActionCreators.refresh(data.project);
+      AppDispatcher.dispatch(projectRefresh(data.project));
       return done();
     });
   }
@@ -156,7 +156,7 @@ class Projects {
   vpanelImportOnlineDriverComponents(project, done) {
     return vpanel.importDriverComponents(project, (err) => {
       if(err) { return done(err); }
-      ProjectActionCreators.refresh(project);
+      AppDispatcher.dispatch(projectRefresh(project));
       return done();
     });
   }
@@ -171,7 +171,7 @@ class Projects {
 
   vpanelCreateComponent(project, location, pluginData) {
     const component = vpanel.createComponent(project, location, pluginData);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
     return component;
   }
 
@@ -181,18 +181,18 @@ class Projects {
 
   vpanelCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
     const binding = vpanel.createBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
     return binding;
   }
 
   vpanelDeleteComponent(project, component) {
     vpanel.deleteComponent(project, component);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   vpanelDeleteBinding(project, binding) {
     vpanel.deleteBinding(project, binding);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   vpanelDirtifyComponent(project, component) {
@@ -216,7 +216,7 @@ class Projects {
 
   uiExecuteImport(data) {
     ui.executeImport(data);
-    ProjectActionCreators.refresh(data.project);
+    AppDispatcher.dispatch(projectRefresh(data.project));
   }
 
   uiPrepareDeploy(project, done) {
@@ -225,45 +225,45 @@ class Projects {
 
   uiCreateImage(project) {
     const image = ui.createImage(project);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
     return image;
   }
 
   uiCreateWindow(project) {
     const window = ui.createWindow(project);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
     return window;
   }
 
   uiCreateControl(project, window, location, type) {
     const control = ui.createControl(project, window, location, type);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
     return control;
   }
 
   uiDeleteComponent(project, component) {
     ui.deleteComponent(project, component);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   uiDeleteImage(project, image) {
     ui.deleteImage(project, image);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   uiDeleteWindow(project, window) {
     ui.deleteWindow(project, window);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   uiDeleteControl(project, window, control) {
     ui.deleteControl(project, window, control);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   uiChangeImage(project, image, data) {
     ui.changeImage(project, image, data);
-    ProjectActionCreators.refresh(project);
+    AppDispatcher.dispatch(projectRefresh(project));
   }
 
   uiCreateTextContextItem() {

@@ -10,7 +10,8 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect } from '../../actions/index';
 
 const styles = {
   iconContainer: {
@@ -123,11 +124,11 @@ const pluginSource = {
 
     const control = Facade.projects.uiCreateControl(project, window, location, type);
 
-    ProjectActionCreators.stateSelect(project, {
+    AppDispatcher.dispatch(projectStateSelect(project, {
       type: 'control',
       windowUid: window.uid,
       controlUid: control.uid
-    });
+    }));
   }
 };
 

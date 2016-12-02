@@ -9,8 +9,9 @@ import shared from '../../shared/index';
 
 import DetailsContainer from './details-container';
 
-import ResourcesActionCreators from '../../actions/resources-action-creators';
 import OnlineStore from '../../stores/online-store';
+
+import { resourcesGetQuery } from '../../actions/index';
 
 const styles = {
   text: {
@@ -65,7 +66,7 @@ class DetailsResource extends React.Component {
     const entity = this.props.entity;
     const resource = this.props.resource;
     const content = this.state.content || '';
-    const refreshAction = () => ResourcesActionCreators.resourceGetQuery(entity.id, resource);
+    const refreshAction = () => resourcesGetQuery(entity.id, resource);
 
     return (
       <div>

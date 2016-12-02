@@ -10,7 +10,8 @@ import base from '../base/index';
 
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect } from '../../actions/index';
 
 import CanvasComponent from './canvas-component';
 import CanvasBinding from './canvas-binding';
@@ -54,7 +55,7 @@ class Canvas extends React.Component {
 
   select() {
     const { project } = this.props;
-    ProjectActionCreators.stateSelect(project, null);
+    AppDispatcher.dispatch(projectStateSelect(project, null));
   }
 
   componentDidMount() {

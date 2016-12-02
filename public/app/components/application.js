@@ -14,8 +14,9 @@ import UiProjectTab from './ui-project-tab/index';
 
 import ProjectStore from '../stores/project-store';
 import ActiveTabStore from '../stores/active-tab-store';
+import AppDispatcher from '../dispatcher/app-dispatcher';
 
-import TabActionCreators from '../actions/tab-action-creators';
+import { tabActivate } from '../actions/index';
 
 const styles = {
   root: {
@@ -117,7 +118,7 @@ class Application extends React.Component {
         <div style={styles.root}>
           <MainToolbar />
           <mui.Tabs value={this.state.activeTab}
-                    onChange={(value) => TabActionCreators.activate(value)}
+                    onChange={(value) => AppDispatcher.dispatch(tabActivate(value)) }
                     style={styles.tabs}
                     contentContainerStyle={styles.tabContainer}
                     tabTemplate={base.TabTemplate}>

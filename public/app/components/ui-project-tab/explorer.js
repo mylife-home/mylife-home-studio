@@ -7,7 +7,8 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelectAndActiveContent } from '../../actions/index';
 
 import Toolbar from './toolbar';
 
@@ -78,7 +79,7 @@ class Explorer extends React.Component {
 
   select(data) {
     const { project } = this.props;
-    ProjectActionCreators.stateSelectAndActiveContent(project, data, data);
+    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, data, data));
   }
 
   render() {

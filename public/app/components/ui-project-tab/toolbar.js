@@ -7,8 +7,12 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
-import DialogsActionCreators from '../../actions/dialogs-action-creators';
+
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import {
+  dialogSetBusy, dialogUnsetBusy, dialogError,
+  projectStateSelectAndActiveContent
+} from '../../actions/index';
 
 import OnlineStore from '../../stores/online-store';
 
@@ -38,7 +42,7 @@ class Toolbar extends React.Component {
 
   select(data) {
     const { project } = this.props;
-    ProjectActionCreators.stateSelectAndActiveContent(project, data, data);
+    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, data, data));
   }
 
   newImage() {
@@ -69,10 +73,10 @@ class Toolbar extends React.Component {
 
   importOnline() {
     const project = this.props.project;
-    DialogsActionCreators.setBusy('Preparing import');
+    AppDispatcher.dispatch(dialogSetBusy('Preparing import'));
     Facade.projects.uiPrepareImportOnline(project, (err, data) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       if(data.messages && data.messages.length) {
         this.setState({
@@ -91,18 +95,18 @@ class Toolbar extends React.Component {
 
     const reader = new FileReader();
 
-    DialogsActionCreators.setBusy('Loading project');
+    AppDispatcher.dispatch(dialogSetBusy('Loading project'));
 
     reader.onloadend = () => {
-      DialogsActionCreators.unsetBusy();
+      AppDispatcher.dispatch(dialogSetBusy());
       const err = reader.error;
-      if(err) { return DialogsActionCreators.error(err); }
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       const content = reader.result;
       let project;
       try {
         project = Facade.projects.open('vpanel', content, true);
       } catch(err) {
-        return DialogsActionCreators.error(err);
+        return AppDispatcher.dispatch(dialogError(err));
       }
       return this.importProject(project);
     };
@@ -124,7 +128,7 @@ class Toolbar extends React.Component {
       try {
         project = Facade.projects.open(type, content, true);
       } catch(err) {
-        return DialogsActionCreators.error(err);
+        return AppDispatcher.dispatch(dialogError(err));
       }
       return this.importProject(project);
     }
@@ -136,10 +140,10 @@ class Toolbar extends React.Component {
     }
 
     // need to get content .. TODO: Flux pattern to do that ?
-    DialogsActionCreators.setBusy('Loading project');
+    AppDispatcher.dispatch(dialogSetBusy('Loading project'));
     return ResourcesActionCreators.resourceGetQuery(entity.id, resource, (err, content) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       return load(content);
     });
   }
@@ -150,7 +154,7 @@ class Toolbar extends React.Component {
     try {
       data = Facade.projects.uiPrepareImportVpanelProject(project, vpanelProject);
     } catch(err) {
-      return DialogsActionCreators.error(err);
+      return AppDispatcher.dispatch(dialogError(err));
     }
 
     if(data.messages && data.messages.length) {
@@ -177,7 +181,7 @@ class Toolbar extends React.Component {
     try {
       Facade.projects.uiExecuteImport(data);
     } catch(err) {
-      return DialogsActionCreators.error(err);
+      return AppDispatcher.dispatch(dialogError(err));
     }
 
     this.setState({
@@ -189,10 +193,10 @@ class Toolbar extends React.Component {
 
   deploy() {
     const project = this.props.project;
-    DialogsActionCreators.setBusy('Preparing deploy');
+    AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
     Facade.projects.uiPrepareDeploy(project, (err, data) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
         showOperationSelect: data.operations
@@ -209,10 +213,10 @@ class Toolbar extends React.Component {
       showOperationSelect: null
     });
 
-    DialogsActionCreators.setBusy('Executing deploy');
+    AppDispatcher.dispatch(dialogSetBusy('Executing deploy'));
     Facade.projects.executeDeploy(data, (err) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
         showInfo: ['Deploy done']

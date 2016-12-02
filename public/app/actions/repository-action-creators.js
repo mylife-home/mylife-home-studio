@@ -2,30 +2,26 @@
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
-import ResourcesActionCreators from './resources-action-creators';
+import { resourcesEntityQuery } from './resources-action-creators';
 
-export default {
+export function repositoryClear() {
+  AppDispatcher.dispatch({
+    type: AppConstants.ActionTypes.REPOSITORY_CLEAR
+  });
+};
 
-  clear: function() {
-    AppDispatcher.dispatch({
-      type: AppConstants.ActionTypes.REPOSITORY_CLEAR
-    });
-  },
+export function repositoryAdd(entity) {
+  AppDispatcher.dispatch({
+    type: AppConstants.ActionTypes.REPOSITORY_ADD,
+    entity
+  });
 
-  add: function(entity) {
-    AppDispatcher.dispatch({
-      type: AppConstants.ActionTypes.REPOSITORY_ADD,
-      entity
-    });
+  resourcesEntityQuery(entity);
+};
 
-    ResourcesActionCreators.entityQuery(entity);
-  },
-
-  remove: function(id) {
-    AppDispatcher.dispatch({
-      type: AppConstants.ActionTypes.REPOSITORY_REMOVE,
-      id
-    });
-  },
-
+export function repositoryRemove(id) {
+  AppDispatcher.dispatch({
+    type: AppConstants.ActionTypes.REPOSITORY_REMOVE,
+    id
+  });
 };

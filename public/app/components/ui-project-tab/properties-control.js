@@ -8,15 +8,16 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 
-import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
-import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesControlAction from './properties-control-action';
 import PropertiesControlTextContext from './properties-control-text-context';
 import PropertiesControlDisplayMapping from './properties-control-display-mapping';
 import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
+
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect, projectDeleteControl } from '../../actions/index';
 
 const styles = {
   fileInput: {
@@ -58,7 +59,7 @@ class PropertiesControl extends React.Component {
 
   selectWindow() {
     const { project, window } = this.props;
-    ProjectActionCreators.stateSelect(project, { type: 'window', uid: window.uid });
+    AppDispatcher.dispatch(projectStateSelect(project, { type: 'window', uid: window.uid }));
   }
 
   handleComponentChange(component, attribute) {
@@ -111,9 +112,9 @@ class PropertiesControl extends React.Component {
     const onDelete = () => {
       try {
         this.selectWindow();
-        ProjectActionCreators.deleteControl(project, window, control);
+        projectDeleteControl(project, window, control);
       } catch(err) {
-        DialogsActionCreators.error(err);
+        AppDispatcher.dispatch(dialogError(err));
       }
     };
 

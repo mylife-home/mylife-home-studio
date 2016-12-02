@@ -9,7 +9,8 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect } from '../../actions/index';
 
 import linkHelper from './link-helper';
 
@@ -93,7 +94,7 @@ class CanvasBinding extends React.Component {
 
   select() {
     const { project, binding } = this.props;
-    ProjectActionCreators.stateSelect(project, { type: 'binding', uid: binding.uid });
+    AppDispatcher.dispatch(projectStateSelect(project, { type: 'binding', uid: binding.uid }));
   }
 
   render() {

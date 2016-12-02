@@ -6,9 +6,13 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
-import DialogsActionCreators from '../../actions/dialogs-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+
+import {
+  dialogError,
+  projectStateSelectAndActiveContent, projectChangeImage, projectDeleteImage
+} from '../../actions/index';
 
 const styles = {
   fileInput: {
@@ -50,7 +54,7 @@ class PropertiesImage extends React.Component {
 
   selectProject() {
     const { project } = this.props;
-    ProjectActionCreators.stateSelectAndActiveContent(project, null, null);
+    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
   }
 
   openImageFileDialog() {
@@ -65,7 +69,7 @@ class PropertiesImage extends React.Component {
 
     reader.onloadend = () => {
       const err = reader.error;
-      if(err) { return DialogsActionCreators.error(err); }
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       let data = reader.result;
       const marker = 'base64,';
@@ -73,7 +77,7 @@ class PropertiesImage extends React.Component {
       data = data.substring(start);
 
       const { project, image } = this.props;
-      ProjectActionCreators.changeImage(project, image, data);
+      projectChangeImage(project, image, data);
     };
 
     reader.readAsDataURL(file);
@@ -88,9 +92,9 @@ class PropertiesImage extends React.Component {
     const onDelete = () => {
       try {
         this.selectProject();
-        ProjectActionCreators.deleteImage(project, image);
+        projectDeleteImage(project, image);
       } catch(err) {
-        DialogsActionCreators.error(err);
+        AppDispatcher.dispatch(dialogError(err));
       }
     };
 

@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 
 import DialogsStore from '../../stores/dialogs-store';
-import DialogsActionCreators from '../../actions/dialogs-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+
+import { dialogErrorClean } from '../../actions/index';
 
 class DialogError extends React.Component {
 
@@ -34,7 +36,7 @@ class DialogError extends React.Component {
   }
 
   handleClose() {
-    DialogsActionCreators.errorClean();
+    AppDispatcher.dispatch(dialogErrorClean());
   }
 
   render() {

@@ -14,7 +14,8 @@ import DataImage from './data-image';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateSelect } from '../../actions/index';
 
 function getStyles(props, state) {
   const { window, control } = props;
@@ -110,11 +111,11 @@ class CanvasControl extends React.Component {
 
   select() {
     const { project, window, control } = this.props;
-    ProjectActionCreators.stateSelect(project, {
+    AppDispatcher.dispatch(projectStateSelect(project, {
       type: 'control',
       windowUid: window.uid,
       controlUid: control.uid
-    });
+    }));
   }
 
   renderText(control, styles) {

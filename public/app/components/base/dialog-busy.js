@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 
 import DialogsStore from '../../stores/dialogs-store';
-import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 class DialogBusy extends React.Component {
 

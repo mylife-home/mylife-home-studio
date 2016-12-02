@@ -5,14 +5,18 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from './base/index';
 
-import DialogsActionCreators from '../actions/dialogs-action-creators';
-import ResourcesActionCreators from '../actions/resources-action-creators';
-
 import OnlineStore from '../stores/online-store';
 import ProjectStore from '../stores/project-store';
 import ActiveTabStore from '../stores/active-tab-store';
 
 import Facade from '../services/facade';
+
+import AppDispatcher from '../dispatcher/app-dispatcher';
+
+import {
+  dialogError, dialogSetBusy, dialogUnsetBusy,
+  resourcesGetQuery
+} from '../actions/index';
 
 const styles = {
   icon: {
@@ -103,7 +107,7 @@ class MainToolbar extends React.Component {
     try {
       project = Facade.projects.new(type);
     } catch(err) {
-      return DialogsActionCreators.error(err);
+      return AppDispatcher.dispatch(dialogError(err));
     }
   }
 
@@ -113,18 +117,18 @@ class MainToolbar extends React.Component {
 
     const reader = new FileReader();
 
-    DialogsActionCreators.setBusy('Loading project');
+    AppDispatcher.dispatch(dialogSetBusy('Loading project'));
 
     reader.onloadend = () => {
-      DialogsActionCreators.unsetBusy();
+      AppDispatcher.dispatch(dialogUnsetBusy());
       const err = reader.error;
-      if(err) { return DialogsActionCreators.error(err); }
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       const content = reader.result;
       let project;
       try {
         project = Facade.projects.open(type, content);
       } catch(err) {
-        return DialogsActionCreators.error(err);
+        return AppDispatcher.dispatch(dialogError(err));
       }
     };
 
@@ -137,7 +141,7 @@ class MainToolbar extends React.Component {
       try {
         project = Facade.projects.open(type, content);
       } catch(err) {
-        return DialogsActionCreators.error(err);
+        return AppDispatcher.dispatch(dialogError(err));
       }
     }
 
@@ -148,29 +152,29 @@ class MainToolbar extends React.Component {
     }
 
     // need to get content .. TODO: Flux pattern to do that ?
-    DialogsActionCreators.setBusy('Loading project');
-    return ResourcesActionCreators.resourceGetQuery(entity.id, resource, (err, content) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+    AppDispatcher.dispatch(dialogSetBusy('Loading project'));
+    return resourcesGetQuery(entity.id, resource, (err, content) => {
+      AppDispatcher.dispatch(dialogUnsetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       return load(content);
     });
   }
 
   saveAll() {
     const projects = ProjectStore.getAll();
-    DialogsActionCreators.setBusy('Saving projects');
+    AppDispatcher.dispatch(dialogSetBusy('Saving projects'));
     async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, cb), (err) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogUnsetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
     });
   }
 
   saveOnline() {
     const project = this.getActiveTabProject();
-    DialogsActionCreators.setBusy('Saving project');
+    AppDispatcher.dispatch(dialogSetBusy('Saving project'));
     Facade.projects.saveOnline(project, (err) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogUnsetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
     });
   }
 
@@ -180,7 +184,7 @@ class MainToolbar extends React.Component {
     try {
       content = Facade.projects.serialize(project);
     } catch(err) {
-      return DialogsActionCreators.error(err);
+      return AppDispatcher.dispatch(dialogError(err));
     }
 
     base.utils.download(content, 'application/json', project.name + '.json');

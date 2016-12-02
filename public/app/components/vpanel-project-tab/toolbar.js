@@ -6,7 +6,10 @@ import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import DialogsActionCreators from '../../actions/dialogs-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import {
+  dialogSetBusy, dialogUnsetBusy, dialogError
+} from '../../actions/index';
 
 import Facade from '../../services/facade';
 
@@ -36,10 +39,10 @@ class Toolbar extends React.Component {
 
   importOnlineToolbox() {
     const project = this.props.project;
-    DialogsActionCreators.setBusy('Preparing import');
+    AppDispatcher.dispatch(dialogSetBusy('Preparing import'));
     Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       if(data.messages && data.messages.length) {
         this.setState({
@@ -63,10 +66,10 @@ class Toolbar extends React.Component {
   }
 
   executeImportOnlineToolbox(data) {
-    DialogsActionCreators.setBusy('Executing import');
+    AppDispatcher.dispatch(dialogSetBusy('Executing import'));
     Facade.projects.vpanelExecuteImportOnlineToolbox(data, (err) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
         showInfo: ['Toolbox imported']
@@ -78,10 +81,10 @@ class Toolbar extends React.Component {
 
   importOnlineDriverComponents() {
     const project = this.props.project;
-    DialogsActionCreators.setBusy('Executing import');
+    AppDispatcher.dispatch(dialogSetBusy('Executing import'));
     Facade.projects.vpanelImportOnlineDriverComponents(project, (err) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
         showInfo: ['Components imported']
@@ -91,10 +94,10 @@ class Toolbar extends React.Component {
 
   deployVPanel() {
     const project = this.props.project;
-    DialogsActionCreators.setBusy('Preparing deploy');
+    AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
     Facade.projects.vpanelPrepareDeployVPanel(project, (err, data) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
         showOperationSelect: data.operations
@@ -104,10 +107,10 @@ class Toolbar extends React.Component {
 
   deployDrivers() {
     const project = this.props.project;
-    DialogsActionCreators.setBusy('Preparing deploy');
+    AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
     Facade.projects.vpanelPrepareDeployDrivers(project, (err, data) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
         showOperationSelect: data.operations
@@ -124,10 +127,10 @@ class Toolbar extends React.Component {
       showOperationSelect: null
     });
 
-    DialogsActionCreators.setBusy('Executing deploy');
+    AppDispatcher.dispatch(dialogSetBusy('Executing deploy'));
     Facade.projects.executeDeploy(data, (err) => {
-      DialogsActionCreators.unsetBusy();
-      if(err) { return DialogsActionCreators.error(err); }
+      AppDispatcher.dispatch(dialogSetBusy());
+      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
         showInfo: ['Deploy done']

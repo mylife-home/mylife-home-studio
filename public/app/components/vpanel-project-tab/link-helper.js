@@ -3,7 +3,8 @@
 import { throttle, debounce } from 'throttle-debounce';
 import aStar from 'a-star';
 import base from '../base/index';
-import ProjectActionCreators from '../../actions/project-action-creators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectStateUpdateLinkData } from '../../actions/index';
 
 const GRID_SIZE   = base.utils.GRID_SIZE;
 const CANVAS_SIZE = 32000;
@@ -149,7 +150,7 @@ function rebuild(project, projectState) {
   }
 
   ++linkData.version;
-  ProjectActionCreators.stateUpdateLinkData(project, { ...linkData }); // force new object creation as a workaround for now
+  AppDispatcher.dispatch(projectStateUpdateLinkData(project, { ...linkData })); // force new object creation as a workaround for now
 }
 
 function buildObstacleGrid(measures) {

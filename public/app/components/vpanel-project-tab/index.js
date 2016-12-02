@@ -10,7 +10,7 @@ import Properties from './properties';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
 
-import ProjectActionCreators from '../../actions/project-action-creators';
+import { projectClose } from '../../actions/index';
 import ProjectStore from '../../stores/project-store';
 
 import tabStyles from '../base/tab-styles';
@@ -55,7 +55,7 @@ class VPanelProjectTab extends React.Component {
                 center={project.name}
                 left={<base.icons.tabs.VPanel />}
                 right={
-                  <mui.IconButton onClick={() => ProjectActionCreators.close(project)}>
+                  <mui.IconButton onClick={() => projectClose(project)}>
                     <base.icons.actions.Close />
                   </mui.IconButton>
                 }/>
