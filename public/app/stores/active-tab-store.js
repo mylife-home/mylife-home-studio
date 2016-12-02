@@ -3,6 +3,7 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
+import reducer from '../reducers/activeTab';
 
 const CHANGE_EVENT = 'change';
 
@@ -13,28 +14,14 @@ class ActiveTabStore extends EventEmitter {
   constructor() {
     super();
     this.setMaxListeners(0);
-    this.activeTab = DEFAULT_TAB;
+    this.activeTab = reducer(undefined, {});
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
 
   handleDispatch(action) {
-    switch(action.type) {
-      case AppConstants.ActionTypes.PROJECT_LOAD:
-        this.activeTab = action.project.uid;
-        this.emitChange();
-        break;
-
-      case AppConstants.ActionTypes.PROJECT_CLOSE:
-        if(action.project.uid !== this.activeTab) { return; }
-        this.activeTab = DEFAULT_TAB;
-        this.emitChange();
-        break;
-
-      case AppConstants.ActionTypes.TAB_ACTIVATE:
-        this.activeTab = action.id;
-        this.emitChange();
-        break;
-    }
+    const old = this.activeTab;
+    this.activeTab = reducer(this.activeTab, action);
+    if(old !== this.activeTab) { this.emitChange(); }
   }
 
   emitChange() {

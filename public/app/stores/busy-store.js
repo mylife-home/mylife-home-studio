@@ -3,6 +3,7 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
+import reducer from '../reducers/busyText';
 
 const CHANGE_EVENT = 'change';
 
@@ -11,22 +12,14 @@ class BusyStore extends EventEmitter {
   constructor() {
     super();
     this.setMaxListeners(0);
-    this.busyText = null;
+    this.busyText = reducer(undefined, {});
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
 
   handleDispatch(action) {
-    switch(action.type) {
-      case AppConstants.ActionTypes.DIALOG_SET_BUSY:
-        this.busyText = action.text;
-        this.emitChange();
-        break;
-
-      case AppConstants.ActionTypes.DIALOG_UNSET_BUSY:
-        this.busyText = null;
-        this.emitChange();
-        break;
-    }
+    const old = this.busyText;
+    this.busyText = reducer(this.busyText, action);
+    if(old !== this.busyText) { this.emitChange(); }
   }
 
   emitChange() {

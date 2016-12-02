@@ -3,6 +3,7 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
+import reducer from '../reducers/error';
 
 const CHANGE_EVENT = 'change';
 
@@ -11,22 +12,14 @@ class ErrorStore extends EventEmitter {
   constructor() {
     super();
     this.setMaxListeners(0);
-    this.error = null;
+    this.error = reducer(undefined, {});
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
 
   handleDispatch(action) {
-    switch(action.type) {
-      case AppConstants.ActionTypes.DIALOG_ERROR:
-        this.error = action.error;
-        this.emitChange();
-        break;
-
-      case AppConstants.ActionTypes.DIALOG_ERROR_CLEAN:
-        this.error = null;
-        this.emitChange();
-        break;
-    }
+    const old = this.error;
+    this.error = reducer(this.error, action);
+    if(old !== this.error) { this.emitChange(); }
   }
 
   emitChange() {
