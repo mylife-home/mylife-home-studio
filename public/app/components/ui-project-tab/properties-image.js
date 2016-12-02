@@ -72,9 +72,8 @@ class PropertiesImage extends React.Component {
       const start = data.indexOf(marker) + marker.length;
       data = data.substring(start);
 
-      const image = this.props.image;
-      image.content = data;
-      ProjectActionCreators.refresh(this.props.project);
+      const { project, image } = this.props;
+      ProjectActionCreators.changeImage(project, image, data);
     };
 
     reader.readAsDataURL(file);

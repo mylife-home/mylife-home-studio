@@ -261,6 +261,11 @@ class Projects {
     ProjectActionCreators.refresh(project);
   }
 
+  uiChangeImage(project, image, data) {
+    ui.changeImage(project, image, data);
+    ProjectActionCreators.refresh(project);
+  }
+
   uiCreateTextContextItem() {
     return ui.createTextContextItem();
   }

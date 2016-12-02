@@ -28,6 +28,7 @@ export default {
   deleteImage,
   deleteWindow,
   deleteControl,
+  changeImage,
   createTextContextItem,
   createDisplayMappingItem
 };
@@ -736,6 +737,10 @@ function deleteWindow(project, window) {
 function deleteControl(project, window, control) {
   arrayRemoveValue(window.controls, control);
   common.dirtify(project);
+}
+
+function changeImage(project, image, data) {
+  image.content = data;
 }
 
 function createTextContextItem() {

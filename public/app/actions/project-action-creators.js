@@ -46,6 +46,10 @@ export default {
     Facade.projects.uiDeleteControl(project, window, control);
   },
 
+  changeImage: function(project, image, data) {
+    Facade.projects.uiChangeImage(project, image, data);
+  },
+
   refresh: function(project) {
     AppDispatcher.dispatch({
       type: AppConstants.ActionTypes.PROJECT_REFRESH,
