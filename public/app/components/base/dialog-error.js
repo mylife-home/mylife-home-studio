@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 
-import ErrorStore from '../../stores/error-store';
+import DialogsStore from '../../stores/dialogs-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 class DialogError extends React.Component {
@@ -13,23 +13,23 @@ class DialogError extends React.Component {
     super(props);
 
     this.state = {
-      error: ErrorStore.get()
+      error: DialogsStore.getError()
     }
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    ErrorStore.addChangeListener(this.boundHandleStoreChange);
+    DialogsStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ErrorStore.removeChangeListener(this.boundHandleStoreChange);
+    DialogsStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     this.setState({
-      error: ErrorStore.get()
+      error: DialogsStore.getError()
     });
   }
 

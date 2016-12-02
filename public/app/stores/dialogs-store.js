@@ -3,23 +3,25 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
-import reducer from '../reducers/busyText';
+import reducer from '../reducers/dialogs';
 
 const CHANGE_EVENT = 'change';
 
-class BusyStore extends EventEmitter {
+const DEFAULT_TAB = 'online';
+
+class DialogsStore extends EventEmitter {
 
   constructor() {
     super();
     this.setMaxListeners(0);
-    this.busyText = reducer(undefined, {});
+    this.state = reducer(undefined, {});
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
 
   handleDispatch(action) {
-    const old = this.busyText;
-    this.busyText = reducer(this.busyText, action);
-    if(old !== this.busyText) { this.emitChange(); }
+    const old = this.state;
+    this.state = reducer(this.state, action);
+    if(old !== this.state) { this.emitChange(); }
   }
 
   emitChange() {
@@ -34,13 +36,25 @@ class BusyStore extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
-  get() {
-    return this.busyText;
+  getActiveTab() {
+    return this.state;
+  }
+
+  getBusyText() {
+    return this.state.busyText;
   }
 
   isBusy() {
-    return !!this.busyText;
+    return !!this.state.busyText;
+  }
+
+  getError() {
+    return this.state.error;
+  }
+
+  isError() {
+    return !!this.state.error;
   }
 };
 
-export default new BusyStore();
+export default new DialogsStore();

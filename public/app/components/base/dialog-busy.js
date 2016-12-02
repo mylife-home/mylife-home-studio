@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 
-import BusyStore from '../../stores/busy-store';
+import DialogsStore from '../../stores/dialogs-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 class DialogBusy extends React.Component {
@@ -13,23 +13,23 @@ class DialogBusy extends React.Component {
     super(props);
 
     this.state = {
-      text: BusyStore.get()
+      text: DialogsStore.getBusyText()
     }
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    BusyStore.addChangeListener(this.boundHandleStoreChange);
+    DialogsStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    BusyStore.removeChangeListener(this.boundHandleStoreChange);
+    DialogsStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     this.setState({
-      text: BusyStore.get()
+      text: DialogsStore.getBusyText()
     });
   }
 
