@@ -121,9 +121,7 @@ const pluginSource = {
 
     const component = Facade.projects.vpanelCreateComponent(project, base.utils.snapToGrid(location), plugin);
 
-    const projectState = ProjectStore.getProjectState(project);
-    projectState.selection = { type: 'component', uid: component.uid };
-    ProjectActionCreators.stateRefresh(project);
+    ProjectActionCreators.stateSelect(project, { type: 'component', uid: component.uid });
   }
 };
 

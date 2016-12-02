@@ -26,7 +26,9 @@ export default {
     PROJECT_LOAD: null,
     PROJECT_CLOSE: null,
     PROJECT_REFRESH: null,
-    PROJECT_STATE_REFRESH: null,
+    PROJECT_STATE_UPDATE_LINK_DATA: null,
+    PROJECT_STATE_SELECT: null,
+    PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT: null,
 
     TAB_ACTIVATE: null,
   }),

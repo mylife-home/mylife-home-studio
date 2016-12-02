@@ -53,10 +53,28 @@ export default {
     });
   },
 
-  stateRefresh: function(project) {
+  stateUpdateLinkData: function(project, linkData) {
     AppDispatcher.dispatch({
-      type: AppConstants.ActionTypes.PROJECT_STATE_REFRESH,
-      project
+      type: AppConstants.ActionTypes.PROJECT_STATE_UPDATE_LINK_DATA,
+      project,
+      linkData
+    });
+  },
+
+  stateSelect: function(project, selection) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.PROJECT_STATE_SELECT,
+      project,
+      selection
+    });
+  },
+
+  stateSelectAndActiveContent: function(project, selection, activeContent) {
+    AppDispatcher.dispatch({
+      type: AppConstants.ActionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT,
+      project,
+      selection,
+      activeContent
     });
   }
 };

@@ -97,9 +97,7 @@ class CanvasWindow extends React.Component {
 
   select() {
     const { project, window } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
-    projectState.selection = { type: 'window', uid: window.uid };
-    ProjectActionCreators.stateRefresh(project);
+    ProjectActionCreators.stateSelect(project, { type: 'window', uid: window.uid });
   }
 
   render() {

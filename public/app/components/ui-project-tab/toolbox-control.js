@@ -123,12 +123,11 @@ const pluginSource = {
 
     const control = Facade.projects.uiCreateControl(project, window, location, type);
 
-    projectState.selection = {
+    ProjectActionCreators.stateSelect(project, {
       type: 'control',
       windowUid: window.uid,
       controlUid: control.uid
-    };
-    ProjectActionCreators.stateRefresh(project);
+    });
   }
 };
 

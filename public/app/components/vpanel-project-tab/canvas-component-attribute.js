@@ -59,12 +59,10 @@ const attributeSource = {
 
     const binding = Facade.projects.vpanelCreateBinding(project, component.id, attribute.name, componentId, actionName);
 
-    const projectState = ProjectStore.getProjectState(project);
-    projectState.selection = {
+    ProjectActionCreators.stateSelect(project, {
       type: 'binding',
       uid: binding.uid
-    };
-    ProjectActionCreators.stateRefresh(project);
+    });
     linkHelper.rebuild(project, projectState);
   }
 };

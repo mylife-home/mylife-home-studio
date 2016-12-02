@@ -58,9 +58,7 @@ class PropertiesControl extends React.Component {
 
   selectWindow() {
     const { project, window } = this.props;
-    const state = ProjectStore.getProjectState(project);
-    state.selection = { type: 'window', uid: window.uid };
-    ProjectActionCreators.stateRefresh(project);
+    ProjectActionCreators.stateSelect(project, { type: 'window', uid: window.uid });
   }
 
   handleComponentChange(component, attribute) {

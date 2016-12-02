@@ -58,10 +58,8 @@ class Properties extends React.Component {
   }
 
   selectProject() {
-    const project = this.props.project;
-    const state = ProjectStore.getProjectState(project);
-    state.selection = null;
-    ProjectActionCreators.stateRefresh(project);
+    const { project } = this.props;
+    ProjectActionCreators.stateSelect(project, null);
   }
 
   renderTitle(Icon, text, onDelete) {

@@ -31,9 +31,14 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
         version: project.version + 1
       })) };
 
-    // FIXME
-    case AppConstants.ActionTypes.PROJECT_STATE_REFRESH:
-      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state })) };
+    case AppConstants.ActionTypes.PROJECT_STATE_UPDATE_LINK_DATA:
+      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, linkData: action.linkData })) };
+
+    case AppConstants.ActionTypes.PROJECT_STATE_SELECT:
+      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, selection: action.selection })) };
+
+    case AppConstants.ActionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT:
+      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, selection: action.selection, activeContent : action.activeContent })) };
 
     default:
       return state;

@@ -123,9 +123,7 @@ class CanvasComponent extends React.Component {
 
   select() {
     const { project, component } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
-    projectState.selection = { type: 'component', uid: component.uid };
-    ProjectActionCreators.stateRefresh(project);
+    ProjectActionCreators.stateSelect(project, { type: 'component', uid: component.uid });
   }
 
   renderIcon(styles) {

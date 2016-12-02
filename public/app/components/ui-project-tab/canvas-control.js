@@ -110,13 +110,11 @@ class CanvasControl extends React.Component {
 
   select() {
     const { project, window, control } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
-    projectState.selection = {
+    ProjectActionCreators.stateSelect(project, {
       type: 'control',
       windowUid: window.uid,
       controlUid: control.uid
-    };
-    ProjectActionCreators.stateRefresh(project);
+    });
   }
 
   renderText(control, styles) {

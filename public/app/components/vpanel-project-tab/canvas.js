@@ -53,10 +53,8 @@ class Canvas extends React.Component {
   }
 
   select() {
-    const project = this.props.project;
-    const state = ProjectStore.getProjectState(project);
-    state.selection = null;
-    ProjectActionCreators.stateRefresh(project);
+    const { project } = this.props;
+    ProjectActionCreators.stateSelect(project, null);
   }
 
   componentDidMount() {

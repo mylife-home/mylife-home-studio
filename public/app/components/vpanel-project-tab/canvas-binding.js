@@ -93,9 +93,7 @@ class CanvasBinding extends React.Component {
 
   select() {
     const { project, binding } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
-    projectState.selection = { type: 'binding', uid: binding.uid };
-    ProjectActionCreators.stateRefresh(project);
+    ProjectActionCreators.stateSelect(project, { type: 'binding', uid: binding.uid });
   }
 
   render() {

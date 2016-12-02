@@ -149,7 +149,7 @@ function rebuild(project, projectState) {
   }
 
   ++linkData.version;
-  ProjectActionCreators.stateRefresh(project);
+  ProjectActionCreators.stateUpdateLinkData(project, { ...linkData }); // force new object creation as a workaround for now
 }
 
 function buildObstacleGrid(measures) {

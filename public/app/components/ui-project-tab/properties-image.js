@@ -49,11 +49,8 @@ class PropertiesImage extends React.Component {
   }
 
   selectProject() {
-    const project = this.props.project;
-    const state = ProjectStore.getProjectState(project);
-    state.activeContent = null;
-    state.selection = null;
-    ProjectActionCreators.stateRefresh(project);
+    const { project } = this.props;
+    ProjectActionCreators.stateSelectAndActiveContent(project, null, null);
   }
 
   openImageFileDialog() {
