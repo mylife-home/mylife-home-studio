@@ -26,6 +26,7 @@ System.config({
     "debug": "npm:debug@2.3.3",
     "events": "github:jspm/nodelibs-events@0.1.1",
     "flux": "npm:flux@2.1.1",
+    "immutable": "npm:immutable@3.8.1",
     "keymirror": "npm:keymirror@0.1.1",
     "material-ui": "npm:material-ui@0.15.4",
     "node-events": "npm:node-events@0.0.2",
@@ -37,8 +38,12 @@ System.config({
     "react-dom": "npm:react-dom@15.4.1",
     "react-faux-dom": "npm:react-faux-dom@2.7.1",
     "react-measure": "npm:react-measure@0.4.2",
+    "react-redux": "npm:react-redux@4.4.6",
     "react-resizable-box": "npm:react-resizable-box@1.8.1",
     "react-tap-event-plugin": "npm:react-tap-event-plugin@2.0.1",
+    "redux": "npm:redux@3.6.0",
+    "redux-actions": "npm:redux-actions@1.1.0",
+    "redux-devtools": "npm:redux-devtools@3.3.1",
     "socket.io-client": "/socket.io/socket.io.js",
     "superagent": "npm:superagent@1.8.4",
     "throttle-debounce": "npm:throttle-debounce@1.0.1",
@@ -608,6 +613,15 @@ System.config({
       "react": "npm:react@15.4.1",
       "warning": "npm:warning@3.0.0"
     },
+    "npm:react-redux@4.4.6": {
+      "hoist-non-react-statics": "npm:hoist-non-react-statics@1.2.0",
+      "invariant": "npm:invariant@2.2.2",
+      "lodash": "npm:lodash@4.17.2",
+      "loose-envify": "npm:loose-envify@1.3.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "react": "npm:react@15.4.1",
+      "redux": "npm:redux@3.6.0"
+    },
     "npm:react-resizable-box@1.8.1": {
       "lodash.isequal": "npm:lodash.isequal@4.4.0"
     },
@@ -657,6 +671,24 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "react": "npm:react@15.4.1",
       "symbol-observable": "npm:symbol-observable@0.2.4"
+    },
+    "npm:redux-actions@1.1.0": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "invariant": "npm:invariant@2.2.2",
+      "lodash": "npm:lodash@4.17.2",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "reduce-reducers": "npm:reduce-reducers@0.1.2"
+    },
+    "npm:redux-devtools-instrument@1.3.3": {
+      "lodash": "npm:lodash@4.17.2",
+      "symbol-observable": "npm:symbol-observable@0.2.4"
+    },
+    "npm:redux-devtools@3.3.1": {
+      "lodash": "npm:lodash@4.17.2",
+      "react": "npm:react@15.4.1",
+      "react-redux": "npm:react-redux@4.4.6",
+      "redux": "npm:redux@3.6.0",
+      "redux-devtools-instrument": "npm:redux-devtools-instrument@1.3.3"
     },
     "npm:redux@3.6.0": {
       "lodash": "npm:lodash@4.17.2",
