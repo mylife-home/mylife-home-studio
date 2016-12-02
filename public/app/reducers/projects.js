@@ -24,14 +24,16 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
         states: state.states.delete(action.project.uid)
       };
 
+    // FIXME
     case AppConstants.ActionTypes.PROJECT_REFRESH:
       return  { ...state, projects: state.projects.update(action.project.uid, project => ({
         ...project,
         version: project.version + 1
       })) };
 
+    // FIXME
     case AppConstants.ActionTypes.PROJECT_STATE_REFRESH:
-      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state })) }; // FIXME
+      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state })) };
 
     default:
       return state;
