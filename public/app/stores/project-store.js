@@ -3,6 +3,7 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
+import reducer from '../reducers/projects';
 
 const CHANGE_EVENT = 'change';
 
@@ -11,35 +12,14 @@ class ProjectStore extends EventEmitter {
   constructor() {
     super();
     this.setMaxListeners(0);
-    this.projects = new Map();
+    this.state = reducer(undefined, {});
     this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
   }
 
   handleDispatch(action) {
-    switch(action.type) {
-      case AppConstants.ActionTypes.PROJECT_LOAD:
-        {
-          const project = action.project;
-          this.projects.set(project.uid, project);
-          project.version = 1;
-          this.emitChange();
-        }
-        break;
-      case AppConstants.ActionTypes.PROJECT_CLOSE:
-        {
-          const project = action.project;
-          this.projects.delete(project.uid);
-          this.emitChange();
-        }
-        break;
-      case AppConstants.ActionTypes.PROJECT_REFRESH:
-        {
-          const project = action.project;
-          ++project.version;
-          this.emitChange();
-        }
-        break;
-    }
+    const old = this.state;
+    this.state = reducer(this.state, action);
+    if(old !== this.state) { this.emitChange(); }
   }
 
   emitChange() {
@@ -55,13 +35,16 @@ class ProjectStore extends EventEmitter {
   }
 
   getAll() {
-    return Array.from(this.projects.values());
+    return Array.from(this.state.projects.toArray());
   }
 
   get(uid) {
-    return this.projects.get(uid);
+    return this.state.projects.get(uid);
   }
 
+  getProjectState(project) {
+    return this.state.states.get(project.uid);
+  }
 };
 
 export default new ProjectStore();

@@ -16,7 +16,6 @@ import CanvasControl from './canvas-control';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 function getStyles(props, state) {
@@ -48,7 +47,7 @@ class CanvasWindow extends React.Component {
     super(props, context);
 
     const { project, window } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
 
     this.state = {
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
@@ -61,18 +60,16 @@ class CanvasWindow extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillReceiveProps(nextProps) {
     const { project, window } = nextProps;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
@@ -82,7 +79,7 @@ class CanvasWindow extends React.Component {
 
   handleStoreChange() {
     const { project, window } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
@@ -100,7 +97,7 @@ class CanvasWindow extends React.Component {
 
   select() {
     const { project, window } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     projectState.selection = { type: 'window', uid: window.uid };
     ProjectActionCreators.stateRefresh(project);
   }

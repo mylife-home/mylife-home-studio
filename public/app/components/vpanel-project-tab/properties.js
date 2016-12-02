@@ -7,7 +7,6 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 const styles = {
@@ -44,17 +43,15 @@ class Properties extends React.Component {
 
   componentDidMount() {
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     const { project } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     this.setState({
       selection : projectState.selection
     });
@@ -62,7 +59,7 @@ class Properties extends React.Component {
 
   selectProject() {
     const project = this.props.project;
-    const state = ProjectStateStore.getProjectState(project);
+    const state = ProjectStore.getProjectState(project);
     state.selection = null;
     ProjectActionCreators.stateRefresh(project);
   }

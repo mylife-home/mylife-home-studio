@@ -9,7 +9,7 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectStateStore from '../../stores/project-state-store';
+import ProjectStore from '../../stores/project-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 const styles = {
@@ -118,7 +118,7 @@ const pluginSource = {
 
     const { project, type } = props;
     const { location } = monitor.getDropResult();
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     const window = project.windows.find(wnd => wnd.uid === projectState.activeContent.uid);
 
     const control = Facade.projects.uiCreateControl(project, window, location, type);

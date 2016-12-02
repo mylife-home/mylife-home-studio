@@ -9,7 +9,7 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectStateStore from '../../stores/project-state-store';
+import ProjectStore from '../../stores/project-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 const styles = {
@@ -121,7 +121,7 @@ const pluginSource = {
 
     const component = Facade.projects.vpanelCreateComponent(project, base.utils.snapToGrid(location), plugin);
 
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     projectState.selection = { type: 'component', uid: component.uid };
     ProjectActionCreators.stateRefresh(project);
   }

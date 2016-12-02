@@ -7,7 +7,6 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 
 import CanvasComponent from './canvas-component';
 import CanvasImage from './canvas-image';
@@ -25,18 +24,16 @@ class Canvas extends React.Component {
 
   componentDidMount() {
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     const project = this.props.project;
     const projectVersion = project && project.version;
-    const state = ProjectStateStore.getProjectState(project);
+    const state = ProjectStore.getProjectState(project);
     const activeContent = state.activeContent;
     this.setState({ projectVersion, activeContent });
   }

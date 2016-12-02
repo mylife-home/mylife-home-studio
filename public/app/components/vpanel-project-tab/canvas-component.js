@@ -11,7 +11,6 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 import CanvasComponentAttribute from './canvas-component-attribute';
@@ -78,18 +77,16 @@ class CanvasComponent extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     const { project, component } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid,
       componentHash: Facade.projects.vpanelGetComponentHash(project, component)
@@ -98,7 +95,7 @@ class CanvasComponent extends React.Component {
 
   handleMeasureChange(dim) {
     const { project, component } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
 
     if(!dim) {
       const node = this.refs.component;
@@ -126,7 +123,7 @@ class CanvasComponent extends React.Component {
 
   select() {
     const { project, component } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     projectState.selection = { type: 'component', uid: component.uid };
     ProjectActionCreators.stateRefresh(project);
   }

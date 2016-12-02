@@ -11,9 +11,7 @@ import Explorer from './explorer';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
 
-import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 
 import tabStyles from '../base/tab-styles';
 
@@ -34,18 +32,16 @@ class UiProjectTab extends React.Component {
 
   componentDidMount() {
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
-    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     const project = this.props.project;
     const projectVersion = project && project.version;
-    const state = ProjectStateStore.getProjectState(project);
+    const state = ProjectStore.getProjectState(project);
     const activeContent = state.activeContent;
     this.setState({ projectVersion, activeContent });
   }

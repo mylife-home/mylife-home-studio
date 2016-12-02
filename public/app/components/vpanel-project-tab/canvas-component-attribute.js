@@ -9,7 +9,7 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectStateStore from '../../stores/project-state-store';
+import ProjectStore from '../../stores/project-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 import styles from './canvas-component-styles';
 
@@ -59,7 +59,7 @@ const attributeSource = {
 
     const binding = Facade.projects.vpanelCreateBinding(project, component.id, attribute.name, componentId, actionName);
 
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     projectState.selection = {
       type: 'binding',
       uid: binding.uid

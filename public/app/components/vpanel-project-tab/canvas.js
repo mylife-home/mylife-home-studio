@@ -10,7 +10,6 @@ import base from '../base/index';
 
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 import CanvasComponent from './canvas-component';
@@ -55,7 +54,7 @@ class Canvas extends React.Component {
 
   select() {
     const project = this.props.project;
-    const state = ProjectStateStore.getProjectState(project);
+    const state = ProjectStore.getProjectState(project);
     state.selection = null;
     ProjectActionCreators.stateRefresh(project);
   }
@@ -78,7 +77,7 @@ class Canvas extends React.Component {
 
   handleMeasureChange() {
     const { project } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
 
     const node = this.refs.canvas;
     // may be not yet rendered

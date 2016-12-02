@@ -8,7 +8,7 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectStateStore from '../../stores/project-state-store';
+import ProjectStore from '../../stores/project-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 import linkHelper from './link-helper';
@@ -57,7 +57,7 @@ class CanvasBinding extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    const projectState = ProjectStateStore.getProjectState(this.props.project);
+    const projectState = ProjectStore.getProjectState(this.props.project);
 
     this.state = {
       isSelected:      false,
@@ -69,16 +69,16 @@ class CanvasBinding extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStateStore.addChangeListener(this.boundHandleStoreChange);
+    ProjectStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStateStore.removeChangeListener(this.boundHandleStoreChange);
+    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
   }
 
   handleStoreChange() {
     const { project, binding } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'binding' && projectState.selection.uid === binding.uid,
       linkVersion: linkHelper.version(projectState)
@@ -93,14 +93,14 @@ class CanvasBinding extends React.Component {
 
   select() {
     const { project, binding } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     projectState.selection = { type: 'binding', uid: binding.uid };
     ProjectActionCreators.stateRefresh(project);
   }
 
   render() {
     const { project, binding } = this.props;
-    const projectState = ProjectStateStore.getProjectState(project);
+    const projectState = ProjectStore.getProjectState(project);
     const path = linkHelper.bindingPath(projectState, binding);
     const styles = getStyles(this.props, this.state);
 

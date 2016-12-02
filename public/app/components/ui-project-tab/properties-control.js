@@ -10,7 +10,6 @@ import Facade from '../../services/facade';
 
 import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 import PropertiesImageSelector from './properties-image-selector';
@@ -59,7 +58,7 @@ class PropertiesControl extends React.Component {
 
   selectWindow() {
     const { project, window } = this.props;
-    const state = ProjectStateStore.getProjectState(project);
+    const state = ProjectStore.getProjectState(project);
     state.selection = { type: 'window', uid: window.uid };
     ProjectActionCreators.stateRefresh(project);
   }

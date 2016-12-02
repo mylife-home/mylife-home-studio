@@ -8,7 +8,6 @@ import base from '../base/index';
 
 import ProjectActionCreators from '../../actions/project-action-creators';
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 import DialogsActionCreators from '../../actions/dialogs-action-creators';
 
 const styles = {
@@ -51,7 +50,7 @@ class PropertiesImage extends React.Component {
 
   selectProject() {
     const project = this.props.project;
-    const state = ProjectStateStore.getProjectState(project);
+    const state = ProjectStore.getProjectState(project);
     state.activeContent = null;
     state.selection = null;
     ProjectActionCreators.stateRefresh(project);

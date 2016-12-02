@@ -7,7 +7,6 @@ import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
-import ProjectStateStore from '../../stores/project-state-store';
 import ProjectActionCreators from '../../actions/project-action-creators';
 
 import Toolbar from './toolbar';
@@ -79,7 +78,7 @@ class Explorer extends React.Component {
 
   select(data) {
     const project = this.props.project;
-    const state = ProjectStateStore.getProjectState(project);
+    const state = ProjectStore.getProjectState(project);
     state.activeContent = data;
     state.selection = data;
     ProjectActionCreators.stateRefresh(project);
