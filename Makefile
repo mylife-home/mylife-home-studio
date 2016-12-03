@@ -1,6 +1,6 @@
 BIN         = ./node_modules/.bin
 MOCHA       = $(BIN)/mocha
-JSHINT      = $(BIN)/jshint
+ESLINT      = $(BIN)/eslint
 JSPM        = $(BIN)/jspm
 NODE        = node
 MOCHA_OPTS  = --timeout 2000 --recursive -b
@@ -8,7 +8,7 @@ REPORTER    = spec
 TEST_FILES  = test
 
 lint:
-	$(JSHINT) lib/* public/app/*
+	$(ESLINT) lib/* public/app/*
 #test/*
 
 test: lint
