@@ -44,6 +44,7 @@ System.config({
     "redux": "npm:redux@3.6.0",
     "redux-actions": "npm:redux-actions@1.1.0",
     "redux-devtools": "npm:redux-devtools@3.3.1",
+    "redux-thunk": "npm:redux-thunk@2.1.0",
     "socket.io-client": "/socket.io/socket.io.js",
     "superagent": "npm:superagent@1.8.4",
     "throttle-debounce": "npm:throttle-debounce@1.0.1",
