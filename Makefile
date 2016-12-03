@@ -8,7 +8,7 @@ REPORTER    = spec
 TEST_FILES  = test
 
 lint:
-	$(JSHINT) lib/*
+	$(JSHINT) lib/* public/app/*
 #test/*
 
 test: lint
