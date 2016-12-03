@@ -8,7 +8,7 @@ export function repositoryClear() {
   AppDispatcher.dispatch({
     type: AppConstants.ActionTypes.REPOSITORY_CLEAR
   });
-};
+}
 
 export function repositoryAdd(entity) {
   AppDispatcher.dispatch({
@@ -17,11 +17,11 @@ export function repositoryAdd(entity) {
   });
 
   resourcesEntityQuery(entity);
-};
+}
 
 export function repositoryRemove(id) {
   AppDispatcher.dispatch({
     type: AppConstants.ActionTypes.REPOSITORY_REMOVE,
     id
   });
-};
+}

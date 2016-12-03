@@ -24,7 +24,7 @@ export function resourcesEntityQuery(entity) {
   case shared.EntityType.UI:
     break;
   }
-};
+}
 
 export function resourcesEntityResourcesList(entityId, resources) {
   AppDispatcher.dispatch({
@@ -32,7 +32,7 @@ export function resourcesEntityResourcesList(entityId, resources) {
     entityId,
     resources
   });
-};
+}
 
 export function resourcesEntityPluginsList(entityId, plugins) {
   AppDispatcher.dispatch({
@@ -40,7 +40,7 @@ export function resourcesEntityPluginsList(entityId, plugins) {
     entityId,
     plugins
   });
-};
+}
 
 export function resourcesEntityComponentsList(entityId, components) {
   AppDispatcher.dispatch({
@@ -48,7 +48,7 @@ export function resourcesEntityComponentsList(entityId, components) {
     entityId,
     components
   });
-};
+}
 
 export function resourcesGetQuery(entityId, resourceId, cb) {
   AppDispatcher.dispatch({
@@ -58,7 +58,7 @@ export function resourcesGetQuery(entityId, resourceId, cb) {
   });
 
   Facade.resources.queryResourceGet(entityId, resourceId, cb);
-};
+}
 
 export function resourcesGetResult(entityId, resourceId, resourceContent) {
   AppDispatcher.dispatch({
@@ -67,7 +67,7 @@ export function resourcesGetResult(entityId, resourceId, resourceContent) {
     resourceId,
     resourceContent
   });
-};
+}
 
 export function resourcesSetQuery(entityId, resourceId, resourceContent, cb) {
   AppDispatcher.dispatch({
@@ -78,7 +78,7 @@ export function resourcesSetQuery(entityId, resourceId, resourceContent, cb) {
   });
 
   Facade.resources.queryResourceSet(entityId, resourceId, resourceContent, cb);
-};
+}
 
 export function resourcesSetResult(entityId, resourceId) {
   AppDispatcher.dispatch({
@@ -86,4 +86,4 @@ export function resourcesSetResult(entityId, resourceId) {
     entityId,
     resourceId
   });
-};
+}
