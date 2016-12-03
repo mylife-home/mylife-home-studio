@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 
 import DialogsStore from '../../stores/dialogs-store';
@@ -13,7 +12,7 @@ class DialogBusy extends React.Component {
 
     this.state = {
       text: DialogsStore.getBusyText()
-    }
+    };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }

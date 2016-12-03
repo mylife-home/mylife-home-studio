@@ -1,17 +1,14 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import base from '../base/index';
-
-import ProjectStore from '../../stores/project-store';
 
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import {
-  dialogSetBusy, dialogUnsetBusy, dialogError,
-  projectStateSelectAndActiveContent
+  dialogSetBusy, dialogError,
+  projectStateSelectAndActiveContent,
+  resourcesGetQuery
 } from '../../actions/index';
 
 import OnlineStore from '../../stores/online-store';
@@ -131,7 +128,7 @@ class Toolbar extends React.Component {
         return AppDispatcher.dispatch(dialogError(err));
       }
       return this.importProject(project);
-    }
+    };
 
     const entity = OnlineStore.getResourceEntity();
     const cachedContent = entity.cachedResources && entity.cachedResources[resource];
@@ -141,7 +138,7 @@ class Toolbar extends React.Component {
 
     // need to get content .. TODO: Flux pattern to do that ?
     AppDispatcher.dispatch(dialogSetBusy('Loading project'));
-    return ResourcesActionCreators.resourceGetQuery(entity.id, resource, (err, content) => {
+    return resourcesGetQuery(entity.id, resource, (err, content) => {
       AppDispatcher.dispatch(dialogSetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       return load(content);
@@ -231,8 +228,6 @@ class Toolbar extends React.Component {
   }
 
   render() {
-    const project = this.props.project;
-
     return (
       <div>
         <mui.Toolbar>
@@ -302,7 +297,7 @@ class Toolbar extends React.Component {
         <input
           ref="openFileVPanelProject"
           type="file"
-          style={{"display" : "none"}}
+          style={{display : 'none'}}
           onChange={base.utils.stopPropagationWrapper(this.handleOpenFileVPanelProject.bind(this))}/>
 
         <base.DialogSelect title="Select VPanel Project"

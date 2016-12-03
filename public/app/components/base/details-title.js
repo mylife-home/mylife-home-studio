@@ -1,10 +1,8 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
-
-import shared from '../../shared/index';
+import * as muiStyles from 'material-ui/styles/index';
 
 const styles = {
   titleContainer : {

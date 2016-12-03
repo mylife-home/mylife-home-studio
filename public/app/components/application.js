@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
 import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import dndHTML5Backend from 'react-dnd-html5-backend';

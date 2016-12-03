@@ -1,13 +1,8 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import Facade from '../../services/facade';
-import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectStateSelect } from '../../actions/index';

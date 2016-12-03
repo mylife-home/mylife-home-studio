@@ -3,7 +3,7 @@
 import AppConstants from '../constants/app-constants';
 
 export function dialogError(err) {
-  console.log(err);
+  console.log(err); // eslint-disable-line no-console
   return {
     type: AppConstants.ActionTypes.DIALOG_ERROR,
     error: err

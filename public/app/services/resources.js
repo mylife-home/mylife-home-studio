@@ -24,7 +24,7 @@ class Resources {
       .send({ type : 'enum' })
       .end((err, res) => {
         if(err) {
-          if(!cb) { return console.error(err); }
+          if(!cb) { return console.error(err); } // eslint-disable-line no-console
           return cb(err);
         }
         const data = res.body.data;
@@ -40,7 +40,7 @@ class Resources {
       .send({ type : 'plugins' })
       .end((err, res) => {
         if(err) {
-          if(!cb) { return console.error(err); }
+          if(!cb) { return console.error(err); } // eslint-disable-line no-console
           return cb(err);
         }
         const data = res.body.data;
@@ -56,7 +56,7 @@ class Resources {
       .send({ type : 'components' })
       .end((err, res) => {
         if(err) {
-          if(!cb) { return console.error(err); }
+          if(!cb) { return console.error(err); } // eslint-disable-line no-console
           return cb(err);
         }
         const data = res.body.data;
@@ -72,7 +72,7 @@ class Resources {
       .send({ type : 'get', key: resourceId })
       .end((err, res) => {
         if(err) {
-          if(!cb) { return console.error(err); }
+          if(!cb) { return console.error(err); } // eslint-disable-line no-console
           return cb(err);
         }
         const data = res.body.data;
@@ -86,9 +86,9 @@ class Resources {
     request
       .post('/resources/' + entityId)
       .send({ type : 'set', key: resourceId, value: resourceContent })
-      .end((err, res) => {
+      .end((err/*, res*/) => {
         if(err) {
-          if(!cb) { return console.error(err); }
+          if(!cb) { return console.error(err); } // eslint-disable-line no-console
           return cb(err);
         }
         resourcesSetResult(entityId, resourceId);
@@ -180,7 +180,7 @@ function checkResult(err, res, cb) {
     }
   }
   if(err) {
-    if(!cb) { return console.error(err); }
+    if(!cb) { return console.error(err); } // eslint-disable-line no-console
     return cb(err);
   }
   if(cb) { cb(); }

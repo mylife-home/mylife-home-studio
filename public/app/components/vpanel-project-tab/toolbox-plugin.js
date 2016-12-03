@@ -1,15 +1,11 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectStateSelect } from '../../actions/index';
 
@@ -30,7 +26,7 @@ const styles = {
     margin     : '0px',
     marginLeft : '40px'
   }
-}
+};
 
 class ToolboxPlugin extends React.Component {
 
@@ -42,46 +38,46 @@ class ToolboxPlugin extends React.Component {
     const { connectDragPreview, plugin } = this.props;
 
     switch(plugin.usage) {
-    case Facade.metadata.pluginUsage.driver:
-      return (
-        <base.TooltipContainer tooltip="Hardware driver" tooltipPosition="bottom-right">
-          {connectDragPreview(
-            <div style={styles.iconContainer}>
-              <base.icons.PluginDriver style={styles.icon} />
-            </div>
-          )}
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.driver:
+        return (
+          <base.TooltipContainer tooltip="Hardware driver" tooltipPosition="bottom-right">
+            {connectDragPreview(
+              <div style={styles.iconContainer}>
+                <base.icons.PluginDriver style={styles.icon} />
+              </div>
+            )}
+          </base.TooltipContainer>
+        );
 
-    case Facade.metadata.pluginUsage.vpanel:
-      return (
-        <base.TooltipContainer tooltip="Virtual panel" tooltipPosition="bottom-right">
-          {connectDragPreview(
-            <div style={styles.iconContainer}>
-              <base.icons.PluginVPanel style={styles.icon} />
-            </div>
-          )}
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.vpanel:
+        return (
+          <base.TooltipContainer tooltip="Virtual panel" tooltipPosition="bottom-right">
+            {connectDragPreview(
+              <div style={styles.iconContainer}>
+                <base.icons.PluginVPanel style={styles.icon} />
+              </div>
+            )}
+          </base.TooltipContainer>
+        );
 
-    case Facade.metadata.pluginUsage.ui:
-      return (
-        <base.TooltipContainer tooltip="UI" tooltipPosition="bottom-right">
-          {connectDragPreview(
-            <div style={styles.iconContainer}>
-              <base.icons.PluginUi style={styles.icon} />
-            </div>
-          )}
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.ui:
+        return (
+          <base.TooltipContainer tooltip="UI" tooltipPosition="bottom-right">
+            {connectDragPreview(
+              <div style={styles.iconContainer}>
+                <base.icons.PluginUi style={styles.icon} />
+              </div>
+            )}
+          </base.TooltipContainer>
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 
   render() {
-    const { connectDragSource, connectDragPreview, isDragging, plugin } = this.props;
+    const { connectDragSource, isDragging, plugin } = this.props;
 
     return connectDragSource(
       <div style={{
@@ -131,7 +127,7 @@ function collect(connect, monitor) {
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
-  }
+  };
 }
 
 export default dnd.DragSource(AppConstants.DragTypes.VPANEL_PLUGIN, pluginSource, collect)(ToolboxPlugin);

@@ -43,4 +43,4 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     default:
       return state;
   }
-};
+}

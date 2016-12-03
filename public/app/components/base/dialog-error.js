@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
 
 import DialogsStore from '../../stores/dialogs-store';
@@ -16,7 +15,7 @@ class DialogError extends React.Component {
 
     this.state = {
       error: DialogsStore.getError()
-    }
+    };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }

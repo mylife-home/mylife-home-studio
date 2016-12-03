@@ -18,7 +18,7 @@ class MainTabsContainer extends React.Component {
     this.state = {
       projects: ProjectStore.getAll(),
       activeTab: ActiveTabStore.getActiveTab()
-    }
+    };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }

@@ -1,11 +1,8 @@
 'use strict';
 
-import async from 'async';
 import uuid from 'uuid';
 import Metadata from '../metadata/index';
 import common from './common';
-import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
-import shared from '../../shared/index';
 import Resources from '../resources';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
@@ -74,7 +71,7 @@ function validate(project, msgs) {
       bindings.add(bindingId);
     }
 
-    for(const binding of duplicates) {
+    for(const bindingId of duplicates) {
       msgs.push(`Duplicate binding: ${bindingId}`);
     }
   }
@@ -316,7 +313,7 @@ function prepareDeployVPanel(project, done) {
         unchangedComponents.push(id);
       }
 
-      console.log('removed unchanged components from operation list', unchangedComponents);
+      console.log('removed unchanged components from operation list', unchangedComponents); // eslint-disable-line no-console
       for(const id of unchangedComponents) {
         componentsToDelete.delete(id);
         componentsToCreate.delete(id);
@@ -334,7 +331,7 @@ function prepareDeployVPanel(project, done) {
         unchangedBindings.push(id);
       }
 
-      console.log('removed unchanged bindings from operation list', unchangedBindings);
+      console.log('removed unchanged bindings from operation list', unchangedBindings); // eslint-disable-line no-console
       for(const id of unchangedBindings) {
         bindingsToDelete.delete(id);
         bindingsToCreate.delete(id);
@@ -513,8 +510,8 @@ function canCreateBinding(project, remoteComponentId, remoteAttributeName, local
 function createBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
   const remoteComponent = findComponent(project, remoteComponentId);
   const localComponent  = findComponent(project, localComponentId);
-  const remoteAttribute = remoteComponent.plugin.clazz.attributes.find(a => a.name === remoteAttributeName);
-  const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
+  //const remoteAttribute = remoteComponent.plugin.clazz.attributes.find(a => a.name === remoteAttributeName);
+  //const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
 
   const binding = {
     uid: uuid.v4(),
@@ -557,11 +554,11 @@ function dirtifyComponent(project, component) {
 function getComponentHash(project, component) {
   if(!component._hash) {
     component._hash = JSON.stringify({
-        id: component.id,
-        x: component.designer && component.designer.location && component.designer.location.x,
-        y: component.designer && component.designer.location && component.designer.location.y,
-        config: component.config
-      });
+      id: component.id,
+      x: component.designer && component.designer.location && component.designer.location.x,
+      y: component.designer && component.designer.location && component.designer.location.y,
+      config: component.config
+    });
   }
   return component._hash;
 }
@@ -633,7 +630,7 @@ function validateOpen(project) {
     removeDuplicates(comp.bindings, b => `${b.remote_id}:${b.remote_attribute}:${b.local_action}`);
   }
 
-  project.components.forEach(validateConfig)
+  project.components.forEach(validateConfig);
 }
 
 function validateConfig(component) {
@@ -802,11 +799,11 @@ function createOperationCreateComponent(component) {
     description: `Create component ${component.id} on entity ${component.plugin.entityId}`,
     action: (done) => {
       return resources.queryComponentCreate(component.plugin.entityId, {
-          comp_id: component.id,
-          library: component.plugin.library,
-          comp_type: component.plugin.type,
-          config: mapToAction(component.config),
-          designer: []
+        comp_id: component.id,
+        library: component.plugin.library,
+        comp_type: component.plugin.type,
+        config: mapToAction(component.config),
+        designer: []
       }, done);
     }
   };

@@ -3,16 +3,13 @@
 import uuid from 'uuid';
 import debugLib from 'debug';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
-import Resources from '../resources';
 
 import AppDispatcher from '../../dispatcher/app-dispatcher';
-import { projectRefresh, projectLoad } from '../../actions/index';
+import { projectRefresh, projectLoad, resourcesSetQuery } from '../../actions/index';
 
 import vpanel from './vpanel';
 import ui from './ui';
 import common from './common';
-
-const resources = new Resources(); // TODO: how to use facade ?
 
 const debug = debugLib('mylife:home:studio:services:projects');
 

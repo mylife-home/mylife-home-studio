@@ -47,4 +47,4 @@ export default function(state = Immutable.Map(), action) {
     default:
       return state;
   }
-};
+}

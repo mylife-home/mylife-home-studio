@@ -12,12 +12,12 @@ function download(content, mime, filename) {
 }
 
 function imageSize(content, cb) {
-  const img = document.createElement("img");
+  const img = document.createElement('img');
   img.src = `data:;base64,${content}`;
   img.onload = () => cb(null, {
-      height: img.height,
-      width: img.width
-    });
+    height: img.height,
+    width: img.width
+  });
 }
 
 // https://gist.github.com/jlong/2428561
@@ -38,10 +38,10 @@ function parseUrl(url) {
 
 function stopPropagationWrapper(func) {
   const self = this;
-  return function(e) {
+  return (e) => {
     if(e) { e.stopPropagation(); }
     func.apply(self, arguments);
-  }
+  };
 }
 
 function snapToGrid(location, inPlace) {

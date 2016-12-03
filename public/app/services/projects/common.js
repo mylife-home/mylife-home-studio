@@ -209,7 +209,7 @@ function uid() {
 }
 
 function executeDeploy(data, done) {
-  console.log('executeDeploy', data);
+  console.log('executeDeploy', data); // eslint-disable-line no-console
   const actions = data.operations.filter(o => o.enabled).map(o => o.action);
   async.series(actions, (err) => {
     if(err) { return done(err); }

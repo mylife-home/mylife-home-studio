@@ -19,4 +19,4 @@ export default function(state = DEFAULT_TAB, action) {
     default:
       return state;
   }
-};
+}

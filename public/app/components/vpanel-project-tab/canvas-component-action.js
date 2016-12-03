@@ -1,9 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
 
@@ -24,7 +21,7 @@ class CanvasComponentAction extends React.Component {
   }
 
   render() {
-    const { project, component, action, connectDropTarget, isHighlighted } = this.props;
+    const { action, connectDropTarget, isHighlighted } = this.props;
 
     const containerStyle = isHighlighted ?
       Object.assign({}, styles.detailsContainer, styles.highlight) :
@@ -68,7 +65,7 @@ function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isHighlighted: monitor.canDrop()
-  }
+  };
 }
 
 export default dnd.DropTarget(AppConstants.DragTypes.VPANEL_COMPONENT_ATTRIBUTE, actionTarget, collect)(CanvasComponentAction);

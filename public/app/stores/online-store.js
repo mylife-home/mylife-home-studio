@@ -1,7 +1,6 @@
 'use strict';
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
-import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
 import reducer from '../reducers/online';
 
@@ -53,6 +52,6 @@ class OnlineStore extends EventEmitter {
     if(!startsWith) { return names; }
     return names.filter(n => n.startsWith(startsWith));
   }
-};
+}
 
 export default new OnlineStore();

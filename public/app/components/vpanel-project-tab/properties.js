@@ -1,9 +1,7 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
@@ -64,7 +62,6 @@ class Properties extends React.Component {
   }
 
   renderTitle(Icon, text, onDelete) {
-    const styles = getStyles(this.props, this.state);
     return (
       <div style={styles.titleContainer}>
         <div style={Object.assign({}, styles.titleItem, styles.titleLeft)}>
@@ -127,7 +124,8 @@ class Properties extends React.Component {
     const onDelete = () => {
       this.selectProject();
       projectDeleteBinding(project, binding);
-    }
+    };
+
     return (
       <div>
         <base.PropertiesTitle icon={<base.icons.Binding/>} text={key} onDelete={onDelete} />

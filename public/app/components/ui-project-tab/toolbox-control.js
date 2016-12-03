@@ -1,9 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
 
@@ -30,7 +27,7 @@ const styles = {
     margin     : '0px',
     marginLeft : '40px'
   }
-}
+};
 
 class ToolboxControl extends React.Component {
 
@@ -42,30 +39,30 @@ class ToolboxControl extends React.Component {
     const { connectDragPreview, type } = this.props;
 
     switch(type) {
-    case 'text':
-      return (
-        <base.TooltipContainer tooltip="Text" tooltipPosition="bottom-right">
-          {connectDragPreview(
-            <div style={styles.iconContainer}>
-              <base.icons.UiText style={styles.icon} />
-            </div>
-          )}
-        </base.TooltipContainer>
-      );
+      case 'text':
+        return (
+          <base.TooltipContainer tooltip="Text" tooltipPosition="bottom-right">
+            {connectDragPreview(
+              <div style={styles.iconContainer}>
+                <base.icons.UiText style={styles.icon} />
+              </div>
+            )}
+          </base.TooltipContainer>
+        );
 
-    case 'image':
-      return (
-        <base.TooltipContainer tooltip="Image" tooltipPosition="bottom-right">
-          {connectDragPreview(
-            <div style={styles.iconContainer}>
-              <base.icons.UiImage style={styles.icon} />
-            </div>
-          )}
-        </base.TooltipContainer>
-      );
+      case 'image':
+        return (
+          <base.TooltipContainer tooltip="Image" tooltipPosition="bottom-right">
+            {connectDragPreview(
+              <div style={styles.iconContainer}>
+                <base.icons.UiImage style={styles.icon} />
+              </div>
+            )}
+          </base.TooltipContainer>
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 
@@ -73,19 +70,19 @@ class ToolboxControl extends React.Component {
     const { type } = this.props;
 
     switch(type) {
-    case 'text':
-      return 'Text control';
+      case 'text':
+        return 'Text control';
 
-    case 'image':
-      return 'Image control';
+      case 'image':
+        return 'Image control';
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 
   render() {
-    const { connectDragSource, connectDragPreview, isDragging, plugin } = this.props;
+    const { connectDragSource, isDragging } = this.props;
 
     return connectDragSource(
       <div style={{
@@ -137,7 +134,7 @@ function collect(connect, monitor) {
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
-  }
+  };
 }
 
 export default dnd.DragSource(AppConstants.DragTypes.UI_TOOLBOX_CONTROL, pluginSource, collect)(ToolboxControl);

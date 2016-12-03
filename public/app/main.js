@@ -9,6 +9,9 @@ import Application from './components/application';
 import Facade from './services/facade'; // import to force init
 import storeInit from './stores/init'; // import to force init
 
+void Facade;
+void storeInit;
+
 //Needed for onTouchTap
 //Can go away when react 1.0 release
 //Check this repo:

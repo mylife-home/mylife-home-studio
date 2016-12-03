@@ -1,15 +1,11 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectStateSelect } from '../../actions/index';
 import styles from './canvas-component-styles';
@@ -23,7 +19,7 @@ class CanvasComponentAttribute extends React.Component {
   }
 
   render() {
-    const { project, component, attribute, connectDragPreview, connectDragSource, isDragging } = this.props;
+    const { attribute, connectDragPreview, connectDragSource } = this.props;
 
     return connectDragSource(
       <div style={styles.detailsContainer}>
@@ -44,7 +40,7 @@ CanvasComponentAttribute.propTypes = {
 };
 
 const attributeSource = {
-  beginDrag(props, monitor) {
+  beginDrag(props/*, monitor*/) {
     const { component, attribute } = props;
     return {
       componentId: component.id,
@@ -64,7 +60,7 @@ const attributeSource = {
       type: 'binding',
       uid: binding.uid
     }));
-    linkHelper.rebuild(project, projectState);
+    linkHelper.rebuild(project);
   }
 };
 
@@ -73,7 +69,7 @@ function collect(connect, monitor) {
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
-  }
+  };
 }
 
 export default dnd.DragSource(AppConstants.DragTypes.VPANEL_COMPONENT_ATTRIBUTE, attributeSource, collect)(CanvasComponentAttribute);

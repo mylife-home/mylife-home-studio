@@ -5,6 +5,7 @@ import aStar from 'a-star';
 import base from '../base/index';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectStateUpdateLinkData } from '../../actions/index';
+import ProjectStore from '../../stores/project-store';
 
 const GRID_SIZE   = base.utils.GRID_SIZE;
 const CANVAS_SIZE = 32000;
@@ -122,7 +123,9 @@ function componentMeasureMember(uiComponent, name) {
   };
 }
 
-function rebuild(project, projectState) {
+function rebuild(project) {
+  const projectState = ProjectStore.getProjectState(project);
+
   const linkData = data(projectState);
   const measures = linkData.measures;
 //  const obstacleGrid = buildObstacleGrid(measures);

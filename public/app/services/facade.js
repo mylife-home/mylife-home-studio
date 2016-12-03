@@ -10,4 +10,4 @@ export default {
   resources  : new Resources(),
   metadata   : new Metadata(),
   projects   : new Projects()
-}
+};

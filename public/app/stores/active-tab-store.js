@@ -1,13 +1,10 @@
 'use strict';
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
-import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
 import reducer from '../reducers/activeTab';
 
 const CHANGE_EVENT = 'change';
-
-const DEFAULT_TAB = 'online';
 
 class ActiveTabStore extends EventEmitter {
 
@@ -39,6 +36,6 @@ class ActiveTabStore extends EventEmitter {
   getActiveTab() {
     return this.activeTab;
   }
-};
+}
 
 export default new ActiveTabStore();

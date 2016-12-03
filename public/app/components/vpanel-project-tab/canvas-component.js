@@ -1,9 +1,7 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
 import base from '../base/index';
@@ -132,29 +130,28 @@ class CanvasComponent extends React.Component {
     const iconColor = styles.titleContainer.color;
 
     switch(component.plugin.usage) {
-    case Facade.metadata.pluginUsage.driver:
-      return (
-        <base.icons.PluginDriver color={iconColor} style={styles.titleIcon} />
-      );
+      case Facade.metadata.pluginUsage.driver:
+        return (
+          <base.icons.PluginDriver color={iconColor} style={styles.titleIcon} />
+        );
 
-    case Facade.metadata.pluginUsage.vpanel:
-      return (
-        <base.icons.PluginVPanel color={iconColor} style={styles.titleIcon} />
-      );
+      case Facade.metadata.pluginUsage.vpanel:
+        return (
+          <base.icons.PluginVPanel color={iconColor} style={styles.titleIcon} />
+        );
 
-    case Facade.metadata.pluginUsage.ui:
-      return (
-        <base.icons.PluginUi color={iconColor} style={styles.titleIcon} />
-      );
+      case Facade.metadata.pluginUsage.ui:
+        return (
+          <base.icons.PluginUi color={iconColor} style={styles.titleIcon} />
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 
   render() {
     const { project, component, connectDragPreview, connectDragSource, isDragging } = this.props;
-    const { isSelected } = this.state;
     const location = component.designer.location;
     const styles = getStyles(this.props, this.state);
     const entityHost = component.plugin.entityId.split('_')[1];
@@ -268,7 +265,7 @@ function collect(connect, monitor) {
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
-  }
+  };
 }
 
 export default dnd.DragSource(AppConstants.DragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent);

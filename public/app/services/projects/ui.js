@@ -358,7 +358,7 @@ function serializeAction(action) {
   return {
     component: serializeActionComponent(action.component),
     window: serializeActionWindow(action.window)
-  }
+  };
 }
 
 function serializeActionComponent(actionComponent) {
@@ -422,7 +422,7 @@ function prepareImport(project, newComponents) {
   const cleaners = [];
   for(const window of project.windows) {
     for(const control of window.controls) {
-      for(property of ['primaryAction', 'secondaryAction']) {
+      for(const property of ['primaryAction', 'secondaryAction']) {
         if(!control[property]) { continue; }
         const actionComp = control[property].component;
         if(actionComp && !importIsComponentAction(newComponents, actionComp.component, actionComp.action)) {
@@ -487,7 +487,7 @@ function importPropertyDeleter(object, property) {
 
 function importArrayItemDeleter(array, item) {
   return () => {
-    arrayRemoveValue(context, item);
+    arrayRemoveValue(array, item);
   };
 }
 
@@ -630,7 +630,7 @@ function createControl(project, window, location, type) {
       break;
 
     default:
-        throw new Error(`Unsupported control type: ${type}`);
+      throw new Error(`Unsupported control type: ${type}`);
   }
 
   window.controls.push(control);
@@ -644,7 +644,7 @@ function deleteComponent(project, component) {
   const usage = [];
   for(const window of project.windows) {
     for(const control of window.controls) {
-      for(property of ['primaryAction', 'secondaryAction']) {
+      for(const property of ['primaryAction', 'secondaryAction']) {
         if(!control[property]) { continue; }
         const actionComp = control[property].component;
         if(actionComp && actionComp.component && actionComp.component.id === id) {
@@ -716,7 +716,7 @@ function deleteWindow(project, window) {
   }
   for(const iterWindow of project.windows) {
     for(const control of iterWindow.controls) {
-      for(property of ['primaryAction', 'secondaryAction']) {
+      for(const property of ['primaryAction', 'secondaryAction']) {
         if(!control[property]) { continue; }
         const actionWindow = control[property].window;
         if(actionWindow && actionWindow.window && actionWindow.window.uid === uid) {

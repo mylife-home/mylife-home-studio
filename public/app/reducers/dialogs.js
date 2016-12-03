@@ -19,4 +19,4 @@ export default function(state = { busyText: null, error: null }, action) {
     default:
       return state;
   }
-};
+}

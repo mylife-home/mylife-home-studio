@@ -1,9 +1,7 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import utils from './utils';
 
 import Facade from '../../services/facade';
@@ -107,16 +105,16 @@ class PropertiesEditor extends React.Component {
     }
 
     switch(type) {
-    case 's':
-      return this.renderString();
-    case 'i':
-      return this.renderInteger();
-    case 'n':
-      return this.renderNumber();
-    case 'b':
-      return this.renderBoolean();
-    default:
-      return (<div>{`unsupported type: ${type}`}</div>);
+      case 's':
+        return this.renderString();
+      case 'i':
+        return this.renderInteger();
+      case 'n':
+        return this.renderNumber();
+      case 'b':
+        return this.renderBoolean();
+      default:
+        return (<div>{`unsupported type: ${type}`}</div>);
     }
   }
 }

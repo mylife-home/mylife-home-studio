@@ -1,14 +1,12 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import {
-  dialogSetBusy, dialogUnsetBusy, dialogError
+  dialogSetBusy, dialogError
 } from '../../actions/index';
 
 import Facade from '../../services/facade';
@@ -38,7 +36,7 @@ class Toolbar extends React.Component {
   // importOnlineToolbox
 
   importOnlineToolbox() {
-    const project = this.props.project;
+    const { project } = this.props;
     AppDispatcher.dispatch(dialogSetBusy('Preparing import'));
     Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
       AppDispatcher.dispatch(dialogSetBusy());
@@ -145,8 +143,6 @@ class Toolbar extends React.Component {
   }
 
   render() {
-    const project = this.props.project;
-
     return (
       <div>
         <mui.Toolbar>

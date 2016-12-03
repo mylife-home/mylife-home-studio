@@ -1,7 +1,6 @@
 'use strict';
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
-import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
 import reducer from '../reducers/projects';
 
@@ -45,6 +44,6 @@ class ProjectStore extends EventEmitter {
   getProjectState(project) {
     return this.state.states.get(project.uid);
   }
-};
+}
 
 export default new ProjectStore();

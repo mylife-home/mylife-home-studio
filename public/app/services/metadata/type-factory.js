@@ -28,12 +28,12 @@ function parse(value) {
     return createEnum(parts);
   }
   throw new Error('Invalid type: ' + value);
-};
+}
 
 function createRange(min, max) {
   const type = new Range(min, max);
   return getCachedType(type);
-};
+}
 
 function createEnum(values) {
   if(!Array.isArray(values)) {
@@ -41,7 +41,7 @@ function createEnum(values) {
   }
   const type = new Enum(values);
   return getCachedType(type);
-};
+}
 
 const TypeFactory = {
   parse,

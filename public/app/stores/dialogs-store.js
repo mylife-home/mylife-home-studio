@@ -1,13 +1,9 @@
-'use strict';
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
-import AppConstants from '../constants/app-constants';
 import {EventEmitter} from 'events';
 import reducer from '../reducers/dialogs';
 
 const CHANGE_EVENT = 'change';
-
-const DEFAULT_TAB = 'online';
 
 class DialogsStore extends EventEmitter {
 
@@ -55,6 +51,6 @@ class DialogsStore extends EventEmitter {
   isError() {
     return !!this.state.error;
   }
-};
+}
 
 export default new DialogsStore();

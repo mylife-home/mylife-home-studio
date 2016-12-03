@@ -1,9 +1,6 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
 import base from '../base/index';
@@ -17,8 +14,6 @@ import CanvasComponent from './canvas-component';
 import CanvasBinding from './canvas-binding';
 
 import linkHelper from './link-helper';
-
-import tabStyles from '../base/tab-styles';
 
 const styles = {
   container: {
@@ -127,16 +122,17 @@ Canvas.propTypes = {
 const canvasTarget = {
   drop(props, monitor, component) {
     switch(monitor.getItemType()) {
-    case AppConstants.DragTypes.VPANEL_PLUGIN:
-      const canvasRect = component.refs.canvas.getBoundingClientRect();
-      const dropOffset = monitor.getClientOffset();
-      const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
-      // handled in ToolboxPlugin/endDrag
-      return { location };
+      case AppConstants.DragTypes.VPANEL_PLUGIN: {
+        const canvasRect = component.refs.canvas.getBoundingClientRect();
+        const dropOffset = monitor.getClientOffset();
+        const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
+        // handled in ToolboxPlugin/endDrag
+        return { location };
+      }
 
-    case AppConstants.DragTypes.VPANEL_COMPONENT:
-      // handled in CanvasComponent/endDrag
-      return { delta: monitor.getDifferenceFromInitialOffset() };
+      case AppConstants.DragTypes.VPANEL_COMPONENT:
+        // handled in CanvasComponent/endDrag
+        return { delta: monitor.getDifferenceFromInitialOffset() };
     }
   }
 };
