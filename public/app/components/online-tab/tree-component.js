@@ -3,31 +3,17 @@
 import React from 'react';
 import base from '../base/index';
 
-class TreeComponent extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    const entity = this.props.entity;
-    const component = this.props.component;
-    const value = { type: 'component', entity: entity.id, component: component.id };
-
-    return (
-      <base.SelectableListItem
-        value={value}
-        leftIcon={
-          <base.TooltipContainer tooltip="Component">
-            <base.icons.Component />
-          </base.TooltipContainer>
-        }
-        primaryText={component.id}
-      />
-    );
-  }
-}
+const TreeComponent = ({ entity, component }) => (
+  <base.SelectableListItem
+    value={{ type: 'component', entity: entity.id, component: component.id }}
+    leftIcon={
+      <base.TooltipContainer tooltip="Component">
+        <base.icons.Component />
+      </base.TooltipContainer>
+    }
+    primaryText={component.id}
+  />
+);
 
 TreeComponent.propTypes = {
   entity: React.PropTypes.object.isRequired,
