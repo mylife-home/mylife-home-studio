@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
 import base from '../base/index';
 
 import shared from '../../shared/index';
@@ -17,7 +16,7 @@ class Tree extends React.Component {
 
     this.state = {
       entities: OnlineStore.getAll()
-    }
+    };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }

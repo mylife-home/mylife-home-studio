@@ -1,9 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
-import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
 
@@ -43,17 +40,20 @@ class Canvas extends React.Component {
 
     if(activeContent) {
       switch(activeContent.type) {
-        case 'component':
+        case 'component': {
           const component = project.components.find(comp => comp.id === activeContent.id);
           return (<CanvasComponent component={component} />);
+        }
 
-        case 'image':
+        case 'image': {
           const image = project.images.find(img => img.uid === activeContent.uid);
           return (<CanvasImage image={image} />);
+        }
 
-        case 'window':
+        case 'window': {
           const window = project.windows.find(wnd => wnd.uid === activeContent.uid);
           return (<CanvasWindow project={project} window={window} />);
+        }
       }
     }
 

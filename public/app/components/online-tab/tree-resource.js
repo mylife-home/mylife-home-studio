@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
 import base from '../base/index';
 
 class TreeResource extends React.Component {

@@ -1,10 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
-import base from '../base/index';
-
-import shared from '../../shared/index';
 
 import DetailsEntity from './details-entity';
 import DetailsResource from './details-resource';
@@ -32,17 +28,20 @@ class Details extends React.Component {
       case 'entity':
         return (<DetailsEntity entity={entity} changeValue={this.props.changeValue}/>);
 
-      case 'plugin':
+      case 'plugin': {
         const plugin = entity.plugins.find(p => `${p.library}.${p.type}` === value.plugin);
         return (<DetailsPlugin entity={entity} plugin={plugin}/>);
+      }
 
-      case 'component':
+      case 'component': {
         const component = entity.components.find(c => c.id === value.component);
         return (<DetailsComponent entity={entity} component={component}/>);
+      }
 
-      case 'resource':
+      case 'resource': {
         const resource = value.resource;
         return (<DetailsResource entity={entity} resource={resource}/>);
+      }
 
       default:
         return null;

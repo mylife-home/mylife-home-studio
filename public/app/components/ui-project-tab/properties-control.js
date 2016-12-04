@@ -1,13 +1,9 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 import Facade from '../../services/facade';
-
-import ProjectStore from '../../stores/project-store';
 
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesControlAction from './properties-control-action';
@@ -16,20 +12,7 @@ import PropertiesControlDisplayMapping from './properties-control-display-mappin
 import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
 
 import AppDispatcher from '../../dispatcher/app-dispatcher';
-import { projectStateSelect, projectDeleteControl } from '../../actions/index';
-
-const styles = {
-  fileInput: {
-    cursor: 'pointer',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    width: '100%',
-    opacity: 0,
-  },
-};
+import { projectStateSelect, projectDeleteControl, dialogError } from '../../actions/index';
 
 class PropertiesControl extends React.Component {
 

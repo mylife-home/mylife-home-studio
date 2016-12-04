@@ -1,9 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
-import base from '../base/index';
 import commonStyles from './canvas-styles';
 
 import DataImage from './data-image';

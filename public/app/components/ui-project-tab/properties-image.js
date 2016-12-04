@@ -2,29 +2,14 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 
 import {
   dialogError,
   projectStateSelectAndActiveContent, projectChangeImage, projectDeleteImage
 } from '../../actions/index';
-
-const styles = {
-  fileInput: {
-    cursor: 'pointer',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    width: '100%',
-    opacity: 0,
-  },
-};
 
 class PropertiesImage extends React.Component {
 
@@ -126,7 +111,7 @@ class PropertiesImage extends React.Component {
         <input
           ref="openImageFile"
           type="file"
-          style={{"display" : "none"}}
+          style={{display : 'none'}}
           onChange={base.utils.stopPropagationWrapper(this.handleOpenImageFile.bind(this))}/>
       </div>
     );

@@ -7,7 +7,7 @@ import DetailsComponentConfig from './details-component-config';
 import DetailsComponentBinding from './details-component-binding';
 import DetailsContainer from './details-container';
 
-const DetailsComponent = ({ entity, component }) => (
+const DetailsComponent = ({ component }) => (
   <div>
     <base.DetailsTitle
       center={
@@ -37,7 +37,6 @@ const DetailsComponent = ({ entity, component }) => (
 );
 
 DetailsComponent.propTypes = {
-  entity: React.PropTypes.object.isRequired,
   component: React.PropTypes.object.isRequired
 };
 

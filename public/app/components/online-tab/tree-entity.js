@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
 import base from '../base/index';
 
 import shared from '../../shared/index';
@@ -33,7 +32,7 @@ class TreeEntity extends React.Component {
     return arr;
   }
 
-  renderUiDetails(entity) {
+  renderUiDetails(/* entity */) {
     return [];
   }
 

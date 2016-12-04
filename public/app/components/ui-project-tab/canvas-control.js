@@ -1,11 +1,9 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
-import { throttle, debounce } from 'throttle-debounce';
+import { debounce } from 'throttle-debounce';
 import base from '../base/index';
 
 import DataImage from './data-image';
@@ -22,7 +20,6 @@ function getStyles(props, state) {
   const { baseTheme } = muiTheme;
 
   const backColor = (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color);
-  const foreColor = (isSelected ? baseTheme.palette.alternateTextColor : baseTheme.palette.textColor);
   const left = (window.width * control.x) - (control.width / 2);
   const top = (window.height * control.y) - (control.height / 2);
 
@@ -100,7 +97,7 @@ class CanvasControl extends React.Component {
     });
   }
 
-  controlResize(dir, size, rect, delta) {
+  controlResize(dir, size) {
     const { project, control } = this.props;
 
     control.height = size.height;
@@ -179,7 +176,7 @@ const controlSource = {
     return {};
   },
 
-  endDrag(props, monitor, uiControl) {
+  endDrag(props, monitor) {
     if(!monitor.didDrop()) { return; }
 
     const { project, window, control } = props;
@@ -196,7 +193,7 @@ function collect(connect, monitor) {
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
-  }
+  };
 }
 
 export default dnd.DragSource(AppConstants.DragTypes.UI_CONTROL, controlSource, collect)(CanvasControl);

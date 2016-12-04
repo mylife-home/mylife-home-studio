@@ -12,6 +12,9 @@ import Canvas from './canvas';
 
 import ProjectStore from '../../stores/project-store';
 
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import { projectClose } from '../../actions/index';
+
 import tabStyles from '../base/tab-styles';
 
 const styles = {
@@ -38,32 +41,36 @@ class UiProjectTab extends React.Component {
   }
 
   handleStoreChange() {
-    const project = this.props.project;
+    const { project } = this.props;
     const projectVersion = project && project.version;
-    const state = ProjectStore.getProjectState(project);
-    const activeContent = state.activeContent;
+    const { activeContent } = this.state;
     this.setState({ projectVersion, activeContent });
   }
 
   render() {
-    const project = this.props.project;
-    const activeContent = this.state.activeContent;
+    const { project } = this.props;
+    const { activeContent } = this.state;
 
     let title = project.name;
     if(activeContent) {
       switch(activeContent.type) {
-        case 'component':
+        case 'component': {
           const component = project.components.find(comp => comp.id === activeContent.id);
           title += ` - ${component.id}`;
           break;
-        case 'image':
+        }
+
+        case 'image': {
           const image = project.images.find(img => img.uid === activeContent.uid);
           title += ` - ${image.id}`;
           break;
-        case 'window':
+        }
+
+        case 'window': {
           const window = project.windows.find(wnd => wnd.uid === activeContent.uid);
           title += ` - ${window.id}`;
           break;
+        }
       }
     }
 
@@ -86,7 +93,7 @@ class UiProjectTab extends React.Component {
                 center={title}
                 left={<base.icons.tabs.Ui />}
                 right={
-                  <mui.IconButton onClick={() => ProjectActionCreators.close(project)}>
+                  <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project))}>
                     <base.icons.actions.Close />
                   </mui.IconButton>
                 }/>

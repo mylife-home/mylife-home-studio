@@ -2,7 +2,6 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
 import base from '../base/index';
 
 const styles = {
