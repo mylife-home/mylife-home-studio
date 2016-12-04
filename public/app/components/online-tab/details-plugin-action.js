@@ -5,7 +5,7 @@ import * as mui from 'material-ui';
 import base from '../base/index';
 
 const DetailsPluginAction = ({ action }) => (
-  <div key={action.name}>
+  <div>
     <base.icons.NetAction style={{verticalAlign: 'middle'}}/>
     &nbsp;
     Action:

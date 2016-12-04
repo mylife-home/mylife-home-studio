@@ -5,7 +5,7 @@ import * as mui from 'material-ui';
 import base from '../base/index';
 
 const DetailsPluginAttribute = ({ attribute }) => (
-  <div key={attribute.name}>
+  <div>
     <base.icons.NetAttribute style={{verticalAlign: 'middle'}}/>
     &nbsp;
     Attribute:

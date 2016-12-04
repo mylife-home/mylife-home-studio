@@ -7,7 +7,7 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 
 const DetailsPluginConfig = ({ config }) => (
-  <div key={config.name}>
+  <div>
     <base.icons.NetConfig style={{verticalAlign: 'middle'}}/>
     &nbsp;
     Configuration:

@@ -72,9 +72,9 @@ const DetailsPlugin = ({ plugin }) => {
         &nbsp;
         {plugin.version}
         <mui.Divider />
-        {clazz.actions.map(action => (<DetailsPluginAction action={action}/>))}
-        {clazz.attributes.map(attribute => (<DetailsPluginAttribute attribute={attribute}/>))}
-        {config.map(conf => (<DetailsPluginConfig config={conf}/>))}
+        {clazz.actions.map(action => (<DetailsPluginAction action={action} key={action.name}/>))}
+        {clazz.attributes.map(attribute => (<DetailsPluginAttribute attribute={attribute} key={attribute.name}/>))}
+        {config.map(conf => (<DetailsPluginConfig config={conf} key={conf.name}/>))}
       </DetailsContainer>
     </div>
   );
