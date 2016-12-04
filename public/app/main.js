@@ -12,15 +12,6 @@ import storeInit from './stores/init'; // import to force init
 void Facade;
 void storeInit;
 
-import AppDispatcher from './dispatcher/app-dispatcher';
-
-const old = AppDispatcher.dispatch;
-
-AppDispatcher.dispatch = (action) => {
-  console.log('dispatch', action);
-  old.apply(AppDispatcher, [action]);
-};
-
 //Needed for onTouchTap
 //Can go away when react 1.0 release
 //Check this repo:

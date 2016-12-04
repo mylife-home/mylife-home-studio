@@ -16,7 +16,6 @@ class ProjectStore extends EventEmitter {
   }
 
   handleDispatch(action) {
-    console.log('handleDispatch', action);
     const old = this.state;
     this.state = reducer(this.state, action);
     if(old !== this.state) { this.emitChange(); }
