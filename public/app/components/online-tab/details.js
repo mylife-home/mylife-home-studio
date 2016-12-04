@@ -17,7 +17,7 @@ class Details extends React.Component {
   }
 
   render() {
-    const value = this.props.value;
+    const { value } = this.props;
     if(!value) {
       return null;
     }
