@@ -23,14 +23,6 @@ class MainToolbar extends React.Component {
     this.state = {};
   }
 
-  openFileVPanelProjectDialog() {
-    this.refs.openFileVPanelProject.click();
-  }
-
-  openFileUiProjectDialog() {
-    this.refs.openFileUiProject.click();
-  }
-
   openOnlineVPanelProjectDialog() {
     this.setState({
       openOnlineVPanelProjectItems: this.props.onlineVPanelProjectList
@@ -147,15 +139,15 @@ MainToolbar.propTypes = {
   activeProject: React.PropTypes.object,
   onlineVPanelProjectList: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
   onlineUiProjectList: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
-  newVPanelProject: React.PropTypes.func.isRequired,
-  newUiProject: React.PropTypes.func.isRequired,
-  handleOpenFileVPanelProject: React.PropTypes.func.isRequired,
-  handleOpenFileUiProject: React.PropTypes.func.isRequired,
-  handleOpenOnlineVPanelProject: React.PropTypes.func.isRequired,
-  handleOpenOnlineUiProject: React.PropTypes.func.isRequired,
-  saveAll: React.PropTypes.func.isRequired,
-  saveOnline: React.PropTypes.func.isRequired,
-  saveAs: React.PropTypes.func.isRequired
+  onNewVPanelProject: React.PropTypes.func.isRequired,
+  onNewUiProject: React.PropTypes.func.isRequired,
+  onOpenFileVPanelProject: React.PropTypes.func.isRequired,
+  onOpenFileUiProject: React.PropTypes.func.isRequired,
+  onOpenOnlineVPanelProject: React.PropTypes.func.isRequired,
+  onOpenOnlineUiProject: React.PropTypes.func.isRequired,
+  onSaveAll: React.PropTypes.func.isRequired,
+  onSaveOnline: React.PropTypes.func.isRequired,
+  onSaveAs: React.PropTypes.func.isRequired
 };
 
 export default muiThemeable()(MainToolbar);

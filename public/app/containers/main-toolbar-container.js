@@ -61,19 +61,19 @@ class MainToolbarContainer extends React.Component {
     projectNew('ui');
   }
 
-  handleOpenFileVPanelProject(file) {
+  openFileVPanelProject(file) {
     projectLoadFile(file, 'vpanel');
   }
 
-  handleOpenFileUiProject(file) {
+  openFileUiProject(file) {
     projectLoadFile(file, 'ui');
   }
 
-  handleOpenOnlineVPanelProject(name) {
+  openOnlineVPanelProject(name) {
     projectLoadOnline('project.vpanel.' + name, 'vpanel');
   }
 
-  handleOpenOnlineUiProject(name) {
+  openOnlineUiProject(name) {
     projectLoadOnline('project.ui.' + name, 'ui');
   }
 
@@ -95,15 +95,15 @@ class MainToolbarContainer extends React.Component {
         activeProject={this.state.activeProject}
         onlineVPanelProjectList={this.state.onlineVPanelProjectList}
         onlineUiProjectList={this.state.onlineUiProjectList}
-        newVPanelProject={this.newVPanelProject.bind(this)}
-        newUiProject={this.newUiProject.bind(this)}
-        handleOpenFileVPanelProject={this.handleOpenFileVPanelProject.bind(this)}
-        handleOpenFileUiProject={this.handleOpenFileUiProject.bind(this)}
-        handleOpenOnlineVPanelProject={this.handleOpenOnlineVPanelProject.bind(this)}
-        handleOpenOnlineUiProject={this.handleOpenOnlineUiProject.bind(this)}
-        saveAll={this.saveAll.bind(this)}
-        saveOnline={this.saveOnline.bind(this)}
-        saveAs={this.saveAs.bind(this)}
+        onNewVPanelProject={this.newVPanelProject.bind(this)}
+        onNewUiProject={this.newUiProject.bind(this)}
+        onOpenFileVPanelProject={this.openFileVPanelProject.bind(this)}
+        onOpenFileUiProject={this.openFileUiProject.bind(this)}
+        onOpenOnlineVPanelProject={this.openOnlineVPanelProject.bind(this)}
+        onOpenOnlineUiProject={this.openOnlineUiProject.bind(this)}
+        onSaveAll={this.saveAll.bind(this)}
+        onSaveOnline={this.saveOnline.bind(this)}
+        onSaveAs={this.saveAs.bind(this)}
       />
     );
   }
