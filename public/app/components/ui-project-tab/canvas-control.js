@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';

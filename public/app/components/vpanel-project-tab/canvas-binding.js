@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import * as muiStyles from 'material-ui/styles/index';
 import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';

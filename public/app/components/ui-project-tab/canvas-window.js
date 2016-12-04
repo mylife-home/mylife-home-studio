@@ -1,11 +1,10 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
-import * as bs from 'react-bootstrap';
+import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
-import { throttle, debounce } from 'throttle-debounce';
+import { debounce } from 'throttle-debounce';
 import base from '../base/index';
 import commonStyles from './canvas-styles';
 
@@ -23,7 +22,6 @@ function getStyles(props, state) {
   const { baseTheme } = muiTheme;
 
   const backColor = (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color);
-  const foreColor = (isSelected ? baseTheme.palette.alternateTextColor : baseTheme.palette.textColor);
 
   return Object.assign({
     windowContainer: {
@@ -87,7 +85,7 @@ class CanvasWindow extends React.Component {
     });
   }
 
-  windowResize(dir, size, rect, delta) {
+  windowResize(dir, size) {
     const { project, window } = this.props;
 
     window.height = size.height;
@@ -142,21 +140,23 @@ CanvasWindow.childContextTypes = {
 const canvasTarget = {
   drop(props, monitor, component) {
     switch(monitor.getItemType()) {
-      case AppConstants.DragTypes.UI_TOOLBOX_CONTROL:
+      case AppConstants.DragTypes.UI_TOOLBOX_CONTROL: {
         const canvasRect = component.refs.canvas.getBoundingClientRect();
         const dropOffset = monitor.getClientOffset();
         const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
         // handled in ToolboxControl/endDrag
         return { location };
+      }
 
-      case AppConstants.DragTypes.UI_CONTROL:
+      case AppConstants.DragTypes.UI_CONTROL: {
         // handled in CanvasControl/endDrag
         return { delta: monitor.getDifferenceFromInitialOffset() };
+      }
     }
   }
 };
 
-function collect(connect, monitor) {
+function collect(connect) {
   return {
     connectDropTarget: connect.dropTarget()
   };

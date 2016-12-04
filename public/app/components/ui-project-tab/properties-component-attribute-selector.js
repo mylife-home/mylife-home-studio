@@ -4,8 +4,6 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
 
-import Facade from '../../services/facade';
-
 class PropertiesComponentAttributeSelector extends React.Component {
 
   constructor(props, context) {

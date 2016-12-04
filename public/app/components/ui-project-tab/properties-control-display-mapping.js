@@ -19,7 +19,7 @@ class PropertiesControlDisplayMapping extends React.Component {
     };
   }
 
-  handleTouchTap(event) {
+  handleTouchTap() {
     this.setState({
       open: true
     });
