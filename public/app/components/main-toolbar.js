@@ -79,11 +79,11 @@ class MainToolbar extends React.Component {
                           onClick={this.openOnlineVPanelProjectDialog.bind(this)}>
             <base.icons.actions.OpenOnline />
           </mui.IconButton>
-          <mui.IconButton tooltip="open from file"
-                          style={styles.button}
-                          onClick={this.openFileVPanelProjectDialog.bind(this)}>
+          <base.IconFileButton tooltip="open from file"
+                               style={styles.button}
+                               onFileSelected={this.props.handleOpenFileVPanelProject}>
             <base.icons.actions.OpenFile />
-          </mui.IconButton>
+          </base.IconFileButton>
 
           <mui.ToolbarSeparator />
 
@@ -100,11 +100,11 @@ class MainToolbar extends React.Component {
                           onClick={this.openOnlineUiProjectDialog.bind(this)}>
             <base.icons.actions.OpenOnline />
           </mui.IconButton>
-          <mui.IconButton tooltip="open from file"
-                          style={styles.button}
-                          onClick={this.openFileUiProjectDialog.bind(this)}>
+          <base.IconFileButton tooltip="open from file"
+                               style={styles.button}
+                               onClick={this.props.handleOpenFileUiProject}>
             <base.icons.actions.OpenFile />
-          </mui.IconButton>
+          </base.IconFileButton>
 
           <mui.ToolbarSeparator />
 
@@ -126,18 +126,6 @@ class MainToolbar extends React.Component {
             <base.icons.actions.SaveAs />
           </mui.IconButton>
         </mui.ToolbarGroup>
-
-        <input
-          ref="openFileVPanelProject"
-          type="file"
-          style={{display : 'none'}}
-          onChange={base.utils.stopPropagationWrapper((e) => this.props.handleOpenFileVPanelProject(e))}/>
-
-        <input
-          ref="openFileUiProject"
-          type="file"
-          style={{display : 'none'}}
-          onChange={base.utils.stopPropagationWrapper((e) => this.props.handleOpenFileUiProject(e))}/>
 
         <base.DialogSelect title="Select VPanel Project"
                            open={!!this.state.openOnlineVPanelProjectItems}

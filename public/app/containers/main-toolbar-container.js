@@ -61,15 +61,11 @@ class MainToolbarContainer extends React.Component {
     projectNew('ui');
   }
 
-  handleOpenFileVPanelProject(e) {
-    const file = e.target.files[0];
-    e.target.value = '';
+  handleOpenFileVPanelProject(file) {
     projectLoadFile(file, 'vpanel');
   }
 
-  handleOpenFileUiProject(e) {
-    const file = e.target.files[0];
-    e.target.value = '';
+  handleOpenFileUiProject(file) {
     projectLoadFile(file, 'ui');
   }
 

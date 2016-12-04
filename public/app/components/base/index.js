@@ -15,6 +15,7 @@ import PropertiesEditor from './properties-editor';
 import PropertiesTitle from './properties-title';
 import PropertiesLabel from './properties-label';
 import PropertiesValue from './properties-value';
+import IconFileButton from './icon-file-button';
 
 export default {
   icons,
@@ -31,5 +32,6 @@ export default {
   PropertiesEditor,
   PropertiesTitle,
   PropertiesLabel,
-  PropertiesValue
+  PropertiesValue,
+  IconFileButton
 };
