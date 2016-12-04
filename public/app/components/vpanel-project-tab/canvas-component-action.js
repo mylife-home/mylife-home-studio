@@ -14,27 +14,19 @@ const styles = Object.assign({
   }
 }, commonStyles);
 
-class CanvasComponentAction extends React.Component {
+const CanvasComponentAction = ({ action, connectDropTarget, isHighlighted }) => {
 
-  constructor(props) {
-    super(props);
-  }
+  const containerStyle = isHighlighted ?
+    Object.assign({}, styles.detailsContainer, styles.highlight) :
+    Object.assign({}, styles.detailsContainer);
 
-  render() {
-    const { action, connectDropTarget, isHighlighted } = this.props;
-
-    const containerStyle = isHighlighted ?
-      Object.assign({}, styles.detailsContainer, styles.highlight) :
-      Object.assign({}, styles.detailsContainer);
-
-    return connectDropTarget(
-      <div style={containerStyle}>
-        <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
-        <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
-      </div>
-    );
-  }
-}
+  return connectDropTarget(
+    <div style={containerStyle}>
+      <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
+      <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
+    </div>
+  );
+};
 
 CanvasComponentAction.propTypes = {
   project: React.PropTypes.object.isRequired,

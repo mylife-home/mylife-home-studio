@@ -12,23 +12,12 @@ import styles from './canvas-component-styles';
 
 import linkHelper from './link-helper';
 
-class CanvasComponentAttribute extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { attribute, connectDragPreview, connectDragSource } = this.props;
-
-    return connectDragSource(
-      <div style={styles.detailsContainer}>
-        {connectDragPreview(<div style={styles.detailsIconContainer}><base.icons.NetAttribute style={styles.detailsIcon} /></div>)}
-        <div style={styles.detailsText}>{`${attribute.name} (${attribute.type})`}</div>
-      </div>
-    );
-  }
-}
+const CanvasComponentAttribute = ({ attribute, connectDragPreview, connectDragSource }) => connectDragSource(
+  <div style={styles.detailsContainer}>
+    {connectDragPreview(<div style={styles.detailsIconContainer}><base.icons.NetAttribute style={styles.detailsIcon} /></div>)}
+    <div style={styles.detailsText}>{`${attribute.name} (${attribute.type})`}</div>
+  </div>
+);
 
 CanvasComponentAttribute.propTypes = {
   project: React.PropTypes.object.isRequired,

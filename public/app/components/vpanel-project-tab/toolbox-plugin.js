@@ -28,68 +28,56 @@ const styles = {
   }
 };
 
-class ToolboxPlugin extends React.Component {
+function renderIcon(connectDragPreview, plugin) {
 
-  constructor(props) {
-    super(props);
-  }
+  switch(plugin.usage) {
+    case Facade.metadata.pluginUsage.driver:
+      return (
+        <base.TooltipContainer tooltip="Hardware driver" tooltipPosition="bottom-right">
+          {connectDragPreview(
+            <div style={styles.iconContainer}>
+              <base.icons.PluginDriver style={styles.icon} />
+            </div>
+          )}
+        </base.TooltipContainer>
+      );
 
-  renderIcon() {
-    const { connectDragPreview, plugin } = this.props;
+    case Facade.metadata.pluginUsage.vpanel:
+      return (
+        <base.TooltipContainer tooltip="Virtual panel" tooltipPosition="bottom-right">
+          {connectDragPreview(
+            <div style={styles.iconContainer}>
+              <base.icons.PluginVPanel style={styles.icon} />
+            </div>
+          )}
+        </base.TooltipContainer>
+      );
 
-    switch(plugin.usage) {
-      case Facade.metadata.pluginUsage.driver:
-        return (
-          <base.TooltipContainer tooltip="Hardware driver" tooltipPosition="bottom-right">
-            {connectDragPreview(
-              <div style={styles.iconContainer}>
-                <base.icons.PluginDriver style={styles.icon} />
-              </div>
-            )}
-          </base.TooltipContainer>
-        );
+    case Facade.metadata.pluginUsage.ui:
+      return (
+        <base.TooltipContainer tooltip="UI" tooltipPosition="bottom-right">
+          {connectDragPreview(
+            <div style={styles.iconContainer}>
+              <base.icons.PluginUi style={styles.icon} />
+            </div>
+          )}
+        </base.TooltipContainer>
+      );
 
-      case Facade.metadata.pluginUsage.vpanel:
-        return (
-          <base.TooltipContainer tooltip="Virtual panel" tooltipPosition="bottom-right">
-            {connectDragPreview(
-              <div style={styles.iconContainer}>
-                <base.icons.PluginVPanel style={styles.icon} />
-              </div>
-            )}
-          </base.TooltipContainer>
-        );
-
-      case Facade.metadata.pluginUsage.ui:
-        return (
-          <base.TooltipContainer tooltip="UI" tooltipPosition="bottom-right">
-            {connectDragPreview(
-              <div style={styles.iconContainer}>
-                <base.icons.PluginUi style={styles.icon} />
-              </div>
-            )}
-          </base.TooltipContainer>
-        );
-
-      default:
-        return null;
-    }
-  }
-
-  render() {
-    const { connectDragSource, isDragging, plugin } = this.props;
-
-    return connectDragSource(
-      <div style={{
-        opacity: isDragging ? 0.5 : 1,
-        cursor: 'move'
-      }}>
-        {this.renderIcon()}
-        <div style={styles.textContainer}>{plugin.library + ':' + plugin.type}</div>
-      </div>
-    );
+    default:
+      return null;
   }
 }
+
+const ToolboxPlugin = ({ connectDragSource, connectDragPreview, isDragging, plugin }) => connectDragSource(
+  <div style={{
+    opacity: isDragging ? 0.5 : 1,
+    cursor: 'move'
+  }}>
+    {renderIcon(connectDragPreview, plugin)}
+    <div style={styles.textContainer}>{plugin.library + ':' + plugin.type}</div>
+  </div>
+);
 
 ToolboxPlugin.propTypes = {
   project: React.PropTypes.object.isRequired,
