@@ -16,22 +16,11 @@ const styles = Object.assign({
   }
 }, commonStyles);
 
-class CanvasImage extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const image = this.props.image;
-
-    return (
-      <div style={styles.container}>
-        <DataImage image={image} style={styles.imageContent} />
-      </div>
-    );
-  }
-}
+const CanvasImage = ({ image }) => (
+  <div style={styles.container}>
+    <DataImage image={image} style={styles.imageContent} />
+  </div>
+);
 
 CanvasImage.propTypes = {
   image: React.PropTypes.object.isRequired,

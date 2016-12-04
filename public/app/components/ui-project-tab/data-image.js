@@ -2,21 +2,9 @@
 
 import React from 'react';
 
-class DataImage extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { image, ...other } = this.props;
-    const url = (image && image.content) ? `data:;base64,${image.content}` : null;
-
-    return (
-      <img {...other} src={url} />
-    );
-  }
-}
+const DataImage = ({ image, ...props }) => (
+  <img {...props} src={(image && image.content) ? `data:;base64,${image.content}` : null} />
+);
 
 DataImage.propTypes = {
   image: React.PropTypes.object,

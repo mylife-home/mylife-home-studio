@@ -29,72 +29,59 @@ const styles = {
   }
 };
 
-class ToolboxControl extends React.Component {
+function renderIcon(connectDragPreview, type) {
 
-  constructor(props) {
-    super(props);
-  }
+  switch(type) {
+    case 'text':
+      return (
+        <base.TooltipContainer tooltip="Text" tooltipPosition="bottom-right">
+          {connectDragPreview(
+            <div style={styles.iconContainer}>
+              <base.icons.UiText style={styles.icon} />
+            </div>
+          )}
+        </base.TooltipContainer>
+      );
 
-  renderIcon() {
-    const { connectDragPreview, type } = this.props;
+    case 'image':
+      return (
+        <base.TooltipContainer tooltip="Image" tooltipPosition="bottom-right">
+          {connectDragPreview(
+            <div style={styles.iconContainer}>
+              <base.icons.UiImage style={styles.icon} />
+            </div>
+          )}
+        </base.TooltipContainer>
+      );
 
-    switch(type) {
-      case 'text':
-        return (
-          <base.TooltipContainer tooltip="Text" tooltipPosition="bottom-right">
-            {connectDragPreview(
-              <div style={styles.iconContainer}>
-                <base.icons.UiText style={styles.icon} />
-              </div>
-            )}
-          </base.TooltipContainer>
-        );
-
-      case 'image':
-        return (
-          <base.TooltipContainer tooltip="Image" tooltipPosition="bottom-right">
-            {connectDragPreview(
-              <div style={styles.iconContainer}>
-                <base.icons.UiImage style={styles.icon} />
-              </div>
-            )}
-          </base.TooltipContainer>
-        );
-
-      default:
-        return null;
-    }
-  }
-
-  renderText() {
-    const { type } = this.props;
-
-    switch(type) {
-      case 'text':
-        return 'Text control';
-
-      case 'image':
-        return 'Image control';
-
-      default:
-        return null;
-    }
-  }
-
-  render() {
-    const { connectDragSource, isDragging } = this.props;
-
-    return connectDragSource(
-      <div style={{
-        opacity: isDragging ? 0.5 : 1,
-        cursor: 'move'
-      }}>
-        {this.renderIcon()}
-        <div style={styles.textContainer}>{this.renderText()}</div>
-      </div>
-    );
+    default:
+      return null;
   }
 }
+
+function renderText(type) {
+
+  switch(type) {
+    case 'text':
+      return 'Text control';
+
+    case 'image':
+      return 'Image control';
+
+    default:
+      return null;
+  }
+}
+
+const ToolboxControl = ({ connectDragSource, isDragging, connectDragPreview, type }) => connectDragSource(
+  <div style={{
+    opacity: isDragging ? 0.5 : 1,
+    cursor: 'move'
+  }}>
+    {renderIcon(connectDragPreview, type)}
+    <div style={styles.textContainer}>{renderText(type)}</div>
+  </div>
+);
 
 ToolboxControl.propTypes = {
   project: React.PropTypes.object.isRequired,
