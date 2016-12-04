@@ -137,7 +137,7 @@ class TooltipContainer extends React.Component {
       </div>
     );
   }
-};
+}
 
 TooltipContainer.propTypes = {
 

@@ -4,28 +4,15 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
 
-import shared from '../../shared/index';
-
 import DetailsContainer from './details-container';
 
 import OnlineStore from '../../stores/online-store';
 
 import { resourcesGetQuery } from '../../actions/index';
 
-const styles = {
-  text: {
-    padding: '10px',
-    position: 'absolute',
-    lineHeight: '22px',
-    overflowY: 'auto',
-    width: '100%',
-    wordWrap: 'break-word'
-  }
-};
-
 class DetailsResource extends React.Component {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.state = {

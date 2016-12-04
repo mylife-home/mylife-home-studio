@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import * as muiStyles from 'material-ui/styles/index';
 
 const styles = {
   text: {

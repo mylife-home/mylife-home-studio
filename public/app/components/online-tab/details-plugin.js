@@ -4,14 +4,13 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
 
-import shared from '../../shared/index';
 import Facade from '../../services/facade';
 
 import DetailsContainer from './details-container';
 
 class DetailsPlugin extends React.Component {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = {};
   }
@@ -96,7 +95,6 @@ class DetailsPlugin extends React.Component {
   }
 
   render() {
-    const entity = this.props.entity;
     const plugin = this.props.plugin;
     const clazz  = Facade.metadata.parseClass(plugin.clazz);
     const config = Facade.metadata.parseConfig(plugin.config);

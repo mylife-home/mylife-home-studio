@@ -2,6 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
+import * as muiStyles from 'material-ui/styles/index';
 import icons from './icons';
 
 function getStyles(props, state) {

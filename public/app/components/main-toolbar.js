@@ -3,6 +3,7 @@
 import async from 'async';
 import React from 'react';
 import * as mui from 'material-ui';
+import * as muiStyles from 'material-ui/styles/index';
 import base from './base/index';
 
 import OnlineStore from '../stores/online-store';
@@ -197,94 +198,95 @@ class MainToolbar extends React.Component {
     const project = this.getActiveTabProject();
 
     return (
-    <mui.Toolbar>
-      <mui.ToolbarGroup>
-        <base.icons.tabs.VPanel style={iconStyle} />
-        <mui.ToolbarTitle text="vpanel" />
+      <mui.Toolbar>
+        <mui.ToolbarGroup>
+          <base.icons.tabs.VPanel style={iconStyle} />
+          <mui.ToolbarTitle text="vpanel" />
 
-        <mui.IconButton tooltip="new"
-                        style={styles.button}
-                        onClick={this.newVPanelProject.bind(this)}>
-          <base.icons.actions.New />
-        </mui.IconButton>
-        <mui.IconButton tooltip="open online"
-                        style={styles.button}
-                        onClick={this.openOnlineVPanelProjectDialog.bind(this)}>
-          <base.icons.actions.OpenOnline />
-        </mui.IconButton>
-        <mui.IconButton tooltip="open from file"
-                        style={styles.button}
-                        onClick={this.openFileVPanelProjectDialog.bind(this)}>
-          <base.icons.actions.OpenFile />
-        </mui.IconButton>
+          <mui.IconButton tooltip="new"
+                          style={styles.button}
+                          onClick={this.newVPanelProject.bind(this)}>
+            <base.icons.actions.New />
+          </mui.IconButton>
+          <mui.IconButton tooltip="open online"
+                          style={styles.button}
+                          onClick={this.openOnlineVPanelProjectDialog.bind(this)}>
+            <base.icons.actions.OpenOnline />
+          </mui.IconButton>
+          <mui.IconButton tooltip="open from file"
+                          style={styles.button}
+                          onClick={this.openFileVPanelProjectDialog.bind(this)}>
+            <base.icons.actions.OpenFile />
+          </mui.IconButton>
 
-        <mui.ToolbarSeparator />
+          <mui.ToolbarSeparator />
 
-        <base.icons.tabs.Ui style={iconStyle} />
-        <mui.ToolbarTitle text="ui"/>
+          <base.icons.tabs.Ui style={iconStyle} />
+          <mui.ToolbarTitle text="ui"/>
 
-        <mui.IconButton tooltip="new"
-                        style={styles.button}
-                        onClick={this.newUiProject.bind(this)}>
-          <base.icons.actions.New />
-        </mui.IconButton>
-        <mui.IconButton tooltip="open online"
-                        style={styles.button}
-                        onClick={this.openOnlineUiProjectDialog.bind(this)}>
-          <base.icons.actions.OpenOnline />
-        </mui.IconButton>
-        <mui.IconButton tooltip="open from file"
-                        style={styles.button}
-                        onClick={this.openFileUiProjectDialog.bind(this)}>
-          <base.icons.actions.OpenFile />
-        </mui.IconButton>
+          <mui.IconButton tooltip="new"
+                          style={styles.button}
+                          onClick={this.newUiProject.bind(this)}>
+            <base.icons.actions.New />
+          </mui.IconButton>
+          <mui.IconButton tooltip="open online"
+                          style={styles.button}
+                          onClick={this.openOnlineUiProjectDialog.bind(this)}>
+            <base.icons.actions.OpenOnline />
+          </mui.IconButton>
+          <mui.IconButton tooltip="open from file"
+                          style={styles.button}
+                          onClick={this.openFileUiProjectDialog.bind(this)}>
+            <base.icons.actions.OpenFile />
+          </mui.IconButton>
 
-        <mui.ToolbarSeparator />
+          <mui.ToolbarSeparator />
 
-        <mui.IconButton tooltip="save all"
-                        style={styles.button}
-                        onClick={this.saveAll.bind(this)}>
-          <base.icons.actions.SaveAll />
-        </mui.IconButton>
-        <mui.IconButton tooltip="save online"
-                        style={styles.button}
-                        disabled={!project}
-                        onClick={this.saveOnline.bind(this)}>
-          <base.icons.actions.Save />
-        </mui.IconButton>
-        <mui.IconButton tooltip="save as"
-                        style={styles.button}
-                        disabled={!project}
-                        onClick={this.saveAs.bind(this)}>
-          <base.icons.actions.SaveAs />
-        </mui.IconButton>
-      </mui.ToolbarGroup>
+          <mui.IconButton tooltip="save all"
+                          style={styles.button}
+                          onClick={this.saveAll.bind(this)}>
+            <base.icons.actions.SaveAll />
+          </mui.IconButton>
+          <mui.IconButton tooltip="save online"
+                          style={styles.button}
+                          disabled={!project}
+                          onClick={this.saveOnline.bind(this)}>
+            <base.icons.actions.Save />
+          </mui.IconButton>
+          <mui.IconButton tooltip="save as"
+                          style={styles.button}
+                          disabled={!project}
+                          onClick={this.saveAs.bind(this)}>
+            <base.icons.actions.SaveAs />
+          </mui.IconButton>
+        </mui.ToolbarGroup>
 
-      <input
-        ref="openFileVPanelProject"
-        type="file"
-        style={{display : 'none'}}
-        onChange={base.utils.stopPropagationWrapper(this.handleOpenFileVPanelProject.bind(this))}/>
+        <input
+          ref="openFileVPanelProject"
+          type="file"
+          style={{display : 'none'}}
+          onChange={base.utils.stopPropagationWrapper(this.handleOpenFileVPanelProject.bind(this))}/>
 
-      <input
-        ref="openFileUiProject"
-        type="file"
-        style={{display : 'none'}}
-        onChange={base.utils.stopPropagationWrapper(this.handleOpenFileUiProject.bind(this))}/>
+        <input
+          ref="openFileUiProject"
+          type="file"
+          style={{display : 'none'}}
+          onChange={base.utils.stopPropagationWrapper(this.handleOpenFileUiProject.bind(this))}/>
 
-      <base.DialogSelect title="Select VPanel Project"
-                         open={!!this.state.openOnlineVPanelProjectItems}
-                         items={this.state.openOnlineVPanelProjectItems || []}
-                         select={this.handleOpenOnlineVPanelProject.bind(this)}
-                         cancel={this.handleOpenOnlineVPanelProject.bind(this, null)}/>
+        <base.DialogSelect title="Select VPanel Project"
+                           open={!!this.state.openOnlineVPanelProjectItems}
+                           items={this.state.openOnlineVPanelProjectItems || []}
+                           select={this.handleOpenOnlineVPanelProject.bind(this)}
+                           cancel={this.handleOpenOnlineVPanelProject.bind(this, null)}/>
 
-      <base.DialogSelect title="Select UI Project"
-                         open={!!this.state.openOnlineUiProjectItems}
-                         items={this.state.openOnlineUiProjectItems || []}
-                         select={this.handleOpenOnlineUiProject.bind(this)}
-                         cancel={this.handleOpenOnlineUiProject.bind(this, null)}/>
-    </mui.Toolbar>
-  ); }
+        <base.DialogSelect title="Select UI Project"
+                           open={!!this.state.openOnlineUiProjectItems}
+                           items={this.state.openOnlineUiProjectItems || []}
+                           select={this.handleOpenOnlineUiProject.bind(this)}
+                           cancel={this.handleOpenOnlineUiProject.bind(this, null)}/>
+      </mui.Toolbar>
+    );
+  }
 }
 
 
