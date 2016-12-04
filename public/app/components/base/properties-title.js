@@ -59,7 +59,7 @@ const PropertiesTitle = ({ muiTheme, icon, text, onDelete }) => {
       </div>
     </div>
   );
-}
+};
 
 PropertiesTitle.propTypes = {
   icon     : React.PropTypes.node.isRequired,

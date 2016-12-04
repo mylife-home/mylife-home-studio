@@ -40,7 +40,7 @@ class MainToolbar extends React.Component {
       openOnlineVPanelProjectItems: null
     });
     if(!name) { return; }
-    this.props.handleOpenOnlineVPanelProject(name);
+    this.props.onOpenOnlineVPanelProject(name);
   }
 
   handleOpenOnlineUiProject(name) {
@@ -48,7 +48,7 @@ class MainToolbar extends React.Component {
       openOnlineUiProjectItems: null
     });
     if(!name) { return; }
-    this.props.handleOpenOnlineUiProject(name);
+    this.props.onOpenOnlineUiProject(name);
   }
 
   render() {
@@ -63,7 +63,7 @@ class MainToolbar extends React.Component {
 
           <mui.IconButton tooltip="new"
                           style={styles.button}
-                          onClick={() => this.props.newVPanelProject()}>
+                          onClick={() => this.props.onNewVPanelProject()}>
             <base.icons.actions.New />
           </mui.IconButton>
           <mui.IconButton tooltip="open online"
@@ -73,7 +73,7 @@ class MainToolbar extends React.Component {
           </mui.IconButton>
           <base.IconFileButton tooltip="open from file"
                                style={styles.button}
-                               onFileSelected={this.props.handleOpenFileVPanelProject}>
+                               onFileSelected={this.props.onOpenFileVPanelProject}>
             <base.icons.actions.OpenFile />
           </base.IconFileButton>
 
@@ -84,7 +84,7 @@ class MainToolbar extends React.Component {
 
           <mui.IconButton tooltip="new"
                           style={styles.button}
-                          onClick={() => this.props.newUiProject()}>
+                          onClick={() => this.props.onNewUiProject()}>
             <base.icons.actions.New />
           </mui.IconButton>
           <mui.IconButton tooltip="open online"
@@ -94,7 +94,7 @@ class MainToolbar extends React.Component {
           </mui.IconButton>
           <base.IconFileButton tooltip="open from file"
                                style={styles.button}
-                               onClick={this.props.handleOpenFileUiProject}>
+                               onClick={this.props.onOpenFileUiProject}>
             <base.icons.actions.OpenFile />
           </base.IconFileButton>
 
@@ -102,19 +102,19 @@ class MainToolbar extends React.Component {
 
           <mui.IconButton tooltip="save all"
                           style={styles.button}
-                          onClick={() => this.props.saveAll()}>
+                          onClick={() => this.props.onSaveAll()}>
             <base.icons.actions.SaveAll />
           </mui.IconButton>
           <mui.IconButton tooltip="save online"
                           style={styles.button}
                           disabled={!project}
-                          onClick={() => this.props.saveOnline(this.props.activeProject)}>
+                          onClick={() => this.props.onSaveOnline(this.props.activeProject)}>
             <base.icons.actions.Save />
           </mui.IconButton>
           <mui.IconButton tooltip="save as"
                           style={styles.button}
                           disabled={!project}
-                          onClick={() => this.props.saveAs(this.props.activeProject)}>
+                          onClick={() => this.props.onSaveAs(this.props.activeProject)}>
             <base.icons.actions.SaveAs />
           </mui.IconButton>
         </mui.ToolbarGroup>

@@ -8,12 +8,7 @@ import OnlineStore from '../stores/online-store';
 import ProjectStore from '../stores/project-store';
 import ActiveTabStore from '../stores/active-tab-store';
 
-import Facade from '../services/facade';
-
-import AppDispatcher from '../dispatcher/app-dispatcher';
-
 import {
-  dialogError, dialogSetBusy, dialogUnsetBusy,
   projectNew, projectLoadFile, projectLoadOnline, projectSaveOnline, projectSaveAs, projectSaveAllOnline
 } from '../actions/index';
 

@@ -24,7 +24,7 @@ const TabTemplate = ({ selected, children }) => {
       {children}
     </div>
   );
-}
+};
 
 TabTemplate.propTypes = {
   children: React.PropTypes.node,
