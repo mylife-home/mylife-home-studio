@@ -1,9 +1,8 @@
 'use strict';
 
 import React from 'react';
+import * as mui from 'material-ui';
 import base from '../base/index';
-
-import DetailsContainer from './details-container';
 
 const DetailsComponentBinding = ({ binding }) => (
   <div>

@@ -15,29 +15,29 @@ class TreePlugin extends React.Component {
 
   renderUsageIcon(plugin) {
     switch(plugin.usage) {
-    case Facade.metadata.pluginUsage.driver:
-      return (
-        <base.TooltipContainer tooltip="Hardware driver">
-          <base.icons.PluginDriver />
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.driver:
+        return (
+          <base.TooltipContainer tooltip="Hardware driver">
+            <base.icons.PluginDriver />
+          </base.TooltipContainer>
+        );
 
-    case Facade.metadata.pluginUsage.vpanel:
-      return (
-        <base.TooltipContainer tooltip="Virtual panel">
-          <base.icons.PluginVPanel />
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.vpanel:
+        return (
+          <base.TooltipContainer tooltip="Virtual panel">
+            <base.icons.PluginVPanel />
+          </base.TooltipContainer>
+        );
 
-    case Facade.metadata.pluginUsage.ui:
-      return (
-        <base.TooltipContainer tooltip="UI">
-          <base.icons.PluginUi />
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.ui:
+        return (
+          <base.TooltipContainer tooltip="UI">
+            <base.icons.PluginUi />
+          </base.TooltipContainer>
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 

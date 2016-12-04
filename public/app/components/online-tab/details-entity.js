@@ -29,29 +29,29 @@ class DetailsEntity extends React.Component {
 
   renderPluginUsageIcon(plugin) {
     switch(plugin.usage) {
-    case Facade.metadata.pluginUsage.driver:
-      return (
-        <base.TooltipContainer tooltip="Hardware driver">
-          <base.icons.PluginDriver />
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.driver:
+        return (
+          <base.TooltipContainer tooltip="Hardware driver">
+            <base.icons.PluginDriver />
+          </base.TooltipContainer>
+        );
 
-    case Facade.metadata.pluginUsage.vpanel:
-      return (
-        <base.TooltipContainer tooltip="Virtual panel">
-          <base.icons.PluginVPanel />
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.vpanel:
+        return (
+          <base.TooltipContainer tooltip="Virtual panel">
+            <base.icons.PluginVPanel />
+          </base.TooltipContainer>
+        );
 
-    case Facade.metadata.pluginUsage.ui:
-      return (
-        <base.TooltipContainer tooltip="UI">
-          <base.icons.PluginUi />
-        </base.TooltipContainer>
-      );
+      case Facade.metadata.pluginUsage.ui:
+        return (
+          <base.TooltipContainer tooltip="UI">
+            <base.icons.PluginUi />
+          </base.TooltipContainer>
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 
@@ -113,58 +113,58 @@ class DetailsEntity extends React.Component {
     return arr;
   }
 
-  renderUiDetails(entity) {
+  renderUiDetails(/*entity*/) {
     return [];
   }
 
   renderDetails(entity) {
 
     switch(entity.type) {
-    case shared.EntityType.RESOURCES:
-      return this.renderResourcesDetails(entity);
+      case shared.EntityType.RESOURCES:
+        return this.renderResourcesDetails(entity);
 
-    case shared.EntityType.CORE:
-      return this.renderCoreDetails(entity);
+      case shared.EntityType.CORE:
+        return this.renderCoreDetails(entity);
 
-    case shared.EntityType.UI:
-      return this.renderUiDetails(entity);
+      case shared.EntityType.UI:
+        return this.renderUiDetails(entity);
 
-    default:
-      return [];
+      default:
+        return [];
     }
   }
 
   renderTypeIcon(entity) {
     switch(entity.type) {
-    case shared.EntityType.RESOURCES:
-      return (
-        <div>
-          <base.icons.EntityResources />
-          &nbsp;
-          Resources
-        </div>
-      );
+      case shared.EntityType.RESOURCES:
+        return (
+          <div>
+            <base.icons.EntityResources />
+            &nbsp;
+            Resources
+          </div>
+        );
 
-    case shared.EntityType.CORE:
-      return (
-        <div>
-          <base.icons.EntityCore />
-          &nbsp;
-          Core
-        </div>
-      );
+      case shared.EntityType.CORE:
+        return (
+          <div>
+            <base.icons.EntityCore />
+            &nbsp;
+            Core
+          </div>
+        );
 
-    case shared.EntityType.UI:
-      return (
-        <div>
-          <base.icons.EntityUi />
-          &nbsp;
-          UI
-        </div>
-      );
+      case shared.EntityType.UI:
+        return (
+          <div>
+            <base.icons.EntityUi />
+            &nbsp;
+            UI
+          </div>
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 

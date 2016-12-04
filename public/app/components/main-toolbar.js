@@ -103,9 +103,8 @@ class MainToolbar extends React.Component {
   }
 
   loadNewProject(type) {
-    let project;
     try {
-      project = Facade.projects.new(type);
+      Facade.projects.new(type);
     } catch(err) {
       return AppDispatcher.dispatch(dialogError(err));
     }
@@ -124,9 +123,8 @@ class MainToolbar extends React.Component {
       const err = reader.error;
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       const content = reader.result;
-      let project;
       try {
-        project = Facade.projects.open(type, content);
+        Facade.projects.open(type, content);
       } catch(err) {
         return AppDispatcher.dispatch(dialogError(err));
       }
@@ -137,9 +135,8 @@ class MainToolbar extends React.Component {
 
   loadProjectOnline(resource, type) {
     function load(content) {
-      let project;
       try {
-        project = Facade.projects.open(type, content);
+        Facade.projects.open(type, content);
       } catch(err) {
         return AppDispatcher.dispatch(dialogError(err));
       }
@@ -266,13 +263,13 @@ class MainToolbar extends React.Component {
       <input
         ref="openFileVPanelProject"
         type="file"
-        style={{"display" : "none"}}
+        style={{display : 'none'}}
         onChange={base.utils.stopPropagationWrapper(this.handleOpenFileVPanelProject.bind(this))}/>
 
       <input
         ref="openFileUiProject"
         type="file"
-        style={{"display" : "none"}}
+        style={{display : 'none'}}
         onChange={base.utils.stopPropagationWrapper(this.handleOpenFileUiProject.bind(this))}/>
 
       <base.DialogSelect title="Select VPanel Project"

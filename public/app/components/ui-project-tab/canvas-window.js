@@ -142,16 +142,16 @@ CanvasWindow.childContextTypes = {
 const canvasTarget = {
   drop(props, monitor, component) {
     switch(monitor.getItemType()) {
-    case AppConstants.DragTypes.UI_TOOLBOX_CONTROL:
-      const canvasRect = component.refs.canvas.getBoundingClientRect();
-      const dropOffset = monitor.getClientOffset();
-      const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
-      // handled in ToolboxControl/endDrag
-      return { location };
+      case AppConstants.DragTypes.UI_TOOLBOX_CONTROL:
+        const canvasRect = component.refs.canvas.getBoundingClientRect();
+        const dropOffset = monitor.getClientOffset();
+        const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
+        // handled in ToolboxControl/endDrag
+        return { location };
 
-    case AppConstants.DragTypes.UI_CONTROL:
-      // handled in CanvasControl/endDrag
-      return { delta: monitor.getDifferenceFromInitialOffset() };
+      case AppConstants.DragTypes.UI_CONTROL:
+        // handled in CanvasControl/endDrag
+        return { delta: monitor.getDifferenceFromInitialOffset() };
     }
   }
 };

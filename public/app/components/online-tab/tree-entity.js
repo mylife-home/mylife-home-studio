@@ -40,45 +40,45 @@ class TreeEntity extends React.Component {
   renderDetails(entity) {
 
     switch(entity.type) {
-    case shared.EntityType.RESOURCES:
-      return this.renderResourcesDetails(entity);
+      case shared.EntityType.RESOURCES:
+        return this.renderResourcesDetails(entity);
 
-    case shared.EntityType.CORE:
-      return this.renderCoreDetails(entity);
+      case shared.EntityType.CORE:
+        return this.renderCoreDetails(entity);
 
-    case shared.EntityType.UI:
-      return this.renderUiDetails(entity);
+      case shared.EntityType.UI:
+        return this.renderUiDetails(entity);
 
-    default:
-      return [];
+      default:
+        return [];
     }
   }
 
   renderTypeIcon(entity) {
     switch(entity.type) {
-    case shared.EntityType.RESOURCES:
-      return (
-        <base.TooltipContainer tooltip="Resources entity">
-          <base.icons.EntityResources />
-        </base.TooltipContainer>
-      );
+      case shared.EntityType.RESOURCES:
+        return (
+          <base.TooltipContainer tooltip="Resources entity">
+            <base.icons.EntityResources />
+          </base.TooltipContainer>
+        );
 
-    case shared.EntityType.CORE:
-      return (
-        <base.TooltipContainer tooltip="Core entity">
-          <base.icons.EntityCore />
-        </base.TooltipContainer>
-      );
+      case shared.EntityType.CORE:
+        return (
+          <base.TooltipContainer tooltip="Core entity">
+            <base.icons.EntityCore />
+          </base.TooltipContainer>
+        );
 
-    case shared.EntityType.UI:
-      return (
-        <base.TooltipContainer tooltip="UI entity">
-          <base.icons.EntityUi />
-        </base.TooltipContainer>
-      );
+      case shared.EntityType.UI:
+        return (
+          <base.TooltipContainer tooltip="UI entity">
+            <base.icons.EntityUi />
+          </base.TooltipContainer>
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 

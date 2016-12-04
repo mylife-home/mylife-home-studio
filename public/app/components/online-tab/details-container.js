@@ -1,8 +1,6 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
-import base from '../base/index';
 
 const styles = {
   text: {

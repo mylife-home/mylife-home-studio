@@ -52,26 +52,26 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
       let title = project.name;
       if(project.dirty) { title += ' *'; }
       switch(project.type) {
-      case 'vpanel':
-        return (
-          <mui.Tab value={project.uid}
-                   key={project.uid}
-                   label={renderTabLabel(title, (<base.icons.tabs.VPanel />))}>
-            <VPanelProjectTab project={project} />
-          </mui.Tab>
-        );
+        case 'vpanel':
+          return (
+            <mui.Tab value={project.uid}
+                     key={project.uid}
+                     label={renderTabLabel(title, (<base.icons.tabs.VPanel />))}>
+              <VPanelProjectTab project={project} />
+            </mui.Tab>
+          );
 
-      case 'ui':
-        return (
-          <mui.Tab value={project.uid}
-                   key={project.uid}
-                   label={renderTabLabel(title, (<base.icons.tabs.Ui />))}>
-            <UiProjectTab project={project} />
-          </mui.Tab>
-        );
+        case 'ui':
+          return (
+            <mui.Tab value={project.uid}
+                     key={project.uid}
+                     label={renderTabLabel(title, (<base.icons.tabs.Ui />))}>
+              <UiProjectTab project={project} />
+            </mui.Tab>
+          );
 
-      default:
-        throw new Error(`project type not supported: ${project.type}`);
+        default:
+          throw new Error(`project type not supported: ${project.type}`);
       }
     })}
   </mui.Tabs>

@@ -18,35 +18,35 @@ class DetailsPlugin extends React.Component {
 
   renderUsageIcon(plugin) {
     switch(plugin.usage) {
-    case Facade.metadata.pluginUsage.driver:
-      return (
-        <div>
-          <base.icons.PluginDriver />
-          &nbsp;
-          Hardware driver
-        </div>
-      );
+      case Facade.metadata.pluginUsage.driver:
+        return (
+          <div>
+            <base.icons.PluginDriver />
+            &nbsp;
+            Hardware driver
+          </div>
+        );
 
-    case Facade.metadata.pluginUsage.vpanel:
-      return (
-        <div>
-          <base.icons.PluginVPanel />
-          &nbsp;
-          Virtual panel
-        </div>
-      );
+      case Facade.metadata.pluginUsage.vpanel:
+        return (
+          <div>
+            <base.icons.PluginVPanel />
+            &nbsp;
+            Virtual panel
+          </div>
+        );
 
-    case Facade.metadata.pluginUsage.ui:
-      return (
-        <div>
-          <base.icons.PluginUi />
-          &nbsp;
-          UI
-        </div>
-      );
+      case Facade.metadata.pluginUsage.ui:
+        return (
+          <div>
+            <base.icons.PluginUi />
+            &nbsp;
+            UI
+          </div>
+        );
 
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 
