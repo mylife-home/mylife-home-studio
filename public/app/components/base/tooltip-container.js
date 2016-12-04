@@ -164,7 +164,13 @@ TooltipContainer.propTypes = {
    */
   touch: React.PropTypes.bool,
 
-  children: React.PropTypes.node
+  children: React.PropTypes.node,
+
+  onBlur: React.PropTypes.func,
+  onFocus: React.PropTypes.func,
+  onMouseLeave: React.PropTypes.func,
+  onMouseOut: React.PropTypes.func,
+  onMouseEnter: React.PropTypes.func
 };
 
 TooltipContainer.contextTypes = {

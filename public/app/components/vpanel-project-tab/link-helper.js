@@ -1,16 +1,16 @@
 'use strict';
 
-import { throttle, debounce } from 'throttle-debounce';
-import aStar from 'a-star';
-import base from '../base/index';
+import { debounce } from 'throttle-debounce';
+//import aStar from 'a-star';
+//import base from '../base/index';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectStateUpdateLinkData } from '../../actions/index';
 import ProjectStore from '../../stores/project-store';
 
-const GRID_SIZE   = base.utils.GRID_SIZE;
-const CANVAS_SIZE = 32000;
-const GRID_ROWS   = CANVAS_SIZE / GRID_SIZE;
-const GRID_COLS   = CANVAS_SIZE / GRID_SIZE;
+//const GRID_SIZE   = base.utils.GRID_SIZE;
+//const CANVAS_SIZE = 32000;
+//const GRID_ROWS   = CANVAS_SIZE / GRID_SIZE;
+//const GRID_COLS   = CANVAS_SIZE / GRID_SIZE;
 
 const debouncedRebuild = debounce(100, rebuild);
 
@@ -155,7 +155,7 @@ function rebuild(project) {
   ++linkData.version;
   AppDispatcher.dispatch(projectStateUpdateLinkData(project, { ...linkData })); // force new object creation as a workaround for now
 }
-
+/*
 function buildObstacleGrid(measures) {
   const grid = new Array(GRID_COLS);
   for(let x=0; x<GRID_COLS; ++x) {
@@ -176,14 +176,14 @@ function buildObstacleGrid(measures) {
 
   return grid;
 }
-
+*/
 function convertRectToCanvas(canvasMeasure, rect) {
   const ret = {
     top:    rect.top - canvasMeasure.y,
     left:   rect.left - canvasMeasure.x,
     right:  rect.right - canvasMeasure.x,
     bottom: rect.bottom - canvasMeasure.y,
-  }
+  };
   ret.width = ret.right - ret.left;
   ret.height = ret.bottom - ret.top;
   return ret;
@@ -202,14 +202,14 @@ function convertAnchorToCanvas(canvasMeasure, anchor) {
     }
   };
 }
-
+/*
 function convertRectToGrid(canvasMeasure, rect) {
   const ret = {
     top:    Math.floor(rect.top   / GRID_SIZE),
     left:   Math.floor(rect.left  / GRID_SIZE),
     right:  Math.ceil(rect.right  / GRID_SIZE),
     bottom: Math.ceil(rect.bottom / GRID_SIZE),
-  }
+  };
   ret.width = ret.right - ret.left;
   ret.height = ret.bottom - ret.top;
   return ret;
@@ -236,7 +236,7 @@ function convertPathFromGrid(path) {
     y: point.y * GRID_SIZE
   }));
 }
-
+*/
 function findPathBasic(start, end) {
   const distances = [];
   for(const startPoint of [start.left, start.right]) {
@@ -258,7 +258,7 @@ function findPathBasic(start, end) {
   };
   return [shortest.start, middle, shortest.end];
 }
-
+/*
 function findPathAStar(obstacleGrid, start, end) {
 
   // TODO: better
@@ -300,14 +300,14 @@ function rectilinearDistance(a, b) {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   return Math.abs(dx) + Math.abs(dy);
-};
-
+}
+*/
 function euclideanDistance(a, b) {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   return Math.sqrt(dx * dx + dy * dy);
-};
-
+}
+/*
 function isPointFree(obstacleGrid, point) {
   return !obstacleGrid[point.x][point.y];
 }
@@ -340,3 +340,4 @@ function neighbors(obstacleGrid, point) {
     ret.push(newPoint);
   }
 }
+*/
