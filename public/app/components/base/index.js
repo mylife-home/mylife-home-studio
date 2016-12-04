@@ -2,8 +2,6 @@
 
 import icons from './icons';
 import utils from './utils';
-import DialogError from './dialog-error';
-import DialogBusy from './dialog-busy';
 import DialogSelect from './dialog-select';
 import DialogConfirm from './dialog-confirm';
 import DialogInfo from './dialog-info';
@@ -21,8 +19,6 @@ import PropertiesValue from './properties-value';
 export default {
   icons,
   utils,
-  DialogError,
-  DialogBusy,
   DialogSelect,
   DialogConfirm,
   DialogInfo,

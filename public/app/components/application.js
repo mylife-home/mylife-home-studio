@@ -8,6 +8,7 @@ import base from './base/index';
 
 import MainToolbar from './main-toolbar';
 import MainTabsContainer from '../containers/main-tabs-container';
+import MainDialogs from '../containers/main-dialogs';
 
 const styles = {
   root: {
@@ -25,8 +26,7 @@ const Application = () => (
     <div style={styles.root}>
       <MainToolbar />
       <MainTabsContainer />
-      <base.DialogError />
-      <base.DialogBusy />
+      <MainDialogs />
     </div>
   </muiStyles.MuiThemeProvider>
 );
