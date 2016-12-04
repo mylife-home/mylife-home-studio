@@ -5,19 +5,6 @@ import * as mui from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import base from './base/index';
 
-import OnlineStore from '../stores/online-store';
-import ProjectStore from '../stores/project-store';
-import ActiveTabStore from '../stores/active-tab-store';
-
-import Facade from '../services/facade';
-
-import AppDispatcher from '../dispatcher/app-dispatcher';
-
-import {
-  dialogError, dialogSetBusy, dialogUnsetBusy,
-  projectNew, projectLoadFile, projectLoadOnline, projectSaveOnline, projectSaveAs, projectSaveAllOnline
-} from '../actions/index';
-
 const styles = {
   icon: {
     margin: 16,
@@ -33,50 +20,7 @@ class MainToolbar extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const activeTabId = ActiveTabStore.getActiveTab();
-    const activeProject = ProjectStore.get(activeTabId);
-
-    this.state = { activeProject };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
-    ActiveTabStore.addChangeListener(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    ActiveTabStore.removeChangeListener(this.boundHandleStoreChange);
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
-  }
-
-  handleStoreChange() {
-    const activeTabId = ActiveTabStore.getActiveTab();
-    const activeProject = ProjectStore.get(activeTabId);
-
-    this.setState({ activeProject });
-  }
-
-  newVPanelProject() {
-    projectNew('vpanel');
-  }
-
-  newUiProject() {
-    projectNew('ui');
-  }
-
-  handleOpenFileVPanelProject(e) {
-    const file = e.target.files[0];
-    e.target.value = '';
-    projectLoadFile(file, 'vpanel');
-  }
-
-  handleOpenFileUiProject(e) {
-    const file = e.target.files[0];
-    e.target.value = '';
-    projectLoadFile(file, 'ui');
+    this.state = {};
   }
 
   openFileVPanelProjectDialog() {
@@ -89,13 +33,13 @@ class MainToolbar extends React.Component {
 
   openOnlineVPanelProjectDialog() {
     this.setState({
-      openOnlineVPanelProjectItems: OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length))
+      openOnlineVPanelProjectItems: this.props.onlineVPanelProjectList
     });
   }
 
   openOnlineUiProjectDialog() {
     this.setState({
-      openOnlineUiProjectItems: OnlineStore.getResourceNames('project.ui.').map(name => name.substring('project.ui.'.length))
+      openOnlineUiProjectItems: this.props.onlineUiProjectList
     });
   }
 
@@ -104,7 +48,7 @@ class MainToolbar extends React.Component {
       openOnlineVPanelProjectItems: null
     });
     if(!name) { return; }
-    projectLoadOnline('project.vpanel.' + name, 'vpanel');
+    this.props.handleOpenOnlineVPanelProject(name);
   }
 
   handleOpenOnlineUiProject(name) {
@@ -112,26 +56,12 @@ class MainToolbar extends React.Component {
       openOnlineUiProjectItems: null
     });
     if(!name) { return; }
-    projectLoadOnline('project.ui.' + name, 'ui');
-  }
-
-  saveAll() {
-    projectSaveAllOnline();
-  }
-
-  saveOnline() {
-    const project = this.state.activeProject;
-    projectSaveOnline(project);
-  }
-
-  saveAs() {
-    const project = this.state.activeProject;
-    projectSaveAs(project);
+    this.props.handleOpenOnlineUiProject(name);
   }
 
   render() {
     const iconStyle = Object.assign({}, styles.icon, { fill: this.props.muiTheme.toolbar.iconColor});
-    const project = this.state.activeProject;
+    const project = this.props.activeProject;
 
     return (
       <mui.Toolbar>
@@ -141,7 +71,7 @@ class MainToolbar extends React.Component {
 
           <mui.IconButton tooltip="new"
                           style={styles.button}
-                          onClick={this.newVPanelProject.bind(this)}>
+                          onClick={() => this.props.newVPanelProject()}>
             <base.icons.actions.New />
           </mui.IconButton>
           <mui.IconButton tooltip="open online"
@@ -162,7 +92,7 @@ class MainToolbar extends React.Component {
 
           <mui.IconButton tooltip="new"
                           style={styles.button}
-                          onClick={this.newUiProject.bind(this)}>
+                          onClick={() => this.props.newUiProject()}>
             <base.icons.actions.New />
           </mui.IconButton>
           <mui.IconButton tooltip="open online"
@@ -180,19 +110,19 @@ class MainToolbar extends React.Component {
 
           <mui.IconButton tooltip="save all"
                           style={styles.button}
-                          onClick={this.saveAll.bind(this)}>
+                          onClick={() => this.props.saveAll()}>
             <base.icons.actions.SaveAll />
           </mui.IconButton>
           <mui.IconButton tooltip="save online"
                           style={styles.button}
                           disabled={!project}
-                          onClick={this.saveOnline.bind(this)}>
+                          onClick={() => this.props.saveOnline(this.props.activeProject)}>
             <base.icons.actions.Save />
           </mui.IconButton>
           <mui.IconButton tooltip="save as"
                           style={styles.button}
                           disabled={!project}
-                          onClick={this.saveAs.bind(this)}>
+                          onClick={() => this.props.saveAs(this.props.activeProject)}>
             <base.icons.actions.SaveAs />
           </mui.IconButton>
         </mui.ToolbarGroup>
@@ -201,13 +131,13 @@ class MainToolbar extends React.Component {
           ref="openFileVPanelProject"
           type="file"
           style={{display : 'none'}}
-          onChange={base.utils.stopPropagationWrapper(this.handleOpenFileVPanelProject.bind(this))}/>
+          onChange={base.utils.stopPropagationWrapper((e) => this.props.handleOpenFileVPanelProject(e))}/>
 
         <input
           ref="openFileUiProject"
           type="file"
           style={{display : 'none'}}
-          onChange={base.utils.stopPropagationWrapper(this.handleOpenFileUiProject.bind(this))}/>
+          onChange={base.utils.stopPropagationWrapper((e) => this.props.handleOpenFileUiProject(e))}/>
 
         <base.DialogSelect title="Select VPanel Project"
                            open={!!this.state.openOnlineVPanelProjectItems}
@@ -224,5 +154,20 @@ class MainToolbar extends React.Component {
     );
   }
 }
+
+MainToolbar.propTypes = {
+  activeProject: React.PropTypes.object,
+  onlineVPanelProjectList: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
+  onlineUiProjectList: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
+  newVPanelProject: React.PropTypes.func.isRequired,
+  newUiProject: React.PropTypes.func.isRequired,
+  handleOpenFileVPanelProject: React.PropTypes.func.isRequired,
+  handleOpenFileUiProject: React.PropTypes.func.isRequired,
+  handleOpenOnlineVPanelProject: React.PropTypes.func.isRequired,
+  handleOpenOnlineUiProject: React.PropTypes.func.isRequired,
+  saveAll: React.PropTypes.func.isRequired,
+  saveOnline: React.PropTypes.func.isRequired,
+  saveAs: React.PropTypes.func.isRequired
+};
 
 export default muiThemeable()(MainToolbar);
