@@ -3,7 +3,7 @@
 import async from 'async';
 import React from 'react';
 import * as mui from 'material-ui';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import base from './base/index';
 
 import OnlineStore from '../stores/online-store';
@@ -32,23 +32,32 @@ const styles = {
 
 class MainToolbar extends React.Component {
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
-    };
+  constructor(props) {
+    super(props);
+
+    const activeTabId = ActiveTabStore.getActiveTab();
+    const activeProject = ProjectStore.get(activeTabId);
+
+    this.state = { activeProject };
+
+    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
-  getChildContext() {
-    return {
-      muiTheme: this.state.muiTheme,
-    };
+  componentDidMount() {
+    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    ActiveTabStore.addChangeListener(this.boundHandleStoreChange);
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({
-      muiTheme: nextContext.muiTheme || this.state.muiTheme,
-    });
+  componentWillUnmount() {
+    ActiveTabStore.removeChangeListener(this.boundHandleStoreChange);
+    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+  }
+
+  handleStoreChange() {
+    const activeTabId = ActiveTabStore.getActiveTab();
+    const activeProject = ProjectStore.get(activeTabId);
+
+    this.setState({ activeProject });
   }
 
   newVPanelProject() {
@@ -168,7 +177,7 @@ class MainToolbar extends React.Component {
   }
 
   saveOnline() {
-    const project = this.getActiveTabProject();
+    const project = this.state.activeProject;
     AppDispatcher.dispatch(dialogSetBusy('Saving project'));
     Facade.projects.saveOnline(project, (err) => {
       AppDispatcher.dispatch(dialogUnsetBusy());
@@ -177,7 +186,7 @@ class MainToolbar extends React.Component {
   }
 
   saveAs() {
-    const project = this.getActiveTabProject();
+    const project = this.state.activeProject;
     let content;
     try {
       content = Facade.projects.serialize(project);
@@ -188,14 +197,9 @@ class MainToolbar extends React.Component {
     base.utils.download(content, 'application/json', project.name + '.json');
   }
 
-  getActiveTabProject() {
-    const activeTabId = ActiveTabStore.getActiveTab();
-    return ProjectStore.get(activeTabId);
-  }
-
   render() {
-    const iconStyle = Object.assign({}, styles.icon, { fill: this.state.muiTheme.toolbar.iconColor});
-    const project = this.getActiveTabProject();
+    const iconStyle = Object.assign({}, styles.icon, { fill: this.props.muiTheme.toolbar.iconColor});
+    const project = this.state.activeProject;
 
     return (
       <mui.Toolbar>
@@ -289,17 +293,4 @@ class MainToolbar extends React.Component {
   }
 }
 
-
-MainToolbar.propTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-MainToolbar.childContextTypes = {
-  muiTheme: React.PropTypes.object
-},
-
-MainToolbar.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-export default MainToolbar;
+export default muiThemeable()(MainToolbar);
