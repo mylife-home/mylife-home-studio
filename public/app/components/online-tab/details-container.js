@@ -45,7 +45,11 @@ class DetailsContainer extends React.Component {
 }
 
 DetailsContainer.propTypes = {
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.node),
+    React.PropTypes.node
+  ])
 };
 
 DetailsContainer.childContextTypes = {

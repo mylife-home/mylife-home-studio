@@ -50,7 +50,8 @@ class SelectableListItem extends React.Component {
 
 SelectableListItem.propTypes = {
   value: React.PropTypes.object.isRequired,
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
+  children: React.PropTypes.node
 };
 
 SelectableListItem.childContextTypes = {

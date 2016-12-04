@@ -162,7 +162,9 @@ TooltipContainer.propTypes = {
    * If true, increase the tooltip element's size.  Useful for increasing tooltip
    * readability on mobile devices.
    */
-  touch: React.PropTypes.bool
+  touch: React.PropTypes.bool,
+
+  children: React.PropTypes.node
 };
 
 TooltipContainer.contextTypes = {

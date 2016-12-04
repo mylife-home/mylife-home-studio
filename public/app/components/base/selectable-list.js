@@ -65,7 +65,8 @@ SelectableList.childContextTypes = {
 
 SelectableList.propTypes = {
   selectedValueChanged: React.PropTypes.func,
-  selectedNode: React.PropTypes.object
+  selectedNode: React.PropTypes.object,
+  children: React.PropTypes.arrayOf(React.PropTypes.node)
 };
 
 export default SelectableList;
