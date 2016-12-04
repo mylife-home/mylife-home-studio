@@ -1,6 +1,5 @@
 'use strict';
 
-import async from 'async';
 import React from 'react';
 import * as mui from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
@@ -16,7 +15,7 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 
 import {
   dialogError, dialogSetBusy, dialogUnsetBusy,
-  resourcesGetQuery
+  projectNew, projectLoadFile, projectLoadOnline, projectSaveOnline, projectSaveAs, projectSaveAllOnline
 } from '../actions/index';
 
 const styles = {
@@ -61,19 +60,23 @@ class MainToolbar extends React.Component {
   }
 
   newVPanelProject() {
-    this.loadNewProject('vpanel');
+    projectNew('vpanel');
   }
 
   newUiProject() {
-    this.loadNewProject('ui');
+    projectNew('ui');
   }
 
   handleOpenFileVPanelProject(e) {
-    this.loadProjectFile(e, 'vpanel');
+    const file = e.target.files[0];
+    e.target.value = '';
+    projectLoadFile(file, 'vpanel');
   }
 
   handleOpenFileUiProject(e) {
-    this.loadProjectFile(e, 'ui');
+    const file = e.target.files[0];
+    e.target.value = '';
+    projectLoadFile(file, 'ui');
   }
 
   openFileVPanelProjectDialog() {
@@ -101,7 +104,7 @@ class MainToolbar extends React.Component {
       openOnlineVPanelProjectItems: null
     });
     if(!name) { return; }
-    this.loadProjectOnline('project.vpanel.' + name, 'vpanel');
+    projectLoadOnline('project.vpanel.' + name, 'vpanel');
   }
 
   handleOpenOnlineUiProject(name) {
@@ -109,92 +112,21 @@ class MainToolbar extends React.Component {
       openOnlineUiProjectItems: null
     });
     if(!name) { return; }
-    this.loadProjectOnline('project.ui.' + name, 'ui');
-  }
-
-  loadNewProject(type) {
-    try {
-      Facade.projects.new(type);
-    } catch(err) {
-      return AppDispatcher.dispatch(dialogError(err));
-    }
-  }
-
-  loadProjectFile(e, type) {
-    const file = e.target.files[0];
-    e.target.value = '';
-
-    const reader = new FileReader();
-
-    AppDispatcher.dispatch(dialogSetBusy('Loading project'));
-
-    reader.onloadend = () => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      const err = reader.error;
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-      const content = reader.result;
-      try {
-        Facade.projects.open(type, content);
-      } catch(err) {
-        return AppDispatcher.dispatch(dialogError(err));
-      }
-    };
-
-    reader.readAsText(file);
-  }
-
-  loadProjectOnline(resource, type) {
-    function load(content) {
-      try {
-        Facade.projects.open(type, content);
-      } catch(err) {
-        return AppDispatcher.dispatch(dialogError(err));
-      }
-    }
-
-    const entity = OnlineStore.getResourceEntity();
-    const cachedContent = entity.cachedResources && entity.cachedResources[resource];
-    if(cachedContent) {
-      return load(cachedContent);
-    }
-
-    // need to get content .. TODO: Flux pattern to do that ?
-    AppDispatcher.dispatch(dialogSetBusy('Loading project'));
-    return resourcesGetQuery(entity.id, resource, (err, content) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-      return load(content);
-    });
+    projectLoadOnline('project.ui.' + name, 'ui');
   }
 
   saveAll() {
-    const projects = ProjectStore.getAll();
-    AppDispatcher.dispatch(dialogSetBusy('Saving projects'));
-    async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, cb), (err) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-    });
+    projectSaveAllOnline();
   }
 
   saveOnline() {
     const project = this.state.activeProject;
-    AppDispatcher.dispatch(dialogSetBusy('Saving project'));
-    Facade.projects.saveOnline(project, (err) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-    });
+    projectSaveOnline(project);
   }
 
   saveAs() {
     const project = this.state.activeProject;
-    let content;
-    try {
-      content = Facade.projects.serialize(project);
-    } catch(err) {
-      return AppDispatcher.dispatch(dialogError(err));
-    }
-
-    base.utils.download(content, 'application/json', project.name + '.json');
+    projectSaveAs(project);
   }
 
   render() {

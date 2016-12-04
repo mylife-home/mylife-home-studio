@@ -1,13 +1,104 @@
 'use strict';
 
+import async from 'async';
 import AppConstants from '../constants/app-constants';
 import Facade from '../services/facade';
+import base from '../components/base/index';
+
+import ProjectStore from '../stores/project-store';
+import OnlineStore from '../stores/online-store';
+
+import AppDispatcher from '../dispatcher/app-dispatcher';
+
+import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
+import { resourcesGetQuery } from './resources-action-creators';
+
+export function projectNew(type) {
+  try {
+    Facade.projects.new(type);
+  } catch(err) {
+    return AppDispatcher.dispatch(dialogError(err));
+  }
+}
+
+export function projectLoadFile(file, type) {
+
+  const reader = new FileReader();
+
+  AppDispatcher.dispatch(dialogSetBusy('Loading project'));
+
+  reader.onloadend = () => {
+    AppDispatcher.dispatch(dialogUnsetBusy());
+    const err = reader.error;
+    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
+    const content = reader.result;
+    try {
+      Facade.projects.open(type, content);
+    } catch(err) {
+      return AppDispatcher.dispatch(dialogError(err));
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+export function projectLoadOnline(resource, type) {
+  function load(content) {
+    try {
+      Facade.projects.open(type, content);
+    } catch(err) {
+      return AppDispatcher.dispatch(dialogError(err));
+    }
+  }
+
+  const entity = OnlineStore.getResourceEntity();
+  const cachedContent = entity.cachedResources && entity.cachedResources[resource];
+  if(cachedContent) {
+    return load(cachedContent);
+  }
+
+  // need to get content .. TODO: Flux pattern to do that ?
+  AppDispatcher.dispatch(dialogSetBusy('Loading project'));
+  return resourcesGetQuery(entity.id, resource, (err, content) => {
+    AppDispatcher.dispatch(dialogUnsetBusy());
+    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
+    return load(content);
+  });
+}
 
 export function projectLoad(project) {
   return {
     type: AppConstants.ActionTypes.PROJECT_LOAD,
     project
   };
+}
+
+export function projectSaveOnline(project) {
+  AppDispatcher.dispatch(dialogSetBusy('Saving project'));
+  Facade.projects.saveOnline(project, (err) => {
+    AppDispatcher.dispatch(dialogUnsetBusy());
+    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
+  });
+}
+
+export function projectSaveAs(project) {
+  let content;
+  try {
+    content = Facade.projects.serialize(project);
+  } catch(err) {
+    return AppDispatcher.dispatch(dialogError(err));
+  }
+
+  base.utils.download(content, 'application/json', project.name + '.json');
+}
+
+export function projectSaveAllOnline() {
+  const projects = ProjectStore.getAll();
+  AppDispatcher.dispatch(dialogSetBusy('Saving projects'));
+  async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, cb), (err) => {
+    AppDispatcher.dispatch(dialogUnsetBusy());
+    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
+  });
 }
 
 export function projectClose(project) {
