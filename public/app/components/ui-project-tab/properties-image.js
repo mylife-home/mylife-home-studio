@@ -17,7 +17,7 @@ class PropertiesImage extends React.Component {
     super(props);
     this.state = { };
 
-    const image = this.props.image;
+    const { image } = this.props;
     this.calculateSize(image);
   }
 
