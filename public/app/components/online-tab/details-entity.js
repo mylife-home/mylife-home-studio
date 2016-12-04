@@ -2,7 +2,6 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 import base from '../base/index';
 
 import shared from '../../shared/index';
@@ -187,4 +186,4 @@ DetailsEntity.propTypes = {
   changeValue: React.PropTypes.func.isRequired
 };
 
-export default muiThemeable()(DetailsEntity);
+export default DetailsEntity;

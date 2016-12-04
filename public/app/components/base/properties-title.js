@@ -2,17 +2,16 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import icons from './icons';
 
-function getStyles(props, state) {
-  const { baseTheme } = state.muiTheme;
+function getStyles(muiTheme) {
 
   return {
     titleContainer : {
       textAlign    : 'center',
-      background   : baseTheme.palette.primary3Color,
-      color        : baseTheme.palette.textColor,
+      background   : muiTheme.palette.primary3Color,
+      color        : muiTheme.palette.textColor,
     },
     titleItem: {
       verticalAlign : 'middle',
@@ -40,39 +39,26 @@ function getStyles(props, state) {
   };
 }
 
-class PropertiesTitle extends React.Component {
+const PropertiesTitle = ({ muiTheme, icon, text, onDelete }) => {
+  const styles = getStyles(muiTheme);
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
-    };
-  }
-
-  render() {
-    const { icon, text, onDelete } = this.props;
-    const styles = getStyles(this.props, this.state);
-
-    return (
-      <div style={styles.titleContainer}>
-        <div style={Object.assign({}, styles.titleItem, styles.titleLeft)}>
-          {icon}
-        </div>
-        {(() => {
-          if(!onDelete) { return; }
-          return (
-            <mui.IconButton onClick={onDelete} style={Object.assign({}, styles.titleItem, styles.titleRight)}>
-              <icons.actions.Close/>
-            </mui.IconButton>);
-        })()}
-        <div style={Object.assign({}, styles.titleItem, styles.titleMain)}>
-          {text}
-        </div>
+  return (
+    <div style={styles.titleContainer}>
+      <div style={Object.assign({}, styles.titleItem, styles.titleLeft)}>
+        {icon}
       </div>
-    );
-  }
-
+      {(() => {
+        if(!onDelete) { return; }
+        return (
+          <mui.IconButton onClick={onDelete} style={Object.assign({}, styles.titleItem, styles.titleRight)}>
+            <icons.actions.Close/>
+          </mui.IconButton>);
+      })()}
+      <div style={Object.assign({}, styles.titleItem, styles.titleMain)}>
+        {text}
+      </div>
+    </div>
+  );
 }
 
 PropertiesTitle.propTypes = {
@@ -81,12 +67,4 @@ PropertiesTitle.propTypes = {
   onDelete : React.PropTypes.func,
 };
 
-PropertiesTitle.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-PropertiesTitle.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-export default PropertiesTitle;
+export default muiThemeable()(PropertiesTitle);

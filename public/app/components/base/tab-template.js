@@ -1,5 +1,7 @@
 'use strict';
 
+import React from 'react';
+
 const baseStyle = {
   width: '100%',
   height: '100%',
@@ -7,25 +9,21 @@ const baseStyle = {
   textAlign: 'initial',
 };
 
-import React from 'react';
 
-class TabTemplate extends React.Component {
+const TabTemplate = ({ selected, children }) => {
 
-  render() {
+  const additionalStyle = {};
 
-    const additionalStyle = {};
-
-    if (!this.props.selected) {
-      additionalStyle.height = 0;
-      additionalStyle.overflow = 'hidden';
-    }
-
-    return (
-      <div style={Object.assign({}, baseStyle, additionalStyle)}>
-        {this.props.children}
-      </div>
-    );
+  if (!selected) {
+    additionalStyle.height = 0;
+    additionalStyle.overflow = 'hidden';
   }
+
+  return (
+    <div style={Object.assign({}, baseStyle, additionalStyle)}>
+      {children}
+    </div>
+  );
 }
 
 TabTemplate.propTypes = {

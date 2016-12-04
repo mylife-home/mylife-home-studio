@@ -3,37 +3,27 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-class DialogConfirm extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <mui.Dialog
-          title={this.props.title}
-          actions={<div>
-                    <mui.FlatButton
-                      label="Yes"
-                      onTouchTap={() => this.props.yes()} />
-                    <mui.FlatButton
-                      label="No"
-                      onTouchTap={() => this.props.no()} />
-                  </div>}
-          modal={true}
-          open={this.props.open}
-          autoScrollBodyContent={true}>
-          <mui.List>
-            {this.props.lines.map(it => (<mui.ListItem
-                                            key={it}
-                                            primaryText={it} />))}
-          </mui.List>
-        </mui.Dialog>
-    );
-  }
-}
+const DialogConfirm = ({ title, open, lines, yes, no }) => (
+  <mui.Dialog
+    title={title}
+    actions={<div>
+              <mui.FlatButton
+                label="Yes"
+                onTouchTap={() => yes()} />
+              <mui.FlatButton
+                label="No"
+                onTouchTap={() => no()} />
+            </div>}
+    modal={true}
+    open={open}
+    autoScrollBodyContent={true}>
+    <mui.List>
+      {lines.map(it => (<mui.ListItem
+                          key={it}
+                          primaryText={it} />))}
+    </mui.List>
+  </mui.Dialog>
+);
 
 DialogConfirm.propTypes = {
   title: React.PropTypes.string.isRequired,

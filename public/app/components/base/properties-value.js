@@ -15,24 +15,13 @@ const styles = {
   }
 };
 
-class PropertiesValue extends React.Component {
-
-  constructor(props, context) {
-    super(props, context);
-  }
-
-  render() {
-    const { value } = this.props;
-
-    return (
-      <div style={styles.container}>
-        <div style={styles.content}>
-          {value}
-        </div>
-      </div>
-    );
-  }
-}
+const PropertiesValue = ({ value }) => (
+  <div style={styles.container}>
+    <div style={styles.content}>
+      {value}
+    </div>
+  </div>
+);
 
 PropertiesValue.propTypes = {
   value: React.PropTypes.string.isRequired,

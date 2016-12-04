@@ -12,18 +12,9 @@ const styles = {
   }
 };
 
-class PropertiesLabel extends React.Component {
-
-  constructor(props, context) {
-    super(props, context);
-  }
-
-  render() {
-    const { text } = this.props;
-
-    return (<div style={styles.cell}>{text}</div>);
-  }
-}
+const PropertiesLabel = ({ text }) => (
+  <div style={styles.cell}>{text}</div>
+);
 
 PropertiesLabel.propTypes = {
   text: React.PropTypes.string.isRequired,

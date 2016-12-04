@@ -3,33 +3,23 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-class DialogSelect extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <mui.Dialog
-          title={this.props.title}
-          actions={<mui.FlatButton
-                    label="Cancel"
-                    onTouchTap={() => this.props.cancel()} />}
-          modal={true}
-          open={this.props.open}
-          autoScrollBodyContent={true}>
-          <mui.List>
-            {this.props.items.map(it => (<mui.ListItem
-                                            key={it}
-                                            primaryText={it}
-                                            onTouchTap={() => this.props.select(it)} />))}
-          </mui.List>
-        </mui.Dialog>
-    );
-  }
-}
+const DialogSelect = ({ title, open, items, select, cancel }) => (
+  <mui.Dialog
+    title={title}
+    actions={<mui.FlatButton
+              label="Cancel"
+              onTouchTap={() => cancel()} />}
+    modal={true}
+    open={open}
+    autoScrollBodyContent={true}>
+    <mui.List>
+      {items.map(it => (<mui.ListItem
+                                      key={it}
+                                      primaryText={it}
+                                      onTouchTap={() => select(it)} />))}
+    </mui.List>
+  </mui.Dialog>
+);
 
 DialogSelect.propTypes = {
   title: React.PropTypes.string.isRequired,

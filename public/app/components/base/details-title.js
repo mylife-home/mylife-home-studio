@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
 const styles = {
   titleContainer : {
@@ -28,71 +28,44 @@ const styles = {
   }
 };
 
-class DetailsTitle extends React.Component {
-
-  constructor(props, context) {
-    super(props);
-    this.state = {
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
-    };
+function renderLeft(val) {
+  if(!val) {
+    return null;
   }
-
-  getChildContext() {
-    return {
-      muiTheme: this.state.muiTheme,
-    };
-  }
-
-  renderLeft() {
-    const val = this.props.left;
-    if(!val) {
-      return null;
-    }
-    const style = Object.assign({}, styles.titleItem, styles.titleLeft);
-    return (<h3 style={style}>{val}</h3>);
-  }
-
-  renderRight() {
-    const val = this.props.right;
-    if(!val) {
-      return null;
-    }
-    const style = Object.assign({}, styles.titleItem, styles.titleRight);
-    return (<h3 style={style}>{val}</h3>);
-  }
-
-  render() {
-    const additionalStyle = {
-      fontFamily: this.state.muiTheme.fontFamily,
-      color: this.state.muiTheme.palette.primaryColor,
-    };
-
-    return (
-      <div>
-        <div style={Object.assign({}, styles.titleContainer, additionalStyle)}>
-          {this.renderLeft()}
-          {this.renderRight()}
-          <h2 style={Object.assign({}, styles.titleItem, styles.titleMain)}>{this.props.center}</h2>
-        </div>
-        <mui.Divider />
-      </div>
-    );
-  }
+  const style = Object.assign({}, styles.titleItem, styles.titleLeft);
+  return (<h3 style={style}>{val}</h3>);
 }
+
+function renderRight(val) {
+  if(!val) {
+    return null;
+  }
+  const style = Object.assign({}, styles.titleItem, styles.titleRight);
+  return (<h3 style={style}>{val}</h3>);
+}
+
+const DetailsTitle = ({ muiTheme, left, right, center }) => {
+  const additionalStyle = {
+    fontFamily: muiTheme.fontFamily,
+    color: muiTheme.palette.primaryColor,
+  };
+
+  return (
+    <div>
+      <div style={Object.assign({}, styles.titleContainer, additionalStyle)}>
+        {renderLeft(left)}
+        {renderRight(right)}
+        <h2 style={Object.assign({}, styles.titleItem, styles.titleMain)}>{center}</h2>
+      </div>
+      <mui.Divider />
+    </div>
+  );
+};
 
 DetailsTitle.propTypes = {
   left:   React.PropTypes.node,
   right:  React.PropTypes.node,
-  center: React.PropTypes.node.isRequired,
-  muiTheme: React.PropTypes.object
+  center: React.PropTypes.node.isRequired
 };
 
-DetailsTitle.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-DetailsTitle.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-export default DetailsTitle;
+export default muiThemeable()(DetailsTitle);
