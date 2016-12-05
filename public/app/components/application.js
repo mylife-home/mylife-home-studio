@@ -20,14 +20,20 @@ const styles = {
   theme: muiStyles.getMuiTheme(muiStyles.lightBaseTheme)
 };
 
-const Application = () => (
-  <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
-    <div style={styles.root}>
-      <MainToolbarContainer />
-      <MainTabsContainer />
-      <MainDialogs />
-    </div>
-  </muiStyles.MuiThemeProvider>
-);
+// class needed by dnd.DragDropContext
+class Application extends React.Component {
+
+  render() {
+    return (
+      <muiStyles.MuiThemeProvider muiTheme={styles.theme}>
+        <div style={styles.root}>
+          <MainToolbarContainer />
+          <MainTabsContainer />
+          <MainDialogs />
+        </div>
+      </muiStyles.MuiThemeProvider>
+    );
+  }
+}
 
 export default dnd.DragDropContext(dndHTML5Backend)(Application);
