@@ -1,28 +1,17 @@
 'use strict';
 
-import React from 'react';
+import { connect } from 'react-redux';
 
 import Details from '../../components/online-tab/details';
 
-import OnlineStore from '../../stores/online-store';
+const mapStateToProps = (state, { value, onChangeValue }) => ({
+  entity: value && state.online.get(value.entity),
+  value,
+  onChangeValue
+});
 
-class DetailsContainer extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    const { value, onChangeValue } = this.props;
-    const entity = value && OnlineStore.get(value.entity);
-    return (<Details value={value} onChangeValue={onChangeValue} entity={entity} />);
-  }
-}
-
-DetailsContainer.propTypes = {
-  value: React.PropTypes.object,
-  onChangeValue: React.PropTypes.func.isRequired
-};
+const DetailsContainer = connect(
+  mapStateToProps
+)(Details);
 
 export default DetailsContainer;
