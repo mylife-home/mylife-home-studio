@@ -9,7 +9,6 @@ const baseStyle = {
   textAlign: 'initial',
 };
 
-
 const TabTemplate = ({ selected, children }) => {
 
   const additionalStyle = {};
