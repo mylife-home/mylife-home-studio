@@ -35,7 +35,7 @@ const MainToolbar = ({
         </mui.IconButton>
         <base.IconSelectButton tooltip="open online"
                               style={styles.button}
-                              selectTitle={"Select VPanel Project"}
+                              selectTitle="Select VPanel Project"
                               selectItems={onlineVPanelProjectList}
                               onItemSelect={onOpenOnlineVPanelProject}>
           <base.icons.actions.OpenOnline />
@@ -58,7 +58,7 @@ const MainToolbar = ({
         </mui.IconButton>
         <base.IconSelectButton tooltip="open online"
                               style={styles.button}
-                              selectTitle={"Select UI Project"}
+                              selectTitle="Select UI Project"
                               selectItems={onlineUiProjectList}
                               onItemSelect={onOpenOnlineUiProject}>
           <base.icons.actions.OpenOnline />
