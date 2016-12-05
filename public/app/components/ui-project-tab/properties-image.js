@@ -46,6 +46,7 @@ class PropertiesImage extends React.Component {
   }
 
   handleOpenImageFile(e) {
+    e.stopPropagation();
     const file = e.target.files[0];
     e.target.value = '';
 
@@ -112,7 +113,7 @@ class PropertiesImage extends React.Component {
           ref="openImageFile"
           type="file"
           style={{display : 'none'}}
-          onChange={base.utils.stopPropagationWrapper(this.handleOpenImageFile.bind(this))}/>
+          onChange={this.handleOpenImageFile.bind(this)}/>
       </div>
     );
   }
