@@ -7,7 +7,7 @@ import base from '../base/index';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
-import { projectStateSelect } from '../../actions/index';
+import { projectNewComponent } from '../../actions/index';
 
 const styles = {
   iconContainer: {
@@ -103,10 +103,7 @@ const pluginSource = {
     const plugin = monitor.getItem();
     const { project } = props;
     const { location } = monitor.getDropResult();
-
-    const component = Facade.projects.vpanelCreateComponent(project, base.utils.snapToGrid(location), plugin);
-
-    AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
+    projectNewComponent(project, location, plugin);
   }
 };
 

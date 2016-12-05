@@ -8,7 +8,7 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
-import { projectStateSelect } from '../../actions/index';
+import { projectNewControl } from '../../actions/index';
 
 const styles = {
   iconContainer: {
@@ -103,16 +103,7 @@ const pluginSource = {
 
     const { project, type } = props;
     const { location } = monitor.getDropResult();
-    const projectState = ProjectStore.getProjectState(project);
-    const window = project.windows.find(wnd => wnd.uid === projectState.activeContent.uid);
-
-    const control = Facade.projects.uiCreateControl(project, window, location, type);
-
-    AppDispatcher.dispatch(projectStateSelect(project, {
-      type: 'control',
-      windowUid: window.uid,
-      controlUid: control.uid
-    }));
+    projectNewControl(project, location, type);
   }
 };
 

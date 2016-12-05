@@ -108,6 +108,13 @@ export function projectClose(project) {
   };
 }
 
+export function projectNewComponent(project, location, plugin) {
+
+  const component = Facade.projects.vpanelCreateComponent(project, base.utils.snapToGrid(location), plugin);
+
+  AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
+}
+
 export function projectDeleteComponent(project, component) {
   switch(project.type) {
     case 'vpanel':
@@ -135,6 +142,19 @@ export function projectNewWindow(project) {
 
   const selection = { type: 'window', uid: window.uid };
   AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+}
+
+export function projectNewControl(project, location, type) {
+  const projectState = ProjectStore.getProjectState(project);
+  const window = project.windows.find(wnd => wnd.uid === projectState.activeContent.uid);
+
+  const control = Facade.projects.uiCreateControl(project, window, location, type);
+
+  AppDispatcher.dispatch(projectStateSelect(project, {
+    type: 'control',
+    windowUid: window.uid,
+    controlUid: control.uid
+  }));
 }
 
 export function projectDeleteImage(project, image) {
