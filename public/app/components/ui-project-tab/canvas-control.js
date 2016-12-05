@@ -5,7 +5,8 @@ import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
-import base from '../base/index';
+
+import { stopPropagationWrapper } from '../../utils/index';
 
 import DataImage from './data-image';
 
@@ -137,7 +138,7 @@ class CanvasControl extends React.Component {
 
     return (
       <div style={styles.controlContainer}
-           onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
+           onClick={stopPropagationWrapper(this.select.bind(this))}>
         <ResizableBox width={control.width}
                       height={control.height}
                       onResize={this.debouncedControlResize}

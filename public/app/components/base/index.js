@@ -1,6 +1,5 @@
 'use strict';
 
-import utils from './utils';
 import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import TooltipContainer from './tooltip-container';
@@ -10,7 +9,6 @@ import IconFileButton from './icon-file-button';
 import IconSelectButton from './icon-select-button';
 
 export default {
-  utils,
   SelectableList,
   SelectableListItem,
   TooltipContainer,

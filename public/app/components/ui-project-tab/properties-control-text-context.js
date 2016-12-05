@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import { stopPropagationWrapper } from '../../utils/index';
 
 import PropertiesControlTextContextRow from './properties-control-text-context-row';
 
@@ -61,7 +61,7 @@ class PropertiesControlTextContext extends React.Component {
       <div>
         <mui.RaisedButton
           label={display}
-          onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
 
         <mui.Dialog

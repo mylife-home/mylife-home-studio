@@ -3,7 +3,7 @@
 import React from 'react';
 import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
-import base from '../base/index';
+import { stopPropagationWrapper } from '../../utils/index';
 
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
@@ -99,7 +99,7 @@ class Canvas extends React.Component {
     return connectDropTarget(
       <div style={styles.container}>
         <div style={styles.scrollbox} ref="scrollbox">
-          <div style={canvasStyle} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))} ref="canvas">
+          <div style={canvasStyle} onClick={stopPropagationWrapper(this.select.bind(this))} ref="canvas">
             <Measure onMeasure={this.handleMeasureChange.bind(this)}>
               <div>
                 {this.renderComponents(project)}

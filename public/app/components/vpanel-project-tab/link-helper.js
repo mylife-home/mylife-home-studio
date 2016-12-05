@@ -2,12 +2,11 @@
 
 import { debounce } from 'throttle-debounce';
 //import aStar from 'a-star';
-//import base from '../base/index';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectStateUpdateLinkData } from '../../actions/index';
 import ProjectStore from '../../stores/project-store';
 
-//const GRID_SIZE   = base.utils.GRID_SIZE;
+//const GRID_SIZE   = utils.GRID_SIZE;
 //const CANVAS_SIZE = 32000;
 //const GRID_ROWS   = CANVAS_SIZE / GRID_SIZE;
 //const GRID_COLS   = CANVAS_SIZE / GRID_SIZE;

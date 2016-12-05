@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import { stopPropagationWrapper, sortBy } from '../../utils/index';
 
 import Facade from '../../services/facade';
 
@@ -96,7 +96,7 @@ class PropertiesControlAction extends React.Component {
       <div>
         <mui.RaisedButton
           label={display}
-          onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
         <mui.Popover
           open={this.state.open}
@@ -106,13 +106,13 @@ class PropertiesControlAction extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            <mui.MenuItem primaryText={'Component'} menuItems={base.utils.sortBy(project.components.
+            <mui.MenuItem primaryText={'Component'} menuItems={sortBy(project.components.
               filter(c => c.plugin.clazz.actions.filter(a => !a.types.length).length), 'id').
               map(comp => (
               <mui.MenuItem
                 key={comp.id}
                 primaryText={comp.id}
-                menuItems={base.utils.sortBy(comp.plugin.clazz.actions.
+                menuItems={sortBy(comp.plugin.clazz.actions.
                   filter(a => !a.types.length), 'name').
                   map(action => (
                   <mui.MenuItem
@@ -123,14 +123,14 @@ class PropertiesControlAction extends React.Component {
                 />
               ))}
             />
-            <mui.MenuItem primaryText={'Window (change)'} menuItems={base.utils.sortBy(project.windows, 'id').map(wnd => (
+            <mui.MenuItem primaryText={'Window (change)'} menuItems={sortBy(project.windows, 'id').map(wnd => (
               <mui.MenuItem
                 key={wnd.uid}
                 primaryText={wnd.id}
                 onTouchTap={this.handleSelectWindow.bind(this, wnd, false)}/>
               ))}
             />
-            <mui.MenuItem primaryText={'Window (popup)'} menuItems={base.utils.sortBy(project.windows, 'id').map(wnd => (
+            <mui.MenuItem primaryText={'Window (popup)'} menuItems={sortBy(project.windows, 'id').map(wnd => (
               <mui.MenuItem
                 key={wnd.uid}
                 primaryText={wnd.id}

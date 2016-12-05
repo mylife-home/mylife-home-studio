@@ -2,8 +2,8 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
 import icons from '../icons';
+import { stopPropagationWrapper } from '../../utils/index';
 
 import Facade from '../../services/facade';
 
@@ -56,7 +56,7 @@ class PropertiesControlTextContextRow extends React.Component {
           <mui.TextField
             id={`${item.uid}_id`}
             value={item.id || ''}
-            onChange={base.utils.stopPropagationWrapper(this.handleIdChange.bind(this))} />
+            onChange={stopPropagationWrapper(this.handleIdChange.bind(this))} />
         </mui.TableRowColumn>
         <mui.TableRowColumn>
          <PropertiesComponentAttributeSelector

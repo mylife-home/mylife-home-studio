@@ -3,12 +3,13 @@
 import async from 'async';
 import AppConstants from '../constants/app-constants';
 import Facade from '../services/facade';
-import base from '../components/base/index';
 
 import ProjectStore from '../stores/project-store';
 import OnlineStore from '../stores/online-store';
 
 import AppDispatcher from '../dispatcher/app-dispatcher';
+
+import { download, snapToGrid } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
 import { resourcesGetQuery } from './resources-action-creators';
@@ -89,7 +90,7 @@ export function projectSaveAs(project) {
     return AppDispatcher.dispatch(dialogError(err));
   }
 
-  base.utils.download(content, 'application/json', project.name + '.json');
+  download(content, 'application/json', project.name + '.json');
 }
 
 export function projectSaveAllOnline() {
@@ -110,7 +111,7 @@ export function projectClose(project) {
 
 export function projectNewComponent(project, location, plugin) {
 
-  const component = Facade.projects.vpanelCreateComponent(project, base.utils.snapToGrid(location), plugin);
+  const component = Facade.projects.vpanelCreateComponent(project, snapToGrid(location), plugin);
 
   AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
 }

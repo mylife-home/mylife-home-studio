@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import { stopPropagationWrapper, sortBy } from '../../utils/index';
 
 class PropertiesComponentAttributeSelector extends React.Component {
 
@@ -41,7 +41,7 @@ class PropertiesComponentAttributeSelector extends React.Component {
       <div>
         <mui.RaisedButton
           label={display}
-          onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
         <mui.Popover
           open={this.state.open}
@@ -51,13 +51,13 @@ class PropertiesComponentAttributeSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {base.utils.sortBy(project.components.
+            {sortBy(project.components.
               filter(c => c.plugin.clazz.attributes.length), 'id').
               map(comp => (
               <mui.MenuItem
                 key={comp.id}
                 primaryText={comp.id}
-                menuItems={base.utils.sortBy(comp.plugin.clazz.attributes, 'name').map(attribute => (
+                menuItems={sortBy(comp.plugin.clazz.attributes, 'name').map(attribute => (
                   <mui.MenuItem
                     key={attribute.name}
                     primaryText={attribute.name}

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import { stopPropagationWrapper } from '../../utils/index';
 
 import PropertiesControlDisplayMappingRow from './properties-control-display-mapping-row';
 
@@ -77,7 +77,7 @@ class PropertiesControlDisplayMapping extends React.Component {
       <div>
         <mui.RaisedButton
           label={mappingDisplay}
-          onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
 
         <mui.Dialog

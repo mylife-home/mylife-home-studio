@@ -2,8 +2,8 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
 import icons from '../icons';
+import { sortBy } from '../../utils/index';
 
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
@@ -46,7 +46,7 @@ class Explorer extends React.Component {
   renderComponents() {
     const project = this.props.project;
 
-    return base.utils.sortBy(project.components, 'id').map(comp => (
+    return sortBy(project.components, 'id').map(comp => (
       <mui.ListItem key={`component:${comp.id}`}
                     primaryText={comp.id}
                     leftIcon={<icons.Component />}
@@ -57,7 +57,7 @@ class Explorer extends React.Component {
   renderImages() {
     const project = this.props.project;
 
-    return base.utils.sortBy(project.images, 'id').map(img => (
+    return sortBy(project.images, 'id').map(img => (
       <mui.ListItem key={`image:${img.uid}`}
                     primaryText={img.id}
                     leftIcon={<icons.UiImage />}
@@ -68,7 +68,7 @@ class Explorer extends React.Component {
   renderWindows() {
     const project = this.props.project;
 
-    return base.utils.sortBy(project.windows, 'id').map(window => (
+    return sortBy(project.windows, 'id').map(window => (
       <mui.ListItem key={`window:${window.uid}`}
                     primaryText={window.id}
                     leftIcon={<icons.UiWindow />}

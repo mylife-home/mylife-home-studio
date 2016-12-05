@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import { stopPropagationWrapper, sortBy } from '../../utils/index';
 
 import DataImage from './data-image';
 
@@ -52,7 +52,7 @@ class PropertiesImageSelector extends React.Component {
         <mui.RaisedButton
           label={value ? value.id : '<none>'}
           icon={<DataImage image={value} width={20} height={20} />}
-          onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
         <mui.Popover
           open={this.state.open}
@@ -62,7 +62,7 @@ class PropertiesImageSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {base.utils.sortBy(project.images, 'id').map(img => (
+            {sortBy(project.images, 'id').map(img => (
               <mui.MenuItem
                 key={img.uid}
                 primaryText={img.id}

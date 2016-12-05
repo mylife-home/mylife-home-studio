@@ -2,8 +2,8 @@
 
 import React from 'react';
 import * as muiStyles from 'material-ui/styles/index';
-import base from '../base/index';
 import icons from '../icons';
+import { stopPropagationWrapper } from '../../utils/index';
 
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
@@ -116,7 +116,7 @@ class CanvasBinding extends React.Component {
           </g>
         </svg>
         <div style={Object.assign({left: `${middle.x - 8}px`, top: `${middle.y - 8}px`}, styles.box)}
-             onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
+             onClick={stopPropagationWrapper(this.select.bind(this))}>
           <icons.Binding color={styles.boxIcon.color} style={styles.boxIcon} />
         </div>
       </div>

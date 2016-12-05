@@ -2,8 +2,8 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
 import icons from '../icons';
+import { stopPropagationWrapper } from '../../utils/index';
 
 import Facade from '../../services/facade';
 
@@ -89,14 +89,14 @@ class PropertiesControlDisplayMappingRow extends React.Component {
           <mui.TextField
             id={`${item.uid}_min`}
             value={item.min || 0}
-            onChange={base.utils.stopPropagationWrapper(this.handleMinChange.bind(this))}
+            onChange={stopPropagationWrapper(this.handleMinChange.bind(this))}
             type='number' />
         </mui.TableRowColumn>
         <mui.TableRowColumn>
           <mui.TextField
             id={`${item.uid}_max`}
             value={item.max || 0}
-            onChange={base.utils.stopPropagationWrapper(this.handleMaxChange.bind(this))}
+            onChange={stopPropagationWrapper(this.handleMaxChange.bind(this))}
             type='number' />
         </mui.TableRowColumn>
         {imageRowColumn}

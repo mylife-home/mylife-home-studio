@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import { stopPropagationWrapper, sortBy } from '../../utils/index';
 
 class PropertiesEnumValueSelector extends React.Component {
 
@@ -40,7 +40,7 @@ class PropertiesEnumValueSelector extends React.Component {
       <div>
         <mui.RaisedButton
           label={value || ''}
-          onTouchTap={base.utils.stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
         <mui.Popover
           open={this.state.open}
@@ -50,11 +50,11 @@ class PropertiesEnumValueSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {base.utils.sortBy(values).map(val => (
+            {sortBy(values).map(val => (
               <mui.MenuItem
                 key={val}
                 primaryText={val}
-                onTouchTap={base.utils.stopPropagationWrapper(this.handleSelect.bind(this, val))}/>
+                onTouchTap={stopPropagationWrapper(this.handleSelect.bind(this, val))}/>
             ))}
           </mui.Menu>
         </mui.Popover>

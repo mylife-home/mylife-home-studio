@@ -4,6 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
 import icons from '../icons';
+import { imageSize } from '../../utils/index';
 
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
@@ -35,7 +36,7 @@ class PropertiesImage extends React.Component {
 
   calculateSize(image) {
     if(image && image.content) {
-      base.utils.imageSize(image.content, (err, size) => {
+      imageSize(image.content, (err, size) => {
         this.setState({ size });
       });
     }

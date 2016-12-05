@@ -5,8 +5,8 @@ import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
-import base from '../base/index';
 import commonStyles from './canvas-styles';
+import { stopPropagationWrapper } from '../../utils/index';
 
 import DataImage from './data-image';
 import CanvasControl from './canvas-control';
@@ -104,7 +104,7 @@ class CanvasWindow extends React.Component {
 
     return connectDropTarget(
       <div style={styles.container}
-           onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
+           onClick={stopPropagationWrapper(this.select.bind(this))}>
         <div style={styles.windowContainer}>
           <ResizableBox width={window.width}
                         height={window.height}

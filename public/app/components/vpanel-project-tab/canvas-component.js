@@ -5,8 +5,8 @@ import * as mui from 'material-ui';
 import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
-import base from '../base/index';
 import icons from '../icons';
+import { stopPropagationWrapper, snapToGrid } from '../../utils/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
@@ -166,7 +166,7 @@ class CanvasComponent extends React.Component {
         left    : location.x,
         top     : location.y,
         opacity : isDragging ? 0.5 : 1
-      }} onClick={base.utils.stopPropagationWrapper(this.select.bind(this))}>
+      }} onClick={stopPropagationWrapper(this.select.bind(this))}>
         <Measure onMeasure={this.handleMeasureChange.bind(this)}>
           <div>
             {connectDragPreview(
@@ -254,7 +254,7 @@ const componentSource = {
     const { delta } = monitor.getDropResult();
     location.x += Math.round(delta.x);
     location.y += Math.round(delta.y);
-    base.utils.snapToGrid(location, true);
+    snapToGrid(location, true);
 
     Facade.projects.vpanelDirtifyComponent(project, component);
 
