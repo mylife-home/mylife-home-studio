@@ -58,16 +58,6 @@ class Toolbar extends React.Component {
 
   // import
 
-  importProjectFile() {
-    this.refs.openFileVPanelProject.click();
-  }
-
-  importProjectOnline() {
-    this.setState({
-      openOnlineVPanelProjectItems: OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length))
-    });
-  }
-
   importOnline() {
     const project = this.props.project;
     AppDispatcher.dispatch(dialogSetBusy('Preparing import'));
@@ -86,10 +76,7 @@ class Toolbar extends React.Component {
     });
   }
 
-  handleOpenFileVPanelProject(e) {
-    const file = e.target.files[0];
-    e.target.value = '';
-
+  handleOpenFileVPanelProject(file) {
     const reader = new FileReader();
 
     AppDispatcher.dispatch(dialogSetBusy('Loading project'));
@@ -112,10 +99,6 @@ class Toolbar extends React.Component {
   }
 
   handleOpenOnlineVPanelProject(name) {
-    this.setState({
-      openOnlineVPanelProjectItems: null
-    });
-    if(!name) { return; }
     this.loadProjectOnline('project.vpanel.' + name, 'vpanel');
   }
 
@@ -254,19 +237,21 @@ class Toolbar extends React.Component {
               <base.icons.actions.Refresh />
             </mui.IconButton>
 
-            <mui.IconButton tooltip="Import UI components from online project"
-                            tooltipPosition="top-center"
-                            onClick={this.importProjectOnline.bind(this)}
-                            style={styles.button}>
+            <base.IconSelectButton tooltip="Import UI components from online project"
+                                   tooltipPosition="top-center"
+                                   style={styles.button}
+                                   selectTitle="Select VPanel Project"
+                                   selectItems={OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length))}
+                                   onItemSelect={(name) => this.handleOpenOnlineVPanelProject(name)}>
               <base.icons.actions.OpenOnline />
-            </mui.IconButton>
+            </base.IconSelectButton>
 
-            <mui.IconButton tooltip="Import UI components from file project"
-                            tooltipPosition="top-center"
-                            onClick={this.importProjectFile.bind(this)}
-                            style={styles.button}>
+            <base.IconFileButton tooltip="Import UI components from file project"
+                                 tooltipPosition="top-center"
+                                 style={styles.button}
+                                 onFileSelected={(file) => this.handleOpenFileVPanelProject(file)}>
               <base.icons.actions.OpenFile />
-            </mui.IconButton>
+            </base.IconFileButton>
 
             <mui.IconButton tooltip="Deploy project"
                             tooltipPosition="top-center"
@@ -293,19 +278,6 @@ class Toolbar extends React.Component {
                          open={!!this.state.showInfo}
                          lines={this.state.showInfo || []}
                          close={this.closeInfo.bind(this)}/>
-
-        <input
-          ref="openFileVPanelProject"
-          type="file"
-          style={{display : 'none'}}
-          onChange={base.utils.stopPropagationWrapper(this.handleOpenFileVPanelProject.bind(this))}/>
-
-        <base.DialogSelect title="Select VPanel Project"
-                           open={!!this.state.openOnlineVPanelProjectItems}
-                           items={this.state.openOnlineVPanelProjectItems || []}
-                           select={this.handleOpenOnlineVPanelProject.bind(this)}
-                           cancel={this.handleOpenOnlineVPanelProject.bind(this, null)}/>
-
       </div>
     );
   }
