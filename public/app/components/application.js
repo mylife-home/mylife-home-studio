@@ -7,7 +7,8 @@ import dndHTML5Backend from 'react-dnd-html5-backend';
 
 import MainTabsContainer from '../containers/main-tabs-container';
 import MainToolbarContainer from '../containers/main-toolbar-container';
-import MainDialogs from '../containers/main-dialogs';
+import MainDialogError from '../containers/main-dialog-error';
+import MainDialogBusy from '../containers/main-dialog-busy';
 
 const styles = {
   root: {
@@ -29,7 +30,8 @@ class Application extends React.Component {
         <div style={styles.root}>
           <MainToolbarContainer />
           <MainTabsContainer />
-          <MainDialogs />
+          <MainDialogError />
+          <MainDialogBusy />
         </div>
       </muiStyles.MuiThemeProvider>
     );
