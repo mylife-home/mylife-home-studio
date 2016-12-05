@@ -7,14 +7,14 @@ import DetailsResourceContainer from '../../containers/online-tab/details-resour
 import DetailsComponent from './details-component';
 import DetailsPlugin from './details-plugin';
 
-const Details = ({ entity, value, changeValue }) => {
+const Details = ({ entity, value, onChangeValue }) => {
   if(!value) {
     return null;
   }
 
   switch(value.type) {
     case 'entity':
-      return (<DetailsEntity entity={entity} changeValue={changeValue}/>);
+      return (<DetailsEntity entity={entity} onChangeValue={onChangeValue}/>);
 
     case 'plugin': {
       const plugin = entity.plugins.find(p => `${p.library}.${p.type}` === value.plugin);
@@ -39,7 +39,7 @@ const Details = ({ entity, value, changeValue }) => {
 Details.propTypes = {
   entity: React.PropTypes.object,
   value: React.PropTypes.object,
-  changeValue: React.PropTypes.func.isRequired
+  onChangeValue: React.PropTypes.func.isRequired
 };
 
 export default Details;

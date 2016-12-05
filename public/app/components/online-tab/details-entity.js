@@ -42,10 +42,10 @@ function renderPluginUsageIcon(plugin) {
   }
 }
 
-function renderResourcesDetails(entity, changeValue) {
+function renderResourcesDetails(entity, onChangeValue) {
   const click = (resource) => {
     const value = { type: 'resource', entity: entity.id, resource };
-    changeValue(value);
+    onChangeValue(value);
   };
 
   if(!entity.resources) { return []; }
@@ -61,14 +61,14 @@ function renderResourcesDetails(entity, changeValue) {
   ));
 }
 
-function renderCoreDetails(entity, changeValue) {
+function renderCoreDetails(entity, onChangeValue) {
   const clickPlugin = (plugin) => {
     const value = { type: 'plugin', entity: entity.id, plugin: `${plugin.library}.${plugin.type}` };
-    changeValue(value);
+    onChangeValue(value);
   };
   const clickComponent = (component) => {
     const value = { type: 'component', entity: entity.id, component: component.id };
-    changeValue(value);
+    onChangeValue(value);
   };
 
   const arr = [];
@@ -104,17 +104,17 @@ function renderUiDetails(/*entity*/) {
   return [];
 }
 
-function renderDetails(entity, changeValue) {
+function renderDetails(entity, onChangeValue) {
 
   switch(entity.type) {
     case shared.EntityType.RESOURCES:
-      return renderResourcesDetails(entity, changeValue);
+      return renderResourcesDetails(entity, onChangeValue);
 
     case shared.EntityType.CORE:
-      return renderCoreDetails(entity, changeValue);
+      return renderCoreDetails(entity, onChangeValue);
 
     case shared.EntityType.UI:
-      return renderUiDetails(entity, changeValue);
+      return renderUiDetails(entity, onChangeValue);
 
     default:
       return [];
@@ -155,7 +155,7 @@ function renderTypeIcon(entity) {
   }
 }
 
-const DetailsEntity = ({ entity, changeValue }) => (
+const DetailsEntity = ({ entity, onChangeValue }) => (
   <div>
     <MainTitle
       center={
@@ -177,7 +177,7 @@ const DetailsEntity = ({ entity, changeValue }) => (
       right={renderTypeIcon(entity)}/>
     <DetailsContainer>
       <mui.List style={{overflowX:'hidden'}}>
-        {renderDetails(entity, changeValue)}
+        {renderDetails(entity, onChangeValue)}
       </mui.List>
     </DetailsContainer>
   </div>
@@ -185,7 +185,7 @@ const DetailsEntity = ({ entity, changeValue }) => (
 
 DetailsEntity.propTypes = {
   entity: React.PropTypes.object.isRequired,
-  changeValue: React.PropTypes.func.isRequired
+  onChangeValue: React.PropTypes.func.isRequired
 };
 
 export default DetailsEntity;

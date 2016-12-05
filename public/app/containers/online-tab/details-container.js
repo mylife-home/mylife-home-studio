@@ -14,15 +14,15 @@ class DetailsContainer extends React.Component {
   }
 
   render() {
-    const { value, changeValue } = this.props;
+    const { value, onChangeValue } = this.props;
     const entity = value && OnlineStore.get(value.entity);
-    return (<Details value={value} changeValue={changeValue} entity={entity} />);
+    return (<Details value={value} onChangeValue={onChangeValue} entity={entity} />);
   }
 }
 
 DetailsContainer.propTypes = {
   value: React.PropTypes.object,
-  changeValue: React.PropTypes.func.isRequired
+  onChangeValue: React.PropTypes.func.isRequired
 };
 
 export default DetailsContainer;

@@ -34,7 +34,7 @@ class OnlineTab extends React.Component {
           <bs.Col sm={9} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
             <DetailsContainer
               value={this.state.selectedNode}
-              changeValue={this.changeValue.bind(this)} />
+              onChangeValue={this.changeValue.bind(this)} />
           </bs.Col>
         </bs.Row>
       </bs.Grid>
