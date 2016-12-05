@@ -5,9 +5,6 @@ import React from 'react';
 import DialogBusy from '../components/dialogs/dialog-busy';
 
 import DialogsStore from '../stores/dialogs-store';
-import AppDispatcher from '../dispatcher/app-dispatcher';
-
-import { dialogErrorClean } from '../actions/index';
 
 class MainDialogs extends React.Component {
 
