@@ -5,8 +5,8 @@ import React from 'react';
 import MainTabs from '../components/main-tabs';
 
 import ProjectStore from '../stores/project-store';
-import ActiveTabStore from '../stores/active-tab-store';
 import AppDispatcher from '../compat/dispatcher';
+import storeHandler from '../compat/store';
 
 import { tabActivate } from '../actions/index';
 
@@ -17,26 +17,26 @@ class MainTabsContainer extends React.Component {
 
     this.state = {
       projects: ProjectStore.getAll(),
-      activeTab: ActiveTabStore.getActiveTab()
+      activeTab: storeHandler.getStore().getState().activeTab
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
-    ActiveTabStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
-    ActiveTabStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {
     this.setState({
       projects: ProjectStore.getAll(),
-      activeTab: ActiveTabStore.getActiveTab()
+      activeTab: storeHandler.getStore().getState().activeTab
     });
   }
 

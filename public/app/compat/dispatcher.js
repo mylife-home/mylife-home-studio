@@ -21,6 +21,13 @@ export default {
       case AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST:
       case AppConstants.ActionTypes.RESOURCE_GET_RESULT:
       case AppConstants.ActionTypes.RESOURCE_SET_QUERY:
+      case AppConstants.ActionTypes.TAB_ACTIVATE:
+        return store.getStore().dispatch(action);
+
+        // used by both
+      case AppConstants.ActionTypes.PROJECT_LOAD:
+      case AppConstants.ActionTypes.PROJECT_CLOSE:
+        fluxDispatcher.dispatch(action);
         return store.getStore().dispatch(action);
 
       default:
