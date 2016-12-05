@@ -123,6 +123,20 @@ export function projectDeleteBinding(project, binding) {
   Facade.projects.vpanelDeleteBinding(project, binding);
 }
 
+export function projectNewImage(project) {
+  const image = Facade.projects.uiCreateImage(project);
+
+  const selection = { type: 'image', uid: image.uid };
+  AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+}
+
+export function projectNewWindow(project) {
+  const window = Facade.projects.uiCreateWindow(project);
+
+  const selection = { type: 'window', uid: window.uid };
+  AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+}
+
 export function projectDeleteImage(project, image) {
   Facade.projects.uiDeleteImage(project, image);
 }

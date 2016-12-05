@@ -7,7 +7,7 @@ import base from '../base/index';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import {
   dialogSetBusy, dialogError,
-  projectStateSelectAndActiveContent,
+  projectStateSelectAndActiveContent, projectNewImage, projectNewWindow,
   resourcesGetQuery
 } from '../../actions/index';
 
@@ -37,23 +37,12 @@ class Toolbar extends React.Component {
     this.setState({ showInfo: null });
   }
 
-  select(data) {
-    const { project } = this.props;
-    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, data, data));
-  }
-
   newImage() {
-    const project = this.props.project;
-    const image = Facade.projects.uiCreateImage(project);
-
-    this.select({ type: 'image', uid: image.uid });
+    projectNewImage(this.props.project);
   }
 
   newWindow() {
-    const project = this.props.project;
-    const window = Facade.projects.uiCreateWindow(project);
-
-    this.select({ type: 'window', uid: window.uid });
+    projectNewWindow(this.props.project);
   }
 
   // import
