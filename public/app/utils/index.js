@@ -2,16 +2,16 @@
 
 import arraySort from 'array-sort';
 
-const GRID_SIZE = 32;
+export const GRID_SIZE = 32;
 
-function download(content, mime, filename) {
+export function download(content, mime, filename) {
   const pom = document.createElement('a');
   pom.setAttribute('href', `data:${mime};charset=utf-8, ${encodeURIComponent(content)}`);
   pom.setAttribute('download', filename);
   pom.click();
 }
 
-function imageSize(content, cb) {
+export function imageSize(content, cb) {
   const img = document.createElement('img');
   img.src = `data:;base64,${content}`;
   img.onload = () => cb(null, {
@@ -21,7 +21,7 @@ function imageSize(content, cb) {
 }
 
 // https://gist.github.com/jlong/2428561
-function parseUrl(url) {
+export function parseUrl(url) {
   const parser = document.createElement('a');
   parser.href = url;
 
@@ -36,7 +36,7 @@ function parseUrl(url) {
   };
 }
 
-function stopPropagationWrapper(func) {
+export function stopPropagationWrapper(func) {
   const self = this;
   return (e) => {
     if(e) { e.stopPropagation(); }
@@ -44,14 +44,14 @@ function stopPropagationWrapper(func) {
   };
 }
 
-function snapToGrid(location, inPlace) {
+export function snapToGrid(location, inPlace) {
   const ret = inPlace ? location : { x: location.x, y : location.y };
   ret.x = Math.round(ret.x / GRID_SIZE) * GRID_SIZE;
   ret.y = Math.round(ret.y / GRID_SIZE) * GRID_SIZE;
   return ret;
 }
 
-function sortBy(array, key) {
+export function sortBy(array, key) {
   const ret = array.slice();
   if(key === undefined) {
     ret.sort();
@@ -60,13 +60,3 @@ function sortBy(array, key) {
   }
   return ret;
 }
-
-export default {
-  download,
-  imageSize,
-  parseUrl,
-  stopPropagationWrapper,
-  snapToGrid,
-  sortBy,
-  GRID_SIZE
-};

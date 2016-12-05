@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
-import DialogOperationSelect from '../base/dialog-operation-select';
+import DialogOperationSelect from '../dialogs/dialog-operation-select';
 import DialogConfirm from '../dialogs/dialog-confirm';
 import DialogInfo from '../dialogs/dialog-info';
 
@@ -145,6 +145,23 @@ class Toolbar extends React.Component {
     });
   }
 
+  setAllOperations(value) {
+    if(!this.state.showOperationSelect) { return; }
+
+    for(const op of this.state.showOperationSelect) {
+      op.enabled = value;
+    }
+    // FIXME: remove this horror...
+    this.setState({ showOperationSelect: this.state.showOperationSelect.slice() });
+  }
+
+  setOneOperation(operation, value) {
+    if(!this.state.showOperationSelect) { return; }
+    operation.enabled = value;
+    // FIXME: remove this horror...
+    this.setState({ showOperationSelect: this.state.showOperationSelect.slice() });
+  }
+
   render() {
     return (
       <div>
@@ -196,7 +213,9 @@ class Toolbar extends React.Component {
         <DialogOperationSelect open={!!this.state.showOperationSelect}
                                operations={this.state.showOperationSelect || []}
                                ok={this.executeOperations.bind(this)}
-                               cancel={this.cancelExecuteOperations.bind(this)}/>
+                               cancel={this.cancelExecuteOperations.bind(this)}
+                               setAll={this.setAllOperations.bind(this)}
+                               setOne={this.setOneOperation.bind(this)}/>
 
       </div>
     );
