@@ -4,10 +4,7 @@ import React from 'react';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
 
-import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import ProjectStore from '../../stores/project-store';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectNewControl } from '../../actions/index';
 
 const styles = {

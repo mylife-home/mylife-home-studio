@@ -7,7 +7,7 @@ import base from '../base/index';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import {
   dialogSetBusy, dialogError,
-  projectStateSelectAndActiveContent, projectNewImage, projectNewWindow,
+  projectNewImage, projectNewWindow,
   resourcesGetQuery
 } from '../../actions/index';
 

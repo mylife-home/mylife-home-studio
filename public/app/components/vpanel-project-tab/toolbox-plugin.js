@@ -6,7 +6,6 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
 import { projectNewComponent } from '../../actions/index';
 
 const styles = {
