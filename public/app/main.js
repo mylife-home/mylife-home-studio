@@ -2,12 +2,18 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import debugLib from 'debug';
 
 import Application from './components/application';
+import reducer from './reducers/index';
+
 import Facade from './services/facade'; // import to force init
 import storeInit from './stores/init'; // import to force init
+import AppDispatcher from './dispatcher/app-dispatcher';
 
 void Facade;
 void storeInit;
@@ -20,7 +26,12 @@ injectTapEventPlugin();
 
 window.debugLib = debugLib;
 
+const store = createStore(reducer);
+AppDispatcher.setStore(store);
+
 ReactDOM.render(
-  <Application/>,
+  <Provider store={store}>
+    <Application/>
+  </Provider>,
   document.getElementById('content')
 );

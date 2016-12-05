@@ -1,42 +1,19 @@
 'use strict';
 
-import React from 'react';
+import { connect } from 'react-redux';
 
 import DialogBusy from '../components/dialogs/dialog-busy';
 
-import DialogsStore from '../stores/dialogs-store';
+const mapStateToProps = (state) => ({
+  text: state.dialogs.busyText
+});
 
-class MainDialogs extends React.Component {
+const mapDispatchToProps = ({
+});
 
-  constructor(props) {
-    super(props);
+const MainDialogBusy = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DialogBusy);
 
-    this.state = {
-      text: DialogsStore.getBusyText()
-    };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    DialogsStore.addChangeListener(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    DialogsStore.removeChangeListener(this.boundHandleStoreChange);
-  }
-
-  handleStoreChange() {
-    this.setState({
-      text: DialogsStore.getBusyText()
-    });
-  }
-
-  render() {
-    const { text } = this.state;
-
-    return (<DialogBusy text={text} />);
-  }
-}
-
-export default MainDialogs;
+export default MainDialogBusy;
