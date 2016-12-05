@@ -6,6 +6,7 @@ import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
 import base from '../base/index';
+import icons from '../icons';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
@@ -133,17 +134,17 @@ class CanvasComponent extends React.Component {
     switch(component.plugin.usage) {
       case Facade.metadata.pluginUsage.driver:
         return (
-          <base.icons.PluginDriver color={iconColor} style={styles.titleIcon} />
+          <icons.PluginDriver color={iconColor} style={styles.titleIcon} />
         );
 
       case Facade.metadata.pluginUsage.vpanel:
         return (
-          <base.icons.PluginVPanel color={iconColor} style={styles.titleIcon} />
+          <icons.PluginVPanel color={iconColor} style={styles.titleIcon} />
         );
 
       case Facade.metadata.pluginUsage.ui:
         return (
-          <base.icons.PluginUi color={iconColor} style={styles.titleIcon} />
+          <icons.PluginUi color={iconColor} style={styles.titleIcon} />
         );
 
       default:
@@ -181,16 +182,16 @@ class CanvasComponent extends React.Component {
                   {/* details */}
                   <div style={styles.details}>
                     <div style={styles.detailsContainer}>
-                      <div style={styles.detailsIconContainer}><base.icons.Plugin style={styles.detailsIcon} /></div>
+                      <div style={styles.detailsIconContainer}><icons.Plugin style={styles.detailsIcon} /></div>
                       <div style={styles.detailsText}>{entityHost}</div>
                     </div>
                     <div style={styles.detailsContainer}>
-                      <div style={styles.detailsIconContainer}><base.icons.Plugin style={styles.detailsIcon} /></div>
+                      <div style={styles.detailsIconContainer}><icons.Plugin style={styles.detailsIcon} /></div>
                       <div style={styles.detailsText}>{`${plugin.library}:${component.plugin.type}`}</div>
                     </div>
                     {Object.keys(component.config).map(name => (
                       <div key={name} style={styles.detailsContainer}>
-                        <div style={styles.detailsIconContainer}><base.icons.NetConfig style={styles.detailsIcon} /></div>
+                        <div style={styles.detailsIconContainer}><icons.NetConfig style={styles.detailsIcon} /></div>
                         <div style={styles.detailsText}>{`${name} : ${component.config[name]}`}</div>
                       </div>
                     ))}

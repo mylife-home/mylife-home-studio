@@ -28,7 +28,7 @@ function getStyles(muiTheme) {
 
 class TooltipContainer extends React.Component {
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = {
       tooltipShown: false

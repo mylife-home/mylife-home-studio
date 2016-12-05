@@ -2,6 +2,7 @@
 
 import React from 'react';
 import base from '../base/index';
+import icons from '../icons';
 
 import shared from '../../shared/index';
 
@@ -51,21 +52,21 @@ function renderTypeIcon(entity) {
     case shared.EntityType.RESOURCES:
       return (
         <base.TooltipContainer tooltip="Resources entity">
-          <base.icons.EntityResources />
+          <icons.EntityResources />
         </base.TooltipContainer>
       );
 
     case shared.EntityType.CORE:
       return (
         <base.TooltipContainer tooltip="Core entity">
-          <base.icons.EntityCore />
+          <icons.EntityCore />
         </base.TooltipContainer>
       );
 
     case shared.EntityType.UI:
       return (
         <base.TooltipContainer tooltip="UI entity">
-          <base.icons.EntityUi />
+          <icons.EntityUi />
         </base.TooltipContainer>
       );
 

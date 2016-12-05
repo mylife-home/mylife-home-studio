@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import icons from '../base/icons';
+import icons from '../icons';
 
 function getStyles(muiTheme) {
 

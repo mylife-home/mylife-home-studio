@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as dnd from 'react-dnd';
-import base from '../base/index';
+import icons from '../icons';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
@@ -14,7 +14,7 @@ import linkHelper from './link-helper';
 
 const CanvasComponentAttribute = ({ attribute, connectDragPreview, connectDragSource }) => connectDragSource(
   <div style={styles.detailsContainer}>
-    {connectDragPreview(<div style={styles.detailsIconContainer}><base.icons.NetAttribute style={styles.detailsIcon} /></div>)}
+    {connectDragPreview(<div style={styles.detailsIconContainer}><icons.NetAttribute style={styles.detailsIcon} /></div>)}
     <div style={styles.detailsText}>{`${attribute.name} (${attribute.type})`}</div>
   </div>
 );

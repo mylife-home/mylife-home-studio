@@ -2,11 +2,11 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 
 const DetailsComponentConfig = ({ config }) => (
   <div>
-    <base.icons.NetConfig style={{verticalAlign: 'middle'}}/>
+    <icons.NetConfig style={{verticalAlign: 'middle'}}/>
     &nbsp;
     Configuration:
     &nbsp;

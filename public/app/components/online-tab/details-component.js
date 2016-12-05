@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import base from '../base/index';
+import icons from '../icons';
 import MainTitle from '../main-title';
 
 import DetailsComponentConfig from './details-component-config';
@@ -18,14 +18,14 @@ const DetailsComponent = ({ component }) => (
       }
       left={
         <div>
-          <base.icons.Component />
+          <icons.Component />
           &nbsp;
           Component
         </div>
       }
       right={
         <div>
-          <base.icons.Plugin />
+          <icons.Plugin />
           &nbsp;
           {`${component.library}.${component.type}`}
         </div>

@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import icons from '../icons';
 import MainTitle from '../main-title';
 
 import shared from '../../shared/index';
@@ -18,21 +19,21 @@ function renderPluginUsageIcon(plugin) {
     case Facade.metadata.pluginUsage.driver:
       return (
         <base.TooltipContainer tooltip="Hardware driver">
-          <base.icons.PluginDriver />
+          <icons.PluginDriver />
         </base.TooltipContainer>
       );
 
     case Facade.metadata.pluginUsage.vpanel:
       return (
         <base.TooltipContainer tooltip="Virtual panel">
-          <base.icons.PluginVPanel />
+          <icons.PluginVPanel />
         </base.TooltipContainer>
       );
 
     case Facade.metadata.pluginUsage.ui:
       return (
         <base.TooltipContainer tooltip="UI">
-          <base.icons.PluginUi />
+          <icons.PluginUi />
         </base.TooltipContainer>
       );
 
@@ -53,7 +54,7 @@ function renderResourcesDetails(entity, changeValue) {
                   onTouchTap={click.bind(null, resource)}
                   leftIcon={
                     <base.TooltipContainer tooltip="Resource">
-                      <base.icons.Resource />
+                      <icons.Resource />
                     </base.TooltipContainer>
                   }
                   primaryText={resource} />
@@ -77,7 +78,7 @@ function renderCoreDetails(entity, changeValue) {
                     onTouchTap={clickPlugin.bind(null, plugin)}
                     leftIcon={
                       <base.TooltipContainer tooltip="Plugin">
-                        <base.icons.Plugin />
+                        <icons.Plugin />
                       </base.TooltipContainer>
                     }
                     rightIcon={renderPluginUsageIcon(plugin)}
@@ -90,7 +91,7 @@ function renderCoreDetails(entity, changeValue) {
                     onTouchTap={clickComponent.bind(null, component)}
                     leftIcon={
                       <base.TooltipContainer tooltip="Component">
-                        <base.icons.Component />
+                        <icons.Component />
                       </base.TooltipContainer>
                     }
                     primaryText={component.id} />
@@ -125,7 +126,7 @@ function renderTypeIcon(entity) {
     case shared.EntityType.RESOURCES:
       return (
         <div>
-          <base.icons.EntityResources />
+          <icons.EntityResources />
           &nbsp;
           Resources
         </div>
@@ -134,7 +135,7 @@ function renderTypeIcon(entity) {
     case shared.EntityType.CORE:
       return (
         <div>
-          <base.icons.EntityCore />
+          <icons.EntityCore />
           &nbsp;
           Core
         </div>
@@ -143,7 +144,7 @@ function renderTypeIcon(entity) {
     case shared.EntityType.UI:
       return (
         <div>
-          <base.icons.EntityUi />
+          <icons.EntityUi />
           &nbsp;
           UI
         </div>
@@ -162,13 +163,13 @@ const DetailsEntity = ({ entity, changeValue }) => (
           {entity.id}
           &nbsp;
           <mui.IconButton tooltip="refresh" onClick={() => resourcesEntityQuery(entity)}>
-            <base.icons.actions.Refresh />
+            <icons.actions.Refresh />
           </mui.IconButton>
         </div>
       }
       left={
         <div>
-          <base.icons.Entity />
+          <icons.Entity />
           &nbsp;
           Entity
         </div>

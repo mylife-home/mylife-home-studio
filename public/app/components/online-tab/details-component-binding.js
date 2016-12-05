@@ -2,11 +2,11 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 
 const DetailsComponentBinding = ({ binding }) => (
   <div>
-    <base.icons.Binding style={{verticalAlign: 'middle'}}/>
+    <icons.Binding style={{verticalAlign: 'middle'}}/>
     &nbsp;
     Binding:
     &nbsp;

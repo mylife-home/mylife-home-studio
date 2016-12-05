@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import icons from '../icons';
 
 import Facade from '../../services/facade';
 
@@ -67,9 +68,9 @@ class PropertiesControlTextContextRow extends React.Component {
         <mui.TableRowColumn>
           <mui.IconButton onTouchTap={action}>
             {isNew ? (
-              <base.icons.actions.New/>
+              <icons.actions.New/>
             ) : (
-              <base.icons.actions.Close/>
+              <icons.actions.Close/>
             )}
           </mui.IconButton>
         </mui.TableRowColumn>

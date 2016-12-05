@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
-import base from '../base/index';
+import icons from '../icons';
 import MainTitle from '../main-title';
 
 import Properties from './properties';
@@ -92,10 +92,10 @@ class UiProjectTab extends React.Component {
             <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
               <MainTitle
                 center={title}
-                left={<base.icons.tabs.Ui />}
+                left={<icons.tabs.Ui />}
                 right={
                   <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project))}>
-                    <base.icons.actions.Close />
+                    <icons.actions.Close />
                   </mui.IconButton>
                 }/>
               <Canvas project={project} />

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 import MainTitle from '../main-title';
 
 import Facade from '../../services/facade';
@@ -17,7 +17,7 @@ function renderUsageIcon(plugin) {
     case Facade.metadata.pluginUsage.driver:
       return (
         <div>
-          <base.icons.PluginDriver />
+          <icons.PluginDriver />
           &nbsp;
           Hardware driver
         </div>
@@ -26,7 +26,7 @@ function renderUsageIcon(plugin) {
     case Facade.metadata.pluginUsage.vpanel:
       return (
         <div>
-          <base.icons.PluginVPanel />
+          <icons.PluginVPanel />
           &nbsp;
           Virtual panel
         </div>
@@ -35,7 +35,7 @@ function renderUsageIcon(plugin) {
     case Facade.metadata.pluginUsage.ui:
       return (
         <div>
-          <base.icons.PluginUi />
+          <icons.PluginUi />
           &nbsp;
           UI
         </div>
@@ -60,14 +60,14 @@ const DetailsPlugin = ({ plugin }) => {
         }
         left={
           <div>
-            <base.icons.Plugin />
+            <icons.Plugin />
             &nbsp;
             Plugin
           </div>
         }
         right={renderUsageIcon(plugin)}/>
       <DetailsContainer>
-        <base.icons.actions.Info style={{verticalAlign: 'middle'}}/>
+        <icons.actions.Info style={{verticalAlign: 'middle'}}/>
         &nbsp;
         Version:
         &nbsp;

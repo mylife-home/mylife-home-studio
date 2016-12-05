@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 import CanvasComponentAction from './canvas-component-action';
 import CanvasComponentAttribute from './canvas-component-attribute';
 
@@ -24,7 +24,7 @@ const CanvasComponent = ({ component }) => {
 
   return (
     <div style={styles.text}>
-      <base.icons.actions.Info style={{verticalAlign: 'middle'}}/>
+      <icons.actions.Info style={{verticalAlign: 'middle'}}/>
       &nbsp;
       {plugin.library}:{plugin.type}
       &nbsp;

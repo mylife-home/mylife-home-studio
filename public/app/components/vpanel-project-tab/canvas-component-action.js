@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as dnd from 'react-dnd';
-import base from '../base/index';
+import icons from '../icons';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
@@ -22,7 +22,7 @@ const CanvasComponentAction = ({ action, connectDropTarget, isHighlighted }) => 
 
   return connectDropTarget(
     <div style={containerStyle}>
-      <div style={styles.detailsIconContainer}><base.icons.NetAction style={styles.detailsIcon} /></div>
+      <div style={styles.detailsIconContainer}><icons.NetAction style={styles.detailsIcon} /></div>
       <div style={styles.detailsText}>{`${action.name} (${action.types})`}</div>
     </div>
   );

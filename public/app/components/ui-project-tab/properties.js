@@ -2,6 +2,7 @@
 
 import React from 'react';
 import base from '../base/index';
+import icons from '../icons';
 
 import ProjectStore from '../../stores/project-store';
 
@@ -54,7 +55,7 @@ class Properties extends React.Component {
   renderProject(project) {
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.tabs.Ui/>} text={'Project'} />
+        <PropertiesTitle icon={<icons.tabs.Ui/>} text={'Project'} />
         {/* details */}
         <table>
           <tbody>
@@ -92,7 +93,7 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
+        <PropertiesTitle icon={<icons.Component/>} text={component.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
@@ -118,7 +119,7 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.UiWindow/>} text={window.id} onDelete={onDelete} />
+        <PropertiesTitle icon={<icons.UiWindow/>} text={window.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>

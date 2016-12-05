@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 import MainTitle from '../main-title';
 
 import DetailsContainer from './details-container';
@@ -15,13 +15,13 @@ const DetailsResource = ({ resource, content, onRefresh}) => (
           {resource}
           &nbsp;
           <mui.IconButton tooltip="refresh" onClick={onRefresh}>
-            <base.icons.actions.Refresh />
+            <icons.actions.Refresh />
           </mui.IconButton>
         </div>
       }
       left={
         <div>
-          <base.icons.Resource />
+          <icons.Resource />
           &nbsp;
           Resource
         </div>

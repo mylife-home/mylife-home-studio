@@ -3,6 +3,7 @@
 import React from 'react';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
+import icons from '../icons';
 
 import AppConstants from '../../constants/app-constants';
 import { projectNewControl } from '../../actions/index';
@@ -34,7 +35,7 @@ function renderIcon(connectDragPreview, type) {
         <base.TooltipContainer tooltip="Text" tooltipPosition="bottom-right">
           {connectDragPreview(
             <div style={styles.iconContainer}>
-              <base.icons.UiText style={styles.icon} />
+              <icons.UiText style={styles.icon} />
             </div>
           )}
         </base.TooltipContainer>
@@ -45,7 +46,7 @@ function renderIcon(connectDragPreview, type) {
         <base.TooltipContainer tooltip="Image" tooltipPosition="bottom-right">
           {connectDragPreview(
             <div style={styles.iconContainer}>
-              <base.icons.UiImage style={styles.icon} />
+              <icons.UiImage style={styles.icon} />
             </div>
           )}
         </base.TooltipContainer>

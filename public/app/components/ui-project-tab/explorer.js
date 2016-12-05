@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import icons from '../icons';
 
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
@@ -48,7 +49,7 @@ class Explorer extends React.Component {
     return base.utils.sortBy(project.components, 'id').map(comp => (
       <mui.ListItem key={`component:${comp.id}`}
                     primaryText={comp.id}
-                    leftIcon={<base.icons.Component />}
+                    leftIcon={<icons.Component />}
                     onClick={this.select.bind(this, { type: 'component', id: comp.id})} />
     ));
   }
@@ -59,7 +60,7 @@ class Explorer extends React.Component {
     return base.utils.sortBy(project.images, 'id').map(img => (
       <mui.ListItem key={`image:${img.uid}`}
                     primaryText={img.id}
-                    leftIcon={<base.icons.UiImage />}
+                    leftIcon={<icons.UiImage />}
                     onClick={this.select.bind(this, { type: 'image', uid: img.uid})} />
     ));
   }
@@ -70,7 +71,7 @@ class Explorer extends React.Component {
     return base.utils.sortBy(project.windows, 'id').map(window => (
       <mui.ListItem key={`window:${window.uid}`}
                     primaryText={window.id}
-                    leftIcon={<base.icons.UiWindow />}
+                    leftIcon={<icons.UiWindow />}
                     onClick={this.select.bind(this, { type: 'window', uid: window.uid})} />
     ));
   }
@@ -88,21 +89,21 @@ class Explorer extends React.Component {
         <mui.List style={Object.assign({}, tabStyles.scrollable, styles.listHeight)}>
           <mui.ListItem key={'project'}
                         primaryText={'Project'}
-                        leftIcon={<base.icons.tabs.Ui />}
+                        leftIcon={<icons.tabs.Ui />}
                         onClick={this.select.bind(this, null)} />
           <mui.ListItem key={'components'}
                         primaryText={'Components'}
-                        leftIcon={<base.icons.Component />}
+                        leftIcon={<icons.Component />}
                         disabled={true}
                         nestedItems={this.renderComponents()} />
           <mui.ListItem key={'images'}
                         primaryText={'Images'}
-                        leftIcon={<base.icons.UiImage />}
+                        leftIcon={<icons.UiImage />}
                         disabled={true}
                         nestedItems={this.renderImages()} />
           <mui.ListItem key={'windows'}
                         primaryText={'Windows'}
-                        leftIcon={<base.icons.UiWindow />}
+                        leftIcon={<icons.UiWindow />}
                         disabled={true}
                         nestedItems={this.renderWindows()} />
         </mui.List>

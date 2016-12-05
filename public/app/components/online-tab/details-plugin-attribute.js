@@ -2,11 +2,11 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 
 const DetailsPluginAttribute = ({ attribute }) => (
   <div>
-    <base.icons.NetAttribute style={{verticalAlign: 'middle'}}/>
+    <icons.NetAttribute style={{verticalAlign: 'middle'}}/>
     &nbsp;
     Attribute:
     &nbsp;

@@ -1,6 +1,5 @@
 'use strict';
 
-import icons from './icons';
 import utils from './utils';
 import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
@@ -11,7 +10,6 @@ import IconFileButton from './icon-file-button';
 import IconSelectButton from './icon-select-button';
 
 export default {
-  icons,
   utils,
   SelectableList,
   SelectableListItem,

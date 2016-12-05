@@ -3,6 +3,7 @@
 import React from 'react';
 import * as dnd from 'react-dnd';
 import base from '../base/index';
+import icons from '../icons';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
@@ -35,7 +36,7 @@ function renderIcon(connectDragPreview, plugin) {
         <base.TooltipContainer tooltip="Hardware driver" tooltipPosition="bottom-right">
           {connectDragPreview(
             <div style={styles.iconContainer}>
-              <base.icons.PluginDriver style={styles.icon} />
+              <icons.PluginDriver style={styles.icon} />
             </div>
           )}
         </base.TooltipContainer>
@@ -46,7 +47,7 @@ function renderIcon(connectDragPreview, plugin) {
         <base.TooltipContainer tooltip="Virtual panel" tooltipPosition="bottom-right">
           {connectDragPreview(
             <div style={styles.iconContainer}>
-              <base.icons.PluginVPanel style={styles.icon} />
+              <icons.PluginVPanel style={styles.icon} />
             </div>
           )}
         </base.TooltipContainer>
@@ -57,7 +58,7 @@ function renderIcon(connectDragPreview, plugin) {
         <base.TooltipContainer tooltip="UI" tooltipPosition="bottom-right">
           {connectDragPreview(
             <div style={styles.iconContainer}>
-              <base.icons.PluginUi style={styles.icon} />
+              <icons.PluginUi style={styles.icon} />
             </div>
           )}
         </base.TooltipContainer>

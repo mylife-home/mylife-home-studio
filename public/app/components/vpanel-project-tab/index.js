@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
-import base from '../base/index';
+import icons from '../icons';
 import MainTitle from '../main-title';
 
 import Properties from './properties';
@@ -53,10 +53,10 @@ class VPanelProjectTab extends React.Component {
             <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
               <MainTitle
                 center={project.name}
-                left={<base.icons.tabs.VPanel />}
+                left={<icons.tabs.VPanel />}
                 right={
                   <mui.IconButton onClick={() => projectClose(project)}>
-                    <base.icons.actions.Close />
+                    <icons.actions.Close />
                   </mui.IconButton>
                 }/>
               <Canvas project={project} />

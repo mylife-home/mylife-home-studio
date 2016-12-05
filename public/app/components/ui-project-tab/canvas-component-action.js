@@ -2,11 +2,11 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 
 const CanvasComponentAction = ({ action }) => (
   <div>
-    <base.icons.NetAction style={{verticalAlign: 'middle'}}/>
+    <icons.NetAction style={{verticalAlign: 'middle'}}/>
     &nbsp;
     Action:
     &nbsp;

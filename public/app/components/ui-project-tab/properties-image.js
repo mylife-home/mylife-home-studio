@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import icons from '../icons';
 
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
@@ -89,7 +90,7 @@ class PropertiesImage extends React.Component {
 
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.UiImage/>} text={image.id} onDelete={onDelete} />
+        <PropertiesTitle icon={<icons.UiImage/>} text={image.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>

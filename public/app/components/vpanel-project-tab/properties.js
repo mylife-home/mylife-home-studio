@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import icons from '../icons';
 
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
@@ -75,7 +76,7 @@ class Properties extends React.Component {
           if(!onDelete) { return; }
           return (
             <mui.IconButton onClick={onDelete} style={Object.assign({}, styles.titleItem, styles.titleRight)}>
-              <base.icons.actions.Close/>
+              <icons.actions.Close/>
             </mui.IconButton>);
         })()}
         <div style={Object.assign({}, styles.titleItem, styles.titleMain)}>
@@ -94,7 +95,7 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
+        <PropertiesTitle icon={<icons.Component/>} text={component.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
@@ -132,7 +133,7 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.Binding/>} text={key} onDelete={onDelete} />
+        <PropertiesTitle icon={<icons.Binding/>} text={key} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
@@ -161,7 +162,7 @@ class Properties extends React.Component {
   renderProject(project) {
     return (
       <div>
-        <PropertiesTitle icon={<base.icons.tabs.VPanel/>} text={'Project'} />
+        <PropertiesTitle icon={<icons.tabs.VPanel/>} text={'Project'} />
         {/* details */}
         <table>
           <tbody>

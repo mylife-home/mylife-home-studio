@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
+import icons from '../icons';
 import DialogOperationSelect from '../base/dialog-operation-select';
 import DialogConfirm from '../dialogs/dialog-confirm';
 import DialogInfo from '../dialogs/dialog-info';
@@ -155,28 +155,28 @@ class Toolbar extends React.Component {
                             tooltipPosition="top-right"
                             onClick={this.importOnlineToolbox.bind(this)}
                             style={styles.button}>
-              <base.icons.PluginDriver />
+              <icons.PluginDriver />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Import driver components from online entities"
                             tooltipPosition="top-right"
                             onClick={this.importOnlineDriverComponents.bind(this)}
                             style={styles.button}>
-              <base.icons.Component />
+              <icons.Component />
             </mui.IconButton>
 
             <mui.IconButton tooltip={<div>Deploy vpanel project<br/>(replace vpanel and ui components on all entities)</div>}
                             tooltipPosition="top-center"
                             onClick={this.deployVPanel.bind(this)}
                             style={styles.button}>
-              <base.icons.tabs.Online />
+              <icons.tabs.Online />
             </mui.IconButton>
 
             <mui.IconButton tooltip={<div>Deploy driver project<br/>(replace driver components on targeted entities)</div>}
                             tooltipPosition="top-center"
                             onClick={this.deployDrivers.bind(this)}
                             style={styles.button}>
-              <base.icons.tabs.Online />
+              <icons.tabs.Online />
             </mui.IconButton>
 
           </mui.ToolbarGroup>

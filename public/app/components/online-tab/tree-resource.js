@@ -2,13 +2,14 @@
 
 import React from 'react';
 import base from '../base/index';
+import icons from '../icons';
 
 const TreeResource = ({ entity, resource }) => (
   <base.SelectableListItem
     value={{ type: 'resource', entity: entity.id, resource }}
     leftIcon={
       <base.TooltipContainer tooltip="Resource">
-        <base.icons.Resource />
+        <icons.Resource />
       </base.TooltipContainer>
     }
     primaryText={resource}

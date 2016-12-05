@@ -2,6 +2,7 @@
 
 import React from 'react';
 import base from '../base/index';
+import icons from '../icons';
 
 import Facade from '../../services/facade';
 
@@ -87,7 +88,7 @@ class PropertiesControl extends React.Component {
 
     return (
       <div>
-        <PropertiesTitle icon={control.text ? <base.icons.UiText/> : <base.icons.UiImage/>} text={control.id} onDelete={onDelete} />
+        <PropertiesTitle icon={control.text ? <icons.UiText/> : <icons.UiImage/>} text={control.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>

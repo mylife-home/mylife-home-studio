@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import icons from '../icons';
 import DialogOperationSelect from '../base/dialog-operation-select';
 import DialogConfirm from '../dialogs/dialog-confirm';
 import DialogInfo from '../dialogs/dialog-info';
@@ -212,21 +213,21 @@ class Toolbar extends React.Component {
                             tooltipPosition="top-right"
                             onClick={this.newImage.bind(this)}
                             style={styles.button}>
-              <base.icons.actions.NewImage />
+              <icons.actions.NewImage />
             </mui.IconButton>
 
             <mui.IconButton tooltip="New window"
                             tooltipPosition="top-right"
                             onClick={this.newWindow.bind(this)}
                             style={styles.button}>
-              <base.icons.actions.NewWindow />
+              <icons.actions.NewWindow />
             </mui.IconButton>
 
             <mui.IconButton tooltip="Import UI components from online entities"
                             tooltipPosition="top-center"
                             onClick={this.importOnline.bind(this)}
                             style={styles.button}>
-              <base.icons.actions.Refresh />
+              <icons.actions.Refresh />
             </mui.IconButton>
 
             <base.IconSelectButton tooltip="Import UI components from online project"
@@ -235,21 +236,21 @@ class Toolbar extends React.Component {
                                    selectTitle="Select VPanel Project"
                                    selectItems={OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length))}
                                    onItemSelect={(name) => this.handleOpenOnlineVPanelProject(name)}>
-              <base.icons.actions.OpenOnline />
+              <icons.actions.OpenOnline />
             </base.IconSelectButton>
 
             <base.IconFileButton tooltip="Import UI components from file project"
                                  tooltipPosition="top-center"
                                  style={styles.button}
                                  onFileSelected={(file) => this.handleOpenFileVPanelProject(file)}>
-              <base.icons.actions.OpenFile />
+              <icons.actions.OpenFile />
             </base.IconFileButton>
 
             <mui.IconButton tooltip="Deploy project"
                             tooltipPosition="top-center"
                             onClick={this.deploy.bind(this)}
                             style={styles.button}>
-              <base.icons.tabs.Online />
+              <icons.tabs.Online />
             </mui.IconButton>
 
           </mui.ToolbarGroup>

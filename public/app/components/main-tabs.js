@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from './base/index';
+import icons from './icons';
 
 import OnlineTab from './online-tab/index';
 import VPanelProjectTab from './vpanel-project-tab/index';
@@ -44,7 +45,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
             contentContainerStyle={styles.tabContainer}
             tabTemplate={base.TabTemplate}>
     <mui.Tab value="online"
-             label={renderTabLabel('Online', (<base.icons.tabs.Online />))}>
+             label={renderTabLabel('Online', (<icons.tabs.Online />))}>
       <OnlineTab />
     </mui.Tab>
     {projects.map((project) => {
@@ -55,7 +56,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
           return (
             <mui.Tab value={project.uid}
                      key={project.uid}
-                     label={renderTabLabel(title, (<base.icons.tabs.VPanel />))}>
+                     label={renderTabLabel(title, (<icons.tabs.VPanel />))}>
               <VPanelProjectTab project={project} />
             </mui.Tab>
           );
@@ -64,7 +65,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
           return (
             <mui.Tab value={project.uid}
                      key={project.uid}
-                     label={renderTabLabel(title, (<base.icons.tabs.Ui />))}>
+                     label={renderTabLabel(title, (<icons.tabs.Ui />))}>
               <UiProjectTab project={project} />
             </mui.Tab>
           );
