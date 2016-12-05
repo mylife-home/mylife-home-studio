@@ -23,34 +23,6 @@ class MainToolbar extends React.Component {
     this.state = {};
   }
 
-  openOnlineVPanelProjectDialog() {
-    this.setState({
-      openOnlineVPanelProjectItems: this.props.onlineVPanelProjectList
-    });
-  }
-
-  openOnlineUiProjectDialog() {
-    this.setState({
-      openOnlineUiProjectItems: this.props.onlineUiProjectList
-    });
-  }
-
-  handleOpenOnlineVPanelProject(name) {
-    this.setState({
-      openOnlineVPanelProjectItems: null
-    });
-    if(!name) { return; }
-    this.props.onOpenOnlineVPanelProject(name);
-  }
-
-  handleOpenOnlineUiProject(name) {
-    this.setState({
-      openOnlineUiProjectItems: null
-    });
-    if(!name) { return; }
-    this.props.onOpenOnlineUiProject(name);
-  }
-
   render() {
     const iconStyle = Object.assign({}, styles.icon, { fill: this.props.muiTheme.toolbar.iconColor});
     const project = this.props.activeProject;
@@ -66,11 +38,13 @@ class MainToolbar extends React.Component {
                           onClick={() => this.props.onNewVPanelProject()}>
             <base.icons.actions.New />
           </mui.IconButton>
-          <mui.IconButton tooltip="open online"
-                          style={styles.button}
-                          onClick={this.openOnlineVPanelProjectDialog.bind(this)}>
+          <base.IconSelectButton tooltip="open online"
+                                style={styles.button}
+                                selectTitle={"Select VPanel Project"}
+                                selectItems={this.props.onlineVPanelProjectList}
+                                onItemSelect={this.props.onOpenOnlineVPanelProject}>
             <base.icons.actions.OpenOnline />
-          </mui.IconButton>
+          </base.IconSelectButton>
           <base.IconFileButton tooltip="open from file"
                                style={styles.button}
                                onFileSelected={this.props.onOpenFileVPanelProject}>
@@ -87,14 +61,16 @@ class MainToolbar extends React.Component {
                           onClick={() => this.props.onNewUiProject()}>
             <base.icons.actions.New />
           </mui.IconButton>
-          <mui.IconButton tooltip="open online"
-                          style={styles.button}
-                          onClick={this.openOnlineUiProjectDialog.bind(this)}>
+          <base.IconSelectButton tooltip="open online"
+                                style={styles.button}
+                                selectTitle={"Select UI Project"}
+                                selectItems={this.props.onlineUiProjectList}
+                                onItemSelect={this.props.onOpenOnlineUiProject}>
             <base.icons.actions.OpenOnline />
-          </mui.IconButton>
+          </base.IconSelectButton>
           <base.IconFileButton tooltip="open from file"
                                style={styles.button}
-                               onClick={this.props.onOpenFileUiProject}>
+                               onFileSelected={this.props.onOpenFileUiProject}>
             <base.icons.actions.OpenFile />
           </base.IconFileButton>
 
@@ -118,18 +94,6 @@ class MainToolbar extends React.Component {
             <base.icons.actions.SaveAs />
           </mui.IconButton>
         </mui.ToolbarGroup>
-
-        <base.DialogSelect title="Select VPanel Project"
-                           open={!!this.state.openOnlineVPanelProjectItems}
-                           items={this.state.openOnlineVPanelProjectItems || []}
-                           select={this.handleOpenOnlineVPanelProject.bind(this)}
-                           cancel={this.handleOpenOnlineVPanelProject.bind(this, null)}/>
-
-        <base.DialogSelect title="Select UI Project"
-                           open={!!this.state.openOnlineUiProjectItems}
-                           items={this.state.openOnlineUiProjectItems || []}
-                           select={this.handleOpenOnlineUiProject.bind(this)}
-                           cancel={this.handleOpenOnlineUiProject.bind(this, null)}/>
       </mui.Toolbar>
     );
   }
