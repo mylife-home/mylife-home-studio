@@ -10,7 +10,7 @@ export default function(state = Immutable.Map(), action) {
       return state.clear();
 
     case AppConstants.ActionTypes.REPOSITORY_ADD:
-      return state.set(action.entity.id, action.entity); // TODO: ensure no changes
+      return state.set(action.entity.id, action.entity);
 
     case AppConstants.ActionTypes.REPOSITORY_REMOVE:
       return state.delete(action.id);
@@ -18,20 +18,20 @@ export default function(state = Immutable.Map(), action) {
     case AppConstants.ActionTypes.ENTITY_RESOURCES_LIST:
       return state.update(action.entityId, entity => ({
         ...entity,
-        resources: action.resources, // TODO: ensure no changes
+        resources: action.resources,
         cachedResources: null
       }));
 
     case AppConstants.ActionTypes.ENTITY_PLUGINS_LIST:
       return state.update(action.entityId, entity => ({
         ...entity,
-        plugins: action.plugins // TODO: ensure no changes
+        plugins: action.plugins
       }));
 
     case AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST:
       return state.update(action.entityId, entity => ({
         ...entity,
-        components: action.components // TODO: ensure no changes
+        components: action.components
       }));
 
     case AppConstants.ActionTypes.RESOURCE_GET_RESULT:
