@@ -5,6 +5,10 @@ import base from '../base/index';
 
 import ProjectStore from '../../stores/project-store';
 
+import PropertiesLabel from '../properties/properties-label';
+import PropertiesTitle from '../properties/properties-title';
+import PropertiesValue from '../properties/properties-value';
+
 import PropertiesImage from './properties-image';
 import PropertiesControl from './properties-control';
 import PropertiesImageSelector from './properties-image-selector';
@@ -50,24 +54,24 @@ class Properties extends React.Component {
   renderProject(project) {
     return (
       <div>
-        <base.PropertiesTitle icon={<base.icons.tabs.Ui/>} text={'Project'} />
+        <PropertiesTitle icon={<base.icons.tabs.Ui/>} text={'Project'} />
         {/* details */}
         <table>
           <tbody>
             <tr>
-              <td><base.PropertiesLabel text={'Name'}/></td>
+              <td><PropertiesLabel text={'Name'}/></td>
               <td><base.PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Creation'}/></td>
-              <td><base.PropertiesValue value={project.creationDate.toISOString()}/></td>
+              <td><PropertiesLabel text={'Creation'}/></td>
+              <td><PropertiesValue value={project.creationDate.toISOString()}/></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Last update'}/></td>
-              <td><base.PropertiesValue value={project.lastUpdate.toISOString()}/></td>
+              <td><PropertiesLabel text={'Last update'}/></td>
+              <td><PropertiesValue value={project.lastUpdate.toISOString()}/></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Default window'}/></td>
+              <td><PropertiesLabel text={'Default window'}/></td>
               <td><PropertiesWindowSelector project={project} object={project} property={'defaultWindow'} /></td>
             </tr>
           </tbody>
@@ -88,13 +92,13 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <base.PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
+        <PropertiesTitle icon={<base.icons.Component/>} text={component.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
             <tr>
-              <td><base.PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesValue value={component.id} /></td>
+              <td><PropertiesLabel text={'Id'} /></td>
+              <td><PropertiesValue value={component.id} /></td>
             </tr>
           </tbody>
         </table>
@@ -114,24 +118,24 @@ class Properties extends React.Component {
 
     return (
       <div>
-        <base.PropertiesTitle icon={<base.icons.UiWindow/>} text={window.id} onDelete={onDelete} />
+        <PropertiesTitle icon={<base.icons.UiWindow/>} text={window.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
             <tr>
-              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><PropertiesLabel text={'Id'} /></td>
               <td><base.PropertiesEditor project={project} object={window} property={'id'} type={'s'} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Width'} /></td>
+              <td><PropertiesLabel text={'Width'} /></td>
               <td><base.PropertiesEditor project={project} object={window} property={'width'} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Height'} /></td>
+              <td><PropertiesLabel text={'Height'} /></td>
               <td><base.PropertiesEditor project={project} object={window} property={'height'} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Background'} /></td>
+              <td><PropertiesLabel text={'Background'} /></td>
               <td><PropertiesImageSelector project={project} object={window} property={'backgroundResource'} /></td>
             </tr>
           </tbody>

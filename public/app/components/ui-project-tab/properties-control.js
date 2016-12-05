@@ -5,6 +5,9 @@ import base from '../base/index';
 
 import Facade from '../../services/facade';
 
+import PropertiesLabel from '../properties/properties-label';
+import PropertiesTitle from '../properties/properties-title';
+
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesControlAction from './properties-control-action';
 import PropertiesControlTextContext from './properties-control-text-context';
@@ -38,11 +41,11 @@ class PropertiesControl extends React.Component {
   renderDisplay(project, control) {
     return [
       (<tr key="Default image">
-        <td><base.PropertiesLabel text={'Default image'} /></td>
+        <td><PropertiesLabel text={'Default image'} /></td>
         <td><PropertiesImageSelector project={project} object={control.display} property={'defaultResource'} /></td>
       </tr>),
       (<tr key="Component/Attribute">
-        <td><base.PropertiesLabel text={'Component/Attribute'} /></td>
+        <td><PropertiesLabel text={'Component/Attribute'} /></td>
         <td><PropertiesComponentAttributeSelector
           project={project}
           component={control.display.component}
@@ -51,7 +54,7 @@ class PropertiesControl extends React.Component {
           onChange={this.handleComponentChange.bind(this)} /></td>
       </tr>),
       (<tr key="Mapping">
-        <td><base.PropertiesLabel text={'Mapping'} /></td>
+        <td><PropertiesLabel text={'Mapping'} /></td>
         <td><PropertiesControlDisplayMapping project={project} display={control.display} /></td>
       </tr>)
     ];
@@ -60,11 +63,11 @@ class PropertiesControl extends React.Component {
   renderText(project, control) {
     return [
       (<tr key="Format">
-        <td><base.PropertiesLabel text={'Format (function body with context items as args)'} /></td>
+        <td><PropertiesLabel text={'Format (function body with context items as args)'} /></td>
         <td><base.PropertiesEditor project={project} object={control.text} property={'format'} type={'s'} /></td>
       </tr>),
       (<tr key="Context">
-        <td><base.PropertiesLabel text={'Context'} /></td>
+        <td><PropertiesLabel text={'Context'} /></td>
         <td><PropertiesControlTextContext project={project} text={control.text} /></td>
       </tr>)
     ];
@@ -84,37 +87,37 @@ class PropertiesControl extends React.Component {
 
     return (
       <div>
-        <base.PropertiesTitle icon={control.text ? <base.icons.UiText/> : <base.icons.UiImage/>} text={control.id} onDelete={onDelete} />
+        <PropertiesTitle icon={control.text ? <base.icons.UiText/> : <base.icons.UiImage/>} text={control.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
             <tr>
-              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><PropertiesLabel text={'Id'} /></td>
               <td><base.PropertiesEditor project={project} object={control} property={'id'} type={'s'} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'X'} /></td>
+              <td><PropertiesLabel text={'X'} /></td>
               <td><base.PropertiesEditor project={project} object={control} property={'x'} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Y'} /></td>
+              <td><PropertiesLabel text={'Y'} /></td>
               <td><base.PropertiesEditor project={project} object={control} property={'y'} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Width'} /></td>
+              <td><PropertiesLabel text={'Width'} /></td>
               <td><base.PropertiesEditor project={project} object={control} property={'width'} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Height'} /></td>
+              <td><PropertiesLabel text={'Height'} /></td>
               <td><base.PropertiesEditor project={project} object={control} property={'height'} type={'i'} useRealType={true} /></td>
             </tr>
             {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
             <tr>
-              <td><base.PropertiesLabel text={'Primary action'} /></td>
+              <td><PropertiesLabel text={'Primary action'} /></td>
               <td><PropertiesControlAction project={project} object={control} property={'primaryAction'} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Secondary action'} /></td>
+              <td><PropertiesLabel text={'Secondary action'} /></td>
               <td><PropertiesControlAction project={project} object={control} property={'secondaryAction'} /></td>
             </tr>
           </tbody>

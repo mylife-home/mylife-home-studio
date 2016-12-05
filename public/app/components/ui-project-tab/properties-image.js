@@ -4,6 +4,10 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
 
+import PropertiesLabel from '../properties/properties-label';
+import PropertiesTitle from '../properties/properties-title';
+import PropertiesValue from '../properties/properties-value';
+
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 
 import {
@@ -85,21 +89,21 @@ class PropertiesImage extends React.Component {
 
     return (
       <div>
-        <base.PropertiesTitle icon={<base.icons.UiImage/>} text={image.id} onDelete={onDelete} />
+        <PropertiesTitle icon={<base.icons.UiImage/>} text={image.id} onDelete={onDelete} />
         {/* details */}
         <table>
           <tbody>
             <tr>
-              <td><base.PropertiesLabel text={'Id'} /></td>
+              <td><PropertiesLabel text={'Id'} /></td>
               <td><base.PropertiesEditor project={project} object={image} property={'id'} type={'s'} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Width'} /></td>
-              <td><base.PropertiesValue value={width} /></td>
+              <td><PropertiesLabel text={'Width'} /></td>
+              <td><PropertiesValue value={width} /></td>
             </tr>
             <tr>
-              <td><base.PropertiesLabel text={'Height'} /></td>
-              <td><base.PropertiesValue value={height} /></td>
+              <td><PropertiesLabel text={'Height'} /></td>
+              <td><PropertiesValue value={height} /></td>
             </tr>
             <tr>
               <td colSpan={2}>
