@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import utils from './utils';
+import utils from '../../utils/index';
 
 import Facade from '../../services/facade';
 
