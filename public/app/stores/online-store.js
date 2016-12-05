@@ -4,7 +4,10 @@ import storeHandler from '../compat/store';
 
 const state = () => storeHandler.getStore().getState();
 
-const getResourceEntity = () => Array.from(state().online.entities.toArray()).find(e => e.resources);
+const getResourceEntity = () => {
+  const store = state();
+  return store.online.entities.get(store.online.resourcesEntityId);
+};
 
 export default {
 
