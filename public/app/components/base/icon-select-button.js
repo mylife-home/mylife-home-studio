@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import DialogSelect from './dialog-select';
+import DialogSelect from '../dialogs/dialog-select';
 
 class IconSelectButton extends React.Component {
 

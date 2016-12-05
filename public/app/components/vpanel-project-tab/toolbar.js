@@ -3,6 +3,9 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import DialogOperationSelect from '../base/dialog-operation-select';
+import DialogConfirm from '../base/dialog-confirm';
+import DialogInfo from '../base/dialog-info';
 
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import {
@@ -179,21 +182,21 @@ class Toolbar extends React.Component {
           </mui.ToolbarGroup>
         </mui.Toolbar>
 
-        <base.DialogInfo title="Success"
-                         open={!!this.state.showInfo}
-                         lines={this.state.showInfo || []}
-                         close={this.closeInfo.bind(this)}/>
+        <DialogInfo title="Success"
+                    open={!!this.state.showInfo}
+                    lines={this.state.showInfo || []}
+                    close={this.closeInfo.bind(this)}/>
 
-        <base.DialogConfirm title="Confirm"
-                            open={!!this.state.importOnlineToolboxConfirm}
-                            lines={(this.state.importOnlineToolboxConfirm && this.state.importOnlineToolboxConfirm.messages) || []}
-                            yes={this.confirmImportOnlineToolbox.bind(this)}
-                            no={this.cancelImportOnlineToolbox.bind(this)}/>
+        <DialogConfirm title="Confirm"
+                       open={!!this.state.importOnlineToolboxConfirm}
+                       lines={(this.state.importOnlineToolboxConfirm && this.state.importOnlineToolboxConfirm.messages) || []}
+                       yes={this.confirmImportOnlineToolbox.bind(this)}
+                       no={this.cancelImportOnlineToolbox.bind(this)}/>
 
-        <base.DialogOperationSelect open={!!this.state.showOperationSelect}
-                                    operations={this.state.showOperationSelect || []}
-                                    ok={this.executeOperations.bind(this)}
-                                    cancel={this.cancelExecuteOperations.bind(this)}/>
+        <DialogOperationSelect open={!!this.state.showOperationSelect}
+                               operations={this.state.showOperationSelect || []}
+                               ok={this.executeOperations.bind(this)}
+                               cancel={this.cancelExecuteOperations.bind(this)}/>
 
       </div>
     );
