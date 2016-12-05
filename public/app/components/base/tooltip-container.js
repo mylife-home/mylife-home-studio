@@ -3,29 +3,25 @@
 import React from 'react';
 import PropTypes from 'material-ui/utils/propTypes';
 import Tooltip from 'material-ui/internal/Tooltip';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
 // https://github.com/callemall/material-ui/blob/v0.15.0-alpha.2/src/icon-button.jsx
 
-function getStyles(props, state) {
-  const {
-    baseTheme,
-  } = state.muiTheme;
-
+function getStyles(muiTheme) {
   return {
     tooltip: {
       boxSizing: 'border-box',
     },
     icon: {
-      color: baseTheme.palette.textColor,
-      fill: baseTheme.palette.textColor,
+      color: muiTheme.palette.textColor,
+      fill: muiTheme.palette.textColor,
     },
     overlay: {
       position: 'relative',
       top: 0,
       width: '100%',
       height: '100%',
-      background: baseTheme.palette.disabledColor,
+      background: muiTheme.palette.disabledColor,
     }
   };
 }
@@ -35,25 +31,8 @@ class TooltipContainer extends React.Component {
   constructor(props, context) {
     super(props);
     this.state = {
-      tooltipShown: false,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+      tooltipShown: false
     };
-  }
-
-  getChildContext() {
-    return {
-      muiTheme: this.state.muiTheme,
-    };
-  }
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({
-      muiTheme: nextContext.muiTheme || this.state.muiTheme,
-    });
-  }
-
-  setKeyboardFocus() {
-    this.refs.div.setKeyboardFocus();
   }
 
   _showTooltip() {
@@ -102,13 +81,15 @@ class TooltipContainer extends React.Component {
 
   render() {
     const {
+      muiTheme,
       touch,
       tooltip,
       tooltipPosition,
+      children,
       ...otherProps
     } = this.props;
 
-    const styles = getStyles(this.props, this.state);
+    const styles = getStyles(muiTheme);
     const splittedTooltipPosition = tooltipPosition.split('-');
 
     const tooltipElement = tooltip ? (
@@ -133,7 +114,7 @@ class TooltipContainer extends React.Component {
         onMouseOut={this._handleMouseOut.bind(this)}
       >
         {tooltipElement}
-        {this.props.children}
+        {children}
       </div>
     );
   }
@@ -173,18 +154,9 @@ TooltipContainer.propTypes = {
   onMouseEnter: React.PropTypes.func
 };
 
-TooltipContainer.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-TooltipContainer.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
 TooltipContainer.defaultProps = {
   tooltipPosition: 'bottom-center',
   touch: false
 };
 
-
-export default TooltipContainer;
+export default muiThemeable()(TooltipContainer);
