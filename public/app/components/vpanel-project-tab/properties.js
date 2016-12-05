@@ -10,7 +10,7 @@ import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
 
 import ProjectStore from '../../stores/project-store';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectDeleteBinding, projectDeleteComponent } from '../../actions/index';
 
 const styles = {

@@ -6,7 +6,7 @@ import icons from '../icons';
 import { stopPropagationWrapper } from '../../utils/index';
 
 import ProjectStore from '../../stores/project-store';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 
 import linkHelper from './link-helper';

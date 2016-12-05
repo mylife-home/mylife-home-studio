@@ -13,7 +13,7 @@ import reducer from './reducers/index';
 
 import Facade from './services/facade'; // import to force init
 import storeInit from './stores/init'; // import to force init
-import AppDispatcher from './dispatcher/app-dispatcher';
+import storeHandler from './compat/store';
 
 void Facade;
 void storeInit;
@@ -27,7 +27,7 @@ injectTapEventPlugin();
 window.debugLib = debugLib;
 
 const store = createStore(reducer);
-AppDispatcher.setStore(store);
+storeHandler.setStore(store);
 
 ReactDOM.render(
   <Provider store={store}>

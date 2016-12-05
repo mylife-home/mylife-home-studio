@@ -2,7 +2,7 @@
 
 import { debounce } from 'throttle-debounce';
 //import aStar from 'a-star';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectStateUpdateLinkData } from '../../actions/index';
 import ProjectStore from '../../stores/project-store';
 

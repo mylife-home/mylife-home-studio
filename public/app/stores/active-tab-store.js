@@ -1,6 +1,6 @@
 'use strict';
 
-import AppDispatcher from '../dispatcher/app-dispatcher';
+import AppDispatcher from '../compat/dispatcher';
 import {EventEmitter} from 'events';
 import reducer from '../reducers/activeTab';
 

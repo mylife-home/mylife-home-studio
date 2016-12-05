@@ -13,7 +13,7 @@ import Canvas from './canvas';
 
 import ProjectStore from '../../stores/project-store';
 
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectClose } from '../../actions/index';
 
 import tabStyles from '../base/tab-styles';

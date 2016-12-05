@@ -7,7 +7,7 @@ import DialogOperationSelect from '../dialogs/dialog-operation-select';
 import DialogConfirm from '../dialogs/dialog-confirm';
 import DialogInfo from '../dialogs/dialog-info';
 
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import {
   dialogSetBusy, dialogError
 } from '../../actions/index';

@@ -15,7 +15,7 @@ import PropertiesControlTextContext from './properties-control-text-context';
 import PropertiesControlDisplayMapping from './properties-control-display-mapping';
 import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
 
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectDeleteControl, dialogError } from '../../actions/index';
 
 class PropertiesControl extends React.Component {

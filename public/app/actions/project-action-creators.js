@@ -7,7 +7,7 @@ import Facade from '../services/facade';
 import ProjectStore from '../stores/project-store';
 import OnlineStore from '../stores/online-store';
 
-import AppDispatcher from '../dispatcher/app-dispatcher';
+import AppDispatcher from '../compat/dispatcher';
 
 import { download, snapToGrid } from '../utils/index';
 

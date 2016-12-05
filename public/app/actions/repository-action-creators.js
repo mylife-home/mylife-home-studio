@@ -1,6 +1,6 @@
 'use strict';
 
-import AppDispatcher from '../dispatcher/app-dispatcher';
+import AppDispatcher from '../compat/dispatcher';
 import AppConstants from '../constants/app-constants';
 import { resourcesEntityQuery } from './resources-action-creators';
 

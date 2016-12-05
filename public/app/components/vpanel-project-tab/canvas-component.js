@@ -11,7 +11,7 @@ import { stopPropagationWrapper, snapToGrid } from '../../utils/index';
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 
 import CanvasComponentAttribute from './canvas-component-attribute';

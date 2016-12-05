@@ -15,7 +15,7 @@ import PropertiesControl from './properties-control';
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesWindowSelector from './properties-window-selector';
 
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 
 import {
   dialogError,

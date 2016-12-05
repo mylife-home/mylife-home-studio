@@ -6,7 +6,7 @@ import MainTabs from '../components/main-tabs';
 
 import ProjectStore from '../stores/project-store';
 import ActiveTabStore from '../stores/active-tab-store';
-import AppDispatcher from '../dispatcher/app-dispatcher';
+import AppDispatcher from '../compat/dispatcher';
 
 import { tabActivate } from '../actions/index';
 

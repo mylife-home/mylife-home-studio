@@ -2,9 +2,9 @@
 
 import { Dispatcher } from 'flux';
 import AppConstants from '../constants/app-constants';
+import store from './store';
 
 const fluxDispatcher = new Dispatcher();
-let store;
 
 export default {
   dispatch: (action) => {
@@ -13,7 +13,7 @@ export default {
       case AppConstants.ActionTypes.DIALOG_ERROR_CLEAN:
       case AppConstants.ActionTypes.DIALOG_SET_BUSY:
       case AppConstants.ActionTypes.DIALOG_UNSET_BUSY:
-        return store.dispatch(action);
+        return store.getStore().dispatch(action);
 
       default:
         return fluxDispatcher.dispatch(action);
@@ -23,9 +23,5 @@ export default {
   register: (handler) => {
     return fluxDispatcher.register(handler);
   },
-
-  setStore: (pstore) => {
-    store = pstore;
-  }
 };
 

@@ -6,7 +6,7 @@ import icons from '../icons';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 import styles from './canvas-component-styles';
 

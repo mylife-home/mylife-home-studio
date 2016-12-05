@@ -7,7 +7,7 @@ import { stopPropagationWrapper } from '../../utils/index';
 
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 
 import CanvasComponent from './canvas-component';

@@ -4,7 +4,7 @@ import uuid from 'uuid';
 import debugLib from 'debug';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 
-import AppDispatcher from '../../dispatcher/app-dispatcher';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectRefresh, projectLoad, resourcesSetQuery } from '../../actions/index';
 
 import vpanel from './vpanel';
