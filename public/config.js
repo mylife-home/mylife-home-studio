@@ -44,6 +44,7 @@ System.config({
     "redux": "npm:redux@3.6.0",
     "redux-actions": "npm:redux-actions@1.1.0",
     "redux-devtools": "npm:redux-devtools@3.3.1",
+    "redux-logger": "npm:redux-logger@2.7.4",
     "redux-thunk": "npm:redux-thunk@2.1.0",
     "socket.io-client": "/socket.io/socket.io.js",
     "superagent": "npm:superagent@1.8.4",
@@ -690,6 +691,9 @@ System.config({
       "react-redux": "npm:react-redux@4.4.6",
       "redux": "npm:redux@3.6.0",
       "redux-devtools-instrument": "npm:redux-devtools-instrument@1.3.3"
+    },
+    "npm:redux-logger@2.7.4": {
+      "deep-diff": "npm:deep-diff@0.3.4"
     },
     "npm:redux@3.6.0": {
       "lodash": "npm:lodash@4.17.2",
