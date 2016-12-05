@@ -8,12 +8,8 @@ const mapStateToProps = (state) => ({
   text: state.dialogs.busyText
 });
 
-const mapDispatchToProps = ({
-});
-
 const MainDialogBusy = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(DialogBusy);
 
 export default MainDialogBusy;
