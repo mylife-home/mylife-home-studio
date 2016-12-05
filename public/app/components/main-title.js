@@ -44,7 +44,7 @@ function renderRight(val) {
   return (<h3 style={style}>{val}</h3>);
 }
 
-const DetailsTitle = ({ muiTheme, left, right, center }) => {
+const MainTitle = ({ muiTheme, left, right, center }) => {
   const additionalStyle = {
     fontFamily: muiTheme.fontFamily,
     color: muiTheme.palette.primaryColor,
@@ -62,10 +62,10 @@ const DetailsTitle = ({ muiTheme, left, right, center }) => {
   );
 };
 
-DetailsTitle.propTypes = {
+MainTitle.propTypes = {
   left:   React.PropTypes.node,
   right:  React.PropTypes.node,
   center: React.PropTypes.node.isRequired
 };
 
-export default muiThemeable()(DetailsTitle);
+export default muiThemeable()(MainTitle);

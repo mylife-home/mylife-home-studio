@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import MainTitle from '../main-title';
 
 import Facade from '../../services/facade';
 
@@ -51,7 +52,7 @@ const DetailsPlugin = ({ plugin }) => {
 
   return (
     <div>
-      <base.DetailsTitle
+      <MainTitle
         center={
           <div>
             {`${plugin.library}.${plugin.type}`}

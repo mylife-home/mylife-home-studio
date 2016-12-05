@@ -2,6 +2,7 @@
 
 import React from 'react';
 import base from '../base/index';
+import MainTitle from '../main-title';
 
 import DetailsComponentConfig from './details-component-config';
 import DetailsComponentBinding from './details-component-binding';
@@ -9,7 +10,7 @@ import DetailsContainer from './details-container';
 
 const DetailsComponent = ({ component }) => (
   <div>
-    <base.DetailsTitle
+    <MainTitle
       center={
         <div>
           {component.id}

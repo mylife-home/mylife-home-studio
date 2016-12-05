@@ -3,12 +3,13 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import MainTitle from '../main-title';
 
 import DetailsContainer from './details-container';
 
 const DetailsResource = ({ resource, content, onRefresh}) => (
   <div>
-    <base.DetailsTitle
+    <MainTitle
       center={
         <div>
           {resource}

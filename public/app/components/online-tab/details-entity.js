@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
+import MainTitle from '../main-title';
 
 import shared from '../../shared/index';
 
@@ -155,7 +156,7 @@ function renderTypeIcon(entity) {
 
 const DetailsEntity = ({ entity, changeValue }) => (
   <div>
-    <base.DetailsTitle
+    <MainTitle
       center={
         <div>
           {entity.id}

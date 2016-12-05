@@ -6,7 +6,6 @@ import SelectableList from './selectable-list';
 import SelectableListItem from './selectable-list-item';
 import TooltipContainer from './tooltip-container';
 import TabTemplate from './tab-template';
-import DetailsTitle from './details-title';
 import PropertiesEditor from './properties-editor';
 import PropertiesTitle from './properties-title';
 import PropertiesLabel from './properties-label';
@@ -21,7 +20,6 @@ export default {
   SelectableListItem,
   TooltipContainer,
   TabTemplate,
-  DetailsTitle,
   PropertiesEditor,
   PropertiesTitle,
   PropertiesLabel,

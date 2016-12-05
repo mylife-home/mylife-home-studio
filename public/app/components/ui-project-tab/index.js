@@ -4,6 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 import base from '../base/index';
+import MainTitle from '../main-title';
 
 import Properties from './properties';
 import Explorer from './explorer';
@@ -89,7 +90,7 @@ class UiProjectTab extends React.Component {
           </bs.Col>
           <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
             <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
-              <base.DetailsTitle
+              <MainTitle
                 center={title}
                 left={<base.icons.tabs.Ui />}
                 right={
