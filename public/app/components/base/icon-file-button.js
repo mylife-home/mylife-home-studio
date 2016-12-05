@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-const IconFileButton = ({ tooltip, style, onFileSelected, children }) => {
+const IconFileButton = ({ onFileSelected, children, ...props }) => {
 
   let fileInput;
 
@@ -17,9 +17,7 @@ const IconFileButton = ({ tooltip, style, onFileSelected, children }) => {
 
   return (
     <div>
-      <mui.IconButton tooltip={tooltip}
-                      style={style}
-                      onClick={() => fileInput.click()}>
+      <mui.IconButton onClick={() => fileInput.click()} {...props}>
         {children}
       </mui.IconButton>
 
@@ -33,8 +31,6 @@ const IconFileButton = ({ tooltip, style, onFileSelected, children }) => {
 };
 
 IconFileButton.propTypes = {
-  tooltip: React.PropTypes.string,
-  style: React.PropTypes.object,
   onFileSelected: React.PropTypes.func.isRequired,
   children: React.PropTypes.oneOfType([
     React.PropTypes.arrayOf(React.PropTypes.node),
