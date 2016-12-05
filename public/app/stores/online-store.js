@@ -1,57 +1,24 @@
 'use strict';
 
-import AppDispatcher from '../compat/dispatcher';
-import {EventEmitter} from 'events';
-import reducer from '../reducers/online';
+import storeHandler from '../compat/store';
 
-const CHANGE_EVENT = 'change';
+const state = () => storeHandler.getStore().getState();
 
-class OnlineStore extends EventEmitter {
+const getResourceEntity = () => Array.from(state().online.toArray()).find(e => e.resources);
 
-  constructor() {
-    super();
-    this.setMaxListeners(0);
-    this.entities = reducer(undefined, {});
-    this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
-  }
+export default {
 
-  handleDispatch(action) {
-    const old = this.entities;
-    this.entities = reducer(this.entities, action);
-    if(old !== this.entities) { this.emitChange(); }
-  }
+  get:(id) => state().online.get(id),
 
-  emitChange() {
-    this.emit(CHANGE_EVENT);
-  }
+  getAll: () => Array.from(state().online.toArray()),
 
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  }
+  getResourceEntity,
 
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  }
-
-  get(id) {
-    return this.entities.get(id);
-  }
-
-  getAll() {
-    return Array.from(this.entities.toArray());
-  }
-
-  getResourceEntity() {
-    return Array.from(this.entities.toArray()).find(e => e.resources);
-  }
-
-  getResourceNames(startsWith) {
-    const resourcesEntity = this.getResourceEntity();
+  getResourceNames: (startsWith) => {
+    const resourcesEntity = getResourceEntity();
     if(!resourcesEntity) { return []; }
     const names = resourcesEntity.resources;
     if(!startsWith) { return names; }
     return names.filter(n => n.startsWith(startsWith));
   }
-}
-
-export default new OnlineStore();
+};

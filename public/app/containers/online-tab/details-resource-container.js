@@ -4,7 +4,7 @@ import React from 'react';
 
 import DetailsResource from '../../components/online-tab/details-resource';
 
-import OnlineStore from '../../stores/online-store';
+import storeHandler from '../../compat/store';
 
 import { resourcesGetQuery } from '../../actions/index';
 
@@ -21,11 +21,11 @@ class DetailsResourceContainer extends React.Component {
   }
 
   componentDidMount() {
-    OnlineStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    OnlineStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {

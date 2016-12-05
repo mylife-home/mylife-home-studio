@@ -5,6 +5,9 @@ import React from 'react';
 import Tree from '../../components/online-tab/tree';
 
 import OnlineStore from '../../stores/online-store';
+import storeHandler from '../../compat/store';
+
+const getAll = () => storeHandler.getStore().getState().online.toArray()
 
 class TreeContainer extends React.Component {
 
@@ -12,23 +15,23 @@ class TreeContainer extends React.Component {
     super(props);
 
     this.state = {
-      entities: OnlineStore.getAll()
+      entities: getAll()
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
   }
 
   componentDidMount() {
-    OnlineStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    OnlineStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {
     this.setState({
-      entities: OnlineStore.getAll()
+      entities: getAll()
     });
   }
 

@@ -7,6 +7,7 @@ import MainToolbar from '../components/main-toolbar';
 import OnlineStore from '../stores/online-store';
 import ProjectStore from '../stores/project-store';
 import ActiveTabStore from '../stores/active-tab-store';
+import storeHandler from '../compat/store';
 
 import {
   projectNew, projectLoadFile, projectLoadOnline, projectSaveOnline, projectSaveAs, projectSaveAllOnline
@@ -28,7 +29,7 @@ class MainToolbarContainer extends React.Component {
   }
 
   componentDidMount() {
-    OnlineStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
     ProjectStore.addChangeListener(this.boundHandleStoreChange);
     ActiveTabStore.addChangeListener(this.boundHandleStoreChange);
   }
@@ -36,7 +37,7 @@ class MainToolbarContainer extends React.Component {
   componentWillUnmount() {
     ActiveTabStore.removeChangeListener(this.boundHandleStoreChange);
     ProjectStore.removeChangeListener(this.boundHandleStoreChange);
-    OnlineStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {
