@@ -4,8 +4,8 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
 import DialogOperationSelect from '../base/dialog-operation-select';
-import DialogConfirm from '../base/dialog-confirm';
-import DialogInfo from '../base/dialog-info';
+import DialogConfirm from '../dialogs/dialog-confirm';
+import DialogInfo from '../dialogs/dialog-info';
 
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import {
