@@ -31,34 +31,34 @@ class DialogOperationSelect extends React.Component {
   render() {
     return (
       <mui.Dialog
-          title="Select operations to execute"
-          actions={<div>
-                    <mui.FlatButton
-                      label="Select all"
-                      onTouchTap={() => this.setAll(true)} />
-                    <mui.FlatButton
-                      label="Unselect all"
-                      onTouchTap={() => this.setAll(false)} />
-                    <mui.FlatButton
-                      label="OK"
-                      onTouchTap={() => this.props.ok()} />
-                    <mui.FlatButton
-                      label="Cancel"
-                      onTouchTap={() => this.props.cancel()} />
-                  </div>}
-          modal={true}
-          open={this.props.open}
-          autoScrollBodyContent={true}>
-          <mui.List>
-            {this.props.operations.map(op => (<mui.ListItem
-                                            key={op.id}
-                                            primaryText={op.description}
-                                            leftCheckbox={
-                                              <mui.Checkbox checked={op.enabled}
-                                                            onCheck={this.createOperationCheckHandler(op)}
-                                              />} />))}
-          </mui.List>
-        </mui.Dialog>
+        title="Select operations to execute"
+        actions={<div>
+                  <mui.FlatButton
+                    label="Select all"
+                    onTouchTap={() => this.setAll(true)} />
+                  <mui.FlatButton
+                    label="Unselect all"
+                    onTouchTap={() => this.setAll(false)} />
+                  <mui.FlatButton
+                    label="OK"
+                    onTouchTap={() => this.props.ok()} />
+                  <mui.FlatButton
+                    label="Cancel"
+                    onTouchTap={() => this.props.cancel()} />
+                </div>}
+        modal={true}
+        open={this.props.open}
+        autoScrollBodyContent={true}>
+        <mui.List>
+          {this.props.operations.map(op => (<mui.ListItem
+                                          key={op.id}
+                                          primaryText={op.description}
+                                          leftCheckbox={
+                                            <mui.Checkbox checked={op.enabled}
+                                                          onCheck={this.createOperationCheckHandler(op)}
+                                            />} />))}
+        </mui.List>
+      </mui.Dialog>
     );
   }
 }
