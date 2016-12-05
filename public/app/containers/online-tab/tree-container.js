@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Tree from '../../components/online-tab/tree';
 
 const mapStateToProps = (state, { selectedValueChanged, selectedNode }) => ({
-  entities: state.online.toArray(),
+  entities: state.online.entities.toArray(),
   selectedValueChanged,
   selectedNode
 });

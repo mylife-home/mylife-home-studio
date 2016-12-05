@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Details from '../../components/online-tab/details';
 
 const mapStateToProps = (state, { value, onChangeValue }) => ({
-  entity: value && state.online.get(value.entity),
+  entity: value && state.online.entities.get(value.entity),
   value,
   onChangeValue
 });
