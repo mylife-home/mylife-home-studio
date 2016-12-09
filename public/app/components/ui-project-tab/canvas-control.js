@@ -14,7 +14,7 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect } from '../../actions/index';
+import { projectStateSelect, projectMoveControl } from '../../actions/index';
 
 function getStyles(props, state) {
   const { window, control } = props;
@@ -184,9 +184,10 @@ const controlSource = {
     const { project, window, control } = props;
 
     const { delta } = monitor.getDropResult();
-    control.x += delta.x / window.width;
-    control.y += delta.y / window.height;
-    Facade.projects.dirtify(project);
+    projectMoveControl(project, window, control, {
+      x: control.x + delta.x / window.width,
+      y: control.y + delta.y / window.height
+    });
   }
 };
 

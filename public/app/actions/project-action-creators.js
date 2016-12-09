@@ -158,6 +158,12 @@ export function projectNewControl(project, location, type) {
   }));
 }
 
+export function projectMoveControl(project, window, control, newPosition) {
+  control.x = newPosition.x;
+  control.y = newPosition.y;
+  Facade.projects.dirtify(project);
+}
+
 export function projectDeleteImage(project, image) {
   Facade.projects.uiDeleteImage(project, image);
 }
