@@ -1,13 +1,13 @@
 'use strict';
 
 import React from 'react';
-import base from '../base/index';
 import icons from '../icons';
 
 import Facade from '../../services/facade';
 
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
+import PropertiesEditor from '../properties/properties-editor';
 
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesControlAction from './properties-control-action';
@@ -16,7 +16,11 @@ import PropertiesControlDisplayMapping from './properties-control-display-mappin
 import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectDeleteControl, dialogError } from '../../actions/index';
+import {
+  projectStateSelect,
+  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
+  dialogError
+} from '../../actions/index';
 
 class PropertiesControl extends React.Component {
 
@@ -65,7 +69,7 @@ class PropertiesControl extends React.Component {
     return [
       (<tr key="Format">
         <td><PropertiesLabel text={'Format (function body with context items as args)'} /></td>
-        <td><base.PropertiesEditor project={project} object={control.text} property={'format'} type={'s'} /></td>
+        <td><PropertiesEditor id={`${control.uid}_text_format`} value={control.text.format} onChange={(value) => projectControlChangeTextFormat(project, window, control, value)} type={'s'} /></td>
       </tr>),
       (<tr key="Context">
         <td><PropertiesLabel text={'Context'} /></td>
@@ -94,23 +98,23 @@ class PropertiesControl extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'id'} type={'s'} /></td>
+              <td><PropertiesEditor id={`${control.uid}_id`} value={control.id} onChange={(value) => projectControlChangeId(project, window, control, value)} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'X'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'x'} type={'n'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_x`} value={control.x} onChange={(value) => projectMoveControl(project, window, control, { x: value, y: control.y })} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Y'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'y'} type={'n'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_y`} value={control.y} onChange={(value) => projectMoveControl(project, window, control, { x: control.x, y: value })} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'width'} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_width`} value={control.width} onChange={(value) => projectResizeControl(project, window, control, { height: control.height, width: value })} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Height'} /></td>
-              <td><base.PropertiesEditor project={project} object={control} property={'height'} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_height`} value={control.height} onChange={(value) => projectResizeControl(project, window, control, { height: value, width: control.width })} type={'i'} useRealType={true} /></td>
             </tr>
             {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
             <tr>

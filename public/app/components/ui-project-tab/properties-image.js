@@ -2,19 +2,19 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
 import icons from '../icons';
 import { imageSize } from '../../utils/index';
 
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
+import PropertiesEditor from '../properties/properties-editor';
 
 import AppDispatcher from '../../compat/dispatcher';
 
 import {
   dialogError,
-  projectStateSelectAndActiveContent, projectChangeImage, projectDeleteImage
+  projectStateSelectAndActiveContent, projectChangeImage, projectDeleteImage, projectImageChangeId
 } from '../../actions/index';
 
 class PropertiesImage extends React.Component {
@@ -97,7 +97,7 @@ class PropertiesImage extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={image} property={'id'} type={'s'} /></td>
+              <td><PropertiesEditor id={`${image.uid}_id`} value={image.id} onChange={(value) => projectImageChangeId(project, image, value)} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>

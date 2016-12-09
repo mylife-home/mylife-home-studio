@@ -2,16 +2,21 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import base from '../base/index';
 import icons from '../icons';
 
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
+import PropertiesEditor from '../properties/properties-editor';
 
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectDeleteBinding, projectDeleteComponent } from '../../actions/index';
+import {
+  projectStateSelect,
+  projectChangeName,
+  projectDeleteBinding,
+  projectDeleteComponent, projectComponentChangeId, projectComponentChangeConfig
+} from '../../actions/index';
 
 const styles = {
   cell: {
@@ -101,7 +106,7 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={component} property={'id'} type={'s'} dirtifyComponent={true} /></td>
+              <td><PropertiesEditor id={`${component.uid}_id`} value={component.id} onChange={(value) => projectComponentChangeId(project, component, value)} type={'s'} /></td>
             </tr>
             {pluginConfig.map(prop => (
               <tr key={prop.name}>
@@ -109,12 +114,11 @@ class Properties extends React.Component {
                   <PropertiesLabel text={prop.name} />
                 </td>
                 <td>
-                  <base.PropertiesEditor
-                    project={project}
-                    object={component.config}
-                    property={prop.name}
-                    type={prop.type}
-                    dirtifyComponent={true} />
+                  <PropertiesEditor
+                    id={`${component.uid}_config_${prop.name}`}
+                    value={component.config[prop.name]}
+                    onChange={(value) => projectComponentChangeConfig(project, component, prop.name, value)}
+                    type={prop.type} />
                 </td>
               </tr>))
             }
@@ -168,7 +172,7 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Name'}/></td>
-              <td><base.PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td>
+              <td><PropertiesEditor id={`${project.uid}_name`} value={project.name} onChange={(value) => projectChangeName(project, value)} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Creation'}/></td>

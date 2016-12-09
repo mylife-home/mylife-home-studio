@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import base from '../base/index';
 import icons from '../icons';
 
 import ProjectStore from '../../stores/project-store';
@@ -9,6 +8,7 @@ import ProjectStore from '../../stores/project-store';
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
+import PropertiesEditor from '../properties/properties-editor';
 
 import PropertiesImage from './properties-image';
 import PropertiesControl from './properties-control';
@@ -19,7 +19,9 @@ import AppDispatcher from '../../compat/dispatcher';
 
 import {
   dialogError,
-  projectStateSelectAndActiveContent, projectDeleteWindow, projectDeleteComponent
+  projectStateSelectAndActiveContent, projectChangeName,
+  projectDeleteWindow, projectWindowChangeId, projectResizeWindow,
+  projectDeleteComponent
 } from '../../actions/index';
 
 class Properties extends React.Component {
@@ -61,7 +63,7 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Name'}/></td>
-              <td><base.PropertiesEditor project={project} object={project} property={'name'} type={'s'} /></td>
+              <td><PropertiesEditor id={`${project.uid}_name`} value={project.name} onChange={(value) => projectChangeName(project, value)} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Creation'}/></td>
@@ -125,15 +127,15 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><base.PropertiesEditor project={project} object={window} property={'id'} type={'s'} /></td>
+              <td><PropertiesEditor id={`${window.uid}_id`} value={window.id} onChange={(value) => projectWindowChangeId(project, window, value)} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>
-              <td><base.PropertiesEditor project={project} object={window} property={'width'} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${window.uid}_width`} value={window.width} onChange={(value) => projectResizeWindow(project, window, { height: window.height, width: value })} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Height'} /></td>
-              <td><base.PropertiesEditor project={project} object={window} property={'height'} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${window.uid}_height`} value={window.height} onChange={(value) => projectResizeWindow(project, window, { height: value, width: window.width })} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Background'} /></td>

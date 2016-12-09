@@ -11,7 +11,6 @@ import { stopPropagationWrapper } from '../../utils/index';
 import DataImage from './data-image';
 import CanvasControl from './canvas-control';
 
-import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';

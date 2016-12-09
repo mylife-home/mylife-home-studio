@@ -109,6 +109,11 @@ export function projectClose(project) {
   };
 }
 
+export function projectChangeName(project, name) {
+  project.name = name;
+  Facade.projects.dirtify(project);
+}
+
 export function projectNewComponent(project, location, plugin) {
 
   const component = Facade.projects.vpanelCreateComponent(project, snapToGrid(location), plugin);
@@ -116,8 +121,18 @@ export function projectNewComponent(project, location, plugin) {
   AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
 }
 
+export function projectComponentChangeId(project, component, id) {
+  component.id = id;
+  Facade.projects.dirtify(project);
+}
+
 export function projectMoveComponent(project, component, location) {
   Object.assign(component.designer.location, location);
+  Facade.projects.vpanelDirtifyComponent(project, component);
+}
+
+export function projectComponentChangeConfig(project, component, name, value) {
+  component.config[name] = value;
   Facade.projects.vpanelDirtifyComponent(project, component);
 }
 
@@ -143,11 +158,21 @@ export function projectNewImage(project) {
   AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
 }
 
+export function projectImageChangeId(project, image, id) {
+  image.id = id;
+  Facade.projects.dirtify(project);
+}
+
 export function projectNewWindow(project) {
   const window = Facade.projects.uiCreateWindow(project);
 
   const selection = { type: 'window', uid: window.uid };
   AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+}
+
+export function projectWindowChangeId(project, window, id) {
+  window.id = id;
+  Facade.projects.dirtify(project);
 }
 
 export function projectResizeWindow(project, window, newSize) {
@@ -178,6 +203,16 @@ export function projectMoveControl(project, window, control, newPosition) {
 export function projectResizeControl(project, window, control, newSize) {
   control.height = newSize.height;
   control.width  = newSize.width;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeId(project, window, control, id) {
+  control.id = id;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeTextFormat(project, window, control, format) {
+  control.text.format = format;
   Facade.projects.dirtify(project);
 }
 

@@ -254,7 +254,7 @@ const componentSource = {
     const location = {
       x: component.designer.location.x + Math.round(delta.x),
       y: component.designer.location.y + Math.round(delta.y)
-    }
+    };
     snapToGrid(location, true);
 
     projectMoveComponent(project, component, location);
