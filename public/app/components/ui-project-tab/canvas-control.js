@@ -14,7 +14,7 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectMoveControl } from '../../actions/index';
+import { projectStateSelect, projectMoveControl, projectResizeControl } from '../../actions/index';
 
 function getStyles(props, state) {
   const { window, control } = props;
@@ -100,11 +100,9 @@ class CanvasControl extends React.Component {
   }
 
   controlResize(dir, size) {
-    const { project, control } = this.props;
+    const { project, window, control } = this.props;
 
-    control.height = size.height;
-    control.width = size.width;
-    Facade.projects.dirtify(project);
+    projectResizeControl(project, window, control, size);
   }
 
   select() {

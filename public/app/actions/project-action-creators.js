@@ -164,6 +164,12 @@ export function projectMoveControl(project, window, control, newPosition) {
   Facade.projects.dirtify(project);
 }
 
+export function projectResizeControl(project, window, control, newSize) {
+  control.height = newSize.height;
+  control.width  = newSize.width;
+  Facade.projects.dirtify(project);
+}
+
 export function projectDeleteImage(project, image) {
   Facade.projects.uiDeleteImage(project, image);
 }
