@@ -12,7 +12,7 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect } from '../../actions/index';
+import { projectStateSelect, projectMoveComponent } from '../../actions/index';
 
 import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
@@ -250,13 +250,14 @@ const componentSource = {
 
     const { component, project } = props;
 
-    const location = component.designer.location;
     const { delta } = monitor.getDropResult();
-    location.x += Math.round(delta.x);
-    location.y += Math.round(delta.y);
+    const location = {
+      x: component.designer.location.x + Math.round(delta.x),
+      y: component.designer.location.y + Math.round(delta.y)
+    }
     snapToGrid(location, true);
 
-    Facade.projects.vpanelDirtifyComponent(project, component);
+    projectMoveComponent(project, component, location);
 
     uiComponent.handleMeasureChange();
   }

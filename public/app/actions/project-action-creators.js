@@ -116,6 +116,11 @@ export function projectNewComponent(project, location, plugin) {
   AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
 }
 
+export function projectMoveComponent(project, component, location) {
+  Object.assign(component.designer.location, location);
+  Facade.projects.vpanelDirtifyComponent(project, component);
+}
+
 export function projectDeleteComponent(project, component) {
   switch(project.type) {
     case 'vpanel':
