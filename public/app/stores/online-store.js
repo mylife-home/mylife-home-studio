@@ -19,7 +19,7 @@ export default {
 
   getResourceNames: (startsWith) => {
     const resourcesEntity = getResourceEntity();
-    if(!resourcesEntity) { return []; }
+    if(!resourcesEntity || !resourcesEntity.resources) { return []; }
     const names = resourcesEntity.resources;
     if(!startsWith) { return names; }
     return names.filter(n => n.startsWith(startsWith));
