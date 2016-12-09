@@ -15,7 +15,7 @@ import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect } from '../../actions/index';
+import { projectStateSelect, projectResizeWindow } from '../../actions/index';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
@@ -88,9 +88,7 @@ class CanvasWindow extends React.Component {
   windowResize(dir, size) {
     const { project, window } = this.props;
 
-    window.height = size.height;
-    window.width = size.width;
-    Facade.projects.dirtify(project);
+    projectResizeWindow(project, window, size);
   }
 
   select() {

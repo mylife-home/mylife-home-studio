@@ -145,6 +145,12 @@ export function projectNewWindow(project) {
   AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
 }
 
+export function projectResizeWindow(project, window, newSize) {
+  window.height = newSize.height;
+  window.width  = newSize.width;
+  Facade.projects.dirtify(project);
+}
+
 export function projectNewControl(project, location, type) {
   const projectState = ProjectStore.getProjectState(project);
   const window = project.windows.find(wnd => wnd.uid === projectState.activeContent.uid);
