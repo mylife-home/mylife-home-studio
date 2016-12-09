@@ -4,7 +4,7 @@ import AppConstants from '../constants/app-constants';
 import Immutable from 'immutable';
 import shared from '../shared/index';
 
-export default function(state = { entities: Immutable.Map(), resourceEntityId: null }, action) {
+export default function(state = { entities: Immutable.Map(), resourcesEntityId: null }, action) {
 
   switch(action.type) {
     case AppConstants.ActionTypes.REPOSITORY_CLEAR:
@@ -14,14 +14,14 @@ export default function(state = { entities: Immutable.Map(), resourceEntityId: n
       return {
         ...state,
         entities: state.entities.set(action.entity.id, action.entity),
-        resourceEntityId: (action.entity.type === shared.EntityType.RESOURCES) ? action.entity.id : state.resourceEntityId
+        resourcesEntityId: (action.entity.type === shared.EntityType.RESOURCES) ? action.entity.id : state.resourcesEntityId
       };
 
     case AppConstants.ActionTypes.REPOSITORY_REMOVE:
       return {
         ...state,
         entities: state.entities.delete(action.id),
-        resourceEntityId: (state.resourceEntityId === action.id) ? null : state.resourceEntityId
+        resourcesEntityId: (state.resourcesEntityId === action.id) ? null : state.resourcesEntityId
       };
 
     case AppConstants.ActionTypes.ENTITY_RESOURCES_LIST:
