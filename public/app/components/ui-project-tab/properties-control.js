@@ -18,7 +18,7 @@ import PropertiesComponentAttributeSelector from './properties-component-attribu
 import AppDispatcher from '../../compat/dispatcher';
 import {
   projectStateSelect,
-  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
+  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl, projectControlChangeAction,
   dialogError
 } from '../../actions/index';
 
@@ -119,11 +119,19 @@ class PropertiesControl extends React.Component {
             {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
             <tr>
               <td><PropertiesLabel text={'Primary action'} /></td>
-              <td><PropertiesControlAction project={project} object={control} property={'primaryAction'} /></td>
+              <td>
+                <PropertiesControlAction project={project}
+                                         action={control.primaryAction}
+                                         onActionChange={(newAction) => projectControlChangeAction(project, window, control, 'primaryAction', newAction)} />
+              </td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Secondary action'} /></td>
-              <td><PropertiesControlAction project={project} object={control} property={'secondaryAction'} /></td>
+              <td>
+                <PropertiesControlAction project={project}
+                                         action={control.secondaryAction}
+                                         onActionChange={(newAction) => projectControlChangeAction(project, window, control, 'secondaryAction', newAction)} />
+              </td>
             </tr>
           </tbody>
         </table>

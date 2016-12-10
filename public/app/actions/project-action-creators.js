@@ -216,6 +216,11 @@ export function projectControlChangeTextFormat(project, window, control, format)
   Facade.projects.dirtify(project);
 }
 
+export function projectControlChangeAction(project, window, control, actionType, newAction) {
+  control[actionType] = newAction;
+  Facade.projects.dirtify(project);
+}
+
 export function projectDeleteImage(project, image) {
   Facade.projects.uiDeleteImage(project, image);
 }

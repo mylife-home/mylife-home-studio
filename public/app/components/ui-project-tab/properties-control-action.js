@@ -2,9 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import { stopPropagationWrapper, sortBy } from '../../utils/index';
-
-import Facade from '../../services/facade';
+import { sortBy } from '../../utils/index';
 
 class PropertiesControlAction extends React.Component {
 
@@ -17,6 +15,8 @@ class PropertiesControlAction extends React.Component {
   }
 
   handleTouchTap(event) {
+    event.stopPropagation();
+
     this.setState({
       open: true,
       anchorEl: event.currentTarget
@@ -28,58 +28,44 @@ class PropertiesControlAction extends React.Component {
   }
 
   handleSelectWindow(window, popup) {
-    const { project, object, property } = this.props;
+    const { onActionChange } = this.props;
 
     this.handleRequestClose();
 
-    object[property] = {
+    onActionChange({
       component: null,
       window: {
         window,
         popup
       }
-    };
-
-    Facade.projects.dirtify(project);
+    });
   }
 
   handleSelectComponent(component, action) {
-    const { project, object, property } = this.props;
+    const { onActionChange } = this.props;
 
     this.handleRequestClose();
 
-    object[property] = {
+    onActionChange({
       window: null,
       component: {
         component,
         action
       }
-    };
-
-    Facade.projects.dirtify(project);
+    });
   }
 
   handleSelectNone() {
-    const { project, object, property } = this.props;
+    const { onActionChange } = this.props;
 
     this.handleRequestClose();
 
-    object[property] = {
-      window: null,
-      component: null
-    };
-
-    Facade.projects.dirtify(project);
+    onActionChange(null);
   }
 
   render() {
-    const { project, object, property } = this.props;
+    const { project, action } = this.props;
 
-    if(!object.hasOwnProperty(property)) {
-      throw new Error(`object ${object.uid || object.id} does not have such property: ${property}`);
-    }
-
-    const action = object[property];
     let display = '<none>';
     if(action) {
       const actionComponent = action.component;
@@ -96,7 +82,7 @@ class PropertiesControlAction extends React.Component {
       <div>
         <mui.RaisedButton
           label={display}
-          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={(event) => this.handleTouchTap(event)}
         />
         <mui.Popover
           open={this.state.open}
@@ -146,9 +132,9 @@ class PropertiesControlAction extends React.Component {
 }
 
 PropertiesControlAction.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  object   : React.PropTypes.object.isRequired,
-  property : React.PropTypes.string.isRequired
+  project        : React.PropTypes.object.isRequired,
+  action         : React.PropTypes.object,
+  onActionChange : React.PropTypes.func.isRequired
 };
 
 export default PropertiesControlAction;
