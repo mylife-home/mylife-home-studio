@@ -221,6 +221,13 @@ export function projectControlChangeTextFormat(project, window, control, format)
   Facade.projects.dirtify(project);
 }
 
+export function projectControlChangeDisplayComponent(project, window, control, component, action) {
+  control.display.component = component;
+  control.display.attribute = attribute;
+  control.display.map = [];
+  Facade.projects.dirtify(project);
+}
+
 export function projectControlChangeDisplayMappingImage(project, window, control, item, newImage) {
   item.resource = newImage;
   Facade.projects.dirtify(project);

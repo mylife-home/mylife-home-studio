@@ -18,7 +18,8 @@ import PropertiesComponentAttributeSelector from './properties-component-attribu
 import AppDispatcher from '../../compat/dispatcher';
 import {
   projectStateSelect,
-  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl, projectControlChangeAction, projectControlChangeImage,
+  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
+  projectControlChangeAction, projectControlChangeImage, projectControlChangeDisplayComponent,
   dialogError
 } from '../../actions/index';
 
@@ -35,12 +36,8 @@ class PropertiesControl extends React.Component {
   }
 
   handleComponentChange(component, attribute) {
-    const { project, control } = this.props;
-
-    control.display.component = component;
-    control.display.attribute = attribute;
-    control.display.map = [];
-    Facade.projects.dirtify(project);
+    const { project, window, control } = this.props;
+    projectControlChangeDisplayComponent(project, window, control, component, action);
   }
 
   renderDisplay(project, window, control) {
