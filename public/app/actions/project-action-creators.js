@@ -226,7 +226,7 @@ export function projectControlChangeTextFormat(project, window, control, format)
   Facade.projects.dirtify(project);
 }
 
-export function projectControlChangeDisplayComponent(project, window, control, component, action) {
+export function projectControlChangeDisplayComponent(project, window, control, component, attribute) {
   control.display.component = component;
   control.display.attribute = attribute;
   control.display.map = [];

@@ -37,7 +37,7 @@ class PropertiesControl extends React.Component {
 
   handleComponentChange(component, attribute) {
     const { project, window, control } = this.props;
-    projectControlChangeDisplayComponent(project, window, control, component, action);
+    projectControlChangeDisplayComponent(project, window, control, component, attribute);
   }
 
   renderDisplay(project, window, control) {
