@@ -38,7 +38,7 @@ export function parseUrl(url) {
 
 export function stopPropagationWrapper(func) {
   const self = this;
-  return (e) => {
+  return function(e) {
     if(e) { e.stopPropagation(); }
     func.apply(self, arguments);
   };
