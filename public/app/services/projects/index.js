@@ -262,14 +262,6 @@ class Projects {
     ui.changeImage(project, image, data);
     AppDispatcher.dispatch(projectRefresh(project));
   }
-
-  uiCreateTextContextItem() {
-    return ui.createTextContextItem();
-  }
-
-  uiCreateDisplayMappingItem() {
-    return ui.createDisplayMappingItem();
-  }
 }
 
 export default Projects;

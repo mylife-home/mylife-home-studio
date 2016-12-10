@@ -1,6 +1,7 @@
 'use strict';
 
 import async from 'async';
+import uuid from 'uuid';
 import AppConstants from '../constants/app-constants';
 import Facade from '../services/facade';
 
@@ -227,7 +228,7 @@ export function projectControlChangeTextFormat(project, window, control, format)
 }
 
 export function projectControlAddTextContext(project, window, control, newItem) {
-  control.text.context.push(newItem);
+  control.text.context.push({ ...newItem, uid: uuid.v4()});
   Facade.projects.dirtify(project);
 }
 
@@ -275,7 +276,7 @@ export function projectControlChangeDisplayMappingMax(project, window, control, 
 }
 
 export function projectControlAddDisplayMapping(project, window, control, newItem) {
-  control.display.map.push(newItem);
+  control.display.map.push({ ...newItem, uid: uuid.v4()});
   Facade.projects.dirtify(project);
 }
 

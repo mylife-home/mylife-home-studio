@@ -18,7 +18,15 @@ class PropertiesControlTextContext extends React.Component {
 
     this.state = {
       open: false,
-      newItem: Facade.projects.uiCreateTextContextItem()
+      newItem: this.createNewItem()
+    };
+  }
+
+  createNewItem() {
+    return {
+      id: null,
+      component: null,
+      attribute: null
     };
   }
 
@@ -47,7 +55,7 @@ class PropertiesControlTextContext extends React.Component {
     }
 
     projectControlAddTextContext(project, window, control, newItem);
-    this.setState({ newItem: Facade.projects.uiCreateTextContextItem() });
+    this.setState({ newItem: this.createNewItem() });
   }
 
   render() {

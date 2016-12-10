@@ -23,7 +23,16 @@ class PropertiesControlDisplayMapping extends React.Component {
 
     this.state = {
       open: false,
-      newItem: Facade.projects.uiCreateDisplayMappingItem()
+      newItem: this.createNewItem()
+    };
+  }
+
+  createNewItem() {
+    return {
+      max: null,
+      min: null,
+      resource: null,
+      value: null
     };
   }
 
@@ -59,7 +68,7 @@ class PropertiesControlDisplayMapping extends React.Component {
     }
 
     projectControlAddDisplayMapping(project, window, control, newItem);
-    this.setState({ newItem: Facade.projects.uiCreateDisplayMappingItem() });
+    this.setState({ newItem: this.createNewItem() });
   }
 
   render() {

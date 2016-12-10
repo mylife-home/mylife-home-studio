@@ -28,9 +28,7 @@ export default {
   deleteImage,
   deleteWindow,
   deleteControl,
-  changeImage,
-  createTextContextItem,
-  createDisplayMappingItem
+  changeImage
 };
 
 function createNew(project) {
@@ -741,25 +739,6 @@ function deleteControl(project, window, control) {
 
 function changeImage(project, image, data) {
   image.content = data;
-}
-
-function createTextContextItem() {
-  return {
-    uid: uuid.v4(),
-    id: null,
-    component: null,
-    attribute: null
-  };
-}
-
-function createDisplayMappingItem() {
-  return {
-    uid: uuid.v4(),
-    max: null,
-    min: null,
-    resource: null,
-    value: null
-  };
 }
 
 function arrayRemoveValue(arr, value) {
