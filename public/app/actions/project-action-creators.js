@@ -241,6 +241,17 @@ export function projectControlChangeDisplayMappingMax(project, window, control, 
   Facade.projects.dirtify(project);
 }
 
+export function projectControlAddDisplayMapping(project, window, control, newItem) {
+  control.display.map.push(newItem);
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlDeleteDisplayMapping(project, window, control, item) {
+  arrayRemoveByValue(control.display.map, item);
+  Facade.projects.dirtify(project);
+  Facade.projects.dirtify(project);
+}
+
 export function projectControlChangeImage(project, window, control, newImage) {
   control.display.defaultResource = newImage;
   Facade.projects.dirtify(project);
@@ -297,4 +308,11 @@ export function projectStateSelectAndActiveContent(project, selection, activeCon
     selection,
     activeContent
   };
+}
+
+
+function arrayRemoveByValue(array, item) {
+  const index = array.indexOf(item);
+  if(index === -1) { return; }
+  array.splice(index, 1);
 }

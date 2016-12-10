@@ -43,7 +43,7 @@ class PropertiesControl extends React.Component {
     Facade.projects.dirtify(project);
   }
 
-  renderDisplay(project, control) {
+  renderDisplay(project, window, control) {
     return [
       (<tr key="Default image">
         <td><PropertiesLabel text={'Default image'} /></td>
@@ -60,12 +60,12 @@ class PropertiesControl extends React.Component {
       </tr>),
       (<tr key="Mapping">
         <td><PropertiesLabel text={'Mapping'} /></td>
-        <td><PropertiesControlDisplayMapping project={project} control={control} /></td>
+        <td><PropertiesControlDisplayMapping project={project} window={window} control={control} /></td>
       </tr>)
     ];
   }
 
-  renderText(project, control) {
+  renderText(project, window, control) {
     return [
       (<tr key="Format">
         <td><PropertiesLabel text={'Format (function body with context items as args)'} /></td>
@@ -116,7 +116,7 @@ class PropertiesControl extends React.Component {
               <td><PropertiesLabel text={'Height'} /></td>
               <td><PropertiesEditor id={`${control.uid}_height`} value={control.height} onChange={(value) => projectResizeControl(project, window, control, { height: value, width: control.width })} type={'i'} useRealType={true} /></td>
             </tr>
-            {control.text ? this.renderText(project, control) : this.renderDisplay(project, control)}
+            {control.text ? this.renderText(project, window, control) : this.renderDisplay(project, window, control)}
             <tr>
               <td><PropertiesLabel text={'Primary action'} /></td>
               <td>

@@ -2,13 +2,14 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import { stopPropagationWrapper } from '../../utils/index';
 
 import {
   projectControlChangeDisplayMappingImage,
   projectControlChangeDisplayMappingValue,
   projectControlChangeDisplayMappingMin,
-  projectControlChangeDisplayMappingMax
+  projectControlChangeDisplayMappingMax,
+  projectControlAddDisplayMapping,
+  projectControlDeleteDisplayMapping
 } from '../../actions/index';
 
 import PropertiesControlDisplayMappingRow from './properties-control-display-mapping-row';
@@ -26,7 +27,8 @@ class PropertiesControlDisplayMapping extends React.Component {
     };
   }
 
-  handleTouchTap() {
+  handleTouchTap(event) {
+    event.stopPropagation();
     this.setState({
       open: true
     });
@@ -37,20 +39,16 @@ class PropertiesControlDisplayMapping extends React.Component {
   }
 
   handleDelete(item) {
-    const { project, control } = this.props;
-    const mapping = control.display.map;
-
-    arrayRemoveByValue(mapping, item);
-    Facade.projects.dirtify(project);
+    const { project, window, control } = this.props;
+    projectControlDeleteDisplayMapping(project, window, control, item);
   }
 
   handleCreate() {
-    const { project, control } = this.props;
+    const { project, window, control } = this.props;
 
     const componentAttribute = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
     const isRange = componentAttribute.type.constructor.name === 'Range';
 
-    const mapping = control.display.map;
     const newItem = this.state.newItem;
 
     if(!newItem.resource) {
@@ -60,9 +58,8 @@ class PropertiesControlDisplayMapping extends React.Component {
       return;
     }
 
-    mapping.push(newItem);
+    projectControlAddDisplayMapping(project, window, control, newItem);
     this.setState({ newItem: Facade.projects.uiCreateDisplayMappingItem() });
-    Facade.projects.dirtify(project);
   }
 
   render() {
@@ -84,7 +81,7 @@ class PropertiesControlDisplayMapping extends React.Component {
       <div>
         <mui.RaisedButton
           label={mappingDisplay}
-          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={(event) => this.handleTouchTap(event)}
         />
 
         <mui.Dialog
@@ -149,13 +146,8 @@ class PropertiesControlDisplayMapping extends React.Component {
 
 PropertiesControlDisplayMapping.propTypes = {
   project  : React.PropTypes.object.isRequired,
+  window   : React.PropTypes.object.isRequired,
   control  : React.PropTypes.object.isRequired
 };
 
 export default PropertiesControlDisplayMapping;
-
-function arrayRemoveByValue(array, item) {
-  const index = array.indexOf(item);
-  if(index === -1) { return; }
-  array.splice(index, 1);
-}
