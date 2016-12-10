@@ -3,8 +3,6 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-import Facade from '../../services/facade';
-
 class PropertiesWindowSelector extends React.Component {
 
   constructor(props, context) {
