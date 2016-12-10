@@ -4,6 +4,13 @@ import React from 'react';
 import * as mui from 'material-ui';
 import { stopPropagationWrapper } from '../../utils/index';
 
+import {
+  projectControlChangeDisplayMappingImage,
+  projectControlChangeDisplayMappingValue,
+  projectControlChangeDisplayMappingMin,
+  projectControlChangeDisplayMappingMax
+} from '../../actions/index';
+
 import PropertiesControlDisplayMappingRow from './properties-control-display-mapping-row';
 
 import Facade from '../../services/facade';
@@ -30,20 +37,20 @@ class PropertiesControlDisplayMapping extends React.Component {
   }
 
   handleDelete(item) {
-    const { project, display } = this.props;
-    const mapping = display.map;
+    const { project, control } = this.props;
+    const mapping = control.display.map;
 
     arrayRemoveByValue(mapping, item);
     Facade.projects.dirtify(project);
   }
 
   handleCreate() {
-    const { project, display } = this.props;
+    const { project, control } = this.props;
 
-    const componentAttribute = display.component.plugin.clazz.attributes.find(a => a.name === display.attribute);
+    const componentAttribute = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
     const isRange = componentAttribute.type.constructor.name === 'Range';
 
-    const mapping = display.map;
+    const mapping = control.display.map;
     const newItem = this.state.newItem;
 
     if(!newItem.resource) {
@@ -59,14 +66,14 @@ class PropertiesControlDisplayMapping extends React.Component {
   }
 
   render() {
-    const { project, display } = this.props;
+    const { project, control } = this.props;
 
-    const mapping = display.map;
-    if(!display.component || !display.attribute) {
+    const mapping = control.display.map;
+    if(!control.display.component || !control.display.attribute) {
       return (<div>Select component/attribute</div>);
     }
 
-    const attributeType = display.component.plugin.clazz.attributes.find(a => a.name === display.attribute).type;
+    const attributeType = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
     const isRange = attributeType.constructor.name === 'Range';
     const mappingDisplay = mapping.map(item => {
       const key = isRange ? `[${item.min}-${item.max}]` : item.value;
@@ -114,6 +121,10 @@ class PropertiesControlDisplayMapping extends React.Component {
                   attributeType={attributeType}
                   isNew={false}
                   action={this.handleDelete.bind(this, it)}
+                  onImageChange={(img) => projectControlChangeDisplayMappingImage(project, window, control, it, img)}
+                  onValueChange={(value) => projectControlChangeDisplayMappingValue(project, window, control, it, value)}
+                  onMinChange={(value) => projectControlChangeDisplayMappingMin(project, window, control, it, value)}
+                  onMaxChange={(value) => projectControlChangeDisplayMappingMax(project, window, control, it, value)}
                 />
               ))}
               <PropertiesControlDisplayMappingRow
@@ -123,6 +134,10 @@ class PropertiesControlDisplayMapping extends React.Component {
                 attributeType={attributeType}
                 isNew={true}
                 action={this.handleCreate.bind(this)}
+                onImageChange={(resource) => this.setState({ newItem: { ...this.state.newItem, resource } })}
+                onValueChange={(value) => this.setState({ newItem: { ...this.state.newItem, value } })}
+                onMinChange={(min) => this.setState({ newItem: { ...this.state.newItem, min } })}
+                onMaxChange={(max) => this.setState({ newItem: { ...this.state.newItem, max } })}
               />
             </mui.TableBody>
           </mui.Table>
@@ -134,7 +149,7 @@ class PropertiesControlDisplayMapping extends React.Component {
 
 PropertiesControlDisplayMapping.propTypes = {
   project  : React.PropTypes.object.isRequired,
-  display  : React.PropTypes.object.isRequired
+  control  : React.PropTypes.object.isRequired
 };
 
 export default PropertiesControlDisplayMapping;

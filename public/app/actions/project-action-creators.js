@@ -181,6 +181,11 @@ export function projectResizeWindow(project, window, newSize) {
   Facade.projects.dirtify(project);
 }
 
+export function projectWindowChangeImage(project, window, newImage) {
+  window.backgroundResource = newImage;
+  Facade.projects.dirtify(project);
+}
+
 export function projectNewControl(project, location, type) {
   const projectState = ProjectStore.getProjectState(project);
   const window = project.windows.find(wnd => wnd.uid === projectState.activeContent.uid);
@@ -213,6 +218,31 @@ export function projectControlChangeId(project, window, control, id) {
 
 export function projectControlChangeTextFormat(project, window, control, format) {
   control.text.format = format;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeDisplayMappingImage(project, window, control, item, newImage) {
+  item.resource = newImage;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeDisplayMappingValue(project, window, control, item, newValue) {
+  item.value = newValue;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeDisplayMappingMin(project, window, control, item, newMin) {
+  item.min = newMin;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeDisplayMappingMax(project, window, control, item, newMax) {
+  item.max = newMax;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeImage(project, window, control, newImage) {
+  control.display.defaultResource = newImage;
   Facade.projects.dirtify(project);
 }
 

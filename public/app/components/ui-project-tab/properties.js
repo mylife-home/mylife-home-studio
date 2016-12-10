@@ -20,7 +20,7 @@ import AppDispatcher from '../../compat/dispatcher';
 import {
   dialogError,
   projectStateSelectAndActiveContent, projectChangeName,
-  projectDeleteWindow, projectWindowChangeId, projectResizeWindow,
+  projectDeleteWindow, projectWindowChangeId, projectResizeWindow, projectWindowChangeImage,
   projectDeleteComponent
 } from '../../actions/index';
 
@@ -139,7 +139,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Background'} /></td>
-              <td><PropertiesImageSelector project={project} object={window} property={'backgroundResource'} /></td>
+              <td><PropertiesImageSelector project={project} image={window.backgroundResource} onImageChange={(img) => projectWindowChangeImage(project, window, img)} /></td>
             </tr>
           </tbody>
         </table>

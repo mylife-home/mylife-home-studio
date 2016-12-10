@@ -18,7 +18,7 @@ import PropertiesComponentAttributeSelector from './properties-component-attribu
 import AppDispatcher from '../../compat/dispatcher';
 import {
   projectStateSelect,
-  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl, projectControlChangeAction,
+  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl, projectControlChangeAction, projectControlChangeImage,
   dialogError
 } from '../../actions/index';
 
@@ -47,7 +47,7 @@ class PropertiesControl extends React.Component {
     return [
       (<tr key="Default image">
         <td><PropertiesLabel text={'Default image'} /></td>
-        <td><PropertiesImageSelector project={project} object={control.display} property={'defaultResource'} /></td>
+        <td><PropertiesImageSelector project={project} image={control.display.defaultResource} onImageChange={(img) => projectControlChangeImage(project, window, control, img)} /></td>
       </tr>),
       (<tr key="Component/Attribute">
         <td><PropertiesLabel text={'Component/Attribute'} /></td>
@@ -60,7 +60,7 @@ class PropertiesControl extends React.Component {
       </tr>),
       (<tr key="Mapping">
         <td><PropertiesLabel text={'Mapping'} /></td>
-        <td><PropertiesControlDisplayMapping project={project} display={control.display} /></td>
+        <td><PropertiesControlDisplayMapping project={project} control={control} /></td>
       </tr>)
     ];
   }

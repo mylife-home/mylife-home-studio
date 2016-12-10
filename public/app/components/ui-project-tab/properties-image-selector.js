@@ -2,11 +2,9 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import { stopPropagationWrapper, sortBy } from '../../utils/index';
+import { sortBy } from '../../utils/index';
 
 import DataImage from './data-image';
-
-import Facade from '../../services/facade';
 
 class PropertiesImageSelector extends React.Component {
 
@@ -19,6 +17,7 @@ class PropertiesImageSelector extends React.Component {
   }
 
   handleTouchTap(event) {
+    event.stopPropagation();
     this.setState({
       open: true,
       anchorEl: event.currentTarget
@@ -30,29 +29,22 @@ class PropertiesImageSelector extends React.Component {
   }
 
   handleSelect(img) {
-    const { project, object, property } = this.props;
+    const { onImageChange } = this.props;
 
     this.handleRequestClose();
 
-    object[property] = img;
-    Facade.projects.dirtify(project);
+    onImageChange(img);
   }
 
   render() {
-    const { project, object, property } = this.props;
-
-    if(!object.hasOwnProperty(property)) {
-      throw new Error(`object ${object.uid || object.id} does not have such property: ${property}`);
-    }
-
-    const value = object[property];
+    const { project, image } = this.props;
 
     return (
       <div>
         <mui.RaisedButton
-          label={value ? value.id : '<none>'}
-          icon={<DataImage image={value} width={20} height={20} />}
-          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          label={image ? image.id : '<none>'}
+          icon={<DataImage image={image} width={20} height={20} />}
+          onTouchTap={(event) => this.handleTouchTap(event)}
         />
         <mui.Popover
           open={this.state.open}
@@ -77,9 +69,9 @@ class PropertiesImageSelector extends React.Component {
 }
 
 PropertiesImageSelector.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  object   : React.PropTypes.object.isRequired,
-  property : React.PropTypes.string.isRequired
+  project       : React.PropTypes.object.isRequired,
+  image         : React.PropTypes.object,
+  onImageChange : React.PropTypes.func.isRequired
 };
 
 export default PropertiesImageSelector;

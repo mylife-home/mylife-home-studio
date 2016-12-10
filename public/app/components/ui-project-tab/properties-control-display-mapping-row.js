@@ -3,9 +3,6 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
-import { stopPropagationWrapper } from '../../utils/index';
-
-import Facade from '../../services/facade';
 
 import PropertiesImageSelector from './properties-image-selector';
 import PropertiesEnumValueSelector from './properties-enum-value-selector';
@@ -32,42 +29,40 @@ class PropertiesControlDisplayMappingRow extends React.Component {
   }
 
   handleValueChange(value) {
-    const { project, item } = this.props;
-
-    item.value = value;
-    Facade.projects.dirtify(project);
+    const { onValueChange } = this.props;
+    onValueChange(value);
   }
 
   handleMinChange(event) {
-    const { project, item } = this.props;
+    event.stopPropagation();
 
     const value = parseInt(event.target.value, 10);
     if(isNaN(value)) { return; }
 
-    item.min = value;
-    Facade.projects.dirtify(project);
+    const { onMinChange } = this.props;
+    onMinChange(value);
   }
 
   handleMaxChange(event) {
-    const { project, item } = this.props;
+    event.stopPropagation();
 
     const value = parseInt(event.target.value, 10);
     if(isNaN(value)) { return; }
 
-    item.max = value;
-    Facade.projects.dirtify(project);
+    const { onMaxChange } = this.props;
+    onMaxChange(value);
   }
 
   render() {
-    const { project, item, attributeType, isNew, action } = this.props;
+    const { project, item, attributeType, isNew, action, onImageChange } = this.props;
     const isRange = attributeType.constructor.name === 'Range';
 
     const imageRowColumn = (
       <mui.TableRowColumn>
        <PropertiesImageSelector
         project={project}
-        object={item}
-        property={'resource'} />
+        image={item.resource}
+        onImageChange={ onImageChange } />
       </mui.TableRowColumn>
     );
 
@@ -89,14 +84,14 @@ class PropertiesControlDisplayMappingRow extends React.Component {
           <mui.TextField
             id={`${item.uid}_min`}
             value={item.min || 0}
-            onChange={stopPropagationWrapper(this.handleMinChange.bind(this))}
+            onChange={(event) => this.handleMinChange(event)}
             type='number' />
         </mui.TableRowColumn>
         <mui.TableRowColumn>
           <mui.TextField
             id={`${item.uid}_max`}
             value={item.max || 0}
-            onChange={stopPropagationWrapper(this.handleMaxChange.bind(this))}
+            onChange={(event) => this.handleMaxChange(event)}
             type='number' />
         </mui.TableRowColumn>
         {imageRowColumn}
@@ -123,6 +118,10 @@ PropertiesControlDisplayMappingRow.propTypes = {
   attributeType : React.PropTypes.object.isRequired,
   isNew         : React.PropTypes.bool.isRequired,
   action        : React.PropTypes.func.isRequired,
+  onImageChange : React.PropTypes.func.isRequired,
+  onMinChange   : React.PropTypes.func.isRequired,
+  onMaxChange   : React.PropTypes.func.isRequired,
+  onValueChange : React.PropTypes.func.isRequired
 };
 
 export default PropertiesControlDisplayMappingRow;
