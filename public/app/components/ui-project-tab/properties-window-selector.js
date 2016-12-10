@@ -2,7 +2,6 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import { stopPropagationWrapper } from '../../utils/index';
 
 import Facade from '../../services/facade';
 
@@ -17,6 +16,7 @@ class PropertiesWindowSelector extends React.Component {
   }
 
   handleTouchTap(event) {
+    event.stopPropagation();
     this.setState({
       open: true,
       anchorEl: event.currentTarget
@@ -42,7 +42,7 @@ class PropertiesWindowSelector extends React.Component {
       <div>
         <mui.RaisedButton
           label={value ? value.id : '<none>'}
-          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={(event) => this.handleTouchTap(event)}
         />
         <mui.Popover
           open={this.state.open}
