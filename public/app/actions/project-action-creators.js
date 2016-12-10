@@ -163,6 +163,11 @@ export function projectImageChangeId(project, image, id) {
   Facade.projects.dirtify(project);
 }
 
+export function projectChangeDefaultWindow(project, window) {
+  project.defaultWindow = window;
+  Facade.projects.dirtify(project);
+}
+
 export function projectNewWindow(project) {
   const window = Facade.projects.uiCreateWindow(project);
 

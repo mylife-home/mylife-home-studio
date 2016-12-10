@@ -21,7 +21,7 @@ import {
   dialogError,
   projectStateSelectAndActiveContent, projectChangeName,
   projectDeleteWindow, projectWindowChangeId, projectResizeWindow, projectWindowChangeImage,
-  projectDeleteComponent
+  projectDeleteComponent, projectChangeDefaultWindow
 } from '../../actions/index';
 
 class Properties extends React.Component {
@@ -75,7 +75,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Default window'}/></td>
-              <td><PropertiesWindowSelector project={project} object={project} property={'defaultWindow'} /></td>
+              <td><PropertiesWindowSelector project={project} value={project.defaultWindow} onWindowChange={(window) => projectChangeDefaultWindow(project, window)} /></td>
             </tr>
           </tbody>
         </table>

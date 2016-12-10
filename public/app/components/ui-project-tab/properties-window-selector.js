@@ -28,22 +28,15 @@ class PropertiesWindowSelector extends React.Component {
   }
 
   handleSelect(wnd) {
-    const { project, object, property } = this.props;
+    const { onWindowChange } = this.props;
 
     this.handleRequestClose();
 
-    object[property] = wnd;
-    Facade.projects.dirtify(project);
+    onWindowChange(wnd);
   }
 
   render() {
-    const { project, object, property } = this.props;
-
-    if(!object.hasOwnProperty(property)) {
-      throw new Error(`object ${object.uid || object.id} does not have such property: ${property}`);
-    }
-
-    const value = object[property];
+    const { project, value } = this.props;
 
     return (
       <div>
@@ -73,9 +66,9 @@ class PropertiesWindowSelector extends React.Component {
 }
 
 PropertiesWindowSelector.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  object   : React.PropTypes.object.isRequired,
-  property : React.PropTypes.string.isRequired
+  project        : React.PropTypes.object.isRequired,
+  value          : React.PropTypes.object,
+  onWindowChange : React.PropTypes.func.isRequired
 };
 
 export default PropertiesWindowSelector;
