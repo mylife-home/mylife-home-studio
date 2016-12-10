@@ -3,9 +3,6 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
-import { stopPropagationWrapper } from '../../utils/index';
-
-import Facade from '../../services/facade';
 
 import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
 
@@ -31,20 +28,18 @@ class PropertiesControlTextContextRow extends React.Component {
   }
 
   handleSelectComponent(component, attribute) {
-    const { project, item } = this.props;
+    const { onComponentChange } = this.props;
 
     this.handleRequestClose();
 
-    item.component = component;
-    item.attribute = attribute;
-    Facade.projects.dirtify(project);
+    onComponentChange(component, attribute);
   }
 
   handleIdChange(event) {
-    const { project, item } = this.props;
+    event.stopPropagation();
+    const { onIdChange } = this.props;
 
-    item.id = event.target.value;
-    Facade.projects.dirtify(project);
+    onIdChange(event.target.value);
   }
 
   render() {
@@ -56,7 +51,7 @@ class PropertiesControlTextContextRow extends React.Component {
           <mui.TextField
             id={`${item.uid}_id`}
             value={item.id || ''}
-            onChange={stopPropagationWrapper(this.handleIdChange.bind(this))} />
+            onChange={(event) => this.handleIdChange(event)} />
         </mui.TableRowColumn>
         <mui.TableRowColumn>
          <PropertiesComponentAttributeSelector
@@ -80,10 +75,12 @@ class PropertiesControlTextContextRow extends React.Component {
 }
 
 PropertiesControlTextContextRow.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  item     : React.PropTypes.object.isRequired,
-  isNew    : React.PropTypes.bool.isRequired,
-  action   : React.PropTypes.func.isRequired,
+  project           : React.PropTypes.object.isRequired,
+  item              : React.PropTypes.object.isRequired,
+  isNew             : React.PropTypes.bool.isRequired,
+  action            : React.PropTypes.func.isRequired,
+  onIdChange        : React.PropTypes.func.isRequired,
+  onComponentChange : React.PropTypes.func.isRequired
 };
 
 export default PropertiesControlTextContextRow;

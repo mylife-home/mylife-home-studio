@@ -2,11 +2,14 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import { stopPropagationWrapper } from '../../utils/index';
 
 import PropertiesControlTextContextRow from './properties-control-text-context-row';
 
 import Facade from '../../services/facade';
+
+import {
+  projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent
+} from '../../actions/index';
 
 class PropertiesControlTextContext extends React.Component {
 
@@ -19,7 +22,8 @@ class PropertiesControlTextContext extends React.Component {
     };
   }
 
-  handleTouchTap() {
+  handleTouchTap(event) {
+    event.stopPropagation();
     this.setState({
       open: true
     });
@@ -30,38 +34,33 @@ class PropertiesControlTextContext extends React.Component {
   }
 
   handleDelete(item) {
-    const { project, text } = this.props;
-    const context = text.context;
-
-    arrayRemoveByValue(context, item);
-    Facade.projects.dirtify(project);
+    const { project, window, control } = this.props;
+    projectControlDeleteTextContext(project, window, control, item);
   }
 
   handleCreate() {
-    const { project, text } = this.props;
-    const context = text.context;
+    const { project, window, control } = this.props;
     const newItem = this.state.newItem;
 
     if(!newItem.component || !newItem.attribute) {
       return;
     }
 
-    context.push(newItem);
+    projectControlAddTextContext(project, window, control, newItem);
     this.setState({ newItem: Facade.projects.uiCreateTextContextItem() });
-    Facade.projects.dirtify(project);
   }
 
   render() {
-    const { project, text } = this.props;
+    const { project, window, control } = this.props;
 
-    const context = text.context;
+    const context = control.text.context;
     const display = context.map(item => `${item.id} => ${item.component.id}.${item.attribute}`).join('\n') || '<none>';
 
     return (
       <div>
         <mui.RaisedButton
           label={display}
-          onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
+          onTouchTap={(event) => this.handleTouchTap(event)}
         />
 
         <mui.Dialog
@@ -88,6 +87,8 @@ class PropertiesControlTextContext extends React.Component {
                   item={it}
                   isNew={false}
                   action={this.handleDelete.bind(this, it)}
+                  onIdChange={(id) => projectControlChangeTextContextId(project, window, control, it, id)}
+                  onComponentChange={(component, attribute) => projectControlChangeTextContextComponent(project, window, control, it, component, attribute)}
                 />
               ))}
               <PropertiesControlTextContextRow
@@ -96,6 +97,8 @@ class PropertiesControlTextContext extends React.Component {
                 item={this.state.newItem}
                 isNew={true}
                 action={this.handleCreate.bind(this)}
+                onIdChange={(id) => this.setState({ newItem: { ...this.state.newItem, id } })}
+                onComponentChange={(component, attribute) => this.setState({ newItem: { ...this.state.newItem, component, attribute } })}
               />
             </mui.TableBody>
           </mui.Table>
@@ -106,14 +109,9 @@ class PropertiesControlTextContext extends React.Component {
 }
 
 PropertiesControlTextContext.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  text     : React.PropTypes.object.isRequired
+  project : React.PropTypes.object.isRequired,
+  window  : React.PropTypes.object.isRequired,
+  control : React.PropTypes.object.isRequired
 };
 
 export default PropertiesControlTextContext;
-
-function arrayRemoveByValue(array, item) {
-  const index = array.indexOf(item);
-  if(index === -1) { return; }
-  array.splice(index, 1);
-}

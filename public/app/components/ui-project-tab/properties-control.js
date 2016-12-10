@@ -70,7 +70,7 @@ class PropertiesControl extends React.Component {
       </tr>),
       (<tr key="Context">
         <td><PropertiesLabel text={'Context'} /></td>
-        <td><PropertiesControlTextContext project={project} text={control.text} /></td>
+        <td><PropertiesControlTextContext project={project} window={window} control={control} /></td>
       </tr>)
     ];
   }

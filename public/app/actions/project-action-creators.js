@@ -226,6 +226,27 @@ export function projectControlChangeTextFormat(project, window, control, format)
   Facade.projects.dirtify(project);
 }
 
+export function projectControlAddTextContext(project, window, control, newItem) {
+  control.text.context.push(newItem);
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlDeleteTextContext(project, window, control, item) {
+  arrayRemoveByValue(control.text.context, item);
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeTextContextId(project, window, control, item, newId) {
+  item.id = newId;
+  Facade.projects.dirtify(project);
+}
+
+export function projectControlChangeTextContextComponent(project, window, control, item, component, attribute) {
+  item.component = component;
+  item.attribute = attribute;
+  Facade.projects.dirtify(project);
+}
+
 export function projectControlChangeDisplayComponent(project, window, control, component, attribute) {
   control.display.component = component;
   control.display.attribute = attribute;
@@ -260,7 +281,6 @@ export function projectControlAddDisplayMapping(project, window, control, newIte
 
 export function projectControlDeleteDisplayMapping(project, window, control, item) {
   arrayRemoveByValue(control.display.map, item);
-  Facade.projects.dirtify(project);
   Facade.projects.dirtify(project);
 }
 
