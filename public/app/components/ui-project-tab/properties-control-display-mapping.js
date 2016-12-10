@@ -14,8 +14,6 @@ import {
 
 import PropertiesControlDisplayMappingRow from './properties-control-display-mapping-row';
 
-import Facade from '../../services/facade';
-
 class PropertiesControlDisplayMapping extends React.Component {
 
   constructor(props, context) {

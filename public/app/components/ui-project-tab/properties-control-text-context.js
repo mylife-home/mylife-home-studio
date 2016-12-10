@@ -5,8 +5,6 @@ import * as mui from 'material-ui';
 
 import PropertiesControlTextContextRow from './properties-control-text-context-row';
 
-import Facade from '../../services/facade';
-
 import {
   projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent
 } from '../../actions/index';
