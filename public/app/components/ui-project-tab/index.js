@@ -14,7 +14,7 @@ import Canvas from './canvas';
 import ProjectStore from '../../stores/project-store';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectClose } from '../../actions/index';
+import { projectClose, projectStateSelectAndActiveContent } from '../../actions/index';
 
 import tabStyles from '../base/tab-styles';
 
@@ -84,7 +84,7 @@ class UiProjectTab extends React.Component {
                 <Toolbox project={project} />
               </mui.Paper>
               <mui.Paper style={Object.assign({}, tabStyles.scrollable, styles.explorerHeight)}>
-                <Explorer project={project} />
+                <Explorer project={project} onSelect={(data) => AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, data, data))} />
               </mui.Paper>
             </div>
           </bs.Col>
