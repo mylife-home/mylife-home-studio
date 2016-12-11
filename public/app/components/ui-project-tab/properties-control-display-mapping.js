@@ -3,16 +3,6 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-import AppDispatcher from '../../compat/dispatcher';
-import {
-  projectControlChangeDisplayMappingImage,
-  projectControlChangeDisplayMappingValue,
-  projectControlChangeDisplayMappingMin,
-  projectControlChangeDisplayMappingMax,
-  projectControlAddDisplayMapping,
-  projectControlDeleteDisplayMapping
-} from '../../actions/index';
-
 import PropertiesControlDisplayMappingRow from './properties-control-display-mapping-row';
 
 class PropertiesControlDisplayMapping extends React.Component {
@@ -46,13 +36,8 @@ class PropertiesControlDisplayMapping extends React.Component {
     this.setState({ open: false });
   }
 
-  handleDelete(item) {
-    const { project, window, control } = this.props;
-    AppDispatcher.dispatch(projectControlDeleteDisplayMapping(project, window, control, item));
-  }
-
   handleCreate() {
-    const { project, window, control } = this.props;
+    const { project, control } = this.props;
 
     const componentAttribute = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
     const isRange = componentAttribute.type.constructor.name === 'Range';
@@ -66,12 +51,12 @@ class PropertiesControlDisplayMapping extends React.Component {
       return;
     }
 
-    AppDispatcher.dispatch(projectControlAddDisplayMapping(project, window, control, newItem));
+    onAdd(newItem);
     this.setState({ newItem: this.createNewItem() });
   }
 
   render() {
-    const { project, control } = this.props;
+    const { project, control, onDelete } = this.props;
 
     const mapping = control.display.map;
     if(!control.display.component || !control.display.attribute) {
@@ -125,11 +110,11 @@ class PropertiesControlDisplayMapping extends React.Component {
                   item={it}
                   attributeType={attributeType}
                   isNew={false}
-                  action={this.handleDelete.bind(this, it)}
-                  onImageChange={(img) => AppDispatcher.dispatch(projectControlChangeDisplayMappingImage(project, window, control, it, img))}
-                  onValueChange={(value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingValue(project, window, control, it, value))}
-                  onMinChange={(value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMin(project, window, control, it, value))}
-                  onMaxChange={(value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMax(project, window, control, it, value))}
+                  action={() => onDelete(it)}
+                  onImageChange={(img) => onImageChange(it, img)}
+                  onValueChange={(value) => onValueChange(it, value)}
+                  onMinChange={(value) => onMinChange(it, value)}
+                  onMaxChange={(value) => onMaxChange(it, value)}
                 />
               ))}
               <PropertiesControlDisplayMappingRow
@@ -153,9 +138,14 @@ class PropertiesControlDisplayMapping extends React.Component {
 }
 
 PropertiesControlDisplayMapping.propTypes = {
-  project  : React.PropTypes.object.isRequired,
-  window   : React.PropTypes.object.isRequired,
-  control  : React.PropTypes.object.isRequired
+  project       : React.PropTypes.object.isRequired,
+  control       : React.PropTypes.object.isRequired,
+  onAdd         : React.PropTypes.func.isRequired,
+  onDelete      : React.PropTypes.func.isRequired,
+  onImageChange : React.PropTypes.func.isRequired,
+  onValueChange : React.PropTypes.func.isRequired,
+  onMinChange   : React.PropTypes.func.isRequired,
+  onMaxChange   : React.PropTypes.func.isRequired
 };
 
 export default PropertiesControlDisplayMapping;

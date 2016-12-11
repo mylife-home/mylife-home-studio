@@ -17,8 +17,8 @@ import AppDispatcher from '../../compat/dispatcher';
 import {
   projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
   projectControlChangeAction, projectControlChangeImage, projectControlChangeDisplayComponent,
-  projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent
-
+  projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent,
+  projectControlChangeDisplayMappingImage, projectControlChangeDisplayMappingValue, projectControlChangeDisplayMappingMin, projectControlChangeDisplayMappingMax, projectControlAddDisplayMapping, projectControlDeleteDisplayMapping
 } from '../../actions/index';
 
 class PropertiesControl extends React.Component {
@@ -50,7 +50,16 @@ class PropertiesControl extends React.Component {
       </tr>),
       (<tr key="Mapping">
         <td><PropertiesLabel text={'Mapping'} /></td>
-        <td><PropertiesControlDisplayMapping project={project} window={window} control={control} /></td>
+        <td>
+          <PropertiesControlDisplayMapping project={project}
+                                           control={control}
+                                           onNew={(newItem) => AppDispatcher.dispatch(projectControlAddDisplayMapping(project, window, control, newItem))}
+                                           onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteDisplayMapping(project, window, control, item))}
+                                           onImageChange={(item, img) => AppDispatcher.dispatch(projectControlChangeDisplayMappingImage(project, window, control, item, img))}
+                                           onValueChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingValue(project, window, control, item, value))}
+                                           onMinChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMin(project, window, control, item, value))}
+                                           onMaxChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMax(project, window, control, item, value))} />
+        </td>
       </tr>)
     ];
   }
@@ -65,7 +74,6 @@ class PropertiesControl extends React.Component {
         <td><PropertiesLabel text={'Context'} /></td>
         <td>
           <PropertiesControlTextContext project={project}
-                                        window={window}
                                         control={control}
                                         onNew={(newItem) => AppDispatcher.dispatch(projectControlAddTextContext(project, window, control, newItem))}
                                         onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteTextContext(project, window, control, item))}
