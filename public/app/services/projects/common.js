@@ -108,7 +108,7 @@ function loadOnlineCoreEntities(done) {
 function loadOnlineResourceNames(done) {
   const entity = OnlineStore.getResourceEntity();
   if(!entity) {
-    throw new Error('No resource entity on network');
+    return done(new Error('No resource entity on network'));
   }
   return AppDispatcher.dispatch(resourcesEntityQuery(entity.id, done));
 }
