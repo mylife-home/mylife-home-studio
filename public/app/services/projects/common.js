@@ -106,7 +106,7 @@ function loadOnlineCoreEntities(done) {
 }
 
 function loadOnlineResourceNames(done) {
-  const entity = OnlineStore.getAll().find(e => e.type === shared.EntityType.RESOURCES);
+  const entity = OnlineStore.getResourceEntity();
   if(!entity) {
     throw new Error('No resource entity on network');
   }
