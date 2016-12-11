@@ -8,6 +8,8 @@ const fluxDispatcher = new Dispatcher();
 
 export default {
   dispatch: (action) => {
+    if(!action) { return; }
+
     switch(action.type) {
       case AppConstants.ActionTypes.DIALOG_ERROR:
       case AppConstants.ActionTypes.DIALOG_ERROR_CLEAN:
