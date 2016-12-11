@@ -18,7 +18,6 @@ import PropertiesWindowSelector from './properties-window-selector';
 import AppDispatcher from '../../compat/dispatcher';
 
 import {
-  dialogError,
   projectStateSelectAndActiveContent, projectChangeName,
   projectDeleteWindow, projectWindowChangeId, projectResizeWindow, projectWindowChangeImage,
   projectDeleteComponent, projectChangeDefaultWindow
