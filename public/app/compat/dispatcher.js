@@ -10,6 +10,10 @@ export default {
   dispatch: (action) => {
     if(!action) { return; }
 
+    if(!action.type) {
+      return store.getStore().dispatch(action);
+    }
+
     switch(action.type) {
       case AppConstants.ActionTypes.DIALOG_ERROR:
       case AppConstants.ActionTypes.DIALOG_ERROR_CLEAN:
