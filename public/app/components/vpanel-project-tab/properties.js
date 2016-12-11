@@ -66,11 +66,6 @@ class Properties extends React.Component {
     });
   }
 
-  selectProject() {
-    const { project } = this.props;
-    AppDispatcher.dispatch(projectStateSelect(project, null));
-  }
-
   renderTitle(Icon, text, onDelete) {
     return (
       <div style={styles.titleContainer}>
@@ -93,7 +88,6 @@ class Properties extends React.Component {
 
   renderComponent(project, component) {
     const onDelete = () => {
-      this.selectProject();
       projectDeleteComponent(project, component);
     };
     const pluginConfig = component.plugin.config;
@@ -131,7 +125,6 @@ class Properties extends React.Component {
   renderBinding(project, binding) {
     const key = `${binding.remote.id}:${binding.remote_attribute} -> ${binding.local.id}:${binding.local_action}`;
     const onDelete = () => {
-      this.selectProject();
       projectDeleteBinding(project, binding);
     };
 

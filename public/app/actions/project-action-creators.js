@@ -128,6 +128,7 @@ export function projectNewComponent(project, location, plugin) {
 export function projectDeleteComponent(project, component) {
   switch(project.type) {
     case 'vpanel':
+      AppDispatcher.dispatch(projectStateSelect(project, null));
       Facade.projects.vpanelDeleteComponent(project, component);
       break;
     case 'ui':
@@ -166,6 +167,7 @@ export function projectNewBinding(project, remoteComponentId, remoteAttributeNam
 }
 
 export function projectDeleteBinding(project, binding) {
+  AppDispatcher.dispatch(projectStateSelect(project, null));
   Facade.projects.vpanelDeleteBinding(project, binding);
 }
 
