@@ -13,7 +13,6 @@ import PropertiesEditor from '../properties/properties-editor';
 import AppDispatcher from '../../compat/dispatcher';
 
 import {
-  dialogError,
   projectImageChangeFile, projectDeleteImage, projectImageChangeId
 } from '../../actions/index';
 
@@ -47,6 +46,7 @@ class PropertiesImage extends React.Component {
   }
 
   handleOpenImageFile(e) {
+    const { project, image } = this.props;
     e.stopPropagation();
     const file = e.target.files[0];
     e.target.value = '';
