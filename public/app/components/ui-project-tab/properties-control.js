@@ -3,8 +3,6 @@
 import React from 'react';
 import icons from '../icons';
 
-import Facade from '../../services/facade';
-
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesEditor from '../properties/properties-editor';
