@@ -122,6 +122,17 @@ export function projectNewComponent(project, location, plugin) {
   AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
 }
 
+export function projectDeleteComponent(project, component) {
+  switch(project.type) {
+    case 'vpanel':
+      Facade.projects.vpanelDeleteComponent(project, component);
+      break;
+    case 'ui':
+      Facade.projects.uiDeleteComponent(project, component);
+      break;
+  }
+}
+
 export function projectComponentChangeId(project, component, id) {
   component.id = id;
   Facade.projects.dirtify(project);
@@ -135,17 +146,6 @@ export function projectMoveComponent(project, component, location) {
 export function projectComponentChangeConfig(project, component, name, value) {
   component.config[name] = value;
   Facade.projects.vpanelDirtifyComponent(project, component);
-}
-
-export function projectDeleteComponent(project, component) {
-  switch(project.type) {
-    case 'vpanel':
-      Facade.projects.vpanelDeleteComponent(project, component);
-      break;
-    case 'ui':
-      Facade.projects.uiDeleteComponent(project, component);
-      break;
-  }
 }
 
 export function projectNewBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
