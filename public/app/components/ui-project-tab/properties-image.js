@@ -14,7 +14,7 @@ import AppDispatcher from '../../compat/dispatcher';
 
 import {
   dialogError,
-  projectStateSelectAndActiveContent, projectChangeImage, projectDeleteImage, projectImageChangeId
+  projectImageChangeFile, projectDeleteImage, projectImageChangeId
 } from '../../actions/index';
 
 class PropertiesImage extends React.Component {
@@ -50,23 +50,7 @@ class PropertiesImage extends React.Component {
     e.stopPropagation();
     const file = e.target.files[0];
     e.target.value = '';
-
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      const err = reader.error;
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      let data = reader.result;
-      const marker = 'base64,';
-      const start = data.indexOf(marker) + marker.length;
-      data = data.substring(start);
-
-      const { project, image } = this.props;
-      AppDispatcher.dispatch(projectChangeImage(project, image, data));
-    };
-
-    reader.readAsDataURL(file);
+    AppDispatcher.dispatch(projectImageChangeFile(project, image, file));
   }
 
   render() {

@@ -131,7 +131,12 @@ export function projectDeleteComponent(project, component) {
       Facade.projects.vpanelDeleteComponent(project, component);
       break;
     case 'ui':
-      Facade.projects.uiDeleteComponent(project, component);
+      try {
+        AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
+        Facade.projects.uiDeleteComponent(project, component);
+      } catch(err) {
+        AppDispatcher.dispatch(dialogError(err));
+      }
       break;
   }
 }
@@ -171,6 +176,35 @@ export function projectNewImage(project) {
   AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
 }
 
+export function projectDeleteImage(project, image) {
+  try {
+    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
+    Facade.projects.uiDeleteImage(project, image);
+  } catch(err) {
+    AppDispatcher.dispatch(dialogError(err));
+  }
+}
+
+export function projectImageChangeFile(project, image, file) {
+
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    const err = reader.error;
+    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
+
+    let data = reader.result;
+    const marker = 'base64,';
+    const start = data.indexOf(marker) + marker.length;
+    data = data.substring(start);
+
+    const { project, image } = this.props;
+    Facade.projects.uiChangeImage(project, image, data);
+  };
+
+  reader.readAsDataURL(file);
+}
+
 export function projectImageChangeId(project, image, id) {
   image.id = id;
   Facade.projects.dirtify(project);
@@ -186,6 +220,15 @@ export function projectNewWindow(project) {
 
   const selection = { type: 'window', uid: window.uid };
   AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+}
+
+export function projectDeleteWindow(project, window) {
+  try {
+    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
+    Facade.projects.uiDeleteWindow(project, window);
+  } catch(err) {
+    AppDispatcher.dispatch(dialogError(err));
+  }
 }
 
 export function projectWindowChangeId(project, window, id) {
@@ -215,6 +258,16 @@ export function projectNewControl(project, location, type) {
     windowUid: window.uid,
     controlUid: control.uid
   }));
+}
+
+export function projectDeleteControl(project, window, control) {
+  try {
+    AppDispatcher.dispatch(projectStateSelect(project, { type: 'window', uid: window.uid }));
+
+    Facade.projects.uiDeleteControl(project, window, control);
+  } catch(err) {
+    AppDispatcher.dispatch(dialogError(err));
+  }
 }
 
 export function projectMoveControl(project, window, control, newPosition) {
@@ -305,33 +358,6 @@ export function projectControlChangeImage(project, window, control, newImage) {
 export function projectControlChangeAction(project, window, control, actionType, newAction) {
   control[actionType] = newAction;
   Facade.projects.dirtify(project);
-}
-
-export function projectDeleteImage(project, image) {
-  try {
-    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
-    Facade.projects.uiDeleteImage(project, image);
-  } catch(err) {
-    AppDispatcher.dispatch(dialogError(err));
-  }
-}
-
-export function projectDeleteWindow(project, window) {
-  Facade.projects.uiDeleteWindow(project, window);
-}
-
-export function projectDeleteControl(project, window, control) {
-  try {
-    AppDispatcher.dispatch(projectStateSelect(project, { type: 'window', uid: window.uid }));
-
-    Facade.projects.uiDeleteControl(project, window, control);
-  } catch(err) {
-    AppDispatcher.dispatch(dialogError(err));
-  }
-}
-
-export function projectChangeImage(project, image, data) {
-  Facade.projects.uiChangeImage(project, image, data);
 }
 
 export function projectRefresh(project) {

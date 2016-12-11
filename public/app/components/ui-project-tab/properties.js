@@ -85,12 +85,7 @@ class Properties extends React.Component {
 
   renderComponent(project, component) {
     const onDelete = () => {
-      try {
-        this.select(null);
-        projectDeleteComponent(project, component);
-      } catch(err) {
-        AppDispatcher.dispatch(dialogError(err));
-      }
+      AppDispatcher.dispatch(projectDeleteComponent(project, component));
     };
 
     return (
@@ -111,12 +106,7 @@ class Properties extends React.Component {
 
   renderWindow(project, window) {
     const onDelete = () => {
-      try {
-        this.select(null);
-        projectDeleteWindow(project, window);
-      } catch(err) {
-        AppDispatcher.dispatch(dialogError(err));
-      }
+      AppDispatcher.dispatch(projectDeleteWindow(project, window));
     };
 
     return (
