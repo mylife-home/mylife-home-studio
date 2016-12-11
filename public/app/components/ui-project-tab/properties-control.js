@@ -16,7 +16,9 @@ import PropertiesComponentAttributeSelector from './properties-component-attribu
 import AppDispatcher from '../../compat/dispatcher';
 import {
   projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
-  projectControlChangeAction, projectControlChangeImage, projectControlChangeDisplayComponent
+  projectControlChangeAction, projectControlChangeImage, projectControlChangeDisplayComponent,
+  projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent
+
 } from '../../actions/index';
 
 class PropertiesControl extends React.Component {
@@ -61,7 +63,15 @@ class PropertiesControl extends React.Component {
       </tr>),
       (<tr key="Context">
         <td><PropertiesLabel text={'Context'} /></td>
-        <td><PropertiesControlTextContext project={project} window={window} control={control} /></td>
+        <td>
+          <PropertiesControlTextContext project={project}
+                                        window={window}
+                                        control={control}
+                                        onNew={(newItem) => AppDispatcher.dispatch(projectControlAddTextContext(project, window, control, newItem))}
+                                        onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteTextContext(project, window, control, item))}
+                                        onIdChange={(item, newId) => AppDispatcher.dispatch(projectControlChangeTextContextId(project, window, control, item, newId))}
+                                        onComponentChange={(item, component, attribute) => AppDispatcher.dispatch(projectControlChangeTextContextComponent(project, window, control, item, component, attribute))} />
+        </td>
       </tr>)
     ];
   }

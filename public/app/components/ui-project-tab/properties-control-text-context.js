@@ -5,11 +5,6 @@ import * as mui from 'material-ui';
 
 import PropertiesControlTextContextRow from './properties-control-text-context-row';
 
-import AppDispatcher from '../../compat/dispatcher';
-import {
-  projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent
-} from '../../actions/index';
-
 class PropertiesControlTextContext extends React.Component {
 
   constructor(props, context) {
@@ -41,24 +36,24 @@ class PropertiesControlTextContext extends React.Component {
   }
 
   handleDelete(item) {
-    const { project, window, control } = this.props;
-    AppDispatcher.dispatch(projectControlDeleteTextContext(project, window, control, item));
+    const { onDelete } = this.props;
+    onDelete(item);
   }
 
   handleCreate() {
-    const { project, window, control } = this.props;
+    const { onNew } = this.props;
     const newItem = this.state.newItem;
 
     if(!newItem.component || !newItem.attribute) {
       return;
     }
 
-    AppDispatcher.dispatch(projectControlAddTextContext(project, window, control, newItem));
+    onNew(newItem);
     this.setState({ newItem: this.createNewItem() });
   }
 
   render() {
-    const { project, window, control } = this.props;
+    const { project, control, onChangeId } = this.props;
 
     const context = control.text.context;
     const display = context.map(item => `${item.id} => ${item.component.id}.${item.attribute}`).join('\n') || '<none>';
@@ -94,8 +89,8 @@ class PropertiesControlTextContext extends React.Component {
                   item={it}
                   isNew={false}
                   action={this.handleDelete.bind(this, it)}
-                  onIdChange={(id) => AppDispatcher.dispatch(projectControlChangeTextContextId(project, window, control, it, id))}
-                  onComponentChange={(component, attribute) => AppDispatcher.dispatch(projectControlChangeTextContextComponent(project, window, control, it, component, attribute))}
+                  onIdChange={(id) => onIdChange(it, id)}
+                  onComponentChange={(component, attribute) => onComponentChange(it, component, attribute)}
                 />
               ))}
               <PropertiesControlTextContextRow
@@ -117,8 +112,10 @@ class PropertiesControlTextContext extends React.Component {
 
 PropertiesControlTextContext.propTypes = {
   project : React.PropTypes.object.isRequired,
-  window  : React.PropTypes.object.isRequired,
-  control : React.PropTypes.object.isRequired
+  control : React.PropTypes.object.isRequired,
+  onNew : React.PropTypes.func.isRequired,
+  onDelete : React.PropTypes.func.isRequired,
+  onIdChange: React.PropTypes.func.isRequired,
 };
 
 export default PropertiesControlTextContext;
