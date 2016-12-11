@@ -209,8 +209,9 @@ function uid() {
 }
 
 function executeDeploy(data, done) {
-  console.log('executeDeploy', data); // eslint-disable-line no-console
-  const actions = data.operations.filter(o => o.enabled).map(o => o.action);
+  const operations = data.operations.filter(o => o.enabled);
+  console.log('executeDeploy', operations); // eslint-disable-line no-console
+  const actions = operations.map(o => o.action);
   async.series(actions, (err) => {
     if(err) { return done(err); }
     return loadOnlineCoreEntities(done);
