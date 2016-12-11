@@ -10,6 +10,7 @@ import Properties from './properties';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
 
+import AppDispatcher from '../../compat/dispatcher';
 import { projectClose } from '../../actions/index';
 import ProjectStore from '../../stores/project-store';
 

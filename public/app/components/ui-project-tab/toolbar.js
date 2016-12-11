@@ -4,13 +4,11 @@ import React from 'react';
 import * as mui from 'material-ui';
 import base from '../base/index';
 import icons from '../icons';
-import DialogOperationSelect from '../dialogs/dialog-operation-select';
 import DialogConfirm from '../dialogs/dialog-confirm';
-import DialogInfo from '../dialogs/dialog-info';
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations,
+  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations, dialogInfo, dialogExecuteOperations,
   projectNewImage, projectNewWindow,
   resourcesGetQuery
 } from '../../actions/index';
@@ -35,10 +33,6 @@ class Toolbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { };
-  }
-
-  closeInfo() {
-    this.setState({ showInfo: null });
   }
 
   newImage() {
@@ -157,9 +151,7 @@ class Toolbar extends React.Component {
       return AppDispatcher.dispatch(dialogError(err));
     }
 
-    this.setState({
-      showInfo: ['Components imported']
-    });
+    AppDispatcher.dispatch(dialogInfo({ title: 'Success', lines: ['Components imported'] }));
   }
 
   // deploy
@@ -237,11 +229,6 @@ class Toolbar extends React.Component {
                        lines={(this.state.importComponentsConfirm && ['The following elements will be lost:'].concat(this.state.importComponentsConfirm.messages)) || []}
                        yes={this.confirmImportComponents.bind(this)}
                        no={this.cancelImportComponents.bind(this)}/>
-
-        <DialogInfo title="Success"
-                    open={!!this.state.showInfo}
-                    lines={this.state.showInfo || []}
-                    onClose={this.closeInfo.bind(this)}/>
       </div>
     );
   }

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import DialogOperationSelect from '../components/dialogs/dialog-operation-select';
 
 import {
-  dialogErrorClean,
   dialogExecuteOperations, dialogCancelOperations, dialogSetAllOperations, dialogSetOneOperation,
 } from '../actions/index';
 

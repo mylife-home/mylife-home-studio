@@ -3,13 +3,11 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
-import DialogOperationSelect from '../dialogs/dialog-operation-select';
 import DialogConfirm from '../dialogs/dialog-confirm';
-import DialogInfo from '../dialogs/dialog-info';
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations
+  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations, dialogInfo, dialogExecuteOperations
 } from '../../actions/index';
 
 import Facade from '../../services/facade';
@@ -30,10 +28,6 @@ class Toolbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { };
-  }
-
-  closeInfo() {
-    this.setState({ showInfo: null });
   }
 
   // importOnlineToolbox
@@ -72,9 +66,7 @@ class Toolbar extends React.Component {
       AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
-      this.setState({
-        showInfo: ['Toolbox imported']
-      });
+      AppDispatcher.dispatch(dialogInfo({ title: 'Success', lines: ['Toolbox imported'] }));
     });
   }
 
@@ -87,9 +79,7 @@ class Toolbar extends React.Component {
       AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
-      this.setState({
-        showInfo: ['Components imported']
-      });
+      AppDispatcher.dispatch(dialogInfo({ title: 'Success', lines: ['Components imported'] }));
     });
   }
 
@@ -155,11 +145,6 @@ class Toolbar extends React.Component {
 
           </mui.ToolbarGroup>
         </mui.Toolbar>
-
-        <DialogInfo title="Success"
-                    open={!!this.state.showInfo}
-                    lines={this.state.showInfo || []}
-                    onClose={this.closeInfo.bind(this)}/>
 
         <DialogConfirm title="Confirm"
                        open={!!this.state.importOnlineToolboxConfirm}

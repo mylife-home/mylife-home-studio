@@ -6,6 +6,7 @@ import icons from '../icons';
 
 import AppConstants from '../../constants/app-constants';
 
+import AppDispatcher from '../../compat/dispatcher';
 import { projectNewBinding } from '../../actions/index';
 import styles from './canvas-component-styles';
 

@@ -12,7 +12,6 @@ import PropertiesEditor from '../properties/properties-editor';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  projectStateSelect,
   projectChangeName,
   projectDeleteBinding,
   projectDeleteComponent, projectComponentChangeId, projectComponentChangeConfig

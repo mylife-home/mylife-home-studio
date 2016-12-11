@@ -48,7 +48,7 @@ class PropertiesImage extends React.Component {
   }
 
   render() {
-    const { project, image, onDelete, onChangeId } = this.props;
+    const { image, onDelete, onChangeId } = this.props;
     const { size } = this.state;
     const width = ((size && size.width) || 0).toString();
     const height = ((size && size.height) || 0).toString();
@@ -90,7 +90,6 @@ class PropertiesImage extends React.Component {
 }
 
 PropertiesImage.propTypes = {
-  project      : React.PropTypes.object.isRequired,
   image        : React.PropTypes.object.isRequired,
   onChangeId   : React.PropTypes.func.isRequired,
   onChangeFile : React.PropTypes.func.isRequired,

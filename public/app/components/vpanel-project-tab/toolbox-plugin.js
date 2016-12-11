@@ -7,8 +7,6 @@ import icons from '../icons';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
-import AppDispatcher from '../../compat/dispatcher';
-import { projectNewComponent } from '../../actions/index';
 
 const styles = {
   iconContainer: {

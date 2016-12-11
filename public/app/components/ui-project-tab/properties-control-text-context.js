@@ -48,7 +48,7 @@ class PropertiesControlTextContext extends React.Component {
   }
 
   render() {
-    const { project, control, onChangeId, onDelete } = this.props;
+    const { project, control, onIdChange, onComponentChange, onDelete } = this.props;
 
     const context = control.text.context;
     const display = context.map(item => `${item.id} => ${item.component.id}.${item.attribute}`).join('\n') || '<none>';
@@ -106,11 +106,12 @@ class PropertiesControlTextContext extends React.Component {
 }
 
 PropertiesControlTextContext.propTypes = {
-  project : React.PropTypes.object.isRequired,
-  control : React.PropTypes.object.isRequired,
-  onNew : React.PropTypes.func.isRequired,
-  onDelete : React.PropTypes.func.isRequired,
-  onIdChange: React.PropTypes.func.isRequired,
+  project           : React.PropTypes.object.isRequired,
+  control           : React.PropTypes.object.isRequired,
+  onNew             : React.PropTypes.func.isRequired,
+  onDelete          : React.PropTypes.func.isRequired,
+  onIdChange        : React.PropTypes.func.isRequired,
+  onComponentChange : React.PropTypes.func.isRequired
 };
 
 export default PropertiesControlTextContext;

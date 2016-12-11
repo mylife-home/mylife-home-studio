@@ -37,7 +37,7 @@ class PropertiesControlDisplayMapping extends React.Component {
   }
 
   handleCreate() {
-    const { project, control } = this.props;
+    const { control, onAdd } = this.props;
 
     const componentAttribute = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
     const isRange = componentAttribute.type.constructor.name === 'Range';
@@ -56,7 +56,10 @@ class PropertiesControlDisplayMapping extends React.Component {
   }
 
   render() {
-    const { project, control, onDelete } = this.props;
+    const {
+      project, control,
+      onDelete, onImageChange, onValueChange, onMinChange, onMaxChange
+    } = this.props;
 
     const mapping = control.display.map;
     if(!control.display.component || !control.display.attribute) {

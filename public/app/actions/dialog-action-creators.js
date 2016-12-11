@@ -50,6 +50,12 @@ export function dialogOpenOperations(operations) {
   };
 }
 
+export function dialogClearOperations() {
+  return {
+    type: AppConstants.ActionTypes.DIALOG_CLEAR_OPERATIONS,
+  };
+}
+
 export function dialogExecuteOperations() {
   return (dispatch, getState) => {
     const operations = getState().dialogs.operations;
@@ -67,19 +73,6 @@ export function dialogExecuteOperations() {
 
 export function dialogCancelOperations() {
   return dialogClearOperations();
-}
-
-export function dialogOpenOperations(operations) {
-  return {
-    type: AppConstants.ActionTypes.DIALOG_OPEN_OPERATIONS,
-    operations
-  };
-}
-
-export function dialogClearOperations() {
-  return {
-    type: AppConstants.ActionTypes.DIALOG_CLEAR_OPERATIONS,
-  };
 }
 
 export function dialogSetOneOperation(operation, value) {

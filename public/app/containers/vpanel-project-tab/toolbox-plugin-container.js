@@ -6,7 +6,7 @@ import ToolboxPlugin from '../../components/vpanel-project-tab/toolbox-plugin';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectNewComponent } from '../../actions/index';
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (/*dispatch*/) => ({
   onNewComponent: (project, location, plugin) => AppDispatcher.dispatch(projectNewComponent(project, location, plugin))
 });
 
