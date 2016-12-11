@@ -101,7 +101,7 @@ class CanvasControl extends React.Component {
   controlResize(dir, size) {
     const { project, window, control } = this.props;
 
-    projectResizeControl(project, window, control, size);
+    AppDispatcher.dispatch(projectResizeControl(project, window, control, size));
   }
 
   select() {
@@ -181,10 +181,10 @@ const controlSource = {
     const { project, window, control } = props;
 
     const { delta } = monitor.getDropResult();
-    projectMoveControl(project, window, control, {
+    AppDispatcher.dispatch(projectMoveControl(project, window, control, {
       x: control.x + delta.x / window.width,
       y: control.y + delta.y / window.height
-    });
+    }));
   }
 };
 

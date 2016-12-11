@@ -5,6 +5,7 @@ import * as mui from 'material-ui';
 
 import PropertiesControlTextContextRow from './properties-control-text-context-row';
 
+import AppDispatcher from '../../compat/dispatcher';
 import {
   projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent
 } from '../../actions/index';
@@ -41,7 +42,7 @@ class PropertiesControlTextContext extends React.Component {
 
   handleDelete(item) {
     const { project, window, control } = this.props;
-    projectControlDeleteTextContext(project, window, control, item);
+    AppDispatcher.dispatch(projectControlDeleteTextContext(project, window, control, item));
   }
 
   handleCreate() {
@@ -52,7 +53,7 @@ class PropertiesControlTextContext extends React.Component {
       return;
     }
 
-    projectControlAddTextContext(project, window, control, newItem);
+    AppDispatcher.dispatch(projectControlAddTextContext(project, window, control, newItem));
     this.setState({ newItem: this.createNewItem() });
   }
 
@@ -93,8 +94,8 @@ class PropertiesControlTextContext extends React.Component {
                   item={it}
                   isNew={false}
                   action={this.handleDelete.bind(this, it)}
-                  onIdChange={(id) => projectControlChangeTextContextId(project, window, control, it, id)}
-                  onComponentChange={(component, attribute) => projectControlChangeTextContextComponent(project, window, control, it, component, attribute)}
+                  onIdChange={(id) => AppDispatcher.dispatch(projectControlChangeTextContextId(project, window, control, it, id))}
+                  onComponentChange={(component, attribute) => AppDispatcher.dispatch(projectControlChangeTextContextComponent(project, window, control, it, component, attribute))}
                 />
               ))}
               <PropertiesControlTextContextRow

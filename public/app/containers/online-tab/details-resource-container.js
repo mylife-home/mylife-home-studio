@@ -3,6 +3,7 @@
 import { connect } from 'react-redux';
 
 import DetailsResource from '../../components/online-tab/details-resource';
+import AppDispatcher from '../../compat/dispatcher';
 import { resourcesGetQuery } from '../../actions/index';
 
 const mapStateToProps = (state, { entity, resource }) => ({
@@ -11,7 +12,7 @@ const mapStateToProps = (state, { entity, resource }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { entity, resource }) => ({
-  onRefresh: () => resourcesGetQuery(entity.id, resource) // FIXME: dispatch
+  onRefresh: () => AppDispatcher(resourcesGetQuery(entity.id, resource))
 });
 
 const DetailsResourceContainer = connect(

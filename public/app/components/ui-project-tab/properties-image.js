@@ -63,7 +63,7 @@ class PropertiesImage extends React.Component {
       data = data.substring(start);
 
       const { project, image } = this.props;
-      projectChangeImage(project, image, data);
+      AppDispatcher.dispatch(projectChangeImage(project, image, data));
     };
 
     reader.readAsDataURL(file);
@@ -87,7 +87,7 @@ class PropertiesImage extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${image.uid}_id`} value={image.id} onChange={(value) => projectImageChangeId(project, image, value)} type={'s'} /></td>
+              <td><PropertiesEditor id={`${image.uid}_id`} value={image.id} onChange={(value) => AppDispatcher.dispatch(projectImageChangeId(project, image, value))} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>

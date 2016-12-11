@@ -3,6 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
+import AppDispatcher from '../../compat/dispatcher';
 import {
   projectControlChangeDisplayMappingImage,
   projectControlChangeDisplayMappingValue,
@@ -47,7 +48,7 @@ class PropertiesControlDisplayMapping extends React.Component {
 
   handleDelete(item) {
     const { project, window, control } = this.props;
-    projectControlDeleteDisplayMapping(project, window, control, item);
+    AppDispatcher.dispatch(projectControlDeleteDisplayMapping(project, window, control, item));
   }
 
   handleCreate() {
@@ -65,7 +66,7 @@ class PropertiesControlDisplayMapping extends React.Component {
       return;
     }
 
-    projectControlAddDisplayMapping(project, window, control, newItem);
+    AppDispatcher.dispatch(projectControlAddDisplayMapping(project, window, control, newItem));
     this.setState({ newItem: this.createNewItem() });
   }
 
@@ -125,10 +126,10 @@ class PropertiesControlDisplayMapping extends React.Component {
                   attributeType={attributeType}
                   isNew={false}
                   action={this.handleDelete.bind(this, it)}
-                  onImageChange={(img) => projectControlChangeDisplayMappingImage(project, window, control, it, img)}
-                  onValueChange={(value) => projectControlChangeDisplayMappingValue(project, window, control, it, value)}
-                  onMinChange={(value) => projectControlChangeDisplayMappingMin(project, window, control, it, value)}
-                  onMaxChange={(value) => projectControlChangeDisplayMappingMax(project, window, control, it, value)}
+                  onImageChange={(img) => AppDispatcher.dispatch(projectControlChangeDisplayMappingImage(project, window, control, it, img))}
+                  onValueChange={(value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingValue(project, window, control, it, value))}
+                  onMinChange={(value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMin(project, window, control, it, value))}
+                  onMaxChange={(value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMax(project, window, control, it, value))}
                 />
               ))}
               <PropertiesControlDisplayMappingRow

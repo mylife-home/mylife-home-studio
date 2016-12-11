@@ -12,6 +12,7 @@ import DetailsContainer from './details-container';
 
 import Facade from '../../services/facade';
 
+import AppDispatcher from '../../compat/dispatcher';
 import { resourcesEntityQuery } from '../../actions/index';
 
 function renderPluginUsageIcon(plugin) {
@@ -162,7 +163,7 @@ const DetailsEntity = ({ entity, onChangeValue }) => (
         <div>
           {entity.id}
           &nbsp;
-          <mui.IconButton tooltip="refresh" onClick={() => resourcesEntityQuery(entity)}>
+          <mui.IconButton tooltip="refresh" onClick={() => AppDispatcher.dispatch(resourcesEntityQuery(entity))}>
             <icons.actions.Refresh />
           </mui.IconButton>
         </div>

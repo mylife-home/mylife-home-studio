@@ -8,6 +8,7 @@ import OnlineStore from '../stores/online-store';
 import ProjectStore from '../stores/project-store';
 import storeHandler from '../compat/store';
 
+import AppDispatcher from '../compat/dispatcher';
 import {
   projectNew, projectLoadFile, projectLoadOnline, projectSaveOnline, projectSaveAs, projectSaveAllOnline
 } from '../actions/index';
@@ -47,39 +48,39 @@ class MainToolbarContainer extends React.Component {
   }
 
   newVPanelProject() {
-    projectNew('vpanel');
+    AppDispatcher.dispatch(projectNew('vpanel'));
   }
 
   newUiProject() {
-    projectNew('ui');
+    AppDispatcher.dispatch(projectNew('ui'));
   }
 
   openFileVPanelProject(file) {
-    projectLoadFile(file, 'vpanel');
+    AppDispatcher.dispatch(projectLoadFile(file, 'vpanel'));
   }
 
   openFileUiProject(file) {
-    projectLoadFile(file, 'ui');
+    AppDispatcher.dispatch(projectLoadFile(file, 'ui'));
   }
 
   openOnlineVPanelProject(name) {
-    projectLoadOnline('project.vpanel.' + name, 'vpanel');
+    AppDispatcher.dispatch(projectLoadOnline('project.vpanel.' + name, 'vpanel'));
   }
 
   openOnlineUiProject(name) {
-    projectLoadOnline('project.ui.' + name, 'ui');
+    AppDispatcher.dispatch(projectLoadOnline('project.ui.' + name, 'ui'));
   }
 
   saveAll() {
-    projectSaveAllOnline();
+    AppDispatcher.dispatch(projectSaveAllOnline());
   }
 
   saveOnline(project) {
-    projectSaveOnline(project);
+    AppDispatcher.dispatch(projectSaveOnline(project));
   }
 
   saveAs(project) {
-    projectSaveAs(project);
+    AppDispatcher.dispatch(projectSaveAs(project));
   }
 
   render() {
