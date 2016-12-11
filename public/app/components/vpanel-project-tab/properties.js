@@ -172,7 +172,7 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Name'}/></td>
-              <td><PropertiesEditor id={`${project.uid}_name`} value={project.name} onChange={(value) => projectChangeName(project, value)} type={'s'} /></td>
+              <td><PropertiesEditor id={`${project.uid}_name`} value={project.name} onChange={(value) => AppDispatcher.dispatch(projectChangeName(project, value))} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Creation'}/></td>

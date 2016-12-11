@@ -24,6 +24,18 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
         states: state.states.delete(action.project.uid)
       };
 
+    case AppConstants.ActionTypes.PROJECT_CHANGE_NAME:
+      return {
+        ...state,
+        projects: state.projects.update(action.project.uid, project => ({
+          ...project,
+          name       : action.newName,
+          dirty      : true,
+          lastUpdate : new Date(),
+          version: project.version + 1 // TODO: remove me
+        }))
+      };
+
     // FIXME
     case AppConstants.ActionTypes.PROJECT_REFRESH:
       return  { ...state, projects: state.projects.update(action.project.uid, project => ({

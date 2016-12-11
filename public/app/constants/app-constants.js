@@ -29,6 +29,7 @@ export default {
     PROJECT_STATE_UPDATE_LINK_DATA: null,
     PROJECT_STATE_SELECT: null,
     PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT: null,
+    PROJECT_CHANGE_NAME: null,
 
     TAB_ACTIVATE: null,
   }),

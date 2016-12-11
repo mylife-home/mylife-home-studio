@@ -63,7 +63,7 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Name'}/></td>
-              <td><PropertiesEditor id={`${project.uid}_name`} value={project.name} onChange={(value) => projectChangeName(project, value)} type={'s'} /></td>
+              <td><PropertiesEditor id={`${project.uid}_name`} value={project.name} onChange={(value) => AppDispatcher.dispatch(projectChangeName(project, value))} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Creation'}/></td>
@@ -75,7 +75,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Default window'}/></td>
-              <td><PropertiesWindowSelector project={project} value={project.defaultWindow} onWindowChange={(window) => projectChangeDefaultWindow(project, window)} /></td>
+              <td><PropertiesWindowSelector project={project} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project, window))} /></td>
             </tr>
           </tbody>
         </table>
@@ -127,19 +127,19 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${window.uid}_id`} value={window.id} onChange={(value) => projectWindowChangeId(project, window, value)} type={'s'} /></td>
+              <td><PropertiesEditor id={`${window.uid}_id`} value={window.id} onChange={(value) => AppDispatcher.dispatch(projectWindowChangeId(project, window, value))} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>
-              <td><PropertiesEditor id={`${window.uid}_width`} value={window.width} onChange={(value) => projectResizeWindow(project, window, { height: window.height, width: value })} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${window.uid}_width`} value={window.width} onChange={(value) => AppDispatcher.dispatch(projectResizeWindow(project, window, { height: window.height, width: value }))} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Height'} /></td>
-              <td><PropertiesEditor id={`${window.uid}_height`} value={window.height} onChange={(value) => projectResizeWindow(project, window, { height: value, width: window.width })} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${window.uid}_height`} value={window.height} onChange={(value) => AppDispatcher.dispatch(projectResizeWindow(project, window, { height: value, width: window.width }))} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Background'} /></td>
-              <td><PropertiesImageSelector project={project} image={window.backgroundResource} onImageChange={(img) => projectWindowChangeImage(project, window, img)} /></td>
+              <td><PropertiesImageSelector project={project} image={window.backgroundResource} onImageChange={(img) => AppDispatcher.dispatch(projectWindowChangeImage(project, window, img))} /></td>
             </tr>
           </tbody>
         </table>

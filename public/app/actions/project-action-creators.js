@@ -110,9 +110,12 @@ export function projectClose(project) {
   };
 }
 
-export function projectChangeName(project, name) {
-  project.name = name;
-  Facade.projects.dirtify(project);
+export function projectChangeName(project, newName) {
+  return {
+    type: AppConstants.ActionTypes.PROJECT_CHANGE_NAME,
+    project,
+    newName
+  };
 }
 
 export function projectNewComponent(project, location, plugin) {
