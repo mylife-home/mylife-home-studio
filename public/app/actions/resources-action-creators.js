@@ -68,23 +68,27 @@ export function resourcesEntityComponentsList(entityId, components) {
   };
 }
 
-export function resourcesGetQuery(entityId, resourceId, cb) {
-  AppDispatcher.dispatch({
-    type: AppConstants.ActionTypes.RESOURCE_GET_QUERY,
-    entityId,
-    resourceId
-  });
+export function resourcesGet(entityId, resourceId, done) {
+  return (dispatch) => {
+    Facade.resources.queryResourceGet(entityId, resourceId, (err, res) => {
+      if(err) {
+        if(!done) { return console.log(err); }
+        return done(err);
+      }
 
-  Facade.resources.queryResourceGet(entityId, resourceId, cb);
+      dispatch(resourcesGetResult(entityId, resourceId, res));
+      if(done) { return done(null, res); }
+    });
+  };
 }
 
 export function resourcesGetResult(entityId, resourceId, resourceContent) {
-  AppDispatcher.dispatch({
-    type: AppConstants.ActionTypes.RESOURCE_GET_RESULT,
+  return {
+    type: AppConstants.ActionTypes.RESOURCE_GET,
     entityId,
     resourceId,
     resourceContent
-  });
+  };
 }
 
 export function resourcesSetQuery(entityId, resourceId, resourceContent, cb) {

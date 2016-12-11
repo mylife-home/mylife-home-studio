@@ -43,7 +43,7 @@ export default function(state = { entities: Immutable.Map(), resourcesEntityId: 
         components: action.components
       }))};
 
-    case AppConstants.ActionTypes.RESOURCE_GET_RESULT:
+    case AppConstants.ActionTypes.RESOURCE_GET:
     case AppConstants.ActionTypes.RESOURCE_SET_QUERY:
       return { ...state, entities: state.entities.update(action.entityId, entity => ({
         ...entity,

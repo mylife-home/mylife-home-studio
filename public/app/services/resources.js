@@ -47,19 +47,14 @@ class Resources {
       });
   }
 
-  queryResourceGet(entityId, resourceId, cb) {
+  queryResourceGet(entityId, resourceId, done) {
     debug(`queryResourceGet(${entityId}, ${resourceId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'get', key: resourceId })
       .end((err, res) => {
-        if(err) {
-          if(!cb) { return console.error(err); } // eslint-disable-line no-console
-          return cb(err);
-        }
-        const data = res.body.data;
-        resourcesGetResult(entityId, resourceId, data);
-        if(cb) { cb(null, data); }
+        if(err) { return done(err); }
+        return done(null, res.body.data);
       });
   }
 

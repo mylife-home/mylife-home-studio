@@ -10,7 +10,7 @@ import AppDispatcher from '../../compat/dispatcher';
 import {
   dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations, dialogInfo, dialogExecuteOperations,
   projectNewImage, projectNewWindow,
-  resourcesGetQuery
+  resourcesGet
 } from '../../actions/index';
 
 import OnlineStore from '../../stores/online-store';
@@ -108,7 +108,7 @@ class Toolbar extends React.Component {
 
     // need to get content .. TODO: Flux pattern to do that ?
     AppDispatcher.dispatch(dialogSetBusy('Loading project'));
-    return AppDispatcher.dispatch(resourcesGetQuery(entity.id, resource, (err, content) => {
+    return AppDispatcher.dispatch(resourcesGet(entity.id, resource, (err, content) => {
       AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       return load(content);

@@ -12,8 +12,7 @@ export default {
     ENTITY_PLUGINS_LIST: null,
     ENTITY_COMPONENTS_LIST: null,
 
-    RESOURCE_GET_QUERY: null,
-    RESOURCE_GET_RESULT: null,
+    RESOURCE_GET: null,
     RESOURCE_SET_QUERY: null,
     RESOURCE_SET_RESULT: null,
 

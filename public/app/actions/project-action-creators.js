@@ -13,7 +13,7 @@ import AppDispatcher from '../compat/dispatcher';
 import { download, snapToGrid } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
-import { resourcesGetQuery } from './resources-action-creators';
+import { resourcesGet } from './resources-action-creators';
 
 export function projectNew(type) {
   try {
@@ -61,11 +61,11 @@ export function projectLoadOnline(resource, type) {
 
   // need to get content .. TODO: Flux pattern to do that ?
   AppDispatcher.dispatch(dialogSetBusy('Loading project'));
-  return resourcesGetQuery(entity.id, resource, (err, content) => {
+  return AppDispatcher.dispatch(resourcesGet(entity.id, resource, (err, content) => {
     AppDispatcher.dispatch(dialogUnsetBusy());
     if(err) { return AppDispatcher.dispatch(dialogError(err)); }
     return load(content);
-  });
+  }));
 }
 
 export function projectLoad(project) {
