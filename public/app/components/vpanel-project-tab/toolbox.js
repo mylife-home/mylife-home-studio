@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 
 import Toolbar from './toolbar';
-import ToolboxPlugin from './toolbox-plugin';
+import ToolboxPluginContainer from '../../containers/vpanel-project-tab/toolbox-plugin-container';
 
 import tabStyles from '../base/tab-styles';
 
@@ -27,7 +27,7 @@ const Toolbox = ({ project }) => {
     item.plugins.forEach(plugin => {
       items.push(
         <mui.ListItem key={`${entityId}:${plugin.library}:${plugin.type}`}>
-          <ToolboxPlugin project={project} plugin={plugin}></ToolboxPlugin>
+          <ToolboxPluginContainer project={project} plugin={plugin}></ToolboxPluginContainer>
         </mui.ListItem>
       );
     });
