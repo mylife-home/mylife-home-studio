@@ -5,23 +5,25 @@ import AppConstants from '../constants/app-constants';
 import { resourcesEntityQuery } from './resources-action-creators';
 
 export function repositoryClear() {
-  AppDispatcher.dispatch({
+  return {
     type: AppConstants.ActionTypes.REPOSITORY_CLEAR
-  });
+  };
 }
 
 export function repositoryAdd(entity) {
-  AppDispatcher.dispatch({
-    type: AppConstants.ActionTypes.REPOSITORY_ADD,
-    entity
-  });
+  return (dispatch) => {
+    dispatch({
+      type: AppConstants.ActionTypes.REPOSITORY_ADD,
+      entity
+    });
 
-  resourcesEntityQuery(entity);
+    dispatch(resourcesEntityQuery(entity));
+  };
 }
 
 export function repositoryRemove(id) {
-  AppDispatcher.dispatch({
+  return {
     type: AppConstants.ActionTypes.REPOSITORY_REMOVE,
     id
-  });
+  };
 }

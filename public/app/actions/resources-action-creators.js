@@ -1,48 +1,71 @@
 'use strict';
 
+import async from 'async';
 import AppDispatcher from '../compat/dispatcher';
 import AppConstants from '../constants/app-constants';
 import Facade from '../services/facade';
 import shared from '../shared/index';
 
-export function resourcesEntityQuery(entity) {
-  switch(entity.type) {
-    case shared.EntityType.RESOURCES:
-      Facade.resources.queryResourcesList(entity.id);
-      break;
+export function resourcesEntityQuery(entity, done) {
+  return (dispatch) => {
+    switch(entity.type) {
+      case shared.EntityType.RESOURCES:
+        Facade.resources.queryResourcesList(entity.id, (err, res) => {
+          if(err) {
+            if(!done) { return console.log(err); }
+            return done(err);
+          }
 
-    case shared.EntityType.CORE:
-      Facade.resources.queryPluginsList(entity.id);
-      Facade.resources.queryComponentsList(entity.id);
-      break;
+          dispatch(resourcesEntityResourcesList(entity.id, res));
+          if(done) { return done(null, res); }
+        });
+        break;
 
-    case shared.EntityType.UI:
-      break;
-  }
+      case shared.EntityType.CORE:
+        async.parallel({
+          plugins: (cb) => Facade.resources.queryPluginsList(entity.id, cb),
+          components:  (cb) => Facade.resources.queryComponentsList(entity.id, cb)
+        }, (err, res) => {
+          if(err) {
+            if(!done) { return console.log(err); }
+            return done(err);
+          }
+
+          dispatch(resourcesEntityPluginsList(entity.id, res.plugins));
+          dispatch(resourcesEntityComponentsList(entity.id, res.components));
+          if(done) { return done(null, res); }
+        });
+        break;
+
+      case shared.EntityType.UI:
+        // TODO
+        break;
+    }
+  };
 }
 
 export function resourcesEntityResourcesList(entityId, resources) {
-  AppDispatcher.dispatch({
+  return {
     type: AppConstants.ActionTypes.ENTITY_RESOURCES_LIST,
     entityId,
     resources
-  });
+  };
 }
 
 export function resourcesEntityPluginsList(entityId, plugins) {
-  AppDispatcher.dispatch({
+  return {
     type: AppConstants.ActionTypes.ENTITY_PLUGINS_LIST,
     entityId,
     plugins
-  });
+  };
 }
 
 export function resourcesEntityComponentsList(entityId, components) {
-  AppDispatcher.dispatch({
+  return {
     type: AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST,
     entityId,
     components
-  });
+  };
 }
 
 export function resourcesGetQuery(entityId, resourceId, cb) {

@@ -5,10 +5,11 @@ import async from 'async';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 import shared from '../../shared/index';
 import Metadata from '../metadata/index';
-import Resources from '../resources';
+
+import AppDispatcher from '../../compat/dispatcher';
+import { projectRefresh, projectLoad, resourcesSetQuery, resourcesEntityQuery } from '../../actions/index';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
-const resources = new Resources(); // TODO: how to use facade ?
 
 export default {
   dirtify,
@@ -98,8 +99,7 @@ function loadOnlineCoreEntities(done) {
 
   const funcs = [];
   for(const entity of entities) {
-    funcs.push((cb) => resources.queryPluginsList(entity.id, cb));
-    funcs.push((cb) => resources.queryComponentsList(entity.id, cb));
+    funcs.push((cb) => AppDispatcher.dispatch(resourcesEntityQuery(entity.id, cb)));
   }
 
   return async.parallel(funcs, done);
@@ -110,7 +110,7 @@ function loadOnlineResourceNames(done) {
   if(!entity) {
     throw new Error('No resource entity on network');
   }
-  return resources.queryResourcesList(entity.id, done);
+  return AppDispatcher.dispatch(resourcesEntityQuery(entity.id, done));
 }
 
 function getOnlinePlugins() {

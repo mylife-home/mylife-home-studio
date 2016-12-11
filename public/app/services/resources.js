@@ -4,9 +4,6 @@ import debugLib from 'debug';
 import request from 'superagent';
 
 import {
-  resourcesEntityResourcesList,
-  resourcesEntityPluginsList,
-  resourcesEntityComponentsList,
   resourcesGetResult,
   resourcesSetResult
 } from '../actions/index';
@@ -17,51 +14,36 @@ class Resources {
   constructor() {
   }
 
-  queryResourcesList(entityId, cb) {
+  queryResourcesList(entityId, done) {
     debug(`queryResourcesList(${entityId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'enum' })
       .end((err, res) => {
-        if(err) {
-          if(!cb) { return console.error(err); } // eslint-disable-line no-console
-          return cb(err);
-        }
-        const data = res.body.data;
-        resourcesEntityResourcesList(entityId, data);
-        if(cb) { cb(null, data); }
+        if(err) { return done(err); }
+        return done(null, res.body.data);
       });
   }
 
-  queryPluginsList(entityId, cb) {
+  queryPluginsList(entityId, done) {
     debug(`queryPluginsList(${entityId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'plugins' })
       .end((err, res) => {
-        if(err) {
-          if(!cb) { return console.error(err); } // eslint-disable-line no-console
-          return cb(err);
-        }
-        const data = res.body.data;
-        resourcesEntityPluginsList(entityId, data);
-        if(cb) { cb(null, data); }
+        if(err) { return done(err); }
+        return done(null, res.body.data);
       });
   }
 
-  queryComponentsList(entityId, cb) {
+  queryComponentsList(entityId, done) {
     debug(`queryComponentsList(${entityId})`);
     request
       .post('/resources/' + entityId)
       .send({ type : 'components' })
       .end((err, res) => {
-        if(err) {
-          if(!cb) { return console.error(err); } // eslint-disable-line no-console
-          return cb(err);
-        }
-        const data = res.body.data;
-        resourcesEntityComponentsList(entityId, data);
-        if(cb) { cb(null, data); }
+        if(err) { return done(err); }
+        return done(null, res.body.data);
       });
   }
 
