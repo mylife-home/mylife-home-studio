@@ -4,6 +4,8 @@ import React from 'react';
 import * as dnd from 'react-dnd';
 import icons from '../icons';
 
+import AppConstants from '../../constants/app-constants';
+
 import { projectStateSelect, projectNewBinding } from '../../actions/index';
 import styles from './canvas-component-styles';
 
