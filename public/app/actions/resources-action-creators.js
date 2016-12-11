@@ -1,7 +1,6 @@
 'use strict';
 
 import async from 'async';
-import AppDispatcher from '../compat/dispatcher';
 import AppConstants from '../constants/app-constants';
 import Facade from '../services/facade';
 import shared from '../shared/index';
@@ -12,7 +11,7 @@ export function resourcesEntityQuery(entity, done) {
       case shared.EntityType.RESOURCES:
         Facade.resources.queryResourcesList(entity.id, (err, res) => {
           if(err) {
-            if(!done) { return console.log(err); }
+            if(!done) { return console.log(err); } // eslint-disable-line no-console
             return done(err);
           }
 
@@ -27,7 +26,7 @@ export function resourcesEntityQuery(entity, done) {
           components:  (cb) => Facade.resources.queryComponentsList(entity.id, cb)
         }, (err, res) => {
           if(err) {
-            if(!done) { return console.log(err); }
+            if(!done) { return console.log(err); } // eslint-disable-line no-console
             return done(err);
           }
 
@@ -72,7 +71,7 @@ export function resourcesGet(entityId, resourceId, done) {
   return (dispatch) => {
     Facade.resources.queryResourceGet(entityId, resourceId, (err, res) => {
       if(err) {
-        if(!done) { return console.log(err); }
+        if(!done) { return console.log(err); } // eslint-disable-line no-console
         return done(err);
       }
 
@@ -102,7 +101,7 @@ export function resourcesSetQuery(entityId, resourceId, resourceContent, done) {
 
     Facade.resources.queryResourceSet(entityId, resourceId, resourceContent, (err, res) => {
       if(err) {
-        if(!done) { return console.log(err); }
+        if(!done) { return console.log(err); } // eslint-disable-line no-console
         return done(err);
       }
 

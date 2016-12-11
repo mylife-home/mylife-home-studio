@@ -3,11 +3,6 @@
 import debugLib from 'debug';
 import request from 'superagent';
 
-import {
-  resourcesGetResult,
-  resourcesSetResult
-} from '../actions/index';
-
 const debug = debugLib('mylife:home:studio:services:resources');
 
 class Resources {

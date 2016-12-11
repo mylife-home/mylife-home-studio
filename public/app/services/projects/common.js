@@ -7,7 +7,7 @@ import shared from '../../shared/index';
 import Metadata from '../metadata/index';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectRefresh, projectLoad, resourcesSetQuery, resourcesEntityQuery } from '../../actions/index';
+import { resourcesEntityQuery } from '../../actions/index';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
