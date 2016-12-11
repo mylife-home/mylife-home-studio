@@ -10,12 +10,6 @@ import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
 import PropertiesEditor from '../properties/properties-editor';
 
-import AppDispatcher from '../../compat/dispatcher';
-
-import {
-  projectImageChangeFile, projectDeleteImage, projectImageChangeId
-} from '../../actions/index';
-
 class PropertiesImage extends React.Component {
 
   constructor(props) {
@@ -46,22 +40,18 @@ class PropertiesImage extends React.Component {
   }
 
   handleOpenImageFile(e) {
-    const { project, image } = this.props;
+    const { onChangeFile } = this.props;
     e.stopPropagation();
     const file = e.target.files[0];
     e.target.value = '';
-    AppDispatcher.dispatch(projectImageChangeFile(project, image, file));
+    onChangeFile(file);
   }
 
   render() {
-    const { project, image } = this.props;
+    const { project, image, onDelete, onChangeId } = this.props;
     const { size } = this.state;
     const width = ((size && size.width) || 0).toString();
     const height = ((size && size.height) || 0).toString();
-
-    const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteImage(project, image));
-    };
 
     return (
       <div>
@@ -71,7 +61,7 @@ class PropertiesImage extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${image.uid}_id`} value={image.id} onChange={(value) => AppDispatcher.dispatch(projectImageChangeId(project, image, value))} type={'s'} /></td>
+              <td><PropertiesEditor id={`${image.uid}_id`} value={image.id} onChange={(value) => onChangeId(value)} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>
@@ -100,8 +90,11 @@ class PropertiesImage extends React.Component {
 }
 
 PropertiesImage.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  image: React.PropTypes.object.isRequired
+  project      : React.PropTypes.object.isRequired,
+  image        : React.PropTypes.object.isRequired,
+  onChangeId   : React.PropTypes.func.isRequired,
+  onChangeFile : React.PropTypes.func.isRequired,
+  onDelete     : React.PropTypes.func.isRequired
 };
 
 export default PropertiesImage;

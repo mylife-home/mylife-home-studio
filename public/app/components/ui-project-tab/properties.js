@@ -20,6 +20,7 @@ import AppDispatcher from '../../compat/dispatcher';
 import {
   projectChangeName,
   projectDeleteWindow, projectWindowChangeId, projectResizeWindow, projectWindowChangeImage,
+  projectImageChangeFile, projectDeleteImage, projectImageChangeId,
   projectDeleteComponent, projectChangeDefaultWindow
 } from '../../actions/index';
 
@@ -144,7 +145,11 @@ class Properties extends React.Component {
 
         case 'image': {
           const image = project.images.find(img => img.uid === selection.uid);
-          return (<PropertiesImage project={project} image={image} />);
+          return (<PropertiesImage project={project}
+                                   image={image}
+                                   onChangeId={(value) => AppDispatcher.dispatch(projectImageChangeId(project, image, value))}
+                                   onChangeFile={(file) => AppDispatcher.dispatch(projectImageChangeFile(project, image, file))}
+                                   onDelete={() => AppDispatcher.dispatch(projectDeleteImage(project, image))} />);
         }
 
         case 'window': {
