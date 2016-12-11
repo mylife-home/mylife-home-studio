@@ -3,15 +3,15 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-import ToolboxControl from './toolbox-control';
+import ToolboxControlContainer from '../../containers/ui-project-tab/toolbox-control-container';
 
 const Toolbox = ({ project }) => (
   <mui.List>
     <mui.ListItem key={'text'}>
-      <ToolboxControl project={project} type={'text'}></ToolboxControl>
+      <ToolboxControlContainer project={project} type={'text'}></ToolboxControlContainer>
     </mui.ListItem>
     <mui.ListItem key={'image'}>
-      <ToolboxControl project={project} type={'image'}></ToolboxControl>
+      <ToolboxControlContainer project={project} type={'image'}></ToolboxControlContainer>
     </mui.ListItem>
   </mui.List>
 );

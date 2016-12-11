@@ -85,6 +85,7 @@ const ToolboxControl = ({ connectDragSource, isDragging, connectDragPreview, typ
 ToolboxControl.propTypes = {
   project: React.PropTypes.object.isRequired,
   type: React.PropTypes.string.isRequired,
+  onNewControl: React.PropTypes.func.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
   connectDragPreview: React.PropTypes.func.isRequired,
   isDragging: React.PropTypes.bool.isRequired
@@ -100,9 +101,9 @@ const pluginSource = {
   endDrag(props, monitor) {
     if(!monitor.didDrop()) { return; }
 
-    const { project, type } = props;
+    const { project, type, onNewControl } = props;
     const { location } = monitor.getDropResult();
-    AppDispatcher.dispatch(projectNewControl(project, location, type));
+    onNewControl(project, location, type);
   }
 };
 
