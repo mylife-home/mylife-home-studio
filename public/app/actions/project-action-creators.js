@@ -308,7 +308,12 @@ export function projectControlChangeAction(project, window, control, actionType,
 }
 
 export function projectDeleteImage(project, image) {
-  Facade.projects.uiDeleteImage(project, image);
+  try {
+    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
+    Facade.projects.uiDeleteImage(project, image);
+  } catch(err) {
+    AppDispatcher.dispatch(dialogError(err));
+  }
 }
 
 export function projectDeleteWindow(project, window) {

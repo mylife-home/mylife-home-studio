@@ -42,11 +42,6 @@ class PropertiesImage extends React.Component {
     }
   }
 
-  selectProject() {
-    const { project } = this.props;
-    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
-  }
-
   openImageFileDialog() {
     this.refs.openImageFile.click();
   }
@@ -81,12 +76,7 @@ class PropertiesImage extends React.Component {
     const height = ((size && size.height) || 0).toString();
 
     const onDelete = () => {
-      try {
-        this.selectProject();
-        projectDeleteImage(project, image);
-      } catch(err) {
-        AppDispatcher.dispatch(dialogError(err));
-      }
+      AppDispatcher.dispatch(projectDeleteImage(project, image));
     };
 
     return (
