@@ -6,11 +6,6 @@ import Facade from '../services/facade';
 import shared from '../shared/index';
 
 export function resourcesEntityQuery(entity) {
-  AppDispatcher.dispatch({
-    type: AppConstants.ActionTypes.ENTITY_QUERY,
-    entityId: entity.id
-  });
-
   switch(entity.type) {
     case shared.EntityType.RESOURCES:
       Facade.resources.queryResourcesList(entity.id);
