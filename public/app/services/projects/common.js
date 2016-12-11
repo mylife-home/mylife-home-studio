@@ -99,7 +99,7 @@ function loadOnlineCoreEntities(done) {
 
   const funcs = [];
   for(const entity of entities) {
-    funcs.push((cb) => AppDispatcher.dispatch(resourcesEntityQuery(entity.id, cb)));
+    funcs.push((cb) => AppDispatcher.dispatch(resourcesEntityQuery(entity, cb)));
   }
 
   return async.parallel(funcs, done);
@@ -110,7 +110,7 @@ function loadOnlineResourceNames(done) {
   if(!entity) {
     return done(new Error('No resource entity on network'));
   }
-  return AppDispatcher.dispatch(resourcesEntityQuery(entity.id, done));
+  return AppDispatcher.dispatch(resourcesEntityQuery(entity, done));
 }
 
 function getOnlinePlugins() {

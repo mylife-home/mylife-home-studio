@@ -13,8 +13,7 @@ export default {
     ENTITY_COMPONENTS_LIST: null,
 
     RESOURCE_GET: null,
-    RESOURCE_SET_QUERY: null,
-    RESOURCE_SET_RESULT: null,
+    RESOURCE_SET: null,
 
     DIALOG_ERROR: null,
     DIALOG_ERROR_CLEAN: null,

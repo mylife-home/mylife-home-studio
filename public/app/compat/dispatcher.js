@@ -32,7 +32,7 @@ export default {
       case AppConstants.ActionTypes.ENTITY_PLUGINS_LIST:
       case AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST:
       case AppConstants.ActionTypes.RESOURCE_GET:
-      case AppConstants.ActionTypes.RESOURCE_SET_QUERY:
+      case AppConstants.ActionTypes.RESOURCE_SET:
       case AppConstants.ActionTypes.TAB_ACTIVATE:
         return store.getStore().dispatch(action);
 

@@ -58,7 +58,7 @@ export function dialogClearOperations() {
 
 export function dialogExecuteOperations() {
   return (dispatch, getState) => {
-    const operations = getState().dialogs.operations;
+    const operations = getState().dialogs.operations.toArray();
     dispatch(dialogClearOperations());
 
     dispatch(dialogSetBusy('Executing deploy'));

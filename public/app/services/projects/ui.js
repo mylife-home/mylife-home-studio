@@ -5,10 +5,11 @@ import common from './common';
 import shared from '../../shared/index';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 import Metadata from '../metadata/index';
-import Resources from '../resources';
+
+import AppDispatcher from '../../compat/dispatcher';
+import { resourcesSetQuery } from '../../actions/index';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
-const resources = new Resources(); // TODO: how to use facade ?
 
 let operationId = 0;
 
@@ -511,7 +512,6 @@ function executeImport(data) {
 function prepareDeploy(project, done) {
   return common.loadOnlineResourceNames((err, names) => {
     if(err) { return done(err); }
-
     let operations;
     try {
       common.checkSaved(project);
@@ -555,7 +555,7 @@ function createOperationResourceSet(entityId, resourceId, resourceContent) {
     enabled: true,
     description: `${resourceContent ? 'Set' : 'Delete'} resource ${resourceId}`,
     action: (done) => {
-      return resources.queryResourceSet(entityId, resourceId, resourceContent, done);
+      return AppDispatcher.dispatch(resourcesSetQuery(entityId, resourceId, resourceContent, done));
     }
   };
 }
