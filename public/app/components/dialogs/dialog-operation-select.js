@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-const DialogOperationSelect = ({ open, operations, ok, cancel, setAll, setOne }) => (
+const DialogOperationSelect = ({ operations, ok, cancel, setAll, setOne }) => (
   <mui.Dialog
     title="Select operations to execute"
     actions={<div>
@@ -21,10 +21,10 @@ const DialogOperationSelect = ({ open, operations, ok, cancel, setAll, setOne })
                 onTouchTap={() => cancel()} />
             </div>}
     modal={true}
-    open={open}
+    open={!!operations}
     autoScrollBodyContent={true}>
     <mui.List>
-      {operations.map(op => (<mui.ListItem
+      {(operations || []).map(op => (<mui.ListItem
                            key={op.id}
                            primaryText={op.description}
                            leftCheckbox={
@@ -36,12 +36,11 @@ const DialogOperationSelect = ({ open, operations, ok, cancel, setAll, setOne })
 );
 
 DialogOperationSelect.propTypes = {
-  open: React.PropTypes.bool.isRequired,
-  operations: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  ok: React.PropTypes.func.isRequired,
-  cancel: React.PropTypes.func.isRequired,
-  setAll: React.PropTypes.func.isRequired,
-  setOne: React.PropTypes.func.isRequired
+  operations : React.PropTypes.arrayOf(React.PropTypes.object.isRequired),
+  ok         : React.PropTypes.func.isRequired,
+  cancel     : React.PropTypes.func.isRequired,
+  setAll     : React.PropTypes.func.isRequired,
+  setOne     : React.PropTypes.func.isRequired
 };
 
 export default DialogOperationSelect;

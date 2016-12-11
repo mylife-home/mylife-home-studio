@@ -9,6 +9,8 @@ import MainTabsContainer from '../containers/main-tabs-container';
 import MainToolbarContainer from '../containers/main-toolbar-container';
 import MainDialogError from '../containers/main-dialog-error';
 import MainDialogBusy from '../containers/main-dialog-busy';
+import MainDialogInfo from '../containers/main-dialog-info';
+import MainDialogOperationSelect from '../containers/main-dialog-operation-select';
 
 const styles = {
   root: {
@@ -32,6 +34,8 @@ class Application extends React.Component {
           <MainTabsContainer />
           <MainDialogError />
           <MainDialogBusy />
+          <MainDialogInfo />
+          <MainDialogOperationSelect />
         </div>
       </muiStyles.MuiThemeProvider>
     );

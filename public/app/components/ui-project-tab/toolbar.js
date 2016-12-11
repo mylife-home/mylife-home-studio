@@ -10,7 +10,7 @@ import DialogInfo from '../dialogs/dialog-info';
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  dialogSetBusy, dialogError,
+  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations,
   projectNewImage, projectNewWindow,
   resourcesGetQuery
 } from '../../actions/index';
@@ -55,7 +55,7 @@ class Toolbar extends React.Component {
     const project = this.props.project;
     AppDispatcher.dispatch(dialogSetBusy('Preparing import'));
     Facade.projects.uiPrepareImportOnline(project, (err, data) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       if(data.messages && data.messages.length) {
@@ -75,7 +75,7 @@ class Toolbar extends React.Component {
     AppDispatcher.dispatch(dialogSetBusy('Loading project'));
 
     reader.onloadend = () => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       const err = reader.error;
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       const content = reader.result;
@@ -115,7 +115,7 @@ class Toolbar extends React.Component {
     // need to get content .. TODO: Flux pattern to do that ?
     AppDispatcher.dispatch(dialogSetBusy('Loading project'));
     return AppDispatcher.dispatch(resourcesGetQuery(entity.id, resource, (err, content) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       return load(content);
     }));
@@ -168,56 +168,15 @@ class Toolbar extends React.Component {
     const project = this.props.project;
     AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
     Facade.projects.uiPrepareDeploy(project, (err, data) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
-      this.setState({
-        showOperationSelect: data.operations
-      });
+      AppDispatcher.dispatch(dialogOpenOperations(data.operations));
     });
   }
 
   executeOperations() {
-    const data = {
-      project: this.props.project,
-      operations: this.state.showOperationSelect
-    };
-    this.setState({
-      showOperationSelect: null
-    });
-
-    AppDispatcher.dispatch(dialogSetBusy('Executing deploy'));
-    Facade.projects.executeDeploy(data, (err) => {
-      AppDispatcher.dispatch(dialogSetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      this.setState({
-        showInfo: ['Deploy done']
-      });
-    });
-  }
-
-  cancelExecuteOperations() {
-    this.setState({
-      showOperationSelect: null
-    });
-  }
-
-  setAllOperations(value) {
-    if(!this.state.showOperationSelect) { return; }
-
-    for(const op of this.state.showOperationSelect) {
-      op.enabled = value;
-    }
-    // FIXME: remove this horror...
-    this.setState({ showOperationSelect: this.state.showOperationSelect.slice() });
-  }
-
-  setOneOperation(operation, value) {
-    if(!this.state.showOperationSelect) { return; }
-    operation.enabled = value;
-    // FIXME: remove this horror...
-    this.setState({ showOperationSelect: this.state.showOperationSelect.slice() });
+    AppDispatcher.dispatch(dialogExecuteOperations());
   }
 
   render() {
@@ -273,13 +232,6 @@ class Toolbar extends React.Component {
           </mui.ToolbarGroup>
         </mui.Toolbar>
 
-        <DialogOperationSelect open={!!this.state.showOperationSelect}
-                               operations={this.state.showOperationSelect || []}
-                               ok={this.executeOperations.bind(this)}
-                               cancel={this.cancelExecuteOperations.bind(this)}
-                               setAll={this.setAllOperations.bind(this)}
-                               setOne={this.setOneOperation.bind(this)}/>
-
         <DialogConfirm title="Confirm"
                        open={!!this.state.importComponentsConfirm}
                        lines={(this.state.importComponentsConfirm && ['The following elements will be lost:'].concat(this.state.importComponentsConfirm.messages)) || []}
@@ -289,7 +241,7 @@ class Toolbar extends React.Component {
         <DialogInfo title="Success"
                     open={!!this.state.showInfo}
                     lines={this.state.showInfo || []}
-                    close={this.closeInfo.bind(this)}/>
+                    onClose={this.closeInfo.bind(this)}/>
       </div>
     );
   }

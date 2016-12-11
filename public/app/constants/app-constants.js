@@ -20,8 +20,14 @@ export default {
 
     DIALOG_ERROR: null,
     DIALOG_ERROR_CLEAN: null,
+    DIALOG_INFO: null,
+    DIALOG_INFO_CLEAN: null,
     DIALOG_SET_BUSY: null,
     DIALOG_UNSET_BUSY: null,
+    DIALOG_OPEN_OPERATIONS: null,
+    DIALOG_CLEAR_OPERATIONS: null,
+    DIALOG_SET_ONE_OPERATION: null,
+    DIALOG_SET_ALL_OPERATIONS: null,
 
     PROJECT_LOAD: null,
     PROJECT_CLOSE: null,

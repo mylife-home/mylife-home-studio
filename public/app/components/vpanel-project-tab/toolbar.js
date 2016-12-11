@@ -9,7 +9,7 @@ import DialogInfo from '../dialogs/dialog-info';
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  dialogSetBusy, dialogError
+  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations
 } from '../../actions/index';
 
 import Facade from '../../services/facade';
@@ -42,7 +42,7 @@ class Toolbar extends React.Component {
     const { project } = this.props;
     AppDispatcher.dispatch(dialogSetBusy('Preparing import'));
     Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       if(data.messages && data.messages.length) {
@@ -69,7 +69,7 @@ class Toolbar extends React.Component {
   executeImportOnlineToolbox(data) {
     AppDispatcher.dispatch(dialogSetBusy('Executing import'));
     Facade.projects.vpanelExecuteImportOnlineToolbox(data, (err) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
@@ -84,7 +84,7 @@ class Toolbar extends React.Component {
     const project = this.props.project;
     AppDispatcher.dispatch(dialogSetBusy('Executing import'));
     Facade.projects.vpanelImportOnlineDriverComponents(project, (err) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
       this.setState({
@@ -97,12 +97,10 @@ class Toolbar extends React.Component {
     const project = this.props.project;
     AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
     Facade.projects.vpanelPrepareDeployVPanel(project, (err, data) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
-      this.setState({
-        showOperationSelect: data.operations
-      });
+      AppDispatcher.dispatch(dialogOpenOperations(data.operations));
     });
   }
 
@@ -110,56 +108,15 @@ class Toolbar extends React.Component {
     const project = this.props.project;
     AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
     Facade.projects.vpanelPrepareDeployDrivers(project, (err, data) => {
-      AppDispatcher.dispatch(dialogSetBusy());
+      AppDispatcher.dispatch(dialogUnsetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
 
-      this.setState({
-        showOperationSelect: data.operations
-      });
+      AppDispatcher.dispatch(dialogOpenOperations(data.operations));
     });
   }
 
   executeOperations() {
-    const data = {
-      project: this.props.project,
-      operations: this.state.showOperationSelect
-    };
-    this.setState({
-      showOperationSelect: null
-    });
-
-    AppDispatcher.dispatch(dialogSetBusy('Executing deploy'));
-    Facade.projects.executeDeploy(data, (err) => {
-      AppDispatcher.dispatch(dialogSetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      this.setState({
-        showInfo: ['Deploy done']
-      });
-    });
-  }
-
-  cancelExecuteOperations() {
-    this.setState({
-      showOperationSelect: null
-    });
-  }
-
-  setAllOperations(value) {
-    if(!this.state.showOperationSelect) { return; }
-
-    for(const op of this.state.showOperationSelect) {
-      op.enabled = value;
-    }
-    // FIXME: remove this horror...
-    this.setState({ showOperationSelect: this.state.showOperationSelect.slice() });
-  }
-
-  setOneOperation(operation, value) {
-    if(!this.state.showOperationSelect) { return; }
-    operation.enabled = value;
-    // FIXME: remove this horror...
-    this.setState({ showOperationSelect: this.state.showOperationSelect.slice() });
+    AppDispatcher.dispatch(dialogExecuteOperations());
   }
 
   render() {
@@ -202,20 +159,13 @@ class Toolbar extends React.Component {
         <DialogInfo title="Success"
                     open={!!this.state.showInfo}
                     lines={this.state.showInfo || []}
-                    close={this.closeInfo.bind(this)}/>
+                    onClose={this.closeInfo.bind(this)}/>
 
         <DialogConfirm title="Confirm"
                        open={!!this.state.importOnlineToolboxConfirm}
                        lines={(this.state.importOnlineToolboxConfirm && this.state.importOnlineToolboxConfirm.messages) || []}
                        yes={this.confirmImportOnlineToolbox.bind(this)}
                        no={this.cancelImportOnlineToolbox.bind(this)}/>
-
-        <DialogOperationSelect open={!!this.state.showOperationSelect}
-                               operations={this.state.showOperationSelect || []}
-                               ok={this.executeOperations.bind(this)}
-                               cancel={this.cancelExecuteOperations.bind(this)}
-                               setAll={this.setAllOperations.bind(this)}
-                               setOne={this.setOneOperation.bind(this)}/>
 
       </div>
     );

@@ -17,8 +17,14 @@ export default {
     switch(action.type) {
       case AppConstants.ActionTypes.DIALOG_ERROR:
       case AppConstants.ActionTypes.DIALOG_ERROR_CLEAN:
+      case AppConstants.ActionTypes.DIALOG_INFO:
+      case AppConstants.ActionTypes.DIALOG_INFO_CLEAN:
       case AppConstants.ActionTypes.DIALOG_SET_BUSY:
       case AppConstants.ActionTypes.DIALOG_UNSET_BUSY:
+      case AppConstants.ActionTypes.DIALOG_OPEN_OPERATIONS:
+      case AppConstants.ActionTypes.DIALOG_CLEAR_OPERATIONS:
+      case AppConstants.ActionTypes.DIALOG_SET_ONE_OPERATION:
+      case AppConstants.ActionTypes.DIALOG_SET_ALL_OPERATIONS:
       case AppConstants.ActionTypes.REPOSITORY_CLEAR:
       case AppConstants.ActionTypes.REPOSITORY_ADD:
       case AppConstants.ActionTypes.REPOSITORY_REMOVE:
