@@ -6,6 +6,7 @@ import base from '../base/index';
 import icons from '../icons';
 
 import AppConstants from '../../constants/app-constants';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectNewControl } from '../../actions/index';
 
 const styles = {
@@ -101,7 +102,7 @@ const pluginSource = {
 
     const { project, type } = props;
     const { location } = monitor.getDropResult();
-    projectNewControl(project, location, type);
+    AppDispatcher.dispatch(projectNewControl(project, location, type));
   }
 };
 

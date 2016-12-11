@@ -42,11 +42,11 @@ class Toolbar extends React.Component {
   }
 
   newImage() {
-    projectNewImage(this.props.project);
+    AppDispatcher.dispatch(projectNewImage(this.props.project));
   }
 
   newWindow() {
-    projectNewWindow(this.props.project);
+    AppDispatcher.dispatch(projectNewWindow(this.props.project));
   }
 
   // import
@@ -114,11 +114,11 @@ class Toolbar extends React.Component {
 
     // need to get content .. TODO: Flux pattern to do that ?
     AppDispatcher.dispatch(dialogSetBusy('Loading project'));
-    return resourcesGetQuery(entity.id, resource, (err, content) => {
+    return AppDispatcher.dispatch(resourcesGetQuery(entity.id, resource, (err, content) => {
       AppDispatcher.dispatch(dialogSetBusy());
       if(err) { return AppDispatcher.dispatch(dialogError(err)); }
       return load(content);
-    });
+    }));
   }
 
   importProject(vpanelProject) {
