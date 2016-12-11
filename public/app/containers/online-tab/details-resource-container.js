@@ -12,7 +12,7 @@ const mapStateToProps = (state, { entity, resource }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { entity, resource }) => ({
-  onRefresh: () => AppDispatcher(resourcesGetQuery(entity.id, resource))
+  onRefresh: () => AppDispatcher.dispatch(resourcesGetQuery(entity.id, resource))
 });
 
 const DetailsResourceContainer = connect(
