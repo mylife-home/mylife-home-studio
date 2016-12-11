@@ -129,11 +129,7 @@ class Projects {
   }
 
   executeDeploy(data, done) {
-    return common.executeDeploy(data, (err) => {
-      if(err) { return done(err); }
-      AppDispatcher.dispatch(projectRefresh(data.project));
-      return done();
-    });
+    return common.executeDeploy(data, done);
   }
 
   // -----------------------------------------------------------------------------

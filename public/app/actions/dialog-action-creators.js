@@ -67,6 +67,8 @@ export function dialogExecuteOperations() {
       if(err) { return dispatch(dialogError(err)); }
 
       dispatch(dialogInfo({ title: 'Success', lines: ['Deploy done'] }));
+
+      //AppDispatcher.dispatch(projectRefresh(data.project));
     });
   };
 }
