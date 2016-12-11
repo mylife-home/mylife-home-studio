@@ -316,7 +316,13 @@ export function projectDeleteWindow(project, window) {
 }
 
 export function projectDeleteControl(project, window, control) {
-  Facade.projects.uiDeleteControl(project, window, control);
+  try {
+    AppDispatcher.dispatch(projectStateSelect(project, { type: 'window', uid: window.uid }));
+
+    Facade.projects.uiDeleteControl(project, window, control);
+  } catch(err) {
+    AppDispatcher.dispatch(dialogError(err));
+  }
 }
 
 export function projectChangeImage(project, image, data) {

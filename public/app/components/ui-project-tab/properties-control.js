@@ -15,10 +15,8 @@ import PropertiesComponentAttributeSelector from './properties-component-attribu
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  projectStateSelect,
   projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
-  projectControlChangeAction, projectControlChangeImage, projectControlChangeDisplayComponent,
-  dialogError
+  projectControlChangeAction, projectControlChangeImage, projectControlChangeDisplayComponent
 } from '../../actions/index';
 
 class PropertiesControl extends React.Component {
@@ -26,11 +24,6 @@ class PropertiesControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = { };
-  }
-
-  selectWindow() {
-    const { project, window } = this.props;
-    AppDispatcher.dispatch(projectStateSelect(project, { type: 'window', uid: window.uid }));
   }
 
   handleComponentChange(component, attribute) {
@@ -77,12 +70,7 @@ class PropertiesControl extends React.Component {
     const { project, window, control } = this.props;
 
     const onDelete = () => {
-      try {
-        this.selectWindow();
-        projectDeleteControl(project, window, control);
-      } catch(err) {
-        AppDispatcher.dispatch(dialogError(err));
-      }
+      AppDispatcher.dispatch(projectDeleteControl(project, window, control));
     };
 
     return (
