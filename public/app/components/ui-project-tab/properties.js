@@ -18,7 +18,7 @@ import PropertiesWindowSelector from './properties-window-selector';
 import AppDispatcher from '../../compat/dispatcher';
 
 import {
-  projectStateSelectAndActiveContent, projectChangeName,
+  projectChangeName,
   projectDeleteWindow, projectWindowChangeId, projectResizeWindow, projectWindowChangeImage,
   projectDeleteComponent, projectChangeDefaultWindow
 } from '../../actions/index';
@@ -46,11 +46,6 @@ class Properties extends React.Component {
     const state = ProjectStore.getProjectState(project);
     const selection = state.selection;
     this.setState({ projectVersion, selection });
-  }
-
-  select(data) {
-    const { project } = this.props;
-    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, data, data));
   }
 
   renderProject(project) {
