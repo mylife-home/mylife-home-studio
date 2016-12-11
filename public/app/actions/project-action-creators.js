@@ -148,6 +148,15 @@ export function projectDeleteComponent(project, component) {
   }
 }
 
+export function projectNewBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
+  const binding = Facade.projects.vpanelCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);
+
+  AppDispatcher.dispatch(projectStateSelect(project, {
+    type: 'binding',
+    uid: binding.uid
+  }));
+}
+
 export function projectDeleteBinding(project, binding) {
   Facade.projects.vpanelDeleteBinding(project, binding);
 }

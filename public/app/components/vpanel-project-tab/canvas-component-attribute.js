@@ -4,10 +4,7 @@ import React from 'react';
 import * as dnd from 'react-dnd';
 import icons from '../icons';
 
-import Facade from '../../services/facade';
-import AppConstants from '../../constants/app-constants';
-import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect } from '../../actions/index';
+import { projectStateSelect, projectNewBinding } from '../../actions/index';
 import styles from './canvas-component-styles';
 
 import linkHelper from './link-helper';
@@ -43,12 +40,7 @@ const attributeSource = {
     const { project, component, attribute } = props;
     const { componentId, actionName } = monitor.getDropResult();
 
-    const binding = Facade.projects.vpanelCreateBinding(project, component.id, attribute.name, componentId, actionName);
-
-    AppDispatcher.dispatch(projectStateSelect(project, {
-      type: 'binding',
-      uid: binding.uid
-    }));
+    projectNewBinding(project, component.id, attribute.name, componentId, actionName);
     linkHelper.rebuild(project);
   }
 };
