@@ -42,7 +42,7 @@ const attributeSource = {
     const { project, component, attribute } = props;
     const { componentId, actionName } = monitor.getDropResult();
 
-    projectNewBinding(project, component.id, attribute.name, componentId, actionName);
+    AppDispatcher.dispatch(projectNewBinding(project, component.id, attribute.name, componentId, actionName));
     linkHelper.rebuild(project);
   }
 };

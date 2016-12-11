@@ -257,7 +257,7 @@ const componentSource = {
     };
     snapToGrid(location, true);
 
-    projectMoveComponent(project, component, location);
+    AppDispatcher.dispatch(projectMoveComponent(project, component, location));
 
     uiComponent.handleMeasureChange();
   }

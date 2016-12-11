@@ -7,6 +7,7 @@ import icons from '../icons';
 
 import Facade from '../../services/facade';
 import AppConstants from '../../constants/app-constants';
+import AppDispatcher from '../../compat/dispatcher';
 import { projectNewComponent } from '../../actions/index';
 
 const styles = {
@@ -103,7 +104,7 @@ const pluginSource = {
     const plugin = monitor.getItem();
     const { project } = props;
     const { location } = monitor.getDropResult();
-    projectNewComponent(project, location, plugin);
+    AppDispatcher.dispatch(projectNewComponent(project, location, plugin));
   }
 };
 
