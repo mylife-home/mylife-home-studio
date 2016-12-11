@@ -35,11 +35,6 @@ class PropertiesControlTextContext extends React.Component {
     this.setState({ open: false });
   }
 
-  handleDelete(item) {
-    const { onDelete } = this.props;
-    onDelete(item);
-  }
-
   handleCreate() {
     const { onNew } = this.props;
     const newItem = this.state.newItem;
@@ -53,7 +48,7 @@ class PropertiesControlTextContext extends React.Component {
   }
 
   render() {
-    const { project, control, onChangeId } = this.props;
+    const { project, control, onChangeId, onDelete } = this.props;
 
     const context = control.text.context;
     const display = context.map(item => `${item.id} => ${item.component.id}.${item.attribute}`).join('\n') || '<none>';
@@ -88,7 +83,7 @@ class PropertiesControlTextContext extends React.Component {
                   project={project}
                   item={it}
                   isNew={false}
-                  action={this.handleDelete.bind(this, it)}
+                  action={() => onDelete(it)}
                   onIdChange={(id) => onIdChange(it, id)}
                   onComponentChange={(component, attribute) => onComponentChange(it, component, attribute)}
                 />
