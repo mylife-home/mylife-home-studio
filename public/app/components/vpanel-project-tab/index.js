@@ -10,9 +10,9 @@ import Properties from './properties';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
 
+import storeHandler from '../../compat/store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectClose } from '../../actions/index';
-import ProjectStore from '../../stores/project-store';
 
 import tabStyles from '../base/tab-styles';
 
@@ -26,11 +26,11 @@ class VPanelProjectTab extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {

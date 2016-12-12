@@ -6,7 +6,6 @@ import { actionTypes, projectTypes } from '../constants/index';
 import Facade from '../services/facade';
 
 import ProjectStore from '../stores/project-store';
-import OnlineStore from '../stores/online-store';
 
 import AppDispatcher from '../compat/dispatcher';
 
@@ -17,56 +16,59 @@ import { resourcesGet } from './resources-action-creators';
 
 export function projectNew(type) {
   const project = Facade.projects.new(type);
-  AppDispatcher.dispatch(projectLoad(project));
+  return projectLoad(project);
 }
 
 export function projectLoadFile(file, type) {
+  return (dispatch) => {
+    const reader = new FileReader();
 
-  const reader = new FileReader();
+    dispatch(dialogSetBusy('Loading project'));
 
-  AppDispatcher.dispatch(dialogSetBusy('Loading project'));
+    reader.onloadend = () => {
+      dispatch(dialogUnsetBusy());
+      const err = reader.error;
+      if(err) { return dispatch(dialogError(err)); }
+      const content = reader.result;
+      let project;
+      try {
+        project = Facade.projects.open(type, content);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
+      dispatch(projectLoad(project));
+    };
 
-  reader.onloadend = () => {
-    AppDispatcher.dispatch(dialogUnsetBusy());
-    const err = reader.error;
-    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-    const content = reader.result;
-    let project;
-    try {
-      project = Facade.projects.open(type, content);
-    } catch(err) {
-      return AppDispatcher.dispatch(dialogError(err));
-    }
-    AppDispatcher.dispatch(projectLoad(project));
+    reader.readAsText(file);
   };
-
-  reader.readAsText(file);
 }
 
 export function projectLoadOnline(resource, type) {
-  function load(content) {
-    let project;
-    try {
-      project = Facade.projects.open(type, content);
-    } catch(err) {
-      return AppDispatcher.dispatch(dialogError(err));
+  return (dispatch, getState) => {
+    function load(content) {
+      let project;
+      try {
+        project = Facade.projects.open(type, content);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
+      dispatch(projectLoad(project));
     }
-    AppDispatcher.dispatch(projectLoad(project));
-  }
 
-  const entity = OnlineStore.getResourceEntity();
-  const cachedContent = entity.cachedResources && entity.cachedResources[resource];
-  if(cachedContent) {
-    return load(cachedContent);
-  }
+    const state = getState();
+    const entity = state.online.entities.get(state.online.resourcesEntityId);
+    const cachedContent = entity.cachedResources && entity.cachedResources[resource];
+    if(cachedContent) {
+      return load(cachedContent);
+    }
 
-  // need to get content .. TODO: Flux pattern to do that ?
-  AppDispatcher.dispatch(dialogSetBusy('Loading project'));
-  return AppDispatcher.dispatch(resourcesGet(entity.id, resource, (err, content) => {
-    AppDispatcher.dispatch(dialogUnsetBusy());
-    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-    return load(content);
-  }));
+    dispatch(dialogSetBusy('Loading project'));
+    return dispatch(resourcesGet(entity.id, resource, (err, content) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+      return load(content);
+    }));
+  };
 }
 
 export function projectLoad(project) {

@@ -5,7 +5,7 @@ import debugLib from 'debug';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectRefresh, projectLoad, resourcesSetQuery } from '../../actions/index';
+import { projectRefresh, resourcesSetQuery } from '../../actions/index';
 import { projectTypes } from '../../constants/index';
 
 import vpanel from './vpanel';

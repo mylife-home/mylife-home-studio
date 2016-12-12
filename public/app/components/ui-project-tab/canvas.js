@@ -3,6 +3,7 @@
 import React from 'react';
 
 import ProjectStore from '../../stores/project-store';
+import storeHandler from '../../compat/store';
 
 import CanvasComponent from './canvas-component';
 import CanvasImage from './canvas-image';
@@ -19,11 +20,11 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {

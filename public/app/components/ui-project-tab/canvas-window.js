@@ -7,6 +7,7 @@ import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
 import commonStyles from './canvas-styles';
 import { stopPropagationWrapper } from '../../utils/index';
+import storeHandler from '../../compat/store';
 
 import DataImage from './data-image';
 import CanvasControl from './canvas-control';
@@ -57,11 +58,11 @@ class CanvasWindow extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {

@@ -25,11 +25,9 @@ class MainTabsContainer extends React.Component {
 
   componentDidMount() {
     this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
     this.unsubscribe();
   }
 

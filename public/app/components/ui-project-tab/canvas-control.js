@@ -5,6 +5,7 @@ import * as muiStyles from 'material-ui/styles/index';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
+import storeHandler from '../../compat/store';
 
 import { stopPropagationWrapper } from '../../utils/index';
 
@@ -71,11 +72,11 @@ class CanvasControl extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {

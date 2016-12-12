@@ -1,49 +1,20 @@
 'use strict';
 
-import AppDispatcher from '../compat/dispatcher';
-import {EventEmitter} from 'events';
-import reducer from '../reducers/projects';
+import storeHandler from '../compat/store';
 
-const CHANGE_EVENT = 'change';
+const state = () => storeHandler.getStore().getState();
 
-class ProjectStore extends EventEmitter {
+export default {
 
-  constructor() {
-    super();
-    this.setMaxListeners(0);
-    this.state = reducer(undefined, {});
-    this.dispatchToken = AppDispatcher.register(this.handleDispatch.bind(this));
+  getAll: () => {
+    return Array.from(state().projects.projects.toArray());
+  },
+
+  get: (uid) => {
+    return state().projects.projects.get(uid);
+  },
+
+  getProjectState: (project) => {
+    return state().projects.states.get(project.uid);
   }
-
-  handleDispatch(action) {
-    const old = this.state;
-    this.state = reducer(this.state, action);
-    if(old !== this.state) { this.emitChange(); }
-  }
-
-  emitChange() {
-    this.emit(CHANGE_EVENT);
-  }
-
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  }
-
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  }
-
-  getAll() {
-    return Array.from(this.state.projects.toArray());
-  }
-
-  get(uid) {
-    return this.state.projects.get(uid);
-  }
-
-  getProjectState(project) {
-    return this.state.states.get(project.uid);
-  }
-}
-
-export default new ProjectStore();
+};

@@ -15,11 +15,9 @@ import Application from './components/application';
 import reducer from './reducers/index';
 
 import Facade from './services/facade'; // import to force init
-import storeInit from './stores/init'; // import to force init
 import storeHandler from './compat/store';
 
 void Facade;
-void storeInit;
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release

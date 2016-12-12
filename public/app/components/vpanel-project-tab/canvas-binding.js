@@ -8,6 +8,7 @@ import { stopPropagationWrapper } from '../../utils/index';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
+import storeHandler from '../../compat/store';
 
 import linkHelper from './link-helper';
 
@@ -67,11 +68,11 @@ class CanvasBinding extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {

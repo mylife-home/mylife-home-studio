@@ -5,6 +5,7 @@ import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
 import { stopPropagationWrapper } from '../../utils/index';
 
+import storeHandler from '../../compat/store';
 import { dragTypes } from '../../constants/index';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
@@ -54,12 +55,12 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
     this.refs.scrollbox.addEventListener('scroll', this.boundHandleMeasureChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
     this.refs.scrollbox.removeEventListener('scroll', this.boundHandleMeasureChange);
   }
 

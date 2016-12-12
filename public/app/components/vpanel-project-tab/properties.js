@@ -9,6 +9,7 @@ import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
 import PropertiesEditor from '../properties/properties-editor';
 
+import storeHandler from '../../compat/store';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import {
@@ -50,11 +51,11 @@ class Properties extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {

@@ -16,6 +16,7 @@ import PropertiesImageSelector from './properties-image-selector';
 import PropertiesWindowSelector from './properties-window-selector';
 
 import AppDispatcher from '../../compat/dispatcher';
+import storeHandler from '../../compat/store';
 
 import {
   projectChangeName,
@@ -34,11 +35,11 @@ class Properties extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {

@@ -11,10 +11,9 @@ import Explorer from './explorer';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
 
-import ProjectStore from '../../stores/project-store';
-
 import AppDispatcher from '../../compat/dispatcher';
 import { projectClose, projectStateSelectAndActiveContent } from '../../actions/index';
+import storeHandler from '../../compat/store';
 
 import tabStyles from '../base/tab-styles';
 
@@ -34,11 +33,11 @@ class UiProjectTab extends React.Component {
   }
 
   componentDidMount() {
-    ProjectStore.addChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    ProjectStore.removeChangeListener(this.boundHandleStoreChange);
+    this.unsubscribe();
   }
 
   handleStoreChange() {
