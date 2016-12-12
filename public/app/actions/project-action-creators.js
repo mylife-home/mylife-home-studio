@@ -16,11 +16,7 @@ import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-cre
 import { resourcesGet } from './resources-action-creators';
 
 export function projectNew(type) {
-  try {
-    Facade.projects.new(type);
-  } catch(err) {
-    return AppDispatcher.dispatch(dialogError(err));
-  }
+  Facade.projects.new(type);
 }
 
 export function projectLoadFile(file, type) {
