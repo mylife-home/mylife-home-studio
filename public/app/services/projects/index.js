@@ -40,11 +40,10 @@ class Projects {
     }
 
     debug('project created', project.uid);
-    AppDispatcher.dispatch(projectLoad(project));
     return project;
   }
 
-  open(type, content, internal) {
+  open(type, content) {
     const data = JSON.parse(content);
     const uid = uuid.v4();
     const project = {
@@ -68,7 +67,6 @@ class Projects {
     }
 
     debug('project created', project.uid);
-    if(!internal) { AppDispatcher.dispatch(projectLoad(project)); }
     return project;
   }
 

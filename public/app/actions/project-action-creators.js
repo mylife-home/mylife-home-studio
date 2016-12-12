@@ -16,7 +16,8 @@ import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-cre
 import { resourcesGet } from './resources-action-creators';
 
 export function projectNew(type) {
-  Facade.projects.new(type);
+  const project = Facade.projects.new(type);
+  AppDispatcher.dispatch(projectLoad(project));
 }
 
 export function projectLoadFile(file, type) {
@@ -30,11 +31,13 @@ export function projectLoadFile(file, type) {
     const err = reader.error;
     if(err) { return AppDispatcher.dispatch(dialogError(err)); }
     const content = reader.result;
+    let project;
     try {
-      Facade.projects.open(type, content);
+      project = Facade.projects.open(type, content);
     } catch(err) {
       return AppDispatcher.dispatch(dialogError(err));
     }
+    AppDispatcher.dispatch(projectLoad(project));
   };
 
   reader.readAsText(file);
@@ -42,11 +45,13 @@ export function projectLoadFile(file, type) {
 
 export function projectLoadOnline(resource, type) {
   function load(content) {
+    let project;
     try {
-      Facade.projects.open(type, content);
+      project = Facade.projects.open(type, content);
     } catch(err) {
       return AppDispatcher.dispatch(dialogError(err));
     }
+    AppDispatcher.dispatch(projectLoad(project));
   }
 
   const entity = OnlineStore.getResourceEntity();

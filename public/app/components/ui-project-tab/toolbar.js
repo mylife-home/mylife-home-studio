@@ -76,7 +76,7 @@ class Toolbar extends React.Component {
       const content = reader.result;
       let project;
       try {
-        project = Facade.projects.open(projectTypes.VPANEL, content, true);
+        project = Facade.projects.open(projectTypes.VPANEL, content);
       } catch(err) {
         return AppDispatcher.dispatch(dialogError(err));
       }
@@ -94,7 +94,7 @@ class Toolbar extends React.Component {
     const load = (content) => {
       let project;
       try {
-        project = Facade.projects.open(type, content, true);
+        project = Facade.projects.open(type, content);
       } catch(err) {
         return AppDispatcher.dispatch(dialogError(err));
       }
