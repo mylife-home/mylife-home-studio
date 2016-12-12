@@ -6,6 +6,7 @@ import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 
 import AppDispatcher from '../../compat/dispatcher';
 import { projectRefresh, projectLoad, resourcesSetQuery } from '../../actions/index';
+import { projectTypes } from '../../constants/index';
 
 import vpanel from './vpanel';
 import ui from './ui';
@@ -29,11 +30,11 @@ class Projects {
     };
 
     switch(type) {
-      case 'vpanel':
+      case projectTypes.VPANEL:
         vpanel.createNew(project);
         break;
 
-      case 'ui':
+      case projectTypes.UI:
         ui.createNew(project);
         break;
     }
@@ -57,11 +58,11 @@ class Projects {
     };
 
     switch(type) {
-      case 'vpanel':
+      case projectTypes.VPANEL:
         vpanel.open(project, data);
         break;
 
-      case 'ui':
+      case projectTypes.UI:
         ui.open(project, data);
         break;
     }
@@ -80,11 +81,11 @@ class Projects {
     const msgs = [];
 
     switch(project.type) {
-      case 'vpanel':
+      case projectTypes.VPANEL:
         vpanel.validate(project, msgs);
         break;
 
-      case 'ui':
+      case projectTypes.UI:
         ui.validate(project, msgs);
         break;
     }
@@ -116,11 +117,11 @@ class Projects {
     this.validate(project);
 
     switch(project.type) {
-      case 'vpanel':
+      case projectTypes.VPANEL:
         vpanel.serialize(project);
         break;
 
-      case 'ui':
+      case projectTypes.UI:
         ui.serialize(project);
         break;
     }

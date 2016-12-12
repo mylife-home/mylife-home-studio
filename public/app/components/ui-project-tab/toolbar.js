@@ -6,6 +6,7 @@ import base from '../base/index';
 import icons from '../icons';
 import DialogConfirm from '../dialogs/dialog-confirm';
 
+import { projectTypes } from '../../constants/index';
 import AppDispatcher from '../../compat/dispatcher';
 import {
   dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations, dialogInfo, dialogExecuteOperations,
@@ -75,7 +76,7 @@ class Toolbar extends React.Component {
       const content = reader.result;
       let project;
       try {
-        project = Facade.projects.open('vpanel', content, true);
+        project = Facade.projects.open(projectTypes.VPANEL, content, true);
       } catch(err) {
         return AppDispatcher.dispatch(dialogError(err));
       }
@@ -86,7 +87,7 @@ class Toolbar extends React.Component {
   }
 
   handleOpenOnlineVPanelProject(name) {
-    this.loadProjectOnline('project.vpanel.' + name, 'vpanel');
+    this.loadProjectOnline('project.vpanel.' + name, projectTypes.VPANEL);
   }
 
   loadProjectOnline(resource, type) {

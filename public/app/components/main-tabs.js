@@ -5,6 +5,7 @@ import * as mui from 'material-ui';
 import base from './base/index';
 import icons from './icons';
 
+import { projectTypes } from '../constants/index';
 import OnlineTab from './online-tab/index';
 import VPanelProjectTab from './vpanel-project-tab/index';
 import UiProjectTab from './ui-project-tab/index';
@@ -52,7 +53,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
       let title = project.name;
       if(project.dirty) { title += ' *'; }
       switch(project.type) {
-        case 'vpanel':
+        case projectTypes.VPANEL:
           return (
             <mui.Tab value={project.uid}
                      key={project.uid}
@@ -61,7 +62,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
             </mui.Tab>
           );
 
-        case 'ui':
+        case projectTypes.UI:
           return (
             <mui.Tab value={project.uid}
                      key={project.uid}

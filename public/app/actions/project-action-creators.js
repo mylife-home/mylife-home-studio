@@ -2,7 +2,7 @@
 
 import async from 'async';
 import uuid from 'uuid';
-import { actionTypes } from '../constants/index';
+import { actionTypes, projectTypes } from '../constants/index';
 import Facade from '../services/facade';
 
 import ProjectStore from '../stores/project-store';
@@ -123,11 +123,11 @@ export function projectNewComponent(project, location, plugin) {
 
 export function projectDeleteComponent(project, component) {
   switch(project.type) {
-    case 'vpanel':
+    case projectTypes.VPANEL:
       AppDispatcher.dispatch(projectStateSelect(project, null));
       Facade.projects.vpanelDeleteComponent(project, component);
       break;
-    case 'ui':
+    case projectTypes.UI:
       try {
         AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
         Facade.projects.uiDeleteComponent(project, component);
