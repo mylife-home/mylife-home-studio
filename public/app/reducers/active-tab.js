@@ -1,6 +1,6 @@
 'use strict';
 
-import AppConstants from '../constants/app-constants';
+import AppConstants from '../constants/index';
 
 const DEFAULT_TAB = 'online';
 
