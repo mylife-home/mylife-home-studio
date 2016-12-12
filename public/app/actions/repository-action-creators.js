@@ -1,18 +1,18 @@
 'use strict';
 
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 import { resourcesEntityQuery } from './resources-action-creators';
 
 export function repositoryClear() {
   return {
-    type: AppConstants.ActionTypes.REPOSITORY_CLEAR
+    type: actionTypes.REPOSITORY_CLEAR
   };
 }
 
 export function repositoryAdd(entity) {
   return (dispatch) => {
     dispatch({
-      type: AppConstants.ActionTypes.REPOSITORY_ADD,
+      type: actionTypes.REPOSITORY_ADD,
       entity
     });
 
@@ -22,7 +22,7 @@ export function repositoryAdd(entity) {
 
 export function repositoryRemove(id) {
   return {
-    type: AppConstants.ActionTypes.REPOSITORY_REMOVE,
+    type: actionTypes.REPOSITORY_REMOVE,
     id
   };
 }

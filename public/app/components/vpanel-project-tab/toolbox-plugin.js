@@ -6,7 +6,7 @@ import base from '../base/index';
 import icons from '../icons';
 
 import Facade from '../../services/facade';
-import AppConstants from '../../constants/app-constants';
+import { dragTypes } from '../../constants/index';
 
 const styles = {
   iconContainer: {
@@ -115,5 +115,5 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DragSource(AppConstants.DragTypes.VPANEL_PLUGIN, pluginSource, collect)(ToolboxPlugin);
+export default dnd.DragSource(dragTypes.VPANEL_PLUGIN, pluginSource, collect)(ToolboxPlugin);
 

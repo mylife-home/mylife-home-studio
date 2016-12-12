@@ -1,7 +1,7 @@
 'use strict';
 
 import { Dispatcher } from 'flux';
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 import store from './store';
 
 const fluxDispatcher = new Dispatcher();
@@ -15,30 +15,30 @@ export default {
     }
 
     switch(action.type) {
-      case AppConstants.ActionTypes.DIALOG_ERROR:
-      case AppConstants.ActionTypes.DIALOG_ERROR_CLEAN:
-      case AppConstants.ActionTypes.DIALOG_INFO:
-      case AppConstants.ActionTypes.DIALOG_INFO_CLEAN:
-      case AppConstants.ActionTypes.DIALOG_SET_BUSY:
-      case AppConstants.ActionTypes.DIALOG_UNSET_BUSY:
-      case AppConstants.ActionTypes.DIALOG_OPEN_OPERATIONS:
-      case AppConstants.ActionTypes.DIALOG_CLEAR_OPERATIONS:
-      case AppConstants.ActionTypes.DIALOG_SET_ONE_OPERATION:
-      case AppConstants.ActionTypes.DIALOG_SET_ALL_OPERATIONS:
-      case AppConstants.ActionTypes.REPOSITORY_CLEAR:
-      case AppConstants.ActionTypes.REPOSITORY_ADD:
-      case AppConstants.ActionTypes.REPOSITORY_REMOVE:
-      case AppConstants.ActionTypes.ENTITY_RESOURCES_LIST:
-      case AppConstants.ActionTypes.ENTITY_PLUGINS_LIST:
-      case AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST:
-      case AppConstants.ActionTypes.RESOURCE_GET:
-      case AppConstants.ActionTypes.RESOURCE_SET:
-      case AppConstants.ActionTypes.TAB_ACTIVATE:
+      case actionTypes.DIALOG_ERROR:
+      case actionTypes.DIALOG_ERROR_CLEAN:
+      case actionTypes.DIALOG_INFO:
+      case actionTypes.DIALOG_INFO_CLEAN:
+      case actionTypes.DIALOG_SET_BUSY:
+      case actionTypes.DIALOG_UNSET_BUSY:
+      case actionTypes.DIALOG_OPEN_OPERATIONS:
+      case actionTypes.DIALOG_CLEAR_OPERATIONS:
+      case actionTypes.DIALOG_SET_ONE_OPERATION:
+      case actionTypes.DIALOG_SET_ALL_OPERATIONS:
+      case actionTypes.REPOSITORY_CLEAR:
+      case actionTypes.REPOSITORY_ADD:
+      case actionTypes.REPOSITORY_REMOVE:
+      case actionTypes.ENTITY_RESOURCES_LIST:
+      case actionTypes.ENTITY_PLUGINS_LIST:
+      case actionTypes.ENTITY_COMPONENTS_LIST:
+      case actionTypes.RESOURCE_GET:
+      case actionTypes.RESOURCE_SET:
+      case actionTypes.TAB_ACTIVATE:
         return store.getStore().dispatch(action);
 
         // used by both
-      case AppConstants.ActionTypes.PROJECT_LOAD:
-      case AppConstants.ActionTypes.PROJECT_CLOSE:
+      case actionTypes.PROJECT_LOAD:
+      case actionTypes.PROJECT_CLOSE:
         fluxDispatcher.dispatch(action);
         return store.getStore().dispatch(action);
 

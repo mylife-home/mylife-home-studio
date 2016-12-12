@@ -1,7 +1,7 @@
 'use strict';
 
 import async from 'async';
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 import shared from '../shared/index';
 
@@ -45,7 +45,7 @@ export function resourcesEntityQuery(entity, done) {
 
 export function resourcesEntityResourcesList(entityId, resources) {
   return {
-    type: AppConstants.ActionTypes.ENTITY_RESOURCES_LIST,
+    type: actionTypes.ENTITY_RESOURCES_LIST,
     entityId,
     resources
   };
@@ -53,7 +53,7 @@ export function resourcesEntityResourcesList(entityId, resources) {
 
 export function resourcesEntityPluginsList(entityId, plugins) {
   return {
-    type: AppConstants.ActionTypes.ENTITY_PLUGINS_LIST,
+    type: actionTypes.ENTITY_PLUGINS_LIST,
     entityId,
     plugins
   };
@@ -61,7 +61,7 @@ export function resourcesEntityPluginsList(entityId, plugins) {
 
 export function resourcesEntityComponentsList(entityId, components) {
   return {
-    type: AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST,
+    type: actionTypes.ENTITY_COMPONENTS_LIST,
     entityId,
     components
   };
@@ -83,7 +83,7 @@ export function resourcesGet(entityId, resourceId, done) {
 
 export function resourcesGetResult(entityId, resourceId, resourceContent) {
   return {
-    type: AppConstants.ActionTypes.RESOURCE_GET,
+    type: actionTypes.RESOURCE_GET,
     entityId,
     resourceId,
     resourceContent
@@ -93,7 +93,7 @@ export function resourcesGetResult(entityId, resourceId, resourceContent) {
 export function resourcesSetQuery(entityId, resourceId, resourceContent, done) {
   return (dispatch) => {
     dispatch({
-      type: AppConstants.ActionTypes.RESOURCE_SET,
+      type: actionTypes.RESOURCE_SET,
       entityId,
       resourceId,
       resourceContent

@@ -5,7 +5,7 @@ import * as dnd from 'react-dnd';
 import icons from '../icons';
 
 import Facade from '../../services/facade';
-import AppConstants from '../../constants/app-constants';
+import { dragTypes } from '../../constants/index';
 import commonStyles from './canvas-component-styles';
 
 const styles = Object.assign({
@@ -60,4 +60,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DropTarget(AppConstants.DragTypes.VPANEL_COMPONENT_ATTRIBUTE, actionTarget, collect)(CanvasComponentAction);
+export default dnd.DropTarget(dragTypes.VPANEL_COMPONENT_ATTRIBUTE, actionTarget, collect)(CanvasComponentAction);

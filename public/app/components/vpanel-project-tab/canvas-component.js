@@ -9,7 +9,7 @@ import icons from '../icons';
 import { stopPropagationWrapper, snapToGrid } from '../../utils/index';
 
 import Facade from '../../services/facade';
-import AppConstants from '../../constants/app-constants';
+import { dragTypes } from '../../constants/index';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectMoveComponent } from '../../actions/index';
@@ -271,4 +271,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DragSource(AppConstants.DragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent);
+export default dnd.DragSource(dragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent);

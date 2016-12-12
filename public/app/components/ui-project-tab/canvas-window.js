@@ -11,7 +11,7 @@ import { stopPropagationWrapper } from '../../utils/index';
 import DataImage from './data-image';
 import CanvasControl from './canvas-control';
 
-import AppConstants from '../../constants/app-constants';
+import { dragTypes } from '../../constants/index';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectResizeWindow } from '../../actions/index';
@@ -137,7 +137,7 @@ CanvasWindow.childContextTypes = {
 const canvasTarget = {
   drop(props, monitor, component) {
     switch(monitor.getItemType()) {
-      case AppConstants.DragTypes.UI_TOOLBOX_CONTROL: {
+      case dragTypes.UI_TOOLBOX_CONTROL: {
         const canvasRect = component.refs.canvas.getBoundingClientRect();
         const dropOffset = monitor.getClientOffset();
         const location = { x: dropOffset.x - canvasRect.left, y: dropOffset.y - canvasRect.top };
@@ -145,7 +145,7 @@ const canvasTarget = {
         return { location };
       }
 
-      case AppConstants.DragTypes.UI_CONTROL: {
+      case dragTypes.UI_CONTROL: {
         // handled in CanvasControl/endDrag
         return { delta: monitor.getDifferenceFromInitialOffset() };
       }
@@ -159,4 +159,4 @@ function collect(connect) {
   };
 }
 
-export default dnd.DropTarget([AppConstants.DragTypes.UI_TOOLBOX_CONTROL, AppConstants.DragTypes.UI_CONTROL], canvasTarget, collect)(CanvasWindow);
+export default dnd.DropTarget([dragTypes.UI_TOOLBOX_CONTROL, dragTypes.UI_CONTROL], canvasTarget, collect)(CanvasWindow);

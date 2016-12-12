@@ -2,7 +2,7 @@
 
 import async from 'async';
 import uuid from 'uuid';
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 
 import ProjectStore from '../stores/project-store';
@@ -66,7 +66,7 @@ export function projectLoadOnline(resource, type) {
 
 export function projectLoad(project) {
   return {
-    type: AppConstants.ActionTypes.PROJECT_LOAD,
+    type: actionTypes.PROJECT_LOAD,
     project
   };
 }
@@ -101,14 +101,14 @@ export function projectSaveAllOnline() {
 
 export function projectClose(project) {
   return {
-    type: AppConstants.ActionTypes.PROJECT_CLOSE,
+    type: actionTypes.PROJECT_CLOSE,
     project
   };
 }
 
 export function projectChangeName(project, newName) {
   return {
-    type: AppConstants.ActionTypes.PROJECT_CHANGE_NAME,
+    type: actionTypes.PROJECT_CHANGE_NAME,
     project,
     newName
   };
@@ -360,14 +360,14 @@ export function projectControlChangeAction(project, window, control, actionType,
 
 export function projectRefresh(project) {
   return {
-    type: AppConstants.ActionTypes.PROJECT_REFRESH,
+    type: actionTypes.PROJECT_REFRESH,
     project
   };
 }
 
 export function projectStateUpdateLinkData(project, linkData) {
   return {
-    type: AppConstants.ActionTypes.PROJECT_STATE_UPDATE_LINK_DATA,
+    type: actionTypes.PROJECT_STATE_UPDATE_LINK_DATA,
     project,
     linkData
   };
@@ -375,7 +375,7 @@ export function projectStateUpdateLinkData(project, linkData) {
 
 export function projectStateSelect(project, selection) {
   return {
-    type: AppConstants.ActionTypes.PROJECT_STATE_SELECT,
+    type: actionTypes.PROJECT_STATE_SELECT,
     project,
     selection
   };
@@ -383,7 +383,7 @@ export function projectStateSelect(project, selection) {
 
 export function projectStateSelectAndActiveContent(project, selection, activeContent) {
   return {
-    type: AppConstants.ActionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT,
+    type: actionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT,
     project,
     selection,
     activeContent

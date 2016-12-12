@@ -5,7 +5,7 @@ import * as dnd from 'react-dnd';
 import base from '../base/index';
 import icons from '../icons';
 
-import AppConstants from '../../constants/app-constants';
+import { dragTypes } from '../../constants/index';
 
 const styles = {
   iconContainer: {
@@ -113,5 +113,5 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DragSource(AppConstants.DragTypes.UI_TOOLBOX_CONTROL, pluginSource, collect)(ToolboxControl);
+export default dnd.DragSource(dragTypes.UI_TOOLBOX_CONTROL, pluginSource, collect)(ToolboxControl);
 

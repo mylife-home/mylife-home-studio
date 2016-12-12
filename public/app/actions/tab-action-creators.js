@@ -1,10 +1,10 @@
 'use strict';
 
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 
 export function tabActivate(id) {
   return {
-    type: AppConstants.ActionTypes.TAB_ACTIVATE,
+    type: actionTypes.TAB_ACTIVATE,
     id
   };
 }

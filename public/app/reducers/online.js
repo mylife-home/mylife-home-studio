@@ -1,50 +1,50 @@
 'use strict';
 
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 import Immutable from 'immutable';
 import shared from '../shared/index';
 
 export default function(state = { entities: Immutable.Map(), resourcesEntityId: null }, action) {
 
   switch(action.type) {
-    case AppConstants.ActionTypes.REPOSITORY_CLEAR:
+    case actionTypes.REPOSITORY_CLEAR:
       return { entities: state.entities.clear(), ...state };
 
-    case AppConstants.ActionTypes.REPOSITORY_ADD:
+    case actionTypes.REPOSITORY_ADD:
       return {
         ...state,
         entities: state.entities.set(action.entity.id, action.entity),
         resourcesEntityId: (action.entity.type === shared.EntityType.RESOURCES) ? action.entity.id : state.resourcesEntityId
       };
 
-    case AppConstants.ActionTypes.REPOSITORY_REMOVE:
+    case actionTypes.REPOSITORY_REMOVE:
       return {
         ...state,
         entities: state.entities.delete(action.id),
         resourcesEntityId: (state.resourcesEntityId === action.id) ? null : state.resourcesEntityId
       };
 
-    case AppConstants.ActionTypes.ENTITY_RESOURCES_LIST:
+    case actionTypes.ENTITY_RESOURCES_LIST:
       return { ...state, entities: state.entities.update(action.entityId, entity => ({
         ...entity,
         resources: action.resources,
         cachedResources: null
       }))};
 
-    case AppConstants.ActionTypes.ENTITY_PLUGINS_LIST:
+    case actionTypes.ENTITY_PLUGINS_LIST:
       return { ...state, entities: state.entities.update(action.entityId, entity => ({
         ...entity,
         plugins: action.plugins
       }))};
 
-    case AppConstants.ActionTypes.ENTITY_COMPONENTS_LIST:
+    case actionTypes.ENTITY_COMPONENTS_LIST:
       return { ...state, entities: state.entities.update(action.entityId, entity => ({
         ...entity,
         components: action.components
       }))};
 
-    case AppConstants.ActionTypes.RESOURCE_GET:
-    case AppConstants.ActionTypes.RESOURCE_SET:
+    case actionTypes.RESOURCE_GET:
+    case actionTypes.RESOURCE_SET:
       return { ...state, entities: state.entities.update(action.entityId, entity => ({
         ...entity,
         cachedResources: {

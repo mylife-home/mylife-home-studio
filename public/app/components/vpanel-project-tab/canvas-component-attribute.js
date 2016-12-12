@@ -4,7 +4,7 @@ import React from 'react';
 import * as dnd from 'react-dnd';
 import icons from '../icons';
 
-import AppConstants from '../../constants/app-constants';
+import { dragTypes } from '../../constants/index';
 
 import AppDispatcher from '../../compat/dispatcher';
 import { projectNewBinding } from '../../actions/index';
@@ -56,4 +56,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DragSource(AppConstants.DragTypes.VPANEL_COMPONENT_ATTRIBUTE, attributeSource, collect)(CanvasComponentAttribute);
+export default dnd.DragSource(dragTypes.VPANEL_COMPONENT_ATTRIBUTE, attributeSource, collect)(CanvasComponentAttribute);

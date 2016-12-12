@@ -10,7 +10,7 @@ import { stopPropagationWrapper } from '../../utils/index';
 
 import DataImage from './data-image';
 
-import AppConstants from '../../constants/app-constants';
+import { dragTypes } from '../../constants/index';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectMoveControl, projectResizeControl } from '../../actions/index';
@@ -196,4 +196,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DragSource(AppConstants.DragTypes.UI_CONTROL, controlSource, collect)(CanvasControl);
+export default dnd.DragSource(dragTypes.UI_CONTROL, controlSource, collect)(CanvasControl);

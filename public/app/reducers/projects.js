@@ -1,12 +1,12 @@
 'use strict';
 
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 import Immutable from 'immutable';
 
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {
 
   switch(action.type) {
-    case AppConstants.ActionTypes.PROJECT_LOAD:
+    case actionTypes.PROJECT_LOAD:
       {
         const project = action.project;
         project.version = 1;
@@ -17,14 +17,14 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
         };
       }
 
-    case AppConstants.ActionTypes.PROJECT_CLOSE:
+    case actionTypes.PROJECT_CLOSE:
       return {
         ...state,
         projects: state.projects.delete(action.project.uid),
         states: state.states.delete(action.project.uid)
       };
 
-    case AppConstants.ActionTypes.PROJECT_CHANGE_NAME:
+    case actionTypes.PROJECT_CHANGE_NAME:
       return {
         ...state,
         projects: state.projects.update(action.project.uid, project => ({
@@ -37,19 +37,19 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
       };
 
     // FIXME
-    case AppConstants.ActionTypes.PROJECT_REFRESH:
+    case actionTypes.PROJECT_REFRESH:
       return  { ...state, projects: state.projects.update(action.project.uid, project => ({
         ...project,
         version: project.version + 1
       })) };
 
-    case AppConstants.ActionTypes.PROJECT_STATE_UPDATE_LINK_DATA:
+    case actionTypes.PROJECT_STATE_UPDATE_LINK_DATA:
       return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, linkData: action.linkData })) };
 
-    case AppConstants.ActionTypes.PROJECT_STATE_SELECT:
+    case actionTypes.PROJECT_STATE_SELECT:
       return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, selection: action.selection })) };
 
-    case AppConstants.ActionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT:
+    case actionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT:
       return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, selection: action.selection, activeContent : action.activeContent })) };
 
     default:

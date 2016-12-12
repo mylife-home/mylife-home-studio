@@ -1,58 +1,58 @@
 'use strict';
 
-import AppConstants from '../constants/app-constants';
+import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 
 export function dialogError(err) {
   console.log(err); // eslint-disable-line no-console
   return {
-    type: AppConstants.ActionTypes.DIALOG_ERROR,
+    type: actionTypes.DIALOG_ERROR,
     error: err
   };
 }
 
 export function dialogErrorClean() {
   return {
-    type: AppConstants.ActionTypes.DIALOG_ERROR_CLEAN,
+    type: actionTypes.DIALOG_ERROR_CLEAN,
   };
 }
 
 export function dialogInfo(info) {
   return {
-    type: AppConstants.ActionTypes.DIALOG_INFO,
+    type: actionTypes.DIALOG_INFO,
     info
   };
 }
 
 export function dialogInfoClean() {
   return {
-    type: AppConstants.ActionTypes.DIALOG_INFO_CLEAN,
+    type: actionTypes.DIALOG_INFO_CLEAN,
   };
 }
 
 export function dialogSetBusy(text) {
   return {
-    type: AppConstants.ActionTypes.DIALOG_SET_BUSY,
+    type: actionTypes.DIALOG_SET_BUSY,
     text
   };
 }
 
 export function dialogUnsetBusy() {
   return {
-    type: AppConstants.ActionTypes.DIALOG_UNSET_BUSY,
+    type: actionTypes.DIALOG_UNSET_BUSY,
   };
 }
 
 export function dialogOpenOperations(operations) {
   return {
-    type: AppConstants.ActionTypes.DIALOG_OPEN_OPERATIONS,
+    type: actionTypes.DIALOG_OPEN_OPERATIONS,
     operations
   };
 }
 
 export function dialogClearOperations() {
   return {
-    type: AppConstants.ActionTypes.DIALOG_CLEAR_OPERATIONS,
+    type: actionTypes.DIALOG_CLEAR_OPERATIONS,
   };
 }
 
@@ -79,7 +79,7 @@ export function dialogCancelOperations() {
 
 export function dialogSetOneOperation(operation, value) {
   return {
-    type: AppConstants.ActionTypes.DIALOG_SET_ONE_OPERATION,
+    type: actionTypes.DIALOG_SET_ONE_OPERATION,
     operation: operation.id,
     enabled: value
   };
@@ -87,7 +87,7 @@ export function dialogSetOneOperation(operation, value) {
 
 export function dialogSetAllOperations(value) {
   return {
-    type: AppConstants.ActionTypes.DIALOG_SET_ALL_OPERATIONS,
+    type: actionTypes.DIALOG_SET_ALL_OPERATIONS,
     enabled: value
   };
 }
