@@ -1,12 +1,12 @@
 'use strict';
 
-import uuid from 'uuid';
 import debugLib from 'debug';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 
 import AppDispatcher from '../../compat/dispatcher';
 import { projectRefresh, resourcesSetQuery } from '../../actions/index';
 import { projectTypes } from '../../constants/index';
+import { newId } from '../../utils/index';
 
 import vpanel from './vpanel';
 import ui from './ui';
@@ -19,7 +19,7 @@ class Projects {
   }
 
   new(type) {
-    const uid = uuid.v4();
+    const uid = newId();
     const project = {
       uid,
       type,
@@ -45,7 +45,7 @@ class Projects {
 
   open(type, content) {
     const data = JSON.parse(content);
-    const uid = uuid.v4();
+    const uid = newId();
     const project = {
       raw: data,
       uid,

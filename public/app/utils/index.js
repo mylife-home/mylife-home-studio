@@ -4,6 +4,8 @@ import arraySort from 'array-sort';
 
 export const GRID_SIZE = 32;
 
+let idGenerator = 0;
+
 export function download(content, mime, filename) {
   const pom = document.createElement('a');
   pom.setAttribute('href', `data:${mime};charset=utf-8, ${encodeURIComponent(content)}`);
@@ -59,4 +61,8 @@ export function sortBy(array, key) {
     arraySort(ret, key);
   }
   return ret;
+}
+
+export function newId() {
+  return ++idGenerator;
 }

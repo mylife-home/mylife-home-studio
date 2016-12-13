@@ -1,9 +1,9 @@
 'use strict';
 
-import uuid from 'uuid';
 import Metadata from '../metadata/index';
 import common from './common';
 import Resources from '../resources';
+import { newId } from '../../utils/index';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
@@ -224,7 +224,7 @@ function importDriverComponents(project, done) {
         if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
 
         const component = {
-          uid: uuid.v4(),
+          uid: newId(),
           id: onlineComponent.id,
           bindings: [],
           bindingTargets: [],
@@ -463,7 +463,7 @@ function createComponent(project, location, pluginData) {
   const config = {};
 
   const component = {
-    uid: uuid.v4(),
+    uid: newId(),
     id: `component_${common.uid()}`,
     bindings: [],
     bindingTargets: [],
@@ -514,7 +514,7 @@ function createBinding(project, remoteComponentId, remoteAttributeName, localCom
   //const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
 
   const binding = {
-    uid: uuid.v4(),
+    uid: newId(),
     remote: remoteComponent,
     local: localComponent,
     remote_attribute: remoteAttributeName,
@@ -584,7 +584,7 @@ function getToolboxItem(project, entityId) {
 
 function loadComponent(project, component) {
   return {
-    uid: uuid.v4(),
+    uid: newId(),
     id: component.Component.id,
     bindings: component.Component.bindings,
     bindingTargets: [],
@@ -615,7 +615,7 @@ function createLinks(project) {
       const remoteComponent = findComponent(project, binding.remote_id);
       delete binding.remote_id;
 
-      binding.uid = uuid.v4();
+      binding.uid = newId();
       binding.local = component;
       binding.remote = remoteComponent;
       remoteComponent.bindingTargets.push(binding);

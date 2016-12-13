@@ -1,10 +1,10 @@
 'use strict';
 
-import uuid from 'uuid';
 import common from './common';
 import shared from '../../shared/index';
 import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 import Metadata from '../metadata/index';
+import { newId } from '../../utils/index';
 
 import AppDispatcher from '../../compat/dispatcher';
 import { resourcesSetQuery } from '../../actions/index';
@@ -50,6 +50,7 @@ function open(project, data) {
 
 function loadComponent(comp) {
   return {
+    uid: newId(),
     id: comp.Id,
     plugin: common.loadPlugin(comp.Plugin)
   };
@@ -57,7 +58,7 @@ function loadComponent(comp) {
 
 function loadImage(img) {
   return {
-    uid: uuid.v4(),
+    uid: newId(),
     id: img.Id,
     content: img.Content
   };
@@ -65,7 +66,7 @@ function loadImage(img) {
 
 function loadWindow(project, win) {
   return {
-    uid: uuid.v4(),
+    uid: newId(),
     id: win.id,
     height: win.height,
     width: win.width,
@@ -83,7 +84,7 @@ function loadWindowControls(project, data, projectWindow, index) {
 
 function loadControl(project, ctrl) {
   return {
-    uid: uuid.v4(),
+    uid: newId(),
     id: ctrl.id,
     height: ctrl.height,
     width: ctrl.width,
@@ -109,7 +110,7 @@ function loadDisplay(project, disp) {
 
 function loadDisplayMapItem(project, item) {
   return {
-    uid: uuid.v4(),
+    uid: newId(),
     max: item.max,
     min: item.min,
     resource: findResource(project, item.resource_id),
@@ -127,7 +128,7 @@ function loadText(project, text) {
 
 function loadTextContextItem(project, item) {
   return {
-    uid: uuid.v4(),
+    uid: newId(),
     component: findComponent(project, item.component_id),
     attribute: item.component_attribute,
     id: item.id
@@ -562,7 +563,7 @@ function createOperationResourceSet(entityId, resourceId, resourceContent) {
 
 function createImage(project) {
   const image = {
-    uid: uuid.v4(),
+    uid: newId(),
     id: `image_${common.uid()}`,
     content: null
   };
@@ -575,7 +576,7 @@ function createImage(project) {
 
 function createWindow(project) {
   const window = {
-    uid: uuid.v4(),
+    uid: newId(),
     id: `window_${common.uid()}`,
     height: 500,
     width: 500,
@@ -597,7 +598,7 @@ function createControl(project, window, location, type) {
   const y = location.y / window.height;
 
   const control = {
-    uid: uuid.v4(),
+    uid: newId(),
     id: `control_${common.uid()}`,
     height,
     width,
