@@ -1,7 +1,6 @@
 'use strict';
 
 import { Dispatcher } from 'flux';
-import { actionTypes } from '../constants/index';
 import store from './store';
 
 const fluxDispatcher = new Dispatcher();
