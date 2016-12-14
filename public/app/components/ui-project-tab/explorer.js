@@ -62,9 +62,9 @@ const Explorer = ({ fullProject, components, images, windows, onSelect }) => (
 
 Explorer.propTypes = {
   fullProject: React.PropTypes.object.isRequired, // TODO: remove
-  components: React.PropTypes.array.isRequired,
-  images: React.PropTypes.array.isRequired,
-  windows: React.PropTypes.array.isRequired,
+  sortedComponents: React.PropTypes.array.isRequired,
+  sortedImages: React.PropTypes.array.isRequired,
+  sortedWindows: React.PropTypes.array.isRequired,
   onSelect: React.PropTypes.func.isRequired,
 };
 

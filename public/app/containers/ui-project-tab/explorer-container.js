@@ -11,9 +11,9 @@ const mapStateToProps = () => {
   const getSortedImages     = makeGetSortedImages();
   const getSortedWindow     = makeGetSortedWindows();
   return (state, props) => ({
-    components : getSortedComponents(state, props),
-    images     : getSortedImages(state, props),
-    windows    : getSortedWindow(state, props)
+    sortedComponents : getSortedComponents(state, props),
+    sortedImages     : getSortedImages(state, props),
+    sortedWindows    : getSortedWindow(state, props)
   });
 };
 
