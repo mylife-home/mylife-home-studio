@@ -146,12 +146,12 @@ class Properties extends React.Component {
     if(selection) {
       switch(selection.type) {
         case 'component': {
-          const component = project.components.find(comp => comp.uid === selection.uid);
+          const component = project.components.get(selection.uid);
           return this.renderComponent(project, component);
         }
 
         case 'image': {
-          const image = project.images.find(img => img.uid === selection.uid);
+          const image = project.images.get(selection.uid);
           return (<PropertiesImage image={image}
                                    onChangeId={(value) => AppDispatcher.dispatch(projectImageChangeId(project, image, value))}
                                    onChangeFile={(file) => AppDispatcher.dispatch(projectImageChangeFile(project, image, file))}
@@ -159,13 +159,13 @@ class Properties extends React.Component {
         }
 
         case 'window': {
-          const window = project.windows.find(wnd => wnd.uid === selection.uid);
+          const window = project.windows.get(selection.uid);
           return this.renderWindow(project, window);
         }
 
         case 'control': {
-          const window = project.windows.find(wnd => wnd.uid === selection.windowUid);
-          const control = window.controls.find(ctrl => ctrl.uid === selection.controlUid);
+          const window = project.windows.get(selection.windowUid);
+          const control = window.controls.get(selection.controlUid);
           return (<PropertiesControl project={project} window={window} control={control} />);
         }
       }
