@@ -3,7 +3,6 @@
 import { connect } from 'react-redux';
 
 import ToolboxControl from '../../components/ui-project-tab/toolbox-control';
-import AppDispatcher from '../../compat/dispatcher';
 import { projectNewControl } from '../../actions/index';
 
 const mapDispatchToProps = (dispatch) => ({
