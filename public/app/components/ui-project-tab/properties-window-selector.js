@@ -30,16 +30,17 @@ class PropertiesWindowSelector extends React.Component {
 
     this.handleRequestClose();
 
-    onWindowChange(wnd);
+    onWindowChange(wnd.uid);
   }
 
   render() {
-    const { project, value } = this.props;
+    const { windows, sortedWindows, value } = this.props;
+    const selectedWindow = value && windows.get(value);
 
     return (
       <div>
         <mui.RaisedButton
-          label={value ? value.id : '<none>'}
+          label={selectedWindow ? selectedWindow.id : '<none>'}
           onTouchTap={(event) => this.handleTouchTap(event)}
         />
         <mui.Popover
@@ -50,11 +51,11 @@ class PropertiesWindowSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {project.windows.map(wnd => (
+            {sortedWindows.map(wnd => (
               <mui.MenuItem
                 key={wnd.uid}
                 primaryText={wnd.id}
-                onTouchTap={this.handleSelect.bind(this, wnd)}/>
+                onTouchTap={() => this.handleSelect(wnd)}/>
             ))}
           </mui.Menu>
         </mui.Popover>
@@ -64,8 +65,9 @@ class PropertiesWindowSelector extends React.Component {
 }
 
 PropertiesWindowSelector.propTypes = {
-  project        : React.PropTypes.object.isRequired,
-  value          : React.PropTypes.object,
+  windows        : React.PropTypes.object.isRequired,
+  sortedWindows  : React.PropTypes.array.isRequired,
+  value          : React.PropTypes.number,
   onWindowChange : React.PropTypes.func.isRequired
 };
 

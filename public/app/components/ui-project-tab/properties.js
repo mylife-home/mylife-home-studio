@@ -25,6 +25,8 @@ import {
   projectDeleteComponent, projectChangeDefaultWindow
 } from '../../actions/index';
 
+import { makeGetSortedComponents, makeGetSortedImages, makeGetSortedWindows } from '../../selectors/ui-projects';
+
 class Properties extends React.Component {
 
   constructor(props) {
@@ -32,6 +34,10 @@ class Properties extends React.Component {
     this.state = { };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
+
+    this.getSortedComponents = makeGetSortedComponents();
+    this.getSortedImage      = makeGetSortedImages();
+    this.getSortedWindows    = makeGetSortedWindows();
   }
 
   componentDidMount() {
@@ -71,7 +77,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Default window'}/></td>
-              <td><PropertiesWindowSelector project={project} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project, window))} /></td>
+              <td><PropertiesWindowSelector sortedWindows={this.getSortedWindows(storeHandler.getStore().getState(), { project: project.uid })} windows={project.windows} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project, window))} /></td>
             </tr>
           </tbody>
         </table>
