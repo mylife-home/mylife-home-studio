@@ -1,13 +1,13 @@
 'use strict';
 
 import common from './common';
-import shared from '../../shared/index';
-import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 import Metadata from '../metadata/index';
 import { newId } from '../../utils/index';
 
 import AppDispatcher from '../../compat/dispatcher';
 import { resourcesSetQuery } from '../../actions/index';
+import storeHandler from '../../compat/store'; // TODO: remove that ?
+import { getResourceEntity } from'../../selectors/online';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -537,7 +537,7 @@ function prepareDeploy(project, done) {
 
       resources.set('default_window', project.defaultWindow.id);
 
-      const entity = OnlineStore.getAll().find(e => e.type === shared.EntityType.RESOURCES);
+      const entity = getResourceEntity(storeHandler.getStore().getState());
       operations = [];
       for(const [resourceId, resourceContent] of resources.entries()) {
         operations.push(createOperationResourceSet(entity.id, resourceId, resourceContent));

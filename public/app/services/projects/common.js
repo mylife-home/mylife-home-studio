@@ -2,12 +2,12 @@
 
 import async from 'async';
 
-import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
-import shared from '../../shared/index';
+import storeHandler from '../../compat/store'; // TODO: remove that ?
 import Metadata from '../metadata/index';
 
 import AppDispatcher from '../../compat/dispatcher';
 import { resourcesEntityQuery } from '../../actions/index';
+import { getResourceEntity, getCoreEntities } from'../../selectors/online';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -95,7 +95,7 @@ function loadMapOnline(map) {
 }
 
 function loadOnlineCoreEntities(done) {
-  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+  const entities = getCoreEntities(storeHandler.getStore().getState());
 
   const funcs = [];
   for(const entity of entities) {
@@ -106,7 +106,7 @@ function loadOnlineCoreEntities(done) {
 }
 
 function loadOnlineResourceNames(done) {
-  const entity = OnlineStore.getResourceEntity();
+  const entity = getResourceEntity(storeHandler.getStore().getState());
   if(!entity) {
     return done(new Error('No resource entity on network'));
   }
@@ -114,7 +114,7 @@ function loadOnlineResourceNames(done) {
 }
 
 function getOnlinePlugins() {
-  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+  const entities = getCoreEntities(storeHandler.getStore().getState());
   const ret = new Map();
   for(const entity of entities) {
     for(const plugin of entity.plugins) {
@@ -128,7 +128,7 @@ function getOnlinePlugins() {
 }
 
 function getOnlineComponents() {
-  const entities = OnlineStore.getAll().filter(e => e.type === shared.EntityType.CORE);
+  const entities = getCoreEntities(storeHandler.getStore().getState());
   const ret = new Map();
   for(const entity of entities) {
     for(const component of entity.components) {

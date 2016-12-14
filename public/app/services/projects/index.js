@@ -1,12 +1,13 @@
 'use strict';
 
 import debugLib from 'debug';
-import OnlineStore from '../../stores/online-store'; // TODO: remove that ?
 
 import AppDispatcher from '../../compat/dispatcher';
 import { projectRefresh, resourcesSetQuery } from '../../actions/index';
 import { projectTypes } from '../../constants/index';
 import { newId } from '../../utils/index';
+import storeHandler from '../../compat/store'; // TODO: remove that ?
+import { getResourceEntity } from'../../selectors/online';
 
 import vpanel from './vpanel';
 import ui from './ui';
@@ -93,7 +94,7 @@ class Projects {
 
   saveOnline(project, done) {
     const key = `project.${project.type}.${project.name}`;
-    const entityId = OnlineStore.getResourceEntity().id;
+    const entityId = getResourceEntity(storeHandler.getStore().getState()).id;
     let content;
     try {
       content = this.serialize(project);
