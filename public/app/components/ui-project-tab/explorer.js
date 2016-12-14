@@ -30,7 +30,7 @@ const Explorer = ({ fullProject, sortedComponents, sortedImages, sortedWindows, 
                       <mui.ListItem key={`component:${comp.id}`}
                                     primaryText={comp.id}
                                     leftIcon={<icons.Component />}
-                                    onClick={() => onSelect({ type: 'component', id: comp.id})} />
+                                    onClick={() => onSelect({ type: 'component', uid: comp.uid})} />
                       ))} />
 
       <mui.ListItem key={'images'}
