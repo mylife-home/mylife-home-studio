@@ -9,11 +9,11 @@ import { projectStateSelectAndActiveContent } from '../../actions/index';
 const mapStateToProps = () => {
   const getSortedComponents = makeGetSortedComponents();
   const getSortedImages     = makeGetSortedImages();
-  const getSortedWindow     = makeGetSortedWindows();
+  const getSortedWindows     = makeGetSortedWindows();
   return (state, props) => ({
     sortedComponents : getSortedComponents(state, props),
     sortedImages     : getSortedImages(state, props),
-    sortedWindows    : getSortedWindow(state, props)
+    sortedWindows    : getSortedWindows(state, props)
   });
 };
 
