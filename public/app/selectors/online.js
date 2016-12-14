@@ -1,6 +1,7 @@
 'use strict';
 
 import { createSelector } from 'reselect';
+import shared from '../shared/index';
 
 function getEntities(state) {
   return state.online.entities;
