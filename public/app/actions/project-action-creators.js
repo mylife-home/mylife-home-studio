@@ -381,6 +381,7 @@ export function projectStateUpdateLinkData(project, linkData) {
 }
 
 export function projectStateSelect(project, selection) {
+  if(typeof project === 'object') { project = project.uid; } // TODO: clean
   return {
     type: actionTypes.PROJECT_STATE_SELECT,
     project,
@@ -389,6 +390,7 @@ export function projectStateSelect(project, selection) {
 }
 
 export function projectStateSelectAndActiveContent(project, selection, activeContent) {
+  if(typeof project === 'object') { project = project.uid; } // TODO: clean
   return {
     type: actionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT,
     project,

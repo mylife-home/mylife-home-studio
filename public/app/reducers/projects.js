@@ -47,10 +47,10 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
       return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, linkData: action.linkData })) };
 
     case actionTypes.PROJECT_STATE_SELECT:
-      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, selection: action.selection })) };
+      return { ...state, states: state.states.update(action.project, state => ({ ... state, selection: action.selection })) };
 
     case actionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT:
-      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, selection: action.selection, activeContent : action.activeContent })) };
+      return { ...state, states: state.states.update(action.project, state => ({ ... state, selection: action.selection, activeContent : action.activeContent })) };
 
     default:
       return state;
