@@ -7,12 +7,12 @@ import icons from '../icons';
 import MainTitle from '../main-title';
 
 import Properties from './properties';
-import Explorer from './explorer';
+import ExplorerContainer from '../../containers/ui-project-tab/explorer-container';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectClose, projectStateSelectAndActiveContent } from '../../actions/index';
+import { projectClose } from '../../actions/index';
 import storeHandler from '../../compat/store';
 
 import tabStyles from '../base/tab-styles';
@@ -83,7 +83,7 @@ class UiProjectTab extends React.Component {
                 <Toolbox project={project} />
               </mui.Paper>
               <mui.Paper style={Object.assign({}, tabStyles.scrollable, styles.explorerHeight)}>
-                <Explorer project={project} onSelect={(data) => AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, data, data))} />
+                <ExplorerContainer project={project.uid} fullProject={project}/>
               </mui.Paper>
             </div>
           </bs.Col>

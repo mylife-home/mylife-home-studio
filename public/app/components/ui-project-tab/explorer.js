@@ -3,7 +3,6 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
-import { sortBy } from '../../utils/index';
 
 import Toolbar from './toolbar';
 
@@ -15,7 +14,7 @@ const styles = {
   }
 };
 
-const Explorer = ({ project, onSelect }) => (
+const Explorer = ({ fullProject, components, images, windows, onSelect }) => (
   <div style={Object.assign({}, tabStyles.fullHeight)}>
     <mui.List style={Object.assign({}, tabStyles.scrollable, styles.listHeight)}>
       <mui.ListItem key={'project'}
@@ -27,7 +26,7 @@ const Explorer = ({ project, onSelect }) => (
                     primaryText={'Components'}
                     leftIcon={<icons.Component />}
                     disabled={true}
-                    nestedItems={sortBy(project.components, 'id').map(comp => (
+                    nestedItems={components.map(comp => (
                       <mui.ListItem key={`component:${comp.id}`}
                                     primaryText={comp.id}
                                     leftIcon={<icons.Component />}
@@ -38,7 +37,7 @@ const Explorer = ({ project, onSelect }) => (
                     primaryText={'Images'}
                     leftIcon={<icons.UiImage />}
                     disabled={true}
-                    nestedItems={sortBy(project.images, 'id').map(img => (
+                    nestedItems={images.map(img => (
                       <mui.ListItem key={`image:${img.uid}`}
                                     primaryText={img.id}
                                     leftIcon={<icons.UiImage />}
@@ -49,7 +48,7 @@ const Explorer = ({ project, onSelect }) => (
                     primaryText={'Windows'}
                     leftIcon={<icons.UiWindow />}
                     disabled={true}
-                    nestedItems={sortBy(project.windows, 'id').map(window => (
+                    nestedItems={windows.map(window => (
                       <mui.ListItem key={`window:${window.uid}`}
                                     primaryText={window.id}
                                     leftIcon={<icons.UiWindow />}
@@ -57,12 +56,15 @@ const Explorer = ({ project, onSelect }) => (
                       ))} />
 
     </mui.List>
-    <Toolbar project={project} />
+    <Toolbar project={fullProject} />
   </div>
 );
 
 Explorer.propTypes = {
-  project: React.PropTypes.object.isRequired,
+  fullProject: React.PropTypes.object.isRequired, // TODO: remove
+  components: React.PropTypes.array.isRequired,
+  images: React.PropTypes.array.isRequired,
+  windows: React.PropTypes.array.isRequired,
   onSelect: React.PropTypes.func.isRequired,
 };
 
