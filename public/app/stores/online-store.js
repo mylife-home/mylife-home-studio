@@ -1,13 +1,9 @@
 'use strict';
 
 import storeHandler from '../compat/store';
+import { getResourceEntity, getVPanelProjectNames, getUiProjectNames } from'../selectors/online';
 
 const state = () => storeHandler.getStore().getState();
-
-const getResourceEntity = () => {
-  const store = state();
-  return store.online.entities.get(store.online.resourcesEntityId);
-};
 
 export default {
 
@@ -15,13 +11,13 @@ export default {
 
   getAll: () => Array.from(state().online.entities.toArray()),
 
-  getResourceEntity,
+  getResourceEntity: () => getResourceEntity(state()),
 
   getResourceNames: (startsWith) => {
-    const resourcesEntity = getResourceEntity();
-    if(!resourcesEntity || !resourcesEntity.resources) { return []; }
-    const names = resourcesEntity.resources;
-    if(!startsWith) { return names; }
-    return names.filter(n => n.startsWith(startsWith));
+    switch(startsWith) {
+      case 'project.vpanel.': return getVPanelProjectNames(state());
+      case 'project.ui.': return getUiProjectNames(state());
+      default: throw new Error('unsupported');
+    }
   }
 };
