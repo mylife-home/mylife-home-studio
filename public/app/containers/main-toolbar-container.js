@@ -22,8 +22,8 @@ class MainToolbarContainer extends React.Component {
 
     const activeTabId = storeHandler.getStore().getState().activeTab;
     const activeProject = ProjectStore.get(activeTabId);
-    const onlineVPanelProjectList = OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length));
-    const onlineUiProjectList = OnlineStore.getResourceNames('project.ui.').map(name => name.substring('project.ui.'.length));
+    const onlineVPanelProjectList = OnlineStore.getResourceNames('project.vpanel.')
+    const onlineUiProjectList = OnlineStore.getResourceNames('project.ui.');
 
     this.state = { activeProject, onlineVPanelProjectList, onlineUiProjectList };
 
@@ -41,8 +41,8 @@ class MainToolbarContainer extends React.Component {
   handleStoreChange() {
     const activeTabId = storeHandler.getStore().getState().activeTab;
     const activeProject = ProjectStore.get(activeTabId);
-    const onlineVPanelProjectList = OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length));
-    const onlineUiProjectList = OnlineStore.getResourceNames('project.ui.').map(name => name.substring('project.ui.'.length));
+    const onlineVPanelProjectList = OnlineStore.getResourceNames('project.vpanel.')
+    const onlineUiProjectList = OnlineStore.getResourceNames('project.ui.');
 
     this.setState({ activeProject, onlineVPanelProjectList, onlineUiProjectList });
   }

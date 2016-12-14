@@ -18,7 +18,7 @@ export const getResourceEntity = createSelector(
 function resourcesStartWith(resourcesEntity, startsWith) {
   if(!resourcesEntity || !resourcesEntity.resources) { return []; }
   const names = resourcesEntity.resources;
-  return names.filter(n => n.startsWith(startsWith));
+  return names.filter(n => n.startsWith(startsWith)).map(name => name.substring(startsWith.length));
 }
 
 export const getVPanelProjectNames = createSelector(

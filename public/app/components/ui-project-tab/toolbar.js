@@ -203,7 +203,7 @@ class Toolbar extends React.Component {
                                    tooltipPosition="top-center"
                                    style={styles.button}
                                    selectTitle="Select VPanel Project"
-                                   selectItems={OnlineStore.getResourceNames('project.vpanel.').map(name => name.substring('project.vpanel.'.length))}
+                                   selectItems={OnlineStore.getResourceNames('project.vpanel.')}
                                    onItemSelect={(name) => this.handleOpenOnlineVPanelProject(name)}>
               <icons.actions.OpenOnline />
             </base.IconSelectButton>
