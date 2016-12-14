@@ -4,11 +4,11 @@ import React from 'react';
 
 import MainToolbar from '../components/main-toolbar';
 
-import OnlineStore from '../stores/online-store';
 import ProjectStore from '../stores/project-store';
 import storeHandler from '../compat/store';
 
 import { projectTypes } from '../constants/index';
+import { getVPanelProjectNames, getUiProjectNames } from'../selectors/online';
 
 import AppDispatcher from '../compat/dispatcher';
 import {
@@ -20,10 +20,11 @@ class MainToolbarContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    const activeTabId = storeHandler.getStore().getState().activeTab;
+    const state = storeHandler.getStore().getState();
+    const activeTabId = state.activeTab;
     const activeProject = ProjectStore.get(activeTabId);
-    const onlineVPanelProjectList = OnlineStore.getResourceNames('project.vpanel.')
-    const onlineUiProjectList = OnlineStore.getResourceNames('project.ui.');
+    const onlineVPanelProjectList = getVPanelProjectNames(state);
+    const onlineUiProjectList = getUiProjectNames(state);
 
     this.state = { activeProject, onlineVPanelProjectList, onlineUiProjectList };
 
@@ -39,10 +40,11 @@ class MainToolbarContainer extends React.Component {
   }
 
   handleStoreChange() {
-    const activeTabId = storeHandler.getStore().getState().activeTab;
+    const state = storeHandler.getStore().getState();
+    const activeTabId = state.activeTab;
     const activeProject = ProjectStore.get(activeTabId);
-    const onlineVPanelProjectList = OnlineStore.getResourceNames('project.vpanel.')
-    const onlineUiProjectList = OnlineStore.getResourceNames('project.ui.');
+    const onlineVPanelProjectList = getVPanelProjectNames(state);
+    const onlineUiProjectList = getUiProjectNames(state);
 
     this.setState({ activeProject, onlineVPanelProjectList, onlineUiProjectList });
   }

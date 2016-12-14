@@ -15,6 +15,11 @@ export const getResourceEntity = createSelector(
   (entities, resourcesEntityId) => entities.get(resourcesEntityId)
 );
 
+export const getCoreEntities = createSelector(
+  [ getEntities ],
+  (entities) => Array.from(entities.filter(e => e.type === shared.EntityType.CORE).values())
+);
+
 function resourcesStartWith(resourcesEntity, startsWith) {
   if(!resourcesEntity || !resourcesEntity.resources) { return []; }
   const names = resourcesEntity.resources;

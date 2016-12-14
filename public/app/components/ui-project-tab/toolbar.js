@@ -13,8 +13,8 @@ import {
   projectNewImage, projectNewWindow,
   resourcesGet
 } from '../../actions/index';
-
-import OnlineStore from '../../stores/online-store';
+import storeHandler from '../../compat/store';
+import { getResourceEntity, getVPanelProjectNames } from'../../selectors/online';
 
 import Facade from '../../services/facade';
 
@@ -101,7 +101,7 @@ class Toolbar extends React.Component {
       return this.importProject(project);
     };
 
-    const entity = OnlineStore.getResourceEntity();
+    const entity = getResourceEntity(storeHandler.getStore().getState());
     const cachedContent = entity.cachedResources && entity.cachedResources[resource];
     if(cachedContent) {
       return load(cachedContent);
@@ -203,7 +203,7 @@ class Toolbar extends React.Component {
                                    tooltipPosition="top-center"
                                    style={styles.button}
                                    selectTitle="Select VPanel Project"
-                                   selectItems={OnlineStore.getResourceNames('project.vpanel.')}
+                                   selectItems={getVPanelProjectNames(storeHandler.getStore().getState())}
                                    onItemSelect={(name) => this.handleOpenOnlineVPanelProject(name)}>
               <icons.actions.OpenOnline />
             </base.IconSelectButton>
