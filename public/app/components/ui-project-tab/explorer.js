@@ -14,7 +14,7 @@ const styles = {
   }
 };
 
-const Explorer = ({ fullProject, components, images, windows, onSelect }) => (
+const Explorer = ({ fullProject, sortedComponents, sortedImages, sortedWindows, onSelect }) => (
   <div style={Object.assign({}, tabStyles.fullHeight)}>
     <mui.List style={Object.assign({}, tabStyles.scrollable, styles.listHeight)}>
       <mui.ListItem key={'project'}
@@ -26,7 +26,7 @@ const Explorer = ({ fullProject, components, images, windows, onSelect }) => (
                     primaryText={'Components'}
                     leftIcon={<icons.Component />}
                     disabled={true}
-                    nestedItems={components.map(comp => (
+                    nestedItems={sortedComponents.map(comp => (
                       <mui.ListItem key={`component:${comp.id}`}
                                     primaryText={comp.id}
                                     leftIcon={<icons.Component />}
@@ -37,7 +37,7 @@ const Explorer = ({ fullProject, components, images, windows, onSelect }) => (
                     primaryText={'Images'}
                     leftIcon={<icons.UiImage />}
                     disabled={true}
-                    nestedItems={images.map(img => (
+                    nestedItems={sortedImages.map(img => (
                       <mui.ListItem key={`image:${img.uid}`}
                                     primaryText={img.id}
                                     leftIcon={<icons.UiImage />}
@@ -48,7 +48,7 @@ const Explorer = ({ fullProject, components, images, windows, onSelect }) => (
                     primaryText={'Windows'}
                     leftIcon={<icons.UiWindow />}
                     disabled={true}
-                    nestedItems={windows.map(window => (
+                    nestedItems={sortedWindows.map(window => (
                       <mui.ListItem key={`window:${window.uid}`}
                                     primaryText={window.id}
                                     leftIcon={<icons.UiWindow />}
