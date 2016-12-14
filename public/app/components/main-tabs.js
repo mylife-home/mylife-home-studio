@@ -56,7 +56,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
         case projectTypes.VPANEL:
           return (
             <mui.Tab key={project.uid}
-                     value={`project-{project.uid}`}
+                     value={`project-${project.uid}`}
                      label={renderTabLabel(title, (<icons.tabs.VPanel />))}>
               <VPanelProjectTab project={project} />
             </mui.Tab>
@@ -65,7 +65,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
         case projectTypes.UI:
           return (
             <mui.Tab key={project.uid}
-                     value={`project-{project.uid}`}
+                     value={`project-${project.uid}`}
                      label={renderTabLabel(title, (<icons.tabs.Ui />))}>
               <UiProjectTab project={project} />
             </mui.Tab>
