@@ -3,9 +3,9 @@
 import { createSelector } from 'reselect';
 
 export const getProject    = (state, { project }) => state.projects.projects.get(project);
-export const getComponents = (state, { project }) => getProject(state, project).components;
-export const getImages     = (state, { project }) => getProject(state, project).images;
-export const getWindows    = (state, { project }) => getProject(state, project).windows;
+export const getComponents = (state, props) => getProject(state, props).components;
+export const getImages     = (state, props) => getProject(state, props).images;
+export const getWindows    = (state, props) => getProject(state, props).windows;
 
 export const makeGetSortedComponents = () => createSelector(
   [ getComponents ],
