@@ -2,17 +2,10 @@
 
 import { createSelector } from 'reselect';
 
-function getComponents(state, { project }) {
-  return state.projects.projects.get(project).components;
-}
-
-function getImages(state, { project }) {
-  return state.projects.projects.get(project).images;
-}
-
-function getWindows(state, { project }) {
-  return state.projects.projects.get(project).windows;
-}
+export const getProject    = (state, { project }) => state.projects.projects.get(project);
+export const getComponents = (state, { project }) => getProject(project).components;
+export const getImages     = (state, { project }) => getProject(project).images;
+export const getWindows    = (state, { project }) => getProject(project).windows;
 
 export const makeGetSortedComponents = () => createSelector(
   [ getComponents ],
