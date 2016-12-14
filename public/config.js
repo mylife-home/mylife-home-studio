@@ -47,6 +47,7 @@ System.config({
     "redux-immutable-state-invariant": "npm:redux-immutable-state-invariant@1.2.4",
     "redux-logger": "npm:redux-logger@2.7.4",
     "redux-thunk": "npm:redux-thunk@2.1.0",
+    "reselect": "npm:reselect@2.5.4",
     "socket.io-client": "/socket.io/socket.io.js",
     "superagent": "npm:superagent@1.8.4",
     "throttle-debounce": "npm:throttle-debounce@1.0.1",

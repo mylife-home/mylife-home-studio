@@ -62,6 +62,7 @@
       "redux-actions": "npm:redux-actions@^1.1.0",
       "redux-logger": "npm:redux-logger@^2.7.4",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
+      "reselect": "npm:reselect@^2.5.4",
       "superagent": "npm:superagent@^1.8.3",
       "throttle-debounce": "npm:throttle-debounce@^1.0.1"
     },
