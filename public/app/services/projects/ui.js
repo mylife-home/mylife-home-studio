@@ -1,5 +1,6 @@
 'use strict';
 
+import Immutable from 'immutable';
 import common from './common';
 import Metadata from '../metadata/index';
 import { newId } from '../../utils/index';
@@ -32,146 +33,157 @@ export default {
   changeImage
 };
 
-function createNew(project) {
-  project.components = [];
-  project.images = [];
-  project.windows = [];
-  project.defaultWindow = null;
+function createNew() {
+  return {
+    components    : Immutable.Map(),
+    images        : Immutable.Map(),
+    windows       : Immutable.Map(),
+    defaultWindow : null
+  };
 }
 
-function open(project, data) {
-  data = JSON.parse(JSON.stringify(data));
-  project.components = data.Components.map(loadComponent);
-  project.images = data.Images.map(loadImage);
-  project.windows = data.Windows.map(loadWindow.bind(null, project));
-  project.defaultWindow = project.windows.find(wnd => wnd.id === data.DefaultWindow);
-  project.windows.forEach(loadWindowControls.bind(null, project, data));
+function open(data) {
+  const project = {
+    components    : common.loadToMap(data.Components, loadComponent),
+    images        : common.loadToMap(data.Images, loadImage),
+  };
+
+  project.windows       = common.loadToMap(data.Windows, (raw) => loadWindow(project, raw));
+  project.defaultWindow = findWindow(project, data.DefaultWindow);
+
+  for(const window of project.windows.values()) {
+    window.controls = common.loadToMap(window.raw.controls, (raw) => loadControl(project, raw));
+    delete window.raw;
+  }
+
+  return project;
 }
 
 function loadComponent(comp) {
   return {
-    uid: newId(),
-    id: comp.Id,
-    plugin: common.loadPlugin(comp.Plugin)
+    uid    : newId(),
+    id     : comp.Id,
+    plugin : common.loadPlugin(comp.Plugin)
   };
 }
 
 function loadImage(img) {
   return {
-    uid: newId(),
-    id: img.Id,
-    content: img.Content
+    uid     : newId(),
+    id      : img.Id,
+    content : img.Content
   };
 }
 
 function loadWindow(project, win) {
   return {
-    uid: newId(),
-    id: win.id,
-    height: win.height,
-    width: win.width,
-    style: win.style,
-    backgroundResource: findResource(project, win.background_resource_id)
-    // load later when all windows exists
-    //controls: win.controls.map(loadControl.bind(null, project))
+    uid                : newId(),
+    id                 : win.id,
+    height             : win.height,
+    width              : win.width,
+    style              : win.style,
+    backgroundResource : findResource(project, win.background_resource_id),
+    raw                : win
+    // load controls later when all windows exists
   };
-}
-
-function loadWindowControls(project, data, projectWindow, index) {
-  const dataWindow = data.Windows[index];
-  projectWindow.controls = dataWindow.controls.map(loadControl.bind(null, project));
 }
 
 function loadControl(project, ctrl) {
   return {
-    uid: newId(),
-    id: ctrl.id,
-    height: ctrl.height,
-    width: ctrl.width,
-    x: ctrl.x,
-    y: ctrl.y,
-    style: ctrl.style,
-    display: loadDisplay(project, ctrl.display),
-    text: loadText(project, ctrl.text),
-    primaryAction: loadAction(project, ctrl.primary_action),
-    secondaryAction: loadAction(project, ctrl.secondary_action)
+    uid             : newId(),
+    id              : ctrl.id,
+    height          : ctrl.height,
+    width           : ctrl.width,
+    x               : ctrl.x,
+    y               : ctrl.y,
+    style           : ctrl.style,
+    display         : loadDisplay(project, ctrl.display),
+    text            : loadText(project, ctrl.text),
+    primaryAction   : loadAction(project, ctrl.primary_action),
+    secondaryAction : loadAction(project, ctrl.secondary_action)
   };
 }
 
 function loadDisplay(project, disp) {
   if(!disp) { return null; }
   return {
-    component: findComponent(project, disp.component_id),
-    attribute: disp.component_attribute,
-    defaultResource: findResource(project, disp.default_resource_id),
-    map: disp.map.map(loadDisplayMapItem.bind(null, project))
+    component       : findComponent(project, disp.component_id),
+    attribute       : disp.component_attribute,
+    defaultResource : findResource(project, disp.default_resource_id),
+    map             : common.loadToMap(disp.map, (raw) => loadDisplayMapItem(project, raw))
   };
 }
 
 function loadDisplayMapItem(project, item) {
   return {
-    uid: newId(),
-    max: item.max,
-    min: item.min,
-    resource: findResource(project, item.resource_id),
-    value: item.value
+    uid      : newId(),
+    max      : item.max,
+    min      : item.min,
+    resource : findResource(project, item.resource_id),
+    value    : item.value
   };
 }
 
 function loadText(project, text) {
   if(!text) { return null; }
   return {
-    format: text.format,
-    context: text.context.map(loadTextContextItem.bind(null, project))
+    format  : text.format,
+    context : common.loadToMap(text.context, (raw) => loadTextContextItem(project, raw))
   };
 }
 
 function loadTextContextItem(project, item) {
   return {
-    uid: newId(),
-    component: findComponent(project, item.component_id),
-    attribute: item.component_attribute,
-    id: item.id
+    uid       : newId(),
+    component : findComponent(project, item.component_id),
+    attribute : item.component_attribute,
+    id        : item.id
   };
 }
 
 function loadAction(project, action) {
   if(!action) { return null; }
   return {
-    component: loadActionComponent(project, action.component),
-    window: loadActionWindow(project, action.window)
+    component : loadActionComponent(project, action.component),
+    window    : loadActionWindow(project, action.window)
   };
 }
 
 function loadActionComponent(project, actionComponent) {
   if(!actionComponent) { return null; }
   return {
-    component: findComponent(project, actionComponent.component_id),
-    action: actionComponent.component_action
+    component : findComponent(project, actionComponent.component_id),
+    action    : actionComponent.component_action
   };
 }
 
 function loadActionWindow(project, actionWindow) {
   if(!actionWindow) { return null; }
   return {
-    window: findWindow(project, actionWindow.id),
-    popup: actionWindow.popup
+    window : findWindow(project, actionWindow.id),
+    popup  : actionWindow.popup
   };
 }
 
 function findResource(project, id) {
   if(!id) { return null; }
-  return project.images.find(img => img.id === id) || null;
+  const ret = project.images.find(img => img.id === id);
+  if(!ret) { return null; }
+  return ret.uid;
 }
 
 function findComponent(project, id) {
   if(!id) { return null; }
-  return project.components.find(comp => comp.id === id) || null;
+  const ret = project.components.find(comp => comp.id === id);
+  if(!ret) { return null; }
+  return ret.uid;
 }
 
 function findWindow(project, id) {
   if(!id) { return null; }
-  return project.windows.find(win => win.id === id) || null;
+  const ret = project.windows.find(win => win.id === id);
+  if(!ret) { return null; }
+  return ret.uid;
 }
 
 function validate(project, msgs) {
@@ -201,7 +213,7 @@ function validate(project, msgs) {
     }
   }
 
-  for(const window of project.windows) {
+  for(const window of project.windows.values()) {
     {
       const { noIdCount, duplicates } = common.checkIds(window.controls);
       if(noIdCount > 0) {
@@ -212,7 +224,7 @@ function validate(project, msgs) {
       }
     }
 
-    for(const control of window.controls) {
+    for(const control of window.controls.values()) {
       if(control.text) {
         const { noIdCount, duplicates } = common.checkIds(control.text.context);
         if(noIdCount > 0) {
@@ -234,7 +246,7 @@ function validate(project, msgs) {
             msgs.push(`On window ${window.id}: on control ${control.id}: duplicate display map item value: ${value}`);
           }
         } else { // Range
-          const ranges = control.display.map.slice();
+          const ranges = control.display.map.toArray();
           ranges.sort((a, b) => a.min - b.min);
           let prevRange = null;
           for(const range of ranges) {
@@ -260,122 +272,129 @@ function validate(project, msgs) {
 function serialize(project) {
   common.serialize(project);
 
-  project.raw.Components = project.components.map(serializeComponent);
-  project.raw.Images = project.images.map(serializeImage);
-  project.raw.Windows = project.windows.map(serializeWindow);
-  project.raw.DefaultWindow = serializeObjectId(project.defaultWindow);
+  project.raw = {
+    ...project.raw,
+    Components    : common.serializeFromMap(project.components, serializeComponent),
+    Images        : common.serializeFromMap(project.images, serializeImage),
+    Windows       : common.serializeFromMap(project.windows, (w) => serializeWindow(project, w)),
+    DefaultWindow : serializeObjectId(project.windows, project.defaultWindow)
+  };
 }
 
-function serializeObjectId(res) {
+function serializeObjectId(map, res) {
   if(!res) { return null; }
-  return res.id;
+  const obj = map.get(res);
+  if(!obj) { return null; }
+  return obj.id;
 }
 
 function serializeComponent(comp) {
   return {
-    Id: comp.id,
-    Plugin: {
-      library: comp.plugin.library,
-      type: comp.plugin.type,
-      usage: comp.plugin.usage,
-      version: comp.plugin.version,
-      config: comp.plugin.rawConfig,
-      clazz: comp.plugin.rawClass
+    Id     : comp.id,
+    Plugin : {
+      library : comp.plugin.library,
+      type    : comp.plugin.type,
+      usage   : comp.plugin.usage,
+      version : comp.plugin.version,
+      config  : comp.plugin.rawConfig,
+      clazz   : comp.plugin.rawClass
     }
   };
 }
 
 function serializeImage(img) {
   return {
-    Id: img.id,
-    Content: img.content
+    Id      : img.id,
+    Content : img.content
   };
 }
 
-function serializeWindow(win) {
+function serializeWindow(project, win) {
   return {
     id: win.id,
     height: win.height,
     width: win.width,
     style: win.style,
-    background_resource_id: serializeObjectId(win.backgroundResource),
-    controls: win.controls.map(serializeControl)
+    background_resource_id: serializeObjectId(project.windows, win.backgroundResource),
+    controls: common.serializeFromMap(win.controls, (c) => serializeControl(project, c))
   };
 }
 
-function serializeControl(ctrl) {
+function serializeControl(project, ctrl) {
   return {
-    id: ctrl.id,
-    height: ctrl.height,
-    width: ctrl.width,
-    x: ctrl.x,
-    y: ctrl.y,
-    style: ctrl.style,
-    display: serializeDisplay(ctrl.display),
-    text: serializeText(ctrl.text),
-    primary_action: serializeAction(ctrl.primaryAction),
-    secondary_action: serializeAction(ctrl.secondaryAction)
+    id               : ctrl.id,
+    height           : ctrl.height,
+    width            : ctrl.width,
+    x                : ctrl.x,
+    y                : ctrl.y,
+    style            : ctrl.style,
+    display          : serializeDisplay(project, ctrl.display),
+    text             : serializeText(project, ctrl.text),
+    primary_action   : serializeAction(project, ctrl.primaryAction),
+    secondary_action : serializeAction(project, ctrl.secondaryAction)
   };
 }
 
-function serializeDisplay(disp) {
+function serializeDisplay(project, disp) {
   if(!disp) { return null; }
   return {
-    component_id: serializeObjectId(disp.component),
-    component_attribute: disp.attribute,
-    default_resource_id: serializeObjectId(disp.defaultResource),
-    map: disp.map.map(serializeDisplayMapItem)
+    component_id        : serializeObjectId(project.components, disp.component),
+    component_attribute : disp.attribute,
+    default_resource_id : serializeObjectId(project.images, disp.defaultResource),
+    map                 : common.serializeFromMap(disp.map, (it) => serializeDisplayMapItem(project, it))
   };
 }
 
-function serializeDisplayMapItem(item) {
+function serializeDisplayMapItem(project, item) {
   return {
-    max: item.max,
-    min: item.min,
-    resource_id: serializeObjectId(item.resource),
-    value: item.value
+    max         : item.max,
+    min         : item.min,
+    resource_id : serializeObjectId(project.images, item.resource),
+    value       : item.value
   };
 }
 
-function serializeText(text) {
+function serializeText(project, text) {
   if(!text) { return null; }
   return {
-    format: text.format,
-    context: text.context.map(serializeTextContextItem)
+    format  : text.format,
+    context : common.serializeFromMap(text.context, (it) => serializeTextContextItem(project, it))
   };
 }
 
-function serializeTextContextItem(item) {
+function serializeTextContextItem(project, item) {
   return {
-    component_id: serializeObjectId(item.component),
-    component_attribute: item.attribute,
-    id: item.id
+    component_id        : serializeObjectId(project.components, item.component),
+    component_attribute : item.attribute,
+    id                  : item.id
   };
 }
 
-function serializeAction(action) {
+function serializeAction(project, action) {
   if(!action) { return null; }
   return {
-    component: serializeActionComponent(action.component),
-    window: serializeActionWindow(action.window)
+    component : serializeActionComponent(project, action.component),
+    window    : serializeActionWindow(project, action.window)
   };
 }
 
-function serializeActionComponent(actionComponent) {
+function serializeActionComponent(project, actionComponent) {
   if(!actionComponent) { return null; }
   return {
-    component_id: serializeObjectId(actionComponent.component),
-    component_action: actionComponent.action
+    component_id     : serializeObjectId(project.components, actionComponent.component),
+    component_action : actionComponent.action
   };
 }
 
-function serializeActionWindow(actionWindow) {
+function serializeActionWindow(project, actionWindow) {
   if(!actionWindow) { return null; }
   return {
-    id: serializeObjectId(actionWindow.window),
-    popup: actionWindow.popup
+    id    : serializeObjectId(project.windows, actionWindow.window),
+    popup : actionWindow.popup
   };
 }
+
+ /////// TODO ///////
 
 function prepareImportOnline(project, done) {
   return common.loadOnlineCoreEntities((err) => {

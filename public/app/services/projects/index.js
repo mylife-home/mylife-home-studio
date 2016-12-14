@@ -20,25 +20,22 @@ class Projects {
   }
 
   new(type) {
+
+    const specifics = {
+      [projectTypes.VPANEL] : () => vpanel.createNew(),
+      [projectTypes.UI]     : () => ui.createNew()
+    };
+
     const uid = newId();
     const project = {
       uid,
       type,
-      name: uid,
-      creationDate: new Date(),
-      lastUpdate: new Date(),
-      dirty: true
+      name         : uid,
+      creationDate : new Date(),
+      lastUpdate   : new Date(),
+      dirty        : true,
+      ... specifics[type]()
     };
-
-    switch(type) {
-      case projectTypes.VPANEL:
-        vpanel.createNew(project);
-        break;
-
-      case projectTypes.UI:
-        ui.createNew(project);
-        break;
-    }
 
     debug('project created', project.uid);
     return project;
@@ -46,26 +43,22 @@ class Projects {
 
   open(type, content) {
     const data = JSON.parse(content);
-    const uid = newId();
-    const project = {
-      raw: data,
-      uid,
-      type,
-      name: data.Name,
-      creationDate: common.loadDate(data.CreationDate),
-      lastUpdate: common.loadDate(data.LastUpdate),
-      dirty: false
+
+    const specifics = {
+      [projectTypes.VPANEL] : () => vpanel.open(data),
+      [projectTypes.UI]     : () => ui.open(data)
     };
 
-    switch(type) {
-      case projectTypes.VPANEL:
-        vpanel.open(project, data);
-        break;
-
-      case projectTypes.UI:
-        ui.open(project, data);
-        break;
-    }
+    const project = {
+      raw          : data,
+      uid          :newId(),
+      type,
+      name         : data.Name,
+      creationDate : common.loadDate(data.CreationDate),
+      lastUpdate   : common.loadDate(data.LastUpdate),
+      dirty        : false,
+      ... specifics[type]()
+    };
 
     debug('project created', project.uid);
     return project;

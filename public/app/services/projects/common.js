@@ -1,5 +1,6 @@
 'use strict';
 
+import Immutable from 'immutable';
 import async from 'async';
 
 import storeHandler from '../../compat/store'; // TODO: remove that ?
@@ -12,6 +13,8 @@ import { getResourceEntity, getCoreEntities } from'../../selectors/online';
 const metadata = new Metadata(); // TODO: how to use facade ?
 
 export default {
+  loadToMap,
+  serializeFromMap,
   dirtify,
   loadDate,
   serializeDate,
@@ -31,6 +34,17 @@ export default {
   uid,
   executeDeploy
 };
+
+function loadToMap(array, mapper) {
+  return Immutable.Map(array.map(raw => {
+    const obj = mapper(raw);
+    return [obj.uid, obj];
+  }));
+}
+
+function serializeFromMap(map, mapper) {
+  return Array.from(map.values()).map(mapper);
+}
 
 function dirtify(project) {
   project.dirty = true;
@@ -68,6 +82,25 @@ function loadDate(raw) {
   }
 
   return date;
+}
+
+function loadPlugin(plugin, entityId) {
+  const ret = {
+    library : plugin.library,
+    type    : plugin.type,
+    usage   : plugin.usage,
+    version : plugin.version,
+    clazz   : metadata.parseClass(plugin.clazz),
+    config  : metadata.parseConfig(plugin.config),
+    raw     : {
+      clazz  : plugin.clazz,
+      config : plugin.config
+    }
+  };
+  if(entityId) {
+    ret.entityId  = entityId;
+  }
+  return ret;
 }
 
 function serializeDate(value) {
@@ -141,18 +174,6 @@ function getOnlineComponents() {
   return ret;
 }
 
-function loadPlugin(plugin, entityId) {
-  const ret     = Object.assign({}, plugin);
-  ret.rawClass  = plugin.clazz;
-  ret.rawConfig = plugin.config;
-  ret.clazz     = metadata.parseClass(plugin.clazz);
-  ret.config    = metadata.parseConfig(plugin.config);
-  if(entityId) {
-    ret.entityId  = entityId;
-  }
-  return ret;
-}
-
 function validate(project, msgs) {
   if(!project.name) { msgs.push('No name given'); }
 }
@@ -164,12 +185,12 @@ function validateHandler(msgs) {
   throw new Error(text);
 }
 
-function checkIds(array, idAccessor) {
+function checkIds(map, idAccessor) {
   if(!idAccessor) { idAccessor = obj => obj.id; }
   const ids = new Set();
   const duplicates = new Set();
   let noIdCount = 0;
-  for(const obj of array) {
+  for(const obj of map.values()) {
     const id = idAccessor(obj);
     if(!id) {
       ++noIdCount;

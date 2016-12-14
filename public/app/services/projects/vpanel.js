@@ -29,10 +29,12 @@ export default {
   getComponentHash
 };
 
-function createNew(project) {
-  project.toolbox = [];
-  project.components = [];
-  project.bindings = [];
+function createNew() {
+  return {
+    toolbox    : [],
+    components : [],
+    bindings   : []
+  };
 }
 
 function open(project, data) {
