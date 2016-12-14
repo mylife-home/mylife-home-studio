@@ -1,9 +1,6 @@
 # mylife-home-studio
 Mylife Home Studio
 
-Left to add:
- - reselect ?
-
 Components that need refactoring to redux
   ui-project-tab
     canvas-control
