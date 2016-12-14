@@ -13,7 +13,7 @@ import PropertiesEditor from '../properties/properties-editor';
 import PropertiesImage from './properties-image';
 import PropertiesControl from './properties-control';
 import PropertiesImageSelector from './properties-image-selector';
-import PropertiesWindowSelector from './properties-window-selector';
+import WindowSelectorContainer from '../../containers/ui-project-tab/window-selector-container';
 
 import AppDispatcher from '../../compat/dispatcher';
 import storeHandler from '../../compat/store';
@@ -77,7 +77,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Default window'}/></td>
-              <td><PropertiesWindowSelector sortedWindows={this.getSortedWindows(storeHandler.getStore().getState(), { project: project.uid })} windows={project.windows} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project, window))} /></td>
+              <td><WindowSelectorContainer project={project.uid} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project, window))} /></td>
             </tr>
           </tbody>
         </table>

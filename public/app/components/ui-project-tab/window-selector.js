@@ -3,7 +3,7 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
-class PropertiesWindowSelector extends React.Component {
+class WindowSelector extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -34,8 +34,7 @@ class PropertiesWindowSelector extends React.Component {
   }
 
   render() {
-    const { windows, sortedWindows, value } = this.props;
-    const selectedWindow = value && windows.get(value);
+    const { sortedWindows, selectedWindow } = this.props;
 
     return (
       <div>
@@ -64,11 +63,10 @@ class PropertiesWindowSelector extends React.Component {
   }
 }
 
-PropertiesWindowSelector.propTypes = {
-  windows        : React.PropTypes.object.isRequired,
+WindowSelector.propTypes = {
   sortedWindows  : React.PropTypes.array.isRequired,
-  value          : React.PropTypes.number,
+  selectedWindow : React.PropTypes.object,
   onWindowChange : React.PropTypes.func.isRequired
 };
 
-export default PropertiesWindowSelector;
+export default WindowSelector;
