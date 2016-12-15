@@ -675,7 +675,7 @@ function checkComponentUsage(project, component) {
   }
 
   if(usage.length) {
-    throw new Error(`The component is used:\n` + usage.join('\n'));
+    throw new Error('The component is used:\n' + usage.join('\n'));
   }
 }
 
@@ -703,7 +703,7 @@ function checkImageUsage(project, image) {
   }
 
   if(usage.length) {
-    throw new Error(`The image is used:\n` + usage.join('\n'));
+    throw new Error('The image is used:\n' + usage.join('\n'));
   }
 }
 
@@ -725,7 +725,7 @@ function checkWindowUsage(project, window) {
   }
 
   if(usage.length) {
-    throw new Error(`The window is used:\n` + usage.join('\n'));
+    throw new Error('The window is used:\n' + usage.join('\n'));
   }
 }
 
