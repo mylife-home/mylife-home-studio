@@ -52,7 +52,7 @@ class Properties extends React.Component {
     const project = this.props.project;
     const projectVersion = project && project.version;
     const state = ProjectStore.getProjectState(project);
-    const selection = state.selection;
+    const selection = state && state.selection;
     this.setState({ projectVersion, selection });
   }
 

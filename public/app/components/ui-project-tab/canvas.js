@@ -31,7 +31,7 @@ class Canvas extends React.Component {
     const project = this.props.project;
     const projectVersion = project && project.version;
     const state = ProjectStore.getProjectState(project);
-    const activeContent = state.activeContent;
+    const activeContent = state && state.activeContent;
     this.setState({ projectVersion, activeContent });
   }
 
