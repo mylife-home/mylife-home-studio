@@ -45,7 +45,7 @@
       "flux": "npm:flux@^2.1.1",
       "immutable": "npm:immutable@^3.8.1",
       "keymirror": "npm:keymirror@^0.1.1",
-      "material-ui": "npm:material-ui@^0.15.0-alpha.2",
+      "material-ui": "npm:material-ui@^0.16.5",
       "node-events": "npm:node-events@^0.0.2",
       "react": "npm:react@^15.0.1",
       "react-addons-perf": "npm:react-addons-perf@^15.1.0",

@@ -28,7 +28,7 @@ System.config({
     "flux": "npm:flux@2.1.1",
     "immutable": "npm:immutable@3.8.1",
     "keymirror": "npm:keymirror@0.1.1",
-    "material-ui": "npm:material-ui@0.15.4",
+    "material-ui": "npm:material-ui@0.16.5",
     "node-events": "npm:node-events@0.0.2",
     "react": "npm:react@15.4.1",
     "react-addons-perf": "npm:react-addons-perf@15.4.1",
@@ -353,12 +353,6 @@ System.config({
       "promise": "npm:promise@7.1.1",
       "whatwg-fetch": "npm:whatwg-fetch@0.9.0"
     },
-    "npm:fbjs@0.2.1": {
-      "core-js": "npm:core-js@1.2.7",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "promise": "npm:promise@7.1.1",
-      "whatwg-fetch": "npm:whatwg-fetch@0.9.0"
-    },
     "npm:fbjs@0.8.6": {
       "core-js": "npm:core-js@1.2.7",
       "isomorphic-fetch": "npm:isomorphic-fetch@2.2.1",
@@ -416,7 +410,7 @@ System.config({
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:inline-style-prefixer@2.0.5": {
-      "bowser": "npm:bowser@1.5.0",
+      "bowser": "npm:bowser@1.6.0",
       "hyphenate-style-name": "npm:hyphenate-style-name@1.0.2"
     },
     "npm:invariant@2.2.2": {
@@ -437,6 +431,13 @@ System.config({
     "npm:lodash.isequal@4.4.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:lodash.merge@4.6.0": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.throttle@4.1.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:loose-envify@1.3.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "js-tokens": "npm:js-tokens@2.0.0",
@@ -444,17 +445,19 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:material-ui@0.15.4": {
+    "npm:material-ui@0.16.5": {
+      "babel-runtime": "npm:babel-runtime@6.20.0",
       "inline-style-prefixer": "npm:inline-style-prefixer@2.0.5",
       "keycode": "npm:keycode@2.1.8",
-      "lodash": "npm:lodash@4.17.2",
+      "lodash.merge": "npm:lodash.merge@4.6.0",
+      "lodash.throttle": "npm:lodash.throttle@4.1.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "react": "npm:react@15.4.1",
       "react-addons-create-fragment": "npm:react-addons-create-fragment@15.4.1",
       "react-addons-transition-group": "npm:react-addons-transition-group@15.4.1",
       "react-dom": "npm:react-dom@15.4.1",
-      "react-event-listener": "npm:react-event-listener@0.2.1",
-      "react-tap-event-plugin": "npm:react-tap-event-plugin@1.0.0",
+      "react-event-listener": "npm:react-event-listener@0.4.0",
+      "react-tap-event-plugin": "npm:react-tap-event-plugin@2.0.1",
       "recompose": "npm:recompose@0.20.2",
       "simple-assign": "npm:simple-assign@0.1.0",
       "warning": "npm:warning@3.0.0"
@@ -554,6 +557,9 @@ System.config({
     "npm:react-addons-perf@15.4.1": {
       "react-dom": "npm:react-dom@15.4.1"
     },
+    "npm:react-addons-shallow-compare@15.4.1": {
+      "react": "npm:react@15.4.1"
+    },
     "npm:react-addons-transition-group@15.4.1": {
       "react": "npm:react@15.4.1"
     },
@@ -592,8 +598,10 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "react": "npm:react@15.4.1"
     },
-    "npm:react-event-listener@0.2.1": {
-      "fbjs": "npm:fbjs@0.8.6"
+    "npm:react-event-listener@0.4.0": {
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "react-addons-shallow-compare": "npm:react-addons-shallow-compare@15.4.1",
+      "warning": "npm:warning@3.0.0"
     },
     "npm:react-faux-dom@2.7.1": {
       "query-selector": "npm:query-selector@1.0.9",
@@ -630,11 +638,6 @@ System.config({
     },
     "npm:react-resizable-box@1.8.1": {
       "lodash.isequal": "npm:lodash.isequal@4.4.0"
-    },
-    "npm:react-tap-event-plugin@1.0.0": {
-      "fbjs": "npm:fbjs@0.2.1",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "react": "npm:react@15.4.1"
     },
     "npm:react-tap-event-plugin@2.0.1": {
       "fbjs": "npm:fbjs@0.8.6",
