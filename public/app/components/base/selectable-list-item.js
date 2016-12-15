@@ -14,7 +14,7 @@ class SelectableListItem extends React.Component {
   }
 
   render() {
-    const { muiTheme, value, children } = this.props;
+    const { muiTheme, value, children, ...props } = this.props;
     const style = {};
     if(this.context.isSelectedNode(value)) {
       const textColor = muiTheme.palette.textColor;
@@ -23,7 +23,7 @@ class SelectableListItem extends React.Component {
     }
 
     return (
-      <mui.ListItem {...this.props} {...this.state}
+      <mui.ListItem {...props} {...this.state}
         onTouchTap={() => this.context.changeSelectedNode(value)}
         style={style}
       >
