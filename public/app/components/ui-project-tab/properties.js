@@ -153,9 +153,9 @@ class Properties extends React.Component {
         case 'image': {
           const image = project.images.get(selection.uid);
           return (<PropertiesImage image={image}
-                                   onChangeId={(value) => AppDispatcher.dispatch(projectImageChangeId(project, image, value))}
-                                   onChangeFile={(file) => AppDispatcher.dispatch(projectImageChangeFile(project, image, file))}
-                                   onDelete={() => AppDispatcher.dispatch(projectDeleteImage(project, image))} />);
+                                   onChangeId={(value) => AppDispatcher.dispatch(projectImageChangeId(project.uid, image.uid, value))}
+                                   onChangeFile={(file) => AppDispatcher.dispatch(projectImageChangeFile(project.uid, image.uid, file))}
+                                   onDelete={() => AppDispatcher.dispatch(projectDeleteImage(project.uid, image.uid))} />);
         }
 
         case 'window': {

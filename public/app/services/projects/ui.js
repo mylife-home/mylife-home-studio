@@ -26,11 +26,9 @@ export default {
   createImage,
   createWindow,
   createControl,
-  deleteComponent,
-  deleteImage,
-  deleteWindow,
-  deleteControl,
-  changeImage
+  checkComponentUsage,
+  checkImageUsage,
+  checkWindowUsage,
 };
 
 function createNew() {
@@ -580,6 +578,8 @@ function createOperationResourceSet(entityId, resourceId, resourceContent) {
   };
 }
 
+ /////// END TODO ///////
+
 function createImage() {
   return {
     uid     : newId(),
@@ -647,59 +647,53 @@ function createControl(project, window, location, type) {
   return control;
 }
 
-function deleteComponent(project, component) {
-  const id = component.id;
+function checkComponentUsage(project, component) {
   const usage = [];
-  for(const window of project.windows) {
-    for(const control of window.controls) {
+  for(const window of project.windows.values()) {
+    for(const control of window.controls.values()) {
       for(const property of ['primaryAction', 'secondaryAction']) {
         if(!control[property]) { continue; }
         const actionComp = control[property].component;
-        if(actionComp && actionComp.component && actionComp.component.id === id) {
+        if(actionComp && actionComp.component === component) {
           usage.push(` - ${window.id}/${control.id}/${property}`);
         }
       }
 
       if(control.text) {
-        for(const item of control.text.context) {
-          if(item.component.id === id) {
+        for(const item of control.text.context.values()) {
+          if(item.component === component) {
             usage.push(` - ${window.id}/${control.id}/text/${item.id}`);
           }
         }
       }
 
       if(control.display &&
-         control.display.component &&
-         control.display.component.id == id) {
+         control.display.component === component) {
         usage.push(` - ${window.id}/${control.id}/display`);
       }
     }
   }
 
   if(usage.length) {
-    throw new Error(`The component ${component.id} is used:\n` + usage.join('\n'));
+    throw new Error(`The component is used:\n` + usage.join('\n'));
   }
-
-  arrayRemoveValue(project.components, component);
-  common.dirtify(project);
 }
 
-function deleteImage(project, image) {
-  const uid = image.uid;
+function checkImageUsage(project, image) {
   const usage = [];
-  for(const window of project.windows) {
-    if(window.backgroundResource && window.backgroundResource.uid === uid) {
+  for(const window of project.windows.values()) {
+    if(window.backgroundResource && window.backgroundResource === image) {
       usage.push(` - ${window.id}/backgroundResource`);
     }
 
-    for(const control of window.controls) {
+    for(const control of window.controls.values()) {
       if(control.display) {
-        if(control.display.defaultResource && control.display.defaultResource.uid === uid) {
+        if(control.display.defaultResource && control.display.defaultResource === image) {
           usage.push(` - ${window.id}/${control.id}/defaultResource`);
         }
 
-        for(const item of control.display.map) {
-          if(item.resource.uid === uid) {
+        for(const item of control.display.map.values()) {
+          if(item.resource === image) {
             usage.push(` - ${window.id}/${control.id}/display/mapping`);
             break;
           }
@@ -709,25 +703,21 @@ function deleteImage(project, image) {
   }
 
   if(usage.length) {
-    throw new Error(`The image ${image.id} is used:\n` + usage.join('\n'));
+    throw new Error(`The image is used:\n` + usage.join('\n'));
   }
-
-  arrayRemoveValue(project.images, image);
-  common.dirtify(project);
 }
 
-function deleteWindow(project, window) {
-  const uid = window.uid;
+function checkWindowUsage(project, window) {
   const usage = [];
-  if(project.defaultWindow && project.defaultWindow.uid === uid) {
+  if(project.defaultWindow && project.defaultWindow === window) {
     usage.push(' - defaultWindow');
   }
-  for(const iterWindow of project.windows) {
-    for(const control of iterWindow.controls) {
+  for(const iterWindow of project.windows.values()) {
+    for(const control of iterWindow.controls.values()) {
       for(const property of ['primaryAction', 'secondaryAction']) {
         if(!control[property]) { continue; }
         const actionWindow = control[property].window;
-        if(actionWindow && actionWindow.window && actionWindow.window.uid === uid) {
+        if(actionWindow && actionWindow.window && actionWindow.window === window) {
           usage.push(` - ${iterWindow.id}/${control.id}/${property}`);
         }
       }
@@ -735,20 +725,8 @@ function deleteWindow(project, window) {
   }
 
   if(usage.length) {
-    throw new Error(`The window ${window.id} is used:\n` + usage.join('\n'));
+    throw new Error(`The window is used:\n` + usage.join('\n'));
   }
-
-  arrayRemoveValue(project.windows, window);
-  common.dirtify(project);
-}
-
-function deleteControl(project, window, control) {
-  arrayRemoveValue(window.controls, control);
-  common.dirtify(project);
-}
-
-function changeImage(project, image, data) {
-  image.content = data;
 }
 
 function arrayRemoveValue(arr, value) {

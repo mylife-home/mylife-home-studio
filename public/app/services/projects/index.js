@@ -223,29 +223,16 @@ class Projects {
     return control;
   }
 
-  uiDeleteComponent(project, component) {
-    ui.deleteComponent(project, component);
-    AppDispatcher.dispatch(projectRefresh(project));
+  uiCheckComponentUsage(project, component) {
+    ui.checkComponentUsage(project, component);
   }
 
-  uiDeleteImage(project, image) {
-    ui.deleteImage(project, image);
-    AppDispatcher.dispatch(projectRefresh(project));
+  uiCheckImageUsage(project, image) {
+    ui.checkImageUsage(project, image);
   }
 
-  uiDeleteWindow(project, window) {
-    ui.deleteWindow(project, window);
-    AppDispatcher.dispatch(projectRefresh(project));
-  }
-
-  uiDeleteControl(project, window, control) {
-    ui.deleteControl(project, window, control);
-    AppDispatcher.dispatch(projectRefresh(project));
-  }
-
-  uiChangeImage(project, image, data) {
-    ui.changeImage(project, image, data);
-    AppDispatcher.dispatch(projectRefresh(project));
+  uiCheckWindowUsage(project, window) {
+    ui.checkWindowUsage(project, window);
   }
 }
 

@@ -13,7 +13,7 @@ import { download, snapToGrid } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
 import { resourcesGet } from './resources-action-creators';
-import { getProjects } from '../selectors/projects';
+import { getProjects, getProject } from '../selectors/projects';
 import { getResourceEntity } from '../selectors/online';
 
 export function projectNew(type) {
@@ -196,37 +196,56 @@ export function projectNewImage(project) {
 }
 
 export function projectDeleteImage(project, image) {
-  try {
-    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
-    Facade.projects.uiDeleteImage(project, image);
-  } catch(err) {
-    AppDispatcher.dispatch(dialogError(err));
-  }
+  return (dispatch, getState) => {
+    const state = getState();
+    try {
+      Facade.projects.uiCheckImageUsage(getProject(state, { project }), image);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
+
+    dispatch(projectStateSelectAndActiveContent(project, null, null));
+
+    dispatch({
+      type: actionTypes.PROJECT_DELETE_IMAGE,
+      project,
+      image
+    });
+  };
 }
 
 export function projectImageChangeFile(project, image, file) {
+  return (dispatch) => {
+    const reader = new FileReader();
 
-  const reader = new FileReader();
+    reader.onloadend = () => {
+      const err = reader.error;
+      if(err) { return dispatch(dialogError(err)); }
 
-  reader.onloadend = () => {
-    const err = reader.error;
-    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
+      let data = reader.result;
+      const marker = 'base64,';
+      const start = data.indexOf(marker) + marker.length;
+      data = data.substring(start);
 
-    let data = reader.result;
-    const marker = 'base64,';
-    const start = data.indexOf(marker) + marker.length;
-    data = data.substring(start);
+      dispatch({
+        type: actionTypes.PROJECT_IMAGE_CHANGE_DATA,
+        project,
+        image,
+        data
+      });
+    };
 
-    const { project, image } = this.props;
-    Facade.projects.uiChangeImage(project, image, data);
+    reader.readAsDataURL(file);
   };
-
-  reader.readAsDataURL(file);
 }
 
 export function projectImageChangeId(project, image, id) {
-  image.id = id;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_IMAGE_CHANGE_ID,
+    project,
+    image,
+    id
+  };
 }
 
 export function projectChangeDefaultWindow(project, window) {
@@ -249,12 +268,22 @@ export function projectNewWindow(project) {
 }
 
 export function projectDeleteWindow(project, window) {
-  try {
-    AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
-    Facade.projects.uiDeleteWindow(project, window);
-  } catch(err) {
-    AppDispatcher.dispatch(dialogError(err));
-  }
+  return (dispatch, getState) => {
+    const state = getState();
+    try {
+      Facade.projects.uiCheckWindowUsage(getProject(state, { project }), window);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
+
+    dispatch(projectStateSelectAndActiveContent(project, null, null));
+
+    dispatch({
+      type: actionTypes.PROJECT_DELETE_WINDOW,
+      project,
+      window
+    });
+  };
 }
 
 export function projectWindowChangeId(project, window, id) {

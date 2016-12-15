@@ -23,6 +23,22 @@ function updateProject(state, action, changedProps) {
   };
 }
 
+function updateImage(state, action, changedProps) {
+  return updateProject(state, action, project => ({
+    images : project.images.update(action.image, image => {
+
+      if(typeof changedProps === 'function') {
+        changedProps = changedProps(image);
+      }
+
+      return {
+        ...image,
+        ...changedProps
+      };
+    })
+  }));
+}
+
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {
 
   switch(action.type) {
@@ -50,8 +66,20 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_NEW_IMAGE:
       return updateProject(state, action, project => ({ images : project.images.set(action.image.uid, action.image) }));
 
+    case actionTypes.PROJECT_DELETE_IMAGE:
+      return updateProject(state, action, project => ({ images : project.images.delete(action.image) }));
+
+    case actionTypes.PROJECT_IMAGE_CHANGE_DATA:
+      return updateImage(state, action, { content : action.data });
+
+    case actionTypes.PROJECT_IMAGE_CHANGE_ID:
+      return updateImage(state, action, { id : action.id });
+
     case actionTypes.PROJECT_NEW_WINDOW:
       return updateProject(state, action, project => ({ windows : project.windows.set(action.window.uid, action.window) }));
+
+    case actionTypes.PROJECT_DELETE_WINDOW:
+      return updateProject(state, action, project => ({ windows : project.windows.delete(action.window) }));
 
     // FIXME
     case actionTypes.PROJECT_REFRESH:
