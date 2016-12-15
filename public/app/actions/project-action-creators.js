@@ -182,10 +182,17 @@ export function projectDeleteBinding(project, binding) {
 }
 
 export function projectNewImage(project) {
-  const image = Facade.projects.uiCreateImage(project);
+  return (dispatch) => {
+    const image = Facade.projects.uiCreateImage();
+    dispatch({
+      type: actionTypes.PROJECT_NEW_IMAGE,
+      project,
+      image
+    });
 
-  const selection = { type: 'image', uid: image.uid };
-  AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+    const selection = { type: 'image', uid: image.uid };
+    dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+  };
 }
 
 export function projectDeleteImage(project, image) {
@@ -228,10 +235,17 @@ export function projectChangeDefaultWindow(project, window) {
 }
 
 export function projectNewWindow(project) {
-  const window = Facade.projects.uiCreateWindow(project);
+  return (dispatch) => {
+    const window = Facade.projects.uiCreateWindow();
+    dispatch({
+      type: actionTypes.PROJECT_NEW_WINDOW,
+      project,
+      window
+    });
 
-  const selection = { type: 'window', uid: window.uid };
-  AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+    const selection = { type: 'window', uid: window.uid };
+    dispatch(projectStateSelectAndActiveContent(project, selection, selection));
+  };
 }
 
 export function projectDeleteWindow(project, window) {

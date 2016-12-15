@@ -3,6 +3,26 @@
 import { actionTypes } from '../constants/index';
 import Immutable from 'immutable';
 
+function updateProject(state, action, changedProps) {
+  return {
+    ...state,
+    projects: state.projects.update(action.project, project => {
+
+      if(typeof changedProps === 'function') {
+        changedProps = changedProps(project);
+      }
+
+      return {
+        ...project,
+        ...changedProps,
+        dirty      : true,
+        lastUpdate : new Date(),
+        version    : project.version + 1 // TODO: remove me
+      };
+    })
+  };
+}
+
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {
 
   switch(action.type) {
@@ -25,16 +45,13 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
       };
 
     case actionTypes.PROJECT_CHANGE_NAME:
-      return {
-        ...state,
-        projects: state.projects.update(action.project.uid, project => ({
-          ...project,
-          name       : action.newName,
-          dirty      : true,
-          lastUpdate : new Date(),
-          version: project.version + 1 // TODO: remove me
-        }))
-      };
+      return updateProject(state, action, { name : action.newName });
+
+    case actionTypes.PROJECT_NEW_IMAGE:
+      return updateProject(state, action, project => ({ images : project.images.set(action.image.uid, action.image) }));
+
+    case actionTypes.PROJECT_NEW_WINDOW:
+      return updateProject(state, action, project => ({ windows : project.windows.set(action.window.uid, action.window) }));
 
     // FIXME
     case actionTypes.PROJECT_REFRESH:

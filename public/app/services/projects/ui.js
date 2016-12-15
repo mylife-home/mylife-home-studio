@@ -580,34 +580,24 @@ function createOperationResourceSet(entityId, resourceId, resourceContent) {
   };
 }
 
-function createImage(project) {
-  const image = {
-    uid: newId(),
-    id: `image_${common.uid()}`,
-    content: null
+function createImage() {
+  return {
+    uid     : newId(),
+    id      : `image_${common.uid()}`,
+    content : null
   };
-
-  project.images.push(image);
-  common.dirtify(project);
-
-  return image;
 }
 
-function createWindow(project) {
-  const window = {
-    uid: newId(),
-    id: `window_${common.uid()}`,
-    height: 500,
-    width: 500,
-    style: '',
-    backgroundResource: null,
-    controls: []
+function createWindow() {
+  return {
+    uid                : newId(),
+    id                 : `window_${common.uid()}`,
+    height             : 500,
+    width              : 500,
+    style              : '',
+    backgroundResource : null,
+    controls           : []
   };
-
-  project.windows.push(window);
-  common.dirtify(project);
-
-  return window;
 }
 
 function createControl(project, window, location, type) {

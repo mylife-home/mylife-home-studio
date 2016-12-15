@@ -37,11 +37,11 @@ class Toolbar extends React.Component {
   }
 
   newImage() {
-    AppDispatcher.dispatch(projectNewImage(this.props.project));
+    AppDispatcher.dispatch(projectNewImage(this.props.project.uid));
   }
 
   newWindow() {
-    AppDispatcher.dispatch(projectNewWindow(this.props.project));
+    AppDispatcher.dispatch(projectNewWindow(this.props.project.uid));
   }
 
   // import

@@ -209,16 +209,12 @@ class Projects {
     return ui.prepareDeploy(project, done);
   }
 
-  uiCreateImage(project) {
-    const image = ui.createImage(project);
-    AppDispatcher.dispatch(projectRefresh(project));
-    return image;
+  uiCreateImage() {
+    return ui.createImage();
   }
 
-  uiCreateWindow(project) {
-    const window = ui.createWindow(project);
-    AppDispatcher.dispatch(projectRefresh(project));
-    return window;
+  uiCreateWindow() {
+    return ui.createWindow();
   }
 
   uiCreateControl(project, window, location, type) {
