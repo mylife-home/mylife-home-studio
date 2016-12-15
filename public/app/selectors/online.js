@@ -3,13 +3,8 @@
 import { createSelector } from 'reselect';
 import shared from '../shared/index';
 
-function getEntities(state) {
-  return state.online.entities;
-}
-
-function getResourcesEntityId(state) {
-  return state.online.resourcesEntityId;
-}
+export const getEntities          = (state) => state.online.entities;
+export const getResourcesEntityId = (state) => state.online.resourcesEntityId;
 
 export const getResourceEntity = createSelector(
   [ getEntities, getResourcesEntityId ],

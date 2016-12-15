@@ -13,6 +13,8 @@ import { download, snapToGrid } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
 import { resourcesGet } from './resources-action-creators';
+import { getProjects } from '../selectors/projects';
+import { getResourceEntity } from '../selectors/online';
 
 export function projectNew(type) {
   const project = Facade.projects.new(type);
@@ -55,8 +57,7 @@ export function projectLoadOnline(resource, type) {
       dispatch(projectLoad(project));
     }
 
-    const state = getState();
-    const entity = state.online.entities.get(state.online.resourcesEntityId);
+    const entity = getResourceEntity(getState());
     const cachedContent = entity.cachedResources && entity.cachedResources[resource];
     if(cachedContent) {
       return load(cachedContent);
@@ -79,31 +80,37 @@ export function projectLoad(project) {
 }
 
 export function projectSaveOnline(project) {
-  AppDispatcher.dispatch(dialogSetBusy('Saving project'));
-  Facade.projects.saveOnline(project, (err) => {
-    AppDispatcher.dispatch(dialogUnsetBusy());
-    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-  });
+  return (dispatch) => {
+    dispatch(dialogSetBusy('Saving project'));
+    Facade.projects.saveOnline(project, (err) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+    });
+  };
 }
 
 export function projectSaveAs(project) {
-  let content;
-  try {
-    content = Facade.projects.serialize(project);
-  } catch(err) {
-    return AppDispatcher.dispatch(dialogError(err));
-  }
+  return (dispatch) => {
+    let content;
+    try {
+      content = Facade.projects.serialize(project);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
 
-  download(content, 'application/json', project.name + '.json');
+    download(content, 'application/json', project.name + '.json');
+  };
 }
 
 export function projectSaveAllOnline() {
-  const projects = ProjectStore.getAll();
-  AppDispatcher.dispatch(dialogSetBusy('Saving projects'));
-  async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, cb), (err) => {
-    AppDispatcher.dispatch(dialogUnsetBusy());
-    if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-  });
+  return (dispatch, getState) => {
+    const projects = getProjects(getState());
+    dispatch(dialogSetBusy('Saving projects'));
+    async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, cb), (err) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+    });
+  };
 }
 
 export function projectClose(project) {

@@ -1,8 +1,8 @@
 'use strict';
 
 import { createSelector } from 'reselect';
+import { getProject } from './projects';
 
-export const getProject    = (state, { project }) => state.projects.projects.get(project);
 export const getComponents = (state, props) => getProject(state, props).components;
 export const getImages     = (state, props) => getProject(state, props).images;
 export const getWindows    = (state, props) => getProject(state, props).windows;
