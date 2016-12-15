@@ -32,7 +32,7 @@ class ImageSelector extends React.Component {
 
     this.handleRequestClose();
 
-    onImageChange(img);
+    onImageChange(img.uid);
   }
 
   render() {
