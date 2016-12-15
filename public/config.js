@@ -32,7 +32,7 @@ System.config({
     "node-events": "npm:node-events@0.0.2",
     "react": "npm:react@15.4.1",
     "react-addons-perf": "npm:react-addons-perf@15.4.1",
-    "react-bootstrap": "npm:react-bootstrap@0.28.5",
+    "react-bootstrap": "npm:react-bootstrap@0.30.7",
     "react-dnd": "npm:react-dnd@2.1.4",
     "react-dnd-html5-backend": "npm:react-dnd-html5-backend@2.1.2",
     "react-dom": "npm:react-dom@15.4.1",
@@ -151,6 +151,10 @@ System.config({
     "npm:babel-runtime@5.8.38": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:babel-runtime@6.20.0": {
+      "core-js": "npm:core-js@2.4.1",
+      "regenerator-runtime": "npm:regenerator-runtime@0.10.1"
+    },
     "npm:batch-processor@1.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -240,6 +244,12 @@ System.config({
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:core-js@1.2.7": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:core-js@2.4.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -424,9 +434,6 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "is-buffer": "npm:is-buffer@1.1.4"
     },
-    "npm:lodash-compat@3.10.2": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:lodash.isequal@4.4.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -439,7 +446,7 @@ System.config({
     },
     "npm:material-ui@0.15.4": {
       "inline-style-prefixer": "npm:inline-style-prefixer@2.0.5",
-      "keycode": "npm:keycode@2.1.7",
+      "keycode": "npm:keycode@2.1.8",
       "lodash": "npm:lodash@4.17.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "react": "npm:react@15.4.1",
@@ -550,20 +557,19 @@ System.config({
     "npm:react-addons-transition-group@15.4.1": {
       "react": "npm:react@15.4.1"
     },
-    "npm:react-bootstrap@0.28.5": {
-      "babel-runtime": "npm:babel-runtime@5.8.38",
+    "npm:react-bootstrap@0.30.7": {
+      "babel-runtime": "npm:babel-runtime@6.20.0",
       "classnames": "npm:classnames@2.2.5",
       "dom-helpers": "npm:dom-helpers@2.4.0",
       "invariant": "npm:invariant@2.2.2",
-      "keycode": "npm:keycode@2.1.7",
-      "lodash-compat": "npm:lodash-compat@3.10.2",
+      "keycode": "npm:keycode@2.1.8",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "react": "npm:react@15.4.1",
       "react-dom": "npm:react-dom@15.4.1",
       "react-overlays": "npm:react-overlays@0.6.10",
-      "react-prop-types": "npm:react-prop-types@0.3.2",
-      "uncontrollable": "npm:uncontrollable@3.3.1",
-      "warning": "npm:warning@2.1.0"
+      "react-prop-types": "npm:react-prop-types@0.4.0",
+      "uncontrollable": "npm:uncontrollable@4.0.3",
+      "warning": "npm:warning@3.0.0"
     },
     "npm:react-dnd-html5-backend@2.1.2": {
       "lodash": "npm:lodash@4.17.2",
@@ -608,9 +614,6 @@ System.config({
       "react-dom": "npm:react-dom@15.4.1",
       "react-prop-types": "npm:react-prop-types@0.4.0",
       "warning": "npm:warning@3.0.0"
-    },
-    "npm:react-prop-types@0.3.2": {
-      "warning": "npm:warning@2.1.0"
     },
     "npm:react-prop-types@0.4.0": {
       "react": "npm:react@15.4.1",
@@ -707,6 +710,10 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"
     },
+    "npm:regenerator-runtime@0.10.1": {
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:ripemd160@1.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
@@ -752,7 +759,7 @@ System.config({
     "npm:ua-parser-js@0.7.12": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:uncontrollable@3.3.1": {
+    "npm:uncontrollable@4.0.3": {
       "invariant": "npm:invariant@2.2.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "react": "npm:react@15.4.1"
@@ -772,10 +779,6 @@ System.config({
     },
     "npm:vm-browserify@0.0.4": {
       "indexof": "npm:indexof@0.0.1"
-    },
-    "npm:warning@2.1.0": {
-      "loose-envify": "npm:loose-envify@1.3.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:warning@3.0.0": {
       "loose-envify": "npm:loose-envify@1.3.0",
