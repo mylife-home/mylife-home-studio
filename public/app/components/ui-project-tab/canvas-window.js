@@ -88,7 +88,7 @@ class CanvasWindow extends React.Component {
   windowResize(dir, size) {
     const { project, window } = this.props;
 
-    AppDispatcher.dispatch(projectResizeWindow(project, window, size));
+    AppDispatcher.dispatch(projectResizeWindow(project.uid, window.uid, size));
   }
 
   select() {

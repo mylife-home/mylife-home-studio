@@ -39,6 +39,22 @@ function updateImage(state, action, changedProps) {
   }));
 }
 
+function updateWindow(state, action, changedProps) {
+  return updateProject(state, action, project => ({
+    windows : project.windows.update(action.window, window => {
+
+      if(typeof changedProps === 'function') {
+        changedProps = changedProps(window);
+      }
+
+      return {
+        ...window,
+        ...changedProps
+      };
+    })
+  }));
+}
+
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {
 
   switch(action.type) {
@@ -83,6 +99,15 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
 
     case actionTypes.PROJECT_DELETE_WINDOW:
       return updateProject(state, action, project => ({ windows : project.windows.delete(action.window) }));
+
+    case actionTypes.PROJECT_WINDOW_CHANGE_ID:
+      return updateWindow(state, action, { id: action.id });
+
+    case actionTypes.PROJECT_RESIZE_WINDOW:
+      return updateWindow(state, action, { height: action.height, width: action.width });
+
+    case actionTypes.PROJECT_WINDOW_CHANGE_IMAGE:
+      return updateWindow(state, action, { backgroundResource: action.image });
 
     // FIXME
     case actionTypes.PROJECT_REFRESH:

@@ -290,19 +290,31 @@ export function projectDeleteWindow(project, window) {
 }
 
 export function projectWindowChangeId(project, window, id) {
-  window.id = id;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_WINDOW_CHANGE_ID,
+    project,
+    window,
+    id
+  };
 }
 
-export function projectResizeWindow(project, window, newSize) {
-  window.height = newSize.height;
-  window.width  = newSize.width;
-  Facade.projects.dirtify(project);
+export function projectResizeWindow(project, window, { height, width }) {
+  return {
+    type: actionTypes.PROJECT_RESIZE_WINDOW,
+    project,
+    window,
+    height,
+    width
+  };
 }
 
-export function projectWindowChangeImage(project, window, newImage) {
-  window.backgroundResource = newImage;
-  Facade.projects.dirtify(project);
+export function projectWindowChangeImage(project, window, image) {
+  return {
+    type: actionTypes.PROJECT_WINDOW_CHANGE_IMAGE,
+    project,
+    window,
+    image
+  };
 }
 
 export function projectNewControl(project, location, type) {

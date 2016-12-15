@@ -119,19 +119,19 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${window.uid}_id`} value={window.id} onChange={(value) => AppDispatcher.dispatch(projectWindowChangeId(project, window, value))} type={'s'} /></td>
+              <td><PropertiesEditor id={`${window.uid}_id`} value={window.id} onChange={(value) => AppDispatcher.dispatch(projectWindowChangeId(project.uid, window.uid, value))} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>
-              <td><PropertiesEditor id={`${window.uid}_width`} value={window.width} onChange={(value) => AppDispatcher.dispatch(projectResizeWindow(project, window, { height: window.height, width: value }))} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${window.uid}_width`} value={window.width} onChange={(value) => AppDispatcher.dispatch(projectResizeWindow(project.uid, window.uid, { height: window.height, width: value }))} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Height'} /></td>
-              <td><PropertiesEditor id={`${window.uid}_height`} value={window.height} onChange={(value) => AppDispatcher.dispatch(projectResizeWindow(project, window, { height: value, width: window.width }))} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${window.uid}_height`} value={window.height} onChange={(value) => AppDispatcher.dispatch(projectResizeWindow(project.uid, window.uid, { height: value, width: window.width }))} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Background'} /></td>
-              <td><PropertiesImageSelector project={project} image={window.backgroundResource} onImageChange={(img) => AppDispatcher.dispatch(projectWindowChangeImage(project, window, img))} /></td>
+              <td><PropertiesImageSelector project={project} image={window.backgroundResource} onImageChange={(img) => AppDispatcher.dispatch(projectWindowChangeImage(project.uid, window.uid, img))} /></td>
             </tr>
           </tbody>
         </table>
