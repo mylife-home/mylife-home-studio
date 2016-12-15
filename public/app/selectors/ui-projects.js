@@ -3,13 +3,14 @@
 import { createSelector } from 'reselect';
 import { getProject } from './projects';
 
-export const getComponents = (state, props) => getProject(state, props).components;
-export const getImages     = (state, props) => getProject(state, props).images;
-export const getWindows    = (state, props) => getProject(state, props).windows;
+export const getComponents     = (state, props) => getProject(state, props).components;
+export const getImages         = (state, props) => getProject(state, props).images;
+export const getWindows        = (state, props) => getProject(state, props).windows;
 
-export const getComponent  = (state, props) => getProject(state, props).components.get(props.component);
-export const getImage      = (state, props) => getProject(state, props).images.get(props.image);
-export const getWindow     = (state, props) => getProject(state, props).windows.get(props.window);
+export const getComponent      = (state, props) => getComponents(state, props).get(props.component);
+export const getImage          = (state, props) => getImages(state, props).get(props.image);
+export const getWindow         = (state, props) => getWindows(state, props).get(props.window);
+export const getWindowControls = (state, props) => getWindow(state, props).controls.toArray();
 
 export const makeGetSortedComponents = () => createSelector(
   [ getComponents ],
