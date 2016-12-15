@@ -22,7 +22,7 @@ import {
   projectChangeName,
   projectDeleteWindow, projectWindowChangeId, projectResizeWindow, projectWindowChangeImage,
   projectImageChangeFile, projectDeleteImage, projectImageChangeId,
-  projectDeleteComponent, projectChangeDefaultWindow
+  projectDeleteUiComponent, projectChangeDefaultWindow
 } from '../../actions/index';
 
 import { makeGetSortedComponents, makeGetSortedImages, makeGetSortedWindows } from '../../selectors/ui-projects';
@@ -87,7 +87,7 @@ class Properties extends React.Component {
 
   renderComponent(project, component) {
     const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteComponent(project, component));
+      AppDispatcher.dispatch(projectDeleteUiComponent(project.uid, component.uid));
     };
 
     return (

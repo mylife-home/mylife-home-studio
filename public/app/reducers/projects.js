@@ -79,6 +79,9 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_CHANGE_NAME:
       return updateProject(state, action, { name : action.newName });
 
+    case actionTypes.PROJECT_DELETE_UI_COMPONENT: // merge with PROJECT_DELETE_COMPONENT (vpane) ?
+      return updateProject(state, action, project => ({ components : project.components.delete(action.component) }));
+
     case actionTypes.PROJECT_CHANGE_DEFAULT_WINDOW:
       return updateProject(state, action, { defaultWindow : action.window });
 

@@ -136,20 +136,8 @@ export function projectNewComponent(project, location, plugin) {
 }
 
 export function projectDeleteComponent(project, component) {
-  switch(project.type) {
-    case projectTypes.VPANEL:
-      AppDispatcher.dispatch(projectStateSelect(project, null));
-      Facade.projects.vpanelDeleteComponent(project, component);
-      break;
-    case projectTypes.UI:
-      try {
-        AppDispatcher.dispatch(projectStateSelectAndActiveContent(project, null, null));
-        Facade.projects.uiDeleteComponent(project, component);
-      } catch(err) {
-        AppDispatcher.dispatch(dialogError(err));
-      }
-      break;
-  }
+  AppDispatcher.dispatch(projectStateSelect(project, null));
+  Facade.projects.vpanelDeleteComponent(project, component);
 }
 
 export function projectComponentChangeId(project, component, id) {
@@ -179,6 +167,25 @@ export function projectNewBinding(project, remoteComponentId, remoteAttributeNam
 export function projectDeleteBinding(project, binding) {
   AppDispatcher.dispatch(projectStateSelect(project, null));
   Facade.projects.vpanelDeleteBinding(project, binding);
+}
+
+export function projectDeleteUiComponent(project, component) {
+  return (dispatch, getState) => {
+    const state = getState();
+    try {
+      Facade.projects.uiCheckComponentUsage(getProject(state, { project }), component);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
+
+    dispatch(projectStateSelectAndActiveContent(project, null, null));
+
+    dispatch({
+      type: actionTypes.PROJECT_DELETE_UI_COMPONENT,
+      project,
+      component
+    });
+  };
 }
 
 export function projectNewImage(project) {
