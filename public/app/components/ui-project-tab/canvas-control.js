@@ -15,6 +15,7 @@ import { dragTypes } from '../../constants/index';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectMoveControl, projectResizeControl } from '../../actions/index';
+import { getImage } from '../../selectors/ui-projects';
 
 function getStyles(props, state) {
   const { window, control } = props;
@@ -123,7 +124,9 @@ class CanvasControl extends React.Component {
   }
 
   renderDisplay(control, styles) {
-    return (<DataImage image={control.display.defaultResource} style={styles.item}/>);
+    const { project } = this.props;
+    const state = storeHandler.getStore().getState();
+    return (<DataImage image={getImage(state, { project: project.uid, image: control.display.defaultResource })} style={styles.item}/>);
   }
 
   render() {

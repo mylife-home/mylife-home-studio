@@ -16,6 +16,7 @@ import { dragTypes } from '../../constants/index';
 import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectResizeWindow } from '../../actions/index';
+import { getImage, getWindowControls } from '../../selectors/ui-projects';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
@@ -97,6 +98,7 @@ class CanvasWindow extends React.Component {
   }
 
   render() {
+    const state = storeHandler.getStore().getState();
     const { project, window, connectDropTarget } = this.props;
     const styles = getStyles(this.props, this.state);
 
@@ -110,8 +112,8 @@ class CanvasWindow extends React.Component {
                         isResizable={{ right: true, bottom: true, bottomRight: true }}>
             <div ref="canvas"
                  style={styles.window}>
-              <DataImage image={window.backgroundResource} style={styles.background}/>
-              {window.controls.map((ctrl) => (
+              <DataImage image={getImage(state, { project: project.uid, image: window.backgroundResource })} style={styles.background}/>
+              {getWindowControls(state, { project: project.uid, window: window.uid }).map((ctrl) => (
                 <CanvasControl key={ctrl.uid} project={project} window={window} control={ctrl} />))}
             </div>
           </ResizableBox>
