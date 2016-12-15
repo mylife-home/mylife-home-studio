@@ -3,13 +3,13 @@
 import { connect } from 'react-redux';
 
 import WindowSelector from '../../components/ui-project-tab/window-selector';
-import { makeGetSortedWindows, getWindows } from '../../selectors/ui-projects';
+import { makeGetSortedWindows, getWindow } from '../../selectors/ui-projects';
 
 const mapStateToProps = () => {
   const getSortedWindows     = makeGetSortedWindows();
   return (state, props) => ({
     sortedWindows  : getSortedWindows(state, props),
-    selectedWindow : getWindows(state, props).get(props.value)
+    selectedWindow : getWindow(state, props)
   });
 };
 

@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
 
-import PropertiesImageSelector from './properties-image-selector';
+import ImageSelectorContainer from '../../containers/ui-project-tab/image-selector-container';
 import PropertiesEnumValueSelector from './properties-enum-value-selector';
 
 class PropertiesControlDisplayMappingRow extends React.Component {
@@ -59,8 +59,8 @@ class PropertiesControlDisplayMappingRow extends React.Component {
 
     const imageRowColumn = (
       <mui.TableRowColumn>
-       <PropertiesImageSelector
-        project={project}
+       <ImageSelectorContainer
+        project={project.uid}
         image={item.resource}
         onImageChange={ onImageChange } />
       </mui.TableRowColumn>

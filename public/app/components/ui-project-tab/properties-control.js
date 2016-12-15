@@ -7,7 +7,7 @@ import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesEditor from '../properties/properties-editor';
 
-import PropertiesImageSelector from './properties-image-selector';
+import ImageSelectorContainer from '../../containers/ui-project-tab/image-selector-container';
 import PropertiesControlAction from './properties-control-action';
 import PropertiesControlTextContext from './properties-control-text-context';
 import PropertiesControlDisplayMapping from './properties-control-display-mapping';
@@ -37,7 +37,7 @@ class PropertiesControl extends React.Component {
     return [
       (<tr key="Default image">
         <td><PropertiesLabel text={'Default image'} /></td>
-        <td><PropertiesImageSelector project={project} image={control.display.defaultResource} onImageChange={(img) => AppDispatcher.dispatch(projectControlChangeImage(project, window, control, img))} /></td>
+        <td><ImageSelectorContainer project={project.uid} image={control.display.defaultResource} onImageChange={(img) => AppDispatcher.dispatch(projectControlChangeImage(project, window, control, img))} /></td>
       </tr>),
       (<tr key="Component/Attribute">
         <td><PropertiesLabel text={'Component/Attribute'} /></td>

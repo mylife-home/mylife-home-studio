@@ -12,7 +12,7 @@ import PropertiesEditor from '../properties/properties-editor';
 
 import PropertiesImage from './properties-image';
 import PropertiesControl from './properties-control';
-import PropertiesImageSelector from './properties-image-selector';
+import ImageSelectorContainer from '../../containers/ui-project-tab/image-selector-container';
 import WindowSelectorContainer from '../../containers/ui-project-tab/window-selector-container';
 
 import AppDispatcher from '../../compat/dispatcher';
@@ -77,7 +77,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Default window'}/></td>
-              <td><WindowSelectorContainer project={project.uid} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project.uid, window))} /></td>
+              <td><WindowSelectorContainer project={project.uid} window={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project.uid, window))} /></td>
             </tr>
           </tbody>
         </table>
@@ -131,7 +131,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Background'} /></td>
-              <td><PropertiesImageSelector project={project} image={window.backgroundResource} onImageChange={(img) => AppDispatcher.dispatch(projectWindowChangeImage(project.uid, window.uid, img))} /></td>
+              <td><ImageSelectorContainer project={project.uid} image={window.backgroundResource} onImageChange={(img) => AppDispatcher.dispatch(projectWindowChangeImage(project.uid, window.uid, img))} /></td>
             </tr>
           </tbody>
         </table>

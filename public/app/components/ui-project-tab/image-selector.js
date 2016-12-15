@@ -2,11 +2,10 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import { sortBy } from '../../utils/index';
 
 import DataImage from './data-image';
 
-class PropertiesImageSelector extends React.Component {
+class ImageSelector extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -37,13 +36,13 @@ class PropertiesImageSelector extends React.Component {
   }
 
   render() {
-    const { project, image } = this.props;
+    const { sortedImages, selectedImage } = this.props;
 
     return (
       <div>
         <mui.RaisedButton
-          label={image ? image.id : '<none>'}
-          icon={<DataImage image={image} width={20} height={20} />}
+          label={selectedImage ? selectedImage.id : '<none>'}
+          icon={<DataImage image={selectedImage} width={20} height={20} />}
           onTouchTap={(event) => this.handleTouchTap(event)}
         />
         <mui.Popover
@@ -54,7 +53,7 @@ class PropertiesImageSelector extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            {sortBy(project.images, 'id').map(img => (
+            {sortedImages.map(img => (
               <mui.MenuItem
                 key={img.uid}
                 primaryText={img.id}
@@ -68,10 +67,10 @@ class PropertiesImageSelector extends React.Component {
   }
 }
 
-PropertiesImageSelector.propTypes = {
-  project       : React.PropTypes.object.isRequired,
-  image         : React.PropTypes.object,
+ImageSelector.propTypes = {
+  sortedImages  : React.PropTypes.array.isRequired,
+  selectedImage : React.PropTypes.object,
   onImageChange : React.PropTypes.func.isRequired
 };
 
-export default PropertiesImageSelector;
+export default ImageSelector;
