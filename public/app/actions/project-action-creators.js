@@ -409,8 +409,8 @@ export function projectControlChangeDisplayComponent(project, window, control, c
   Facade.projects.dirtify(project);
 }
 
-export function projectControlChangeDisplayMappingImage(project, window, control, item, newImage) {
-  item.resource = newImage;
+export function projectControlChangeDisplayMappingImage(project, window, control, item, image) {
+  item.resource = image;
   Facade.projects.dirtify(project);
 }
 
@@ -439,8 +439,8 @@ export function projectControlDeleteDisplayMapping(project, window, control, ite
   Facade.projects.dirtify(project);
 }
 
-export function projectControlChangeImage(project, window, control, newImage) {
-  control.display.defaultResource = newImage;
+export function projectControlChangeImage(project, window, control, image) {
+  control.display.defaultResource = image;
   Facade.projects.dirtify(project);
 }
 
