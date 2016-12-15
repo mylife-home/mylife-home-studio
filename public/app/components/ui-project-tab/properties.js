@@ -77,7 +77,7 @@ class Properties extends React.Component {
             </tr>
             <tr>
               <td><PropertiesLabel text={'Default window'}/></td>
-              <td><WindowSelectorContainer project={project.uid} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project, window))} /></td>
+              <td><WindowSelectorContainer project={project.uid} value={project.defaultWindow} onWindowChange={(window) => AppDispatcher.dispatch(projectChangeDefaultWindow(project.uid, window))} /></td>
             </tr>
           </tbody>
         </table>

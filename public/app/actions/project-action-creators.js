@@ -249,8 +249,11 @@ export function projectImageChangeId(project, image, id) {
 }
 
 export function projectChangeDefaultWindow(project, window) {
-  project.defaultWindow = window;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CHANGE_DEFAULT_WINDOW,
+    project,
+    window
+  };
 }
 
 export function projectNewWindow(project) {

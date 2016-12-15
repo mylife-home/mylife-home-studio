@@ -63,6 +63,9 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_CHANGE_NAME:
       return updateProject(state, action, { name : action.newName });
 
+    case actionTypes.PROJECT_CHANGE_DEFAULT_WINDOW:
+      return updateProject(state, action, { defaultWindow : action.window });
+
     case actionTypes.PROJECT_NEW_IMAGE:
       return updateProject(state, action, project => ({ images : project.images.set(action.image.uid, action.image) }));
 
