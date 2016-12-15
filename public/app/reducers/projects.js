@@ -112,6 +112,12 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_WINDOW_CHANGE_IMAGE:
       return updateWindow(state, action, { backgroundResource: action.image });
 
+    case actionTypes.PROJECT_NEW_CONTROL:
+      return updateWindow(state, action, window => ({ controls : window.controls.set(action.control.uid, action.control) }));
+
+    case actionTypes.PROJECT_DELETE_CONTROL:
+      return updateWindow(state, action, window => ({ controls : window.controls.delete(action.control) }));
+
     // FIXME
     case actionTypes.PROJECT_REFRESH:
       return  { ...state, projects: state.projects.update(action.project.uid, project => ({

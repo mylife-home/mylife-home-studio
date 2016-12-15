@@ -596,11 +596,11 @@ function createWindow() {
     width              : 500,
     style              : '',
     backgroundResource : null,
-    controls           : []
+    controls           : Immutable.Map()
   };
 }
 
-function createControl(project, window, location, type) {
+function createControl(window, location, type) {
   const height = 50;
   const width = 50;
   const x = location.x / window.width;
@@ -624,7 +624,7 @@ function createControl(project, window, location, type) {
     case 'text':
       control.text = {
         format: '',
-        context: []
+        context: Immutable.Map()
       };
       break;
 
@@ -633,16 +633,13 @@ function createControl(project, window, location, type) {
         component: null,
         attribute: null,
         defaultResource: null,
-        map: []
+        map: Immutable.Map()
       };
       break;
 
     default:
       throw new Error(`Unsupported control type: ${type}`);
   }
-
-  window.controls.push(control);
-  common.dirtify(project);
 
   return control;
 }

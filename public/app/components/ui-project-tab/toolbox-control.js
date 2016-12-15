@@ -101,7 +101,7 @@ const pluginSource = {
 
     const { project, type, onNewControl } = props;
     const { location } = monitor.getDropResult();
-    onNewControl(project, location, type);
+    onNewControl(project.uid, location, type);
   }
 };
 

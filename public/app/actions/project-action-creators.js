@@ -1,11 +1,9 @@
 'use strict';
 
 import async from 'async';
-import { actionTypes, projectTypes } from '../constants/index';
+import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 import { newId } from '../utils/index';
-
-import ProjectStore from '../stores/project-store';
 
 import AppDispatcher from '../compat/dispatcher';
 
@@ -13,7 +11,8 @@ import { download, snapToGrid } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
 import { resourcesGet } from './resources-action-creators';
-import { getProjects, getProject } from '../selectors/projects';
+import { getProjects, getProject, getProjectState } from '../selectors/projects';
+import { getWindow } from '../selectors/ui-projects';
 import { getResourceEntity } from '../selectors/online';
 
 export function projectNew(type) {
@@ -325,26 +324,39 @@ export function projectWindowChangeImage(project, window, image) {
 }
 
 export function projectNewControl(project, location, type) {
-  const projectState = ProjectStore.getProjectState(project);
-  const window = project.windows.find(wnd => wnd.uid === projectState.activeContent.uid);
+  return (dispatch, getState) => {
+    const state        = getState();
+    const projectState = getProjectState(state, { project });
+    const window       = getWindow(state, { window: projectState.activeContent.uid });
+    const control      = Facade.projects.uiCreateControl(project, window, location, type);
 
-  const control = Facade.projects.uiCreateControl(project, window, location, type);
+    dispatch({
+      type: actionTypes.PROJECT_NEW_CONTROL,
+      project,
+      window,
+      control
+    });
 
-  AppDispatcher.dispatch(projectStateSelect(project, {
-    type: 'control',
-    windowUid: window.uid,
-    controlUid: control.uid
-  }));
+    dispatch(projectStateSelect(project, {
+      type: 'control',
+      windowUid: window.uid,
+      controlUid: control.uid
+    }));
+  };
 }
 
 export function projectDeleteControl(project, window, control) {
-  try {
-    AppDispatcher.dispatch(projectStateSelect(project, { type: 'window', uid: window.uid }));
+  return (dispatch) => {
 
-    Facade.projects.uiDeleteControl(project, window, control);
-  } catch(err) {
-    AppDispatcher.dispatch(dialogError(err));
-  }
+    dispatch(projectStateSelect(project, { type: 'window', uid: window }));
+
+    dispatch({
+      type: actionTypes.PROJECT_DELETE_CONTROL,
+      project,
+      window,
+      control
+    });
+  };
 }
 
 export function projectMoveControl(project, window, control, newPosition) {

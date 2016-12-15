@@ -88,7 +88,7 @@ class PropertiesControl extends React.Component {
     const { project, window, control } = this.props;
 
     const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteControl(project, window, control));
+      AppDispatcher.dispatch(projectDeleteControl(project.uid, window.uid, control.uid));
     };
 
     return (
