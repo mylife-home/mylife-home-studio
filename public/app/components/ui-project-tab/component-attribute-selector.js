@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import { sortBy } from '../../utils/index';
 
-class PropertiesComponentAttributeSelector extends React.Component {
+class ComponentAttributeSelector extends React.Component {
 
   constructor(props, context) {
     super(props, context);
@@ -35,8 +35,8 @@ class PropertiesComponentAttributeSelector extends React.Component {
   }
 
   render() {
-    const { project, component, attribute, nullable } = this.props;
-    const display = (component && attribute) ? `${component.id}.${attribute}` : '<none>';
+    const { sortedComponents, selectedComponent, attribute, nullable } = this.props;
+    const display = (selectedComponent && attribute) ? `${selectedComponent.id}.${attribute}` : '<none>';
 
     return (
       <div>
@@ -49,11 +49,11 @@ class PropertiesComponentAttributeSelector extends React.Component {
           anchorEl={this.state.anchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleRequestClose.bind(this)}
+          onRequestClose={() => this.handleRequestClose()}
         >
           <mui.Menu>
-            {sortBy(project.components.
-              filter(c => c.plugin.clazz.attributes.length), 'id').
+            {sortedComponents.
+              filter(comp => comp.plugin.clazz.attributes.length).
               map(comp => (
               <mui.MenuItem
                 key={comp.id}
@@ -62,14 +62,14 @@ class PropertiesComponentAttributeSelector extends React.Component {
                   <mui.MenuItem
                     key={attribute.name}
                     primaryText={attribute.name}
-                    onTouchTap={this.handleSelectComponent.bind(this, comp, attribute.name)} />
+                    onTouchTap={() => this.handleSelectComponent(comp.uid, attribute.name)} />
                 ))}
               />
             ))}
             {nullable ? (
               <mui.MenuItem
                 primaryText={'<none>'}
-                onTouchTap={this.handleSelectComponent.bind(this, null, null)} />
+                onTouchTap={() => this.handleSelectComponent(null, null)} />
             ) : null}
           </mui.Menu>
         </mui.Popover>
@@ -78,12 +78,12 @@ class PropertiesComponentAttributeSelector extends React.Component {
   }
 }
 
-PropertiesComponentAttributeSelector.propTypes = {
-  project    : React.PropTypes.object.isRequired,
-  component  : React.PropTypes.object,
-  attribute  : React.PropTypes.string,
-  nullable   : React.PropTypes.bool,
-  onChange   : React.PropTypes.func.isRequired,
+ComponentAttributeSelector.propTypes = {
+  sortedComponents  : React.PropTypes.array.isRequired,
+  selectedComponent : React.PropTypes.object,
+  attribute         : React.PropTypes.string,
+  nullable          : React.PropTypes.bool,
+  onChange          : React.PropTypes.func.isRequired
 };
 
-export default PropertiesComponentAttributeSelector;
+export default ComponentAttributeSelector;

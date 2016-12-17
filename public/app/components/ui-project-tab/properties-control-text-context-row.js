@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
 
-import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
+import ComponentAttributeSelectorContainer from '../../containers/ui-project-tab/component-attribute-selector-container';
 
 class PropertiesControlTextContextRow extends React.Component {
 
@@ -54,11 +54,11 @@ class PropertiesControlTextContextRow extends React.Component {
             onChange={(event) => this.handleIdChange(event)} />
         </mui.TableRowColumn>
         <mui.TableRowColumn>
-         <PropertiesComponentAttributeSelector
-          project={project}
+         <ComponentAttributeSelectorContainer
+          project={project.uid}
           component={item.component}
           attribute={item.attribute}
-          onChange={this.handleSelectComponent.bind(this)} />
+          onChange={(comp, attr) => this.handleSelectComponent(comp, attr)} />
         </mui.TableRowColumn>
         <mui.TableRowColumn>
           <mui.IconButton onTouchTap={action}>

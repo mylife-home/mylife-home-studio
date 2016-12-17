@@ -11,7 +11,7 @@ import ImageSelectorContainer from '../../containers/ui-project-tab/image-select
 import PropertiesControlAction from './properties-control-action';
 import PropertiesControlTextContext from './properties-control-text-context';
 import PropertiesControlDisplayMapping from './properties-control-display-mapping';
-import PropertiesComponentAttributeSelector from './properties-component-attribute-selector';
+import ComponentAttributeSelectorContainer from '../../containers/ui-project-tab/component-attribute-selector-container';
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
@@ -41,12 +41,12 @@ class PropertiesControl extends React.Component {
       </tr>),
       (<tr key="Component/Attribute">
         <td><PropertiesLabel text={'Component/Attribute'} /></td>
-        <td><PropertiesComponentAttributeSelector
-          project={project}
+        <td><ComponentAttributeSelectorContainer
+          project={project.uid}
           component={control.display.component}
           attribute={control.display.attribute}
           nullable={true}
-          onChange={this.handleComponentChange.bind(this)} /></td>
+          onChange={(comp, attr) => this.handleComponentChange(comp, attr)} /></td>
       </tr>),
       (<tr key="Mapping">
         <td><PropertiesLabel text={'Mapping'} /></td>
