@@ -37,7 +37,7 @@ class PropertiesControlDisplayMapping extends React.Component {
   }
 
   handleCreate() {
-    const { control, onAdd } = this.props;
+    const { control, onNew } = this.props;
 
     const componentAttribute = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
     const isRange = componentAttribute.type.constructor.name === 'Range';
@@ -51,7 +51,7 @@ class PropertiesControlDisplayMapping extends React.Component {
       return;
     }
 
-    onAdd(newItem);
+    onNew(newItem);
     this.setState({ newItem: this.createNewItem() });
   }
 
@@ -143,7 +143,7 @@ class PropertiesControlDisplayMapping extends React.Component {
 PropertiesControlDisplayMapping.propTypes = {
   project       : React.PropTypes.object.isRequired,
   control       : React.PropTypes.object.isRequired,
-  onAdd         : React.PropTypes.func.isRequired,
+  onNew         : React.PropTypes.func.isRequired,
   onDelete      : React.PropTypes.func.isRequired,
   onImageChange : React.PropTypes.func.isRequired,
   onValueChange : React.PropTypes.func.isRequired,
