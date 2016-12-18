@@ -359,21 +359,34 @@ export function projectDeleteControl(project, window, control) {
   };
 }
 
-export function projectMoveControl(project, window, control, newPosition) {
-  control.x = newPosition.x;
-  control.y = newPosition.y;
-  Facade.projects.dirtify(project);
+export function projectMoveControl(project, window, control, position) {
+  return {
+    type: actionTypes.PROJECT_MOVE_CONTROL,
+    project,
+    window,
+    control,
+    position
+  };
 }
 
-export function projectResizeControl(project, window, control, newSize) {
-  control.height = newSize.height;
-  control.width  = newSize.width;
-  Facade.projects.dirtify(project);
+export function projectResizeControl(project, window, control, size) {
+  return {
+    type: actionTypes.PROJECT_RESIZE_CONTROL,
+    project,
+    window,
+    control,
+    size
+  };
 }
 
 export function projectControlChangeId(project, window, control, id) {
-  control.id = id;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_ID,
+    project,
+    window,
+    control,
+    id
+  };
 }
 
 export function projectControlChangeTextFormat(project, window, control, format) {

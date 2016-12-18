@@ -99,23 +99,23 @@ class PropertiesControl extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_id`} value={control.id} onChange={(value) => AppDispatcher.dispatch(projectControlChangeId(project, window, control, value))} type={'s'} /></td>
+              <td><PropertiesEditor id={`${control.uid}_id`} value={control.id} onChange={(value) => AppDispatcher.dispatch(projectControlChangeId(project.uid, window.uid, control.uid, value))} type={'s'} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'X'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_x`} value={control.x} onChange={(value) => AppDispatcher.dispatch(projectMoveControl(project, window, control, { x: value, y: control.y }))} type={'n'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_x`} value={control.x} onChange={(value) => AppDispatcher.dispatch(projectMoveControl(project.uid, window.uid, control.uid, { x: value, y: control.y }))} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Y'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_y`} value={control.y} onChange={(value) => AppDispatcher.dispatch(projectMoveControl(project, window, control, { x: control.x, y: value }))} type={'n'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_y`} value={control.y} onChange={(value) => AppDispatcher.dispatch(projectMoveControl(project.uid, window.uid, control.uid, { x: control.x, y: value }))} type={'n'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Width'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_width`} value={control.width} onChange={(value) => AppDispatcher.dispatch(projectResizeControl(project, window, control, { height: control.height, width: value }))} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_width`} value={control.width} onChange={(value) => AppDispatcher.dispatch(projectResizeControl(project.uid, window.uid, control.uid, { height: control.height, width: value }))} type={'i'} useRealType={true} /></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Height'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_height`} value={control.height} onChange={(value) => AppDispatcher.dispatch(projectResizeControl(project, window, control, { height: value, width: control.width }))} type={'i'} useRealType={true} /></td>
+              <td><PropertiesEditor id={`${control.uid}_height`} value={control.height} onChange={(value) => AppDispatcher.dispatch(projectResizeControl(project.uid, window.uid, control.uid, { height: value, width: control.width }))} type={'i'} useRealType={true} /></td>
             </tr>
             {control.text ? this.renderText(project, window, control) : this.renderDisplay(project, window, control)}
             <tr>
