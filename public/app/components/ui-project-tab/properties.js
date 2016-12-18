@@ -3,8 +3,6 @@
 import React from 'react';
 import icons from '../icons';
 
-import ProjectStore from '../../stores/project-store';
-
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
@@ -17,6 +15,7 @@ import WindowSelectorContainer from '../../containers/ui-project-tab/window-sele
 
 import AppDispatcher from '../../compat/dispatcher';
 import storeHandler from '../../compat/store';
+import { getProjectState } from '../../selectors/projects';
 
 import {
   projectChangeName,
@@ -51,8 +50,8 @@ class Properties extends React.Component {
   handleStoreChange() {
     const project = this.props.project;
     const projectVersion = project && project.version;
-    const state = ProjectStore.getProjectState(project);
-    const selection = state && state.selection;
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const selection = projectState && projectState.selection;
     this.setState({ projectVersion, selection });
   }
 

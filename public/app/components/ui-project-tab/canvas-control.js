@@ -12,10 +12,10 @@ import { stopPropagationWrapper } from '../../utils/index';
 import DataImage from './data-image';
 
 import { dragTypes } from '../../constants/index';
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectMoveControl, projectResizeControl } from '../../actions/index';
 import { getImage } from '../../selectors/ui-projects';
+import { getProjectState } from '../../selectors/projects';
 
 function getStyles(props, state) {
   const { window, control } = props;
@@ -60,7 +60,7 @@ class CanvasControl extends React.Component {
     super(props, context);
 
     const { project, control } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.state = {
       isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
@@ -82,7 +82,7 @@ class CanvasControl extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { project, control } = nextProps;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
@@ -92,7 +92,7 @@ class CanvasControl extends React.Component {
 
   handleStoreChange() {
     const { project, control } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,

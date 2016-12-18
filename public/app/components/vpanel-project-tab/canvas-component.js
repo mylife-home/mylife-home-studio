@@ -10,7 +10,6 @@ import { stopPropagationWrapper, snapToGrid } from '../../utils/index';
 
 import Facade from '../../services/facade';
 import { dragTypes } from '../../constants/index';
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectMoveComponent } from '../../actions/index';
 import storeHandler from '../../compat/store';
@@ -19,6 +18,7 @@ import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
 import commonStyles from './canvas-component-styles';
 import linkHelper from './link-helper';
+import { getProjectState } from '../../selectors/projects';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
@@ -88,7 +88,7 @@ class CanvasComponent extends React.Component {
 
   handleStoreChange() {
     const { project, component } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid,
       componentHash: Facade.projects.vpanelGetComponentHash(project, component)
@@ -97,7 +97,7 @@ class CanvasComponent extends React.Component {
 
   handleMeasureChange(dim) {
     const { project, component } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     if(!dim) {
       const node = this.refs.component;

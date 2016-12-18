@@ -7,9 +7,9 @@ import { stopPropagationWrapper } from '../../utils/index';
 
 import storeHandler from '../../compat/store';
 import { dragTypes } from '../../constants/index';
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
+import { getProjectState } from '../../selectors/projects';
 
 import CanvasComponent from './canvas-component';
 import CanvasBinding from './canvas-binding';
@@ -72,7 +72,7 @@ class Canvas extends React.Component {
 
   handleMeasureChange() {
     const { project } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     const node = this.refs.canvas;
     // may be not yet rendered

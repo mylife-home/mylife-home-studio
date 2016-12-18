@@ -2,12 +2,13 @@
 
 import React from 'react';
 
-import ProjectStore from '../../stores/project-store';
 import storeHandler from '../../compat/store';
 
 import CanvasComponent from './canvas-component';
 import CanvasImage from './canvas-image';
 import CanvasWindow from './canvas-window';
+
+import { getProjectState } from '../../selectors/projects';
 
 class Canvas extends React.Component {
 
@@ -30,8 +31,8 @@ class Canvas extends React.Component {
   handleStoreChange() {
     const project = this.props.project;
     const projectVersion = project && project.version;
-    const state = ProjectStore.getProjectState(project);
-    const activeContent = state && state.activeContent;
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const activeContent = projectState && projectState.activeContent;
     this.setState({ projectVersion, activeContent });
   }
 

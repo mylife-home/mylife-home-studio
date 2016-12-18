@@ -4,7 +4,8 @@ import { debounce } from 'throttle-debounce';
 //import aStar from 'a-star';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateUpdateLinkData } from '../../actions/index';
-import ProjectStore from '../../stores/project-store';
+import storeHandler from '../../compat/store';
+import { getProjectState } from '../../selectors/projects';
 
 //const GRID_SIZE   = utils.GRID_SIZE;
 //const CANVAS_SIZE = 32000;
@@ -123,7 +124,7 @@ function componentMeasureMember(uiComponent, name) {
 }
 
 function rebuild(project) {
-  const projectState = ProjectStore.getProjectState(project);
+  const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
   const linkData = data(projectState);
   const measures = linkData.measures;

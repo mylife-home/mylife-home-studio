@@ -5,10 +5,10 @@ import * as muiStyles from 'material-ui/styles/index';
 import icons from '../icons';
 import { stopPropagationWrapper } from '../../utils/index';
 
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 import storeHandler from '../../compat/store';
+import { getProjectState } from '../../selectors/projects';
 
 import linkHelper from './link-helper';
 
@@ -56,7 +56,7 @@ class CanvasBinding extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    const projectState = ProjectStore.getProjectState(this.props.project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.state = {
       isSelected:      false,
@@ -77,7 +77,7 @@ class CanvasBinding extends React.Component {
 
   handleStoreChange() {
     const { project, binding } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'binding' && projectState.selection.uid === binding.uid,
       linkVersion: linkHelper.version(projectState)
@@ -97,7 +97,7 @@ class CanvasBinding extends React.Component {
 
   render() {
     const { project, binding } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
     const path = linkHelper.bindingPath(projectState, binding);
     const styles = getStyles(this.props, this.state);
 

@@ -13,10 +13,10 @@ import DataImage from './data-image';
 import CanvasControl from './canvas-control';
 
 import { dragTypes } from '../../constants/index';
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectResizeWindow } from '../../actions/index';
 import { getImage, getWindowControls } from '../../selectors/ui-projects';
+import { getProjectState } from '../../selectors/projects';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
@@ -46,7 +46,7 @@ class CanvasWindow extends React.Component {
     super(props, context);
 
     const { project, window } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.state = {
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
@@ -68,7 +68,7 @@ class CanvasWindow extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { project, window } = nextProps;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
@@ -78,7 +78,7 @@ class CanvasWindow extends React.Component {
 
   handleStoreChange() {
     const { project, window } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,

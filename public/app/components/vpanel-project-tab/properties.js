@@ -8,15 +8,14 @@ import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
 import PropertiesEditor from '../properties/properties-editor';
-
 import storeHandler from '../../compat/store';
-import ProjectStore from '../../stores/project-store';
 import AppDispatcher from '../../compat/dispatcher';
 import {
   projectChangeName,
   projectDeleteBinding,
   projectDeleteComponent, projectComponentChangeId, projectComponentChangeConfig
 } from '../../actions/index';
+import { getProjectState } from '../../selectors/projects';
 
 const styles = {
   cell: {
@@ -60,7 +59,7 @@ class Properties extends React.Component {
 
   handleStoreChange() {
     const { project } = this.props;
-    const projectState = ProjectStore.getProjectState(project);
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
     this.setState({
       selection : projectState.selection
     });
