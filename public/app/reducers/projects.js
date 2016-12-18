@@ -83,8 +83,8 @@ function updateControlTextContext(state, action, changedProps) {
         ...item,
         ...changedProps
       };
-    })
-  } }));
+    })}
+  }));
 }
 
 function updateControlDisplayMap(state, action, changedProps) {
@@ -99,8 +99,8 @@ function updateControlDisplayMap(state, action, changedProps) {
         ...item,
         ...changedProps
       };
-    })
-  } }));
+    })}
+  }));
 }
 
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {

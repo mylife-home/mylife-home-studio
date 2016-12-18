@@ -3,7 +3,6 @@
 import async from 'async';
 import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
-import { newId } from '../utils/index';
 
 import AppDispatcher from '../compat/dispatcher';
 

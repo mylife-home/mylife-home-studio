@@ -56,7 +56,7 @@ class CanvasBinding extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: props.project });
 
     this.state = {
       isSelected:      false,
