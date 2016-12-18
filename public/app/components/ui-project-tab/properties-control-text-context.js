@@ -3,6 +3,8 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
+import { newId } from '../../utils/index';
+
 import PropertiesControlTextContextRow from './properties-control-text-context-row';
 
 class PropertiesControlTextContext extends React.Component {
@@ -18,9 +20,10 @@ class PropertiesControlTextContext extends React.Component {
 
   createNewItem() {
     return {
-      id: null,
-      component: null,
-      attribute: null
+      uid       : newId(),
+      id        : null,
+      component : null,
+      attribute : null
     };
   }
 

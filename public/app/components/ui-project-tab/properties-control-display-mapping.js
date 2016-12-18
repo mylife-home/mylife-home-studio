@@ -3,6 +3,8 @@
 import React from 'react';
 import * as mui from 'material-ui';
 
+import { newId } from '../../utils/index';
+
 import PropertiesControlDisplayMappingRow from './properties-control-display-mapping-row';
 
 class PropertiesControlDisplayMapping extends React.Component {
@@ -18,10 +20,11 @@ class PropertiesControlDisplayMapping extends React.Component {
 
   createNewItem() {
     return {
-      max: null,
-      min: null,
-      resource: null,
-      value: null
+      uid      : newId(),
+      max      : null,
+      min      : null,
+      resource : null,
+      value    : null
     };
   }
 
@@ -37,12 +40,12 @@ class PropertiesControlDisplayMapping extends React.Component {
   }
 
   handleCreate() {
-    const { control, onNew } = this.props;
+    const { control, onNew, component } = this.props;
 
-    const componentAttribute = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
+    const componentAttribute = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
     const isRange = componentAttribute.type.constructor.name === 'Range';
 
-    const newItem = this.state.newItem;
+    const { newItem } = this.state;
 
     if(!newItem.resource) {
       return;
