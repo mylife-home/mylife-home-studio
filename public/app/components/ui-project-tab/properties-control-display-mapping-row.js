@@ -103,7 +103,7 @@ class PropertiesControlDisplayMappingRow extends React.Component {
           <PropertiesEnumValueSelector
             values={attributeType.values}
             value={item.value}
-            onChange={this.handleValueChange.bind(this)} />
+            onChange={(value) => this.handleValueChange(value)} />
         </mui.TableRowColumn>
         {imageRowColumn}
         {actionRowColumn}
