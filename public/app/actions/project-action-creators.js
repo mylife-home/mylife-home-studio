@@ -127,6 +127,8 @@ export function projectChangeName(project, newName) {
   };
 }
 
+////// BEGIN TODO
+
 export function projectNewComponent(project, location, plugin) {
 
   const component = Facade.projects.vpanelCreateComponent(project, snapToGrid(location), plugin);
@@ -167,6 +169,8 @@ export function projectDeleteBinding(project, binding) {
   AppDispatcher.dispatch(projectStateSelect(project, null));
   Facade.projects.vpanelDeleteBinding(project, binding);
 }
+
+////// END TODO
 
 export function projectDeleteUiComponent(project, component) {
   return (dispatch, getState) => {
