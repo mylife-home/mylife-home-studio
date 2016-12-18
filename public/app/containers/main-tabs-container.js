@@ -4,7 +4,6 @@ import React from 'react';
 
 import MainTabs from '../components/main-tabs';
 
-import ProjectStore from '../stores/project-store';
 import AppDispatcher from '../compat/dispatcher';
 import storeHandler from '../compat/store';
 
@@ -15,9 +14,11 @@ class MainTabsContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    const state = storeHandler.getStore().getState();
+
     this.state = {
-      projects: ProjectStore.getAll(),
-      activeTab: storeHandler.getStore().getState().activeTab
+      projects: Array.from(state.projects.projects.toArray()),
+      activeTab: state.activeTab
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -32,9 +33,11 @@ class MainTabsContainer extends React.Component {
   }
 
   handleStoreChange() {
+    const state = storeHandler.getStore().getState();
+
     this.setState({
-      projects: ProjectStore.getAll(),
-      activeTab: storeHandler.getStore().getState().activeTab
+      projects: Array.from(state.projects.projects.toArray()),
+      activeTab: state.activeTab
     });
   }
 

@@ -4,11 +4,11 @@ import React from 'react';
 
 import MainToolbar from '../components/main-toolbar';
 
-import ProjectStore from '../stores/project-store';
 import storeHandler from '../compat/store';
 
 import { projectTypes } from '../constants/index';
 import { getVPanelProjectNames, getUiProjectNames } from'../selectors/online';
+import { getProject } from'../selectors/projects';
 
 import AppDispatcher from '../compat/dispatcher';
 import {
@@ -23,7 +23,7 @@ class MainToolbarContainer extends React.Component {
     const state = storeHandler.getStore().getState();
     const activeTabId = state.activeTab;
     const activeProjectId = activeTabId.startsWith('project-') && parseInt(activeTabId.substring('project-'.length));
-    const activeProject = activeProjectId ? ProjectStore.get(activeProjectId) : null;
+    const activeProject = activeProjectId ? getProject(state, { project: activeProjectId }) : null;
     const onlineVPanelProjectList = getVPanelProjectNames(state);
     const onlineUiProjectList = getUiProjectNames(state);
 
@@ -44,7 +44,7 @@ class MainToolbarContainer extends React.Component {
     const state = storeHandler.getStore().getState();
     const activeTabId = state.activeTab;
     const activeProjectId = activeTabId.startsWith('project-') && parseInt(activeTabId.substring('project-'.length));
-    const activeProject = activeProjectId ? ProjectStore.get(activeProjectId) : null;
+    const activeProject = activeProjectId ? getProject(state, { project: activeProjectId }) : null;
     const onlineVPanelProjectList = getVPanelProjectNames(state);
     const onlineUiProjectList = getUiProjectNames(state);
 
