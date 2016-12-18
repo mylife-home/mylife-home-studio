@@ -55,6 +55,22 @@ function updateWindow(state, action, changedProps) {
   }));
 }
 
+function updateControl(state, action, changedProps) {
+  return updateWindow(state, action, window => ({
+    controls : window.controls.update(action.control, control => {
+
+      if(typeof changedProps === 'function') {
+        changedProps = changedProps(control);
+      }
+
+      return {
+        ...control,
+        ...changedProps
+      };
+    })
+  }));
+}
+
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {
 
   switch(action.type) {
@@ -118,15 +134,18 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_DELETE_CONTROL:
       return updateWindow(state, action, window => ({ controls : window.controls.delete(action.control) }));
 
+    case actionTypes.PROJECT_CONTROL_CHANGE_ACTION:
+      return updateControl(state, action, { [action.actionType] : action.action });
+
     // FIXME
     case actionTypes.PROJECT_REFRESH:
-      return  { ...state, projects: state.projects.update(action.project.uid, project => ({
+      return  { ...state, projects: state.projects.update(action.project, project => ({
         ...project,
         version: project.version + 1
       })) };
 
     case actionTypes.PROJECT_STATE_UPDATE_LINK_DATA:
-      return { ...state, states: state.states.update(action.project.uid, state => ({ ... state, linkData: action.linkData })) };
+      return { ...state, states: state.states.update(action.project, state => ({ ... state, linkData: action.linkData })) };
 
     case actionTypes.PROJECT_STATE_SELECT:
       return { ...state, states: state.states.update(action.project, state => ({ ... state, selection: action.selection })) };

@@ -35,7 +35,7 @@ class PropertiesControlAction extends React.Component {
     onActionChange({
       component: null,
       window: {
-        window,
+        window: window.uid,
         popup
       }
     });
@@ -49,7 +49,7 @@ class PropertiesControlAction extends React.Component {
     onActionChange({
       window: null,
       component: {
-        component,
+        component: component.uid,
         action
       }
     });
@@ -64,17 +64,23 @@ class PropertiesControlAction extends React.Component {
   }
 
   render() {
-    const { project, action } = this.props;
+    const {
+      sortedWindows,
+      sortedComponents,
+      action,
+      selectedWindow,
+      selectedComponent
+    } = this.props;
 
     let display = '<none>';
     if(action) {
       const actionComponent = action.component;
       if(actionComponent) {
-        display = `${actionComponent.component.id}.${actionComponent.action}`;
+        display = `${selectedComponent.id}.${actionComponent.action}`;
       }
       const actionWindow = action.window;
       if(actionWindow) {
-        display = `${actionWindow.window.id} (${actionWindow.popup ? 'popup' : 'change'})`;
+        display = `${selectedWindow.id} (${actionWindow.popup ? 'popup' : 'change'})`;
       }
     }
 
@@ -92,8 +98,8 @@ class PropertiesControlAction extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <mui.Menu>
-            <mui.MenuItem primaryText={'Component'} menuItems={sortBy(project.components.
-              filter(c => c.plugin.clazz.actions.filter(a => !a.types.length).length), 'id').
+            <mui.MenuItem primaryText={'Component'} menuItems={sortedComponents.
+              filter(c => c.plugin.clazz.actions.filter(a => !a.types.length).length).
               map(comp => (
               <mui.MenuItem
                 key={comp.id}
@@ -104,26 +110,26 @@ class PropertiesControlAction extends React.Component {
                   <mui.MenuItem
                     key={action.name}
                     primaryText={action.name}
-                    onTouchTap={this.handleSelectComponent.bind(this, comp, action.name)} />
+                    onTouchTap={() => this.handleSelectComponent(comp, action.name)} />
                   ))}
                 />
               ))}
             />
-            <mui.MenuItem primaryText={'Window (change)'} menuItems={sortBy(project.windows, 'id').map(wnd => (
+            <mui.MenuItem primaryText={'Window (change)'} menuItems={sortedWindows.map(wnd => (
               <mui.MenuItem
                 key={wnd.uid}
                 primaryText={wnd.id}
-                onTouchTap={this.handleSelectWindow.bind(this, wnd, false)}/>
+                onTouchTap={() => this.handleSelectWindow(wnd, false)}/>
               ))}
             />
-            <mui.MenuItem primaryText={'Window (popup)'} menuItems={sortBy(project.windows, 'id').map(wnd => (
+            <mui.MenuItem primaryText={'Window (popup)'} menuItems={sortedWindows.map(wnd => (
               <mui.MenuItem
                 key={wnd.uid}
                 primaryText={wnd.id}
-                onTouchTap={this.handleSelectWindow.bind(this, wnd, true)}/>
+                onTouchTap={() => this.handleSelectWindow(wnd, true)}/>
               ))}
             />
-            <mui.MenuItem primaryText={'<none>'} onTouchTap={this.handleSelectNone.bind(this)} />
+            <mui.MenuItem primaryText={'<none>'} onTouchTap={() => this.handleSelectNone()} />
           </mui.Menu>
         </mui.Popover>
       </div>
@@ -132,9 +138,12 @@ class PropertiesControlAction extends React.Component {
 }
 
 PropertiesControlAction.propTypes = {
-  project        : React.PropTypes.object.isRequired,
-  action         : React.PropTypes.object,
-  onActionChange : React.PropTypes.func.isRequired
+  sortedWindows     : React.PropTypes.array.isRequired,
+  sortedComponents  : React.PropTypes.array.isRequired,
+  action            : React.PropTypes.object,
+  selectedWindow    : React.PropTypes.object,
+  selectedComponent : React.PropTypes.object,
+  onActionChange    : React.PropTypes.func.isRequired
 };
 
 export default PropertiesControlAction;

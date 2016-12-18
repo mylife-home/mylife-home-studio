@@ -8,7 +8,7 @@ import PropertiesTitle from '../properties/properties-title';
 import PropertiesEditor from '../properties/properties-editor';
 
 import ImageSelectorContainer from '../../containers/ui-project-tab/image-selector-container';
-import PropertiesControlAction from './properties-control-action';
+import PropertiesControlActionContainer from '../../containers/ui-project-tab/properties-control-action-container';
 import PropertiesControlTextContext from './properties-control-text-context';
 import PropertiesControlDisplayMapping from './properties-control-display-mapping';
 import ComponentAttributeSelectorContainer from '../../containers/ui-project-tab/component-attribute-selector-container';
@@ -16,7 +16,7 @@ import ComponentAttributeSelectorContainer from '../../containers/ui-project-tab
 import AppDispatcher from '../../compat/dispatcher';
 import {
   projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
-  projectControlChangeAction, projectControlChangeImage, projectControlChangeDisplayComponent,
+  projectControlChangeImage, projectControlChangeDisplayComponent,
   projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent,
   projectControlChangeDisplayMappingImage, projectControlChangeDisplayMappingValue, projectControlChangeDisplayMappingMin, projectControlChangeDisplayMappingMax, projectControlAddDisplayMapping, projectControlDeleteDisplayMapping
 } from '../../actions/index';
@@ -121,17 +121,19 @@ class PropertiesControl extends React.Component {
             <tr>
               <td><PropertiesLabel text={'Primary action'} /></td>
               <td>
-                <PropertiesControlAction project={project}
-                                         action={control.primaryAction}
-                                         onActionChange={(newAction) => AppDispatcher.dispatch(projectControlChangeAction(project, window, control, 'primaryAction', newAction))} />
+                <PropertiesControlActionContainer project={project.uid}
+                                                  window={window.uid}
+                                                  control={control.uid}
+                                                  action={'primaryAction'} />
               </td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Secondary action'} /></td>
               <td>
-                <PropertiesControlAction project={project}
-                                         action={control.secondaryAction}
-                                         onActionChange={(newAction) => AppDispatcher.dispatch(projectControlChangeAction(project, window, control, 'secondaryAction', newAction))} />
+                <PropertiesControlActionContainer project={project.uid}
+                                                  window={window.uid}
+                                                  control={control.uid}
+                                                  action={'secondaryAction'} />
               </td>
             </tr>
           </tbody>

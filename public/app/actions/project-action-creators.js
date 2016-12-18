@@ -444,9 +444,15 @@ export function projectControlChangeImage(project, window, control, image) {
   Facade.projects.dirtify(project);
 }
 
-export function projectControlChangeAction(project, window, control, actionType, newAction) {
-  control[actionType] = newAction;
-  Facade.projects.dirtify(project);
+export function projectControlChangeAction(project, window, control, actionType, action) {
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_ACTION,
+    project,
+    window,
+    control,
+    actionType,
+    action
+  };
 }
 
 export function projectRefresh(project) {
