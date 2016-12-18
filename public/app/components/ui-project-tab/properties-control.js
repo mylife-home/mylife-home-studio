@@ -22,7 +22,7 @@ import {
 } from '../../actions/index';
 
 import storeHandler from '../../compat/store';
-import { getComponents, getComponent } from '../../selectors/ui-projects';
+import { getComponents, getComponent, getImages } from '../../selectors/ui-projects';
 
 class PropertiesControl extends React.Component {
 
@@ -37,8 +37,9 @@ class PropertiesControl extends React.Component {
   }
 
   renderDisplay(project, window, control) {
-    const state = storeHandler.getStore().getState();
+    const state     = storeHandler.getStore().getState();
     const component = control.display.component && getComponent(state, { project: project.uid, component: control.display.component });
+    const images    = getImages(state, { project: project.uid });
     return [
       (<tr key="Default image">
         <td><PropertiesLabel text={'Default image'} /></td>
@@ -59,6 +60,7 @@ class PropertiesControl extends React.Component {
           <PropertiesControlDisplayMapping project={project}
                                            control={control}
                                            component={component}
+                                           images={images}
                                            onNew={(newItem) => AppDispatcher.dispatch(projectControlAddDisplayMapping(project.uid, window.uid, control.uid, newItem))}
                                            onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteDisplayMapping(project.uid, window.uid, control.uid, item.uid))}
                                            onImageChange={(item, img) => AppDispatcher.dispatch(projectControlChangeDisplayMappingImage(project.uid, window.uid, control.uid, item.uid, img))}
@@ -71,7 +73,7 @@ class PropertiesControl extends React.Component {
   }
 
   renderText(project, window, control) {
-    const state = storeHandler.getStore().getState();
+    const state      = storeHandler.getStore().getState();
     const components = getComponents(state, { project: project.uid });
     return [
       (<tr key="Format">

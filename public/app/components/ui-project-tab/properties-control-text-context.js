@@ -54,7 +54,7 @@ class PropertiesControlTextContext extends React.Component {
     const { project, control, components, onIdChange, onComponentChange, onDelete } = this.props;
 
     const context = control.text.context;
-    const display = context.map(item => `${item.id} => ${components.get(item.component).id}.${item.attribute}`).join('\n') || '<none>';
+    const display = context.toArray().map(item => `${item.id} => ${components.get(item.component).id}.${item.attribute}`).join('\n') || '<none>';
 
     return (
       <div>
@@ -80,7 +80,7 @@ class PropertiesControlTextContext extends React.Component {
               </mui.TableRow>
             </mui.TableHeader>
             <mui.TableBody>
-              {context.map(it => (
+              {context.toArray().map(it => (
                 <PropertiesControlTextContextRow
                   key={it.uid}
                   project={project}

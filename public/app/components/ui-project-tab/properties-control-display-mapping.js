@@ -60,7 +60,7 @@ class PropertiesControlDisplayMapping extends React.Component {
 
   render() {
     const {
-      project, control, component,
+      project, control, component, images,
       onDelete, onImageChange, onValueChange, onMinChange, onMaxChange
     } = this.props;
 
@@ -71,9 +71,9 @@ class PropertiesControlDisplayMapping extends React.Component {
 
     const attributeType = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
     const isRange = attributeType.constructor.name === 'Range';
-    const mappingDisplay = mapping.map(item => {
+    const mappingDisplay = mapping.toArray().map(item => {
       const key = isRange ? `[${item.min}-${item.max}]` : item.value;
-      return `${key} => ${item.resource.id}`;
+      return `${key} => ${images.get(item.resource).id}`;
     }).join('\n') || '<none>';
 
     return (
@@ -109,7 +109,7 @@ class PropertiesControlDisplayMapping extends React.Component {
               )}
             </mui.TableHeader>
             <mui.TableBody>
-              {mapping.map(it => (
+              {mapping.toArray().map(it => (
                 <PropertiesControlDisplayMappingRow
                   key={it.uid}
                   project={project}
@@ -147,6 +147,7 @@ PropertiesControlDisplayMapping.propTypes = {
   project       : React.PropTypes.object.isRequired,
   control       : React.PropTypes.object.isRequired,
   component     : React.PropTypes.object,
+  images        : React.PropTypes.object.isRequired,
   onNew         : React.PropTypes.func.isRequired,
   onDelete      : React.PropTypes.func.isRequired,
   onImageChange : React.PropTypes.func.isRequired,
