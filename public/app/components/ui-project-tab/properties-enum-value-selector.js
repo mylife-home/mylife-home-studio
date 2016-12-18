@@ -65,7 +65,7 @@ class PropertiesEnumValueSelector extends React.Component {
 
 PropertiesEnumValueSelector.propTypes = {
   values   : React.PropTypes.array.isRequired,
-  value    : React.PropTypes.string.isRequired,
+  value    : React.PropTypes.string,
   onChange : React.PropTypes.func.isRequired
 };
 
