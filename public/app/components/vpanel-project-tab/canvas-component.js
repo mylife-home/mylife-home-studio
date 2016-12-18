@@ -88,7 +88,7 @@ class CanvasComponent extends React.Component {
 
   handleStoreChange() {
     const { project, component } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid,
       componentHash: Facade.projects.vpanelGetComponentHash(project, component)
@@ -97,7 +97,7 @@ class CanvasComponent extends React.Component {
 
   handleMeasureChange(dim) {
     const { project, component } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     if(!dim) {
       const node = this.refs.component;

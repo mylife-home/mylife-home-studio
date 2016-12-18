@@ -72,7 +72,7 @@ class Canvas extends React.Component {
 
   handleMeasureChange() {
     const { project } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     const node = this.refs.canvas;
     // may be not yet rendered

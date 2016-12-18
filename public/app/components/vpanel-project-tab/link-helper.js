@@ -124,7 +124,7 @@ function componentMeasureMember(uiComponent, name) {
 }
 
 function rebuild(project) {
-  const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+  const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
   const linkData = data(projectState);
   const measures = linkData.measures;

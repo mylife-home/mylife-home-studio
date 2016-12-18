@@ -56,7 +56,7 @@ class CanvasBinding extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: props.project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: props.project && props.project.uid });
 
     this.state = {
       isSelected:      false,
@@ -77,7 +77,7 @@ class CanvasBinding extends React.Component {
 
   handleStoreChange() {
     const { project, binding } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'binding' && projectState.selection.uid === binding.uid,
       linkVersion: linkHelper.version(projectState)
@@ -97,7 +97,7 @@ class CanvasBinding extends React.Component {
 
   render() {
     const { project, binding } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     const path = linkHelper.bindingPath(projectState, binding);
     const styles = getStyles(this.props, this.state);
 
