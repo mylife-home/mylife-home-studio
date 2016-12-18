@@ -390,8 +390,13 @@ export function projectControlChangeId(project, window, control, id) {
 }
 
 export function projectControlChangeTextFormat(project, window, control, format) {
-  control.text.format = format;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_TEXT_FORMAT,
+    project,
+    window,
+    control,
+    format
+  };
 }
 
 export function projectControlAddTextContext(project, window, control, newItem) {

@@ -68,7 +68,7 @@ class PropertiesControl extends React.Component {
     return [
       (<tr key="Format">
         <td><PropertiesLabel text={'Format (function body with context items as args)'} /></td>
-        <td><PropertiesEditor id={`${control.uid}_text_format`} value={control.text.format} onChange={(value) => AppDispatcher.dispatch(projectControlChangeTextFormat(project, window, control, value))} type={'s'} /></td>
+        <td><PropertiesEditor id={`${control.uid}_text_format`} value={control.text.format} onChange={(value) => AppDispatcher.dispatch(projectControlChangeTextFormat(project.uid, window.uid, control.uid, value))} type={'s'} /></td>
       </tr>),
       (<tr key="Context">
         <td><PropertiesLabel text={'Context'} /></td>

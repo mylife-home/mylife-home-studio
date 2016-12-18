@@ -134,14 +134,17 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_DELETE_CONTROL:
       return updateWindow(state, action, window => ({ controls : window.controls.delete(action.control) }));
 
-    case actionTypes.PROJECT_CONTROL_CHANGE_ID:
-      return updateControl(state, action, { id : action.id });
-
     case actionTypes.PROJECT_MOVE_CONTROL:
       return updateControl(state, action, action.position);
 
     case actionTypes.PROJECT_RESIZE_CONTROL:
       return updateControl(state, action, action.size);
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_ID:
+      return updateControl(state, action, { id : action.id });
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_TEXT_FORMAT:
+      return updateControl(state, action, control => ({ text : { ...control.text, format : action.format } }));
 
     case actionTypes.PROJECT_CONTROL_CHANGE_IMAGE:
       return updateControl(state, action, control => ({ display : { ...control.display, defaultResource : action.image } }));
