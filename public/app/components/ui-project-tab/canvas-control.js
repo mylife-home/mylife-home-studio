@@ -60,7 +60,7 @@ class CanvasControl extends React.Component {
     super(props, context);
 
     const { project, control } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.state = {
       isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
@@ -82,7 +82,7 @@ class CanvasControl extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { project, control } = nextProps;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
@@ -92,7 +92,7 @@ class CanvasControl extends React.Component {
 
   handleStoreChange() {
     const { project, control } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,

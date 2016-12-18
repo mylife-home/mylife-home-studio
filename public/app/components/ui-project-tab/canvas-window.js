@@ -46,7 +46,7 @@ class CanvasWindow extends React.Component {
     super(props, context);
 
     const { project, window } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.state = {
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
@@ -68,7 +68,7 @@ class CanvasWindow extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { project, window } = nextProps;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
@@ -78,7 +78,7 @@ class CanvasWindow extends React.Component {
 
   handleStoreChange() {
     const { project, window } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,

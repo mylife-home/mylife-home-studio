@@ -50,7 +50,7 @@ class Properties extends React.Component {
   handleStoreChange() {
     const project = this.props.project;
     const projectVersion = project && project.version;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     const selection = projectState && projectState.selection;
     this.setState({ projectVersion, selection });
   }
