@@ -404,61 +404,121 @@ export function projectControlChangeTextFormat(project, window, control, format)
 }
 
 export function projectControlAddTextContext(project, window, control, newItem) {
-  control.text.context.push({ ...newItem, uid: newId()});
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_ADD_TEXT_CONTEXT,
+    project,
+    window,
+    control,
+    newItem
+  };
 }
 
 export function projectControlDeleteTextContext(project, window, control, item) {
-  arrayRemoveByValue(control.text.context, item);
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_DELETE_TEXT_CONTEXT,
+    project,
+    window,
+    control,
+    item
+  };
 }
 
-export function projectControlChangeTextContextId(project, window, control, item, newId) {
-  item.id = newId;
-  Facade.projects.dirtify(project);
+export function projectControlChangeTextContextId(project, window, control, item, id) {
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_TEXT_CONTEXT_ID,
+    project,
+    window,
+    control,
+    item,
+    id
+  };
 }
 
 export function projectControlChangeTextContextComponent(project, window, control, item, component, attribute) {
-  item.component = component;
-  item.attribute = attribute;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_TEXT_CONTEXT_COMPONENT,
+    project,
+    window,
+    control,
+    item,
+    component,
+    attribute
+  };
 }
 
 export function projectControlChangeDisplayComponent(project, window, control, component, attribute) {
-  control.display.component = component;
-  control.display.attribute = attribute;
-  control.display.map = [];
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_COMPONENT,
+    project,
+    window,
+    control,
+    component,
+    attribute
+  };
 }
 
 export function projectControlChangeDisplayMappingImage(project, window, control, item, image) {
-  item.resource = image;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_IMAGE,
+    project,
+    window,
+    control,
+    item,
+    image
+  };
 }
 
-export function projectControlChangeDisplayMappingValue(project, window, control, item, newValue) {
-  item.value = newValue;
-  Facade.projects.dirtify(project);
+export function projectControlChangeDisplayMappingValue(project, window, control, item, value) {
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_VALUE,
+    project,
+    window,
+    control,
+    item,
+    value
+  };
 }
 
-export function projectControlChangeDisplayMappingMin(project, window, control, item, newMin) {
-  item.min = newMin;
-  Facade.projects.dirtify(project);
+export function projectControlChangeDisplayMappingMin(project, window, control, item, min) {
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_MIN,
+    project,
+    window,
+    control,
+    item,
+    min
+  };
 }
 
-export function projectControlChangeDisplayMappingMax(project, window, control, item, newMax) {
-  item.max = newMax;
-  Facade.projects.dirtify(project);
+export function projectControlChangeDisplayMappingMax(project, window, control, item, max) {
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_MAX,
+    project,
+    window,
+    control,
+    item,
+    max
+  };
 }
 
 export function projectControlAddDisplayMapping(project, window, control, newItem) {
-  control.display.map.push({ ...newItem, uid: newId()});
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_ADD_DISPLAY_MAPPING,
+    project,
+    window,
+    control,
+    newItem
+  };
 }
 
 export function projectControlDeleteDisplayMapping(project, window, control, item) {
-  arrayRemoveByValue(control.display.map, item);
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_DELETE_DISPLAY_MAPPING,
+    project,
+    window,
+    control,
+    item
+  };
 }
 
 export function projectControlChangeImage(project, window, control, image) {
@@ -514,11 +574,4 @@ export function projectStateSelectAndActiveContent(project, selection, activeCon
     selection,
     activeContent
   };
-}
-
-
-function arrayRemoveByValue(array, item) {
-  const index = array.indexOf(item);
-  if(index === -1) { return; }
-  array.splice(index, 1);
 }

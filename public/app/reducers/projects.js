@@ -71,6 +71,38 @@ function updateControl(state, action, changedProps) {
   }));
 }
 
+function updateControlTextContext(state, action, changedProps) {
+  return updateControl(state, action, control => ({
+    text : { ...control.text, context : control.text.context.update(action.item, item => {
+
+      if(typeof changedProps === 'function') {
+        changedProps = changedProps(item);
+      }
+
+      return {
+        ...item,
+        ...changedProps
+      };
+    })
+  } }));
+}
+
+function updateControlDisplayMap(state, action, changedProps) {
+  return updateControl(state, action, control => ({
+    display : { ...control.display, map : control.display.map.update(action.item, item => {
+
+      if(typeof changedProps === 'function') {
+        changedProps = changedProps(item);
+      }
+
+      return {
+        ...item,
+        ...changedProps
+      };
+    })
+  } }));
+}
+
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {
 
   switch(action.type) {
@@ -145,6 +177,39 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
 
     case actionTypes.PROJECT_CONTROL_CHANGE_TEXT_FORMAT:
       return updateControl(state, action, control => ({ text : { ...control.text, format : action.format } }));
+
+    case actionTypes.PROJECT_CONTROL_ADD_TEXT_CONTEXT:
+      return updateControl(state, action, control => ({ text : { ...control.text, context: control.text.context.set(action.newItem.uid, action.newItem) } }));
+
+    case actionTypes.PROJECT_CONTROL_DELETE_TEXT_CONTEXT:
+      return updateControl(state, action, control => ({ text : { ...control.text, context: control.text.context.delete(action.item) } }));
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_TEXT_CONTEXT_ID:
+      return updateControlTextContext(state, action, { id : action.id });
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_TEXT_CONTEXT_COMPONENT:
+      return updateControlTextContext(state, action, { component : action.component, attribute : action.attribute });
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_COMPONENT:
+      return updateControl(state, action, control => ({ display : { ...control.display, component : action.component, attribute : action.attribute } }));
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_IMAGE:
+      return updateControlDisplayMap(state, action, { image : action.image });
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_VALUE:
+      return updateControlDisplayMap(state, action, { value : action.value });
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_MIN:
+      return updateControlDisplayMap(state, action, { min : action.min });
+
+    case actionTypes.PROJECT_CONTROL_CHANGE_DISPLAY_MAPPING_MAX:
+      return updateControlDisplayMap(state, action, { max : action.max });
+
+    case actionTypes.PROJECT_CONTROL_ADD_DISPLAY_MAPPING:
+      return updateControl(state, action, control => ({ display : { ...control.display, map: control.display.map.set(action.newItem.uid, action.newItem) } }));
+
+    case actionTypes.PROJECT_CONTROL_DELETE_DISPLAY_MAPPING:
+      return updateControl(state, action, control => ({ display : { ...control.display, map: control.display.map.delete(action.item) } }));
 
     case actionTypes.PROJECT_CONTROL_CHANGE_IMAGE:
       return updateControl(state, action, control => ({ display : { ...control.display, defaultResource : action.image } }));

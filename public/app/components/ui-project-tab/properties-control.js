@@ -21,6 +21,9 @@ import {
   projectControlChangeDisplayMappingImage, projectControlChangeDisplayMappingValue, projectControlChangeDisplayMappingMin, projectControlChangeDisplayMappingMax, projectControlAddDisplayMapping, projectControlDeleteDisplayMapping
 } from '../../actions/index';
 
+import storeHandler from '../../compat/store';
+import { getComponents, getComponent } from '../../selectors/ui-projects';
+
 class PropertiesControl extends React.Component {
 
   constructor(props) {
@@ -30,10 +33,12 @@ class PropertiesControl extends React.Component {
 
   handleComponentChange(component, attribute) {
     const { project, window, control } = this.props;
-    AppDispatcher.dispatch(projectControlChangeDisplayComponent(project, window, control, component, attribute));
+    AppDispatcher.dispatch(projectControlChangeDisplayComponent(project.uid, window.uid, control.uid, component, attribute));
   }
 
   renderDisplay(project, window, control) {
+    const state = storeHandler.getStore().getState();
+    const component = control.display.component && getComponent(state, { project: project.uid, component: control.display.component });
     return [
       (<tr key="Default image">
         <td><PropertiesLabel text={'Default image'} /></td>
@@ -53,18 +58,21 @@ class PropertiesControl extends React.Component {
         <td>
           <PropertiesControlDisplayMapping project={project}
                                            control={control}
-                                           onNew={(newItem) => AppDispatcher.dispatch(projectControlAddDisplayMapping(project, window, control, newItem))}
-                                           onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteDisplayMapping(project, window, control, item))}
-                                           onImageChange={(item, img) => AppDispatcher.dispatch(projectControlChangeDisplayMappingImage(project, window, control, item, img))}
-                                           onValueChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingValue(project, window, control, item, value))}
-                                           onMinChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMin(project, window, control, item, value))}
-                                           onMaxChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMax(project, window, control, item, value))} />
+                                           component={component}
+                                           onNew={(newItem) => AppDispatcher.dispatch(projectControlAddDisplayMapping(project.uid, window.uid, control.uid, newItem))}
+                                           onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteDisplayMapping(project.uid, window.uid, control.uid, item.uid))}
+                                           onImageChange={(item, img) => AppDispatcher.dispatch(projectControlChangeDisplayMappingImage(project.uid, window.uid, control.uid, item.uid, img))}
+                                           onValueChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingValue(project.uid, window.uid, control.uid, item.uid, value))}
+                                           onMinChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMin(project.uid, window.uid, control.uid, item.uid, value))}
+                                           onMaxChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMax(project.uid, window.uid, control.uid, item.uid, value))} />
         </td>
       </tr>)
     ];
   }
 
   renderText(project, window, control) {
+    const state = storeHandler.getStore().getState();
+    const components = getComponents(state, { project: project.uid });
     return [
       (<tr key="Format">
         <td><PropertiesLabel text={'Format (function body with context items as args)'} /></td>
@@ -75,10 +83,11 @@ class PropertiesControl extends React.Component {
         <td>
           <PropertiesControlTextContext project={project}
                                         control={control}
-                                        onNew={(newItem) => AppDispatcher.dispatch(projectControlAddTextContext(project, window, control, newItem))}
-                                        onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteTextContext(project, window, control, item))}
-                                        onIdChange={(item, newId) => AppDispatcher.dispatch(projectControlChangeTextContextId(project, window, control, item, newId))}
-                                        onComponentChange={(item, component, attribute) => AppDispatcher.dispatch(projectControlChangeTextContextComponent(project, window, control, item, component, attribute))} />
+                                        components={components}
+                                        onNew={(newItem) => AppDispatcher.dispatch(projectControlAddTextContext(project.uid, window.uid, control.uid, newItem))}
+                                        onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteTextContext(project.uid, window.uid, control.uid, item.uid))}
+                                        onIdChange={(item, newId) => AppDispatcher.dispatch(projectControlChangeTextContextId(project.uid, window.uid, control.uid, item.uid, newId))}
+                                        onComponentChange={(item, component, attribute) => AppDispatcher.dispatch(projectControlChangeTextContextComponent(project.uid, window.uid, control.uid, item.uid, component, attribute))} />
         </td>
       </tr>)
     ];

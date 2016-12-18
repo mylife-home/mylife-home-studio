@@ -57,7 +57,7 @@ class PropertiesControlDisplayMapping extends React.Component {
 
   render() {
     const {
-      project, control,
+      project, control, component,
       onDelete, onImageChange, onValueChange, onMinChange, onMaxChange
     } = this.props;
 
@@ -66,7 +66,7 @@ class PropertiesControlDisplayMapping extends React.Component {
       return (<div>Select component/attribute</div>);
     }
 
-    const attributeType = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
+    const attributeType = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
     const isRange = attributeType.constructor.name === 'Range';
     const mappingDisplay = mapping.map(item => {
       const key = isRange ? `[${item.min}-${item.max}]` : item.value;
@@ -143,6 +143,7 @@ class PropertiesControlDisplayMapping extends React.Component {
 PropertiesControlDisplayMapping.propTypes = {
   project       : React.PropTypes.object.isRequired,
   control       : React.PropTypes.object.isRequired,
+  component     : React.PropTypes.object,
   onNew         : React.PropTypes.func.isRequired,
   onDelete      : React.PropTypes.func.isRequired,
   onImageChange : React.PropTypes.func.isRequired,
