@@ -37,7 +37,7 @@ class PropertiesControl extends React.Component {
     return [
       (<tr key="Default image">
         <td><PropertiesLabel text={'Default image'} /></td>
-        <td><ImageSelectorContainer project={project.uid} image={control.display.defaultResource} onImageChange={(img) => AppDispatcher.dispatch(projectControlChangeImage(project, window, control, img))} /></td>
+        <td><ImageSelectorContainer project={project.uid} image={control.display.defaultResource} onImageChange={(img) => AppDispatcher.dispatch(projectControlChangeImage(project.uid, window.uid, control.uid, img))} /></td>
       </tr>),
       (<tr key="Component/Attribute">
         <td><PropertiesLabel text={'Component/Attribute'} /></td>

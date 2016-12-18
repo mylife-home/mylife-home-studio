@@ -134,6 +134,9 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_DELETE_CONTROL:
       return updateWindow(state, action, window => ({ controls : window.controls.delete(action.control) }));
 
+    case actionTypes.PROJECT_CONTROL_CHANGE_IMAGE:
+      return updateControl(state, action, control => ({ display : { ...control.display, defaultResource : action.image } }));
+
     case actionTypes.PROJECT_CONTROL_CHANGE_ACTION:
       return updateControl(state, action, { [action.actionType] : action.action });
 

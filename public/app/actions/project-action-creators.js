@@ -440,8 +440,13 @@ export function projectControlDeleteDisplayMapping(project, window, control, ite
 }
 
 export function projectControlChangeImage(project, window, control, image) {
-  control.display.defaultResource = image;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_CONTROL_CHANGE_IMAGE,
+    project,
+    window,
+    control,
+    image
+  };
 }
 
 export function projectControlChangeAction(project, window, control, actionType, action) {
