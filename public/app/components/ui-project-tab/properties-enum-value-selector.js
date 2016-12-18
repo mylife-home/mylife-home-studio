@@ -39,7 +39,7 @@ class PropertiesEnumValueSelector extends React.Component {
     return (
       <div>
         <mui.RaisedButton
-          label={value || ''}
+          label={value || ' '}
           onTouchTap={stopPropagationWrapper(this.handleTouchTap.bind(this))}
         />
         <mui.Popover
