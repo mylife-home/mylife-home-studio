@@ -392,7 +392,7 @@ function serializeActionWindow(project, actionWindow) {
   };
 }
 
- /////// TODO ///////
+ /////// BEGIN TODO ///////
 
 function prepareImportOnline(project, done) {
   return common.loadOnlineCoreEntities((err) => {
