@@ -1,5 +1,6 @@
 'use strict';
 
+import Immutable from 'immutable';
 import Metadata from '../metadata/index';
 import common from './common';
 import Resources from '../resources';
@@ -31,19 +32,135 @@ export default {
 
 function createNew() {
   return {
-    toolbox    : [],
-    components : [],
-    bindings   : []
+    plugins    : Immutable.Map(),
+    components : Immutable.Map(),
+    bindings   : Immutable.Map()
   };
 }
 
-function open(project, data) {
-  data = JSON.parse(JSON.stringify(data));
-  project.toolbox = data.Toolbox.map(loadToolboxItem);
-  project.components = data.Components.map(loadComponent.bind(null, project));
-  project.bindings = [];
+function open(data) {
+  const project = {
+    plugins : common.loadToMap([].concat(... data.Toolbox.map(loadToolboxItem)), x => x)
+  };
+
+  project.components = common.loadToMap(data.Components, (raw) => loadComponent(project, raw));
+
   validateOpen(project);
   createLinks(project);
+
+  return project;
+}
+
+function loadToolboxItem(item) {
+  return item.Plugins.map((plugin) => ({
+    ... common.loadPlugin(plugin, item.EntityName),
+    uid: newId()
+  }));
+}
+
+function loadComponent(project, component) {
+  return {
+    uid: newId(),
+    id: component.Component.id,
+    tmpBindings: component.Component.bindings,
+    config: common.loadMap(component.Component.config),
+    designer: loadComponentDesigner(component.Component.designer),
+    plugin: findPlugin(project, component.EntityName, component.Component.library, component.Component.type).uid
+  };
+}
+
+function loadComponentDesigner(designer) {
+  const map = common.loadMap(designer);
+  const ret = {};
+
+  if(map.Location) {
+    const split = map.Location.split(',');
+    ret.location = {
+      x: parseInt(split[0]),
+      y: parseInt(split[1])
+    };
+  }
+
+  return ret;
+}
+
+function createLinks(project) {
+
+  project.components.forEach(comp => {
+    comp.bindings       = Immutable.Set().asMutable();
+    comp.bindingTargets = Immutable.Set().asMutable();
+    return true;
+  });
+
+  project.bindings = Immutable.Map().withMutations(bindings => {
+    for(const component of project.components.values()) {
+      for(const tmpBinding of component.tmpBindings) {
+        const remoteComponent = findComponent(project, tmpBinding.remote_id);
+
+        const binding = {
+          uid             : newId(),
+          local           : component.uid,
+          remote          : remoteComponent.uid,
+          localAction     : tmpBinding.local_action,
+          remoteAttribute : tmpBinding.remote_attribute
+        };
+
+        component.bindings.add(binding.uid);
+        remoteComponent.bindingTargets.add(binding.uid);
+        bindings.set(binding.uid, binding);
+      }
+      delete component.tmpBindings;
+    }
+  });
+
+  project.components.forEach(comp => {
+    comp.bindings       = comp.bindings.asImmutable();
+    comp.bindingTargets = comp.bindingTargets.asImmutable();
+    return true;
+  });
+}
+
+function validateOpen(project) {
+  project.components = removeDuplicates(project.components, c => c.id);
+  for(const comp of project.components.values()) {
+    removeDuplicates(comp.tmpBindings, b => `${b.remote_id}:${b.remote_attribute}:${b.local_action}`);
+  }
+
+  project.components.forEach(comp => validateConfig(project, comp));
+}
+
+function validateConfig(project, component) {
+  const config = component.config;
+  const plugin = project.plugins.get(component.plugin);
+  plugin.config.forEach(item => {
+    if(config.hasOwnProperty(item.name)) { return; }
+    config[item.name] = metadata.getConfigTypeDefaultValue(item.type);
+  });
+}
+
+function removeDuplicates(container, itemValue) {
+  const values = new Set();
+  const keys = [];
+  for(const [key, it] of container.entries()) {
+    const value = itemValue(it);
+    if(values.has(value)) {
+      keys.push(key);
+      continue;
+    }
+    values.add(value);
+  }
+
+  if(Array.isArray(container)) {
+    keys.reverse();
+    for(const i of keys) {
+      container.splice(i, 1);
+    }
+    return;
+  }
+
+  return container.withMutations(map => {
+    keys.forEach(key => map.delete(key));
+  });
 }
 
 function validate(project, msgs) {
@@ -99,7 +216,7 @@ function serialize(project) {
     EntityName : component.plugin.entityId
   }));
 
-  project.raw.Toolbox = project.toolbox.map(item => ({
+  project.raw.Toolbox = project.plugins.map(item => ({
     EntityName : item.entityId,
     Plugins    : item.plugins.map(plugin => ({
       clazz   : plugin.raw.clazz,
@@ -196,10 +313,10 @@ function executeImportToolbox(data, done) {
       common.dirtify(data.project);
     }
 
-    // clean empty toolbox items
-    data.project.toolbox.
+    // clean empty plugins items
+    data.project.plugins.
                  filter(it => !it.plugins.length).
-                 forEach(arrayRemoveByValue.bind(null, data.project.toolbox));
+                 forEach(arrayRemoveByValue.bind(null, data.project.plugins));
 
   } catch(err) {
     return done(err);
@@ -235,7 +352,7 @@ function importDriverComponents(project, done) {
           plugin
         };
 
-        validateConfig(component);
+        validateConfig(project, component);
         project.components.push(component);
         common.dirtify(project);
       }
@@ -474,7 +591,7 @@ function createComponent(project, location, pluginData) {
     plugin
   };
 
-  validateConfig(component);
+  validateConfig(project, component);
   project.components.push(component);
   common.dirtify(project);
 
@@ -565,114 +682,29 @@ function getComponentHash(project, component) {
   return component._hash;
 }
 
-function loadToolboxItem(item) {
-  const entityId = item.EntityName;
-  return {
-    entityId,
-    plugins: item.Plugins.map((plugin) => common.loadPlugin(plugin, entityId))
-  };
-}
-
 function getToolboxItem(project, entityId) {
-  for(const item of project.toolbox) {
+  for(const item of project.plugins) {
     if(item.entityId === entityId) {
       return item;
     }
   }
   const ret = { entityId, plugins: [] };
-  project.toolbox.push(ret);
+  project.plugins.push(ret);
   return ret;
-}
-
-function loadComponent(project, component) {
-  return {
-    uid: newId(),
-    id: component.Component.id,
-    bindings: component.Component.bindings,
-    bindingTargets: [],
-    config: common.loadMap(component.Component.config),
-    designer: loadComponentDesigner(component.Component.designer),
-    plugin: findPlugin(project, component.EntityName, component.Component.library, component.Component.type)
-  };
-}
-
-function loadComponentDesigner(designer) {
-  const map = common.loadMap(designer);
-  const ret = {};
-
-  if(map.Location) {
-    const split = map.Location.split(',');
-    ret.location = {
-      x: parseInt(split[0]),
-      y: parseInt(split[1])
-    };
-  }
-
-  return ret;
-}
-
-function createLinks(project) {
-  for(const component of project.components) {
-    for(const binding of component.bindings) {
-      const remoteComponent = findComponent(project, binding.remote_id);
-      delete binding.remote_id;
-
-      binding.uid = newId();
-      binding.local = component;
-      binding.remote = remoteComponent;
-      remoteComponent.bindingTargets.push(binding);
-      project.bindings.push(binding);
-    }
-  }
-}
-
-function validateOpen(project) {
-  removeDuplicates(project.components, c => c.id);
-  for(const comp of project.components) {
-    removeDuplicates(comp.bindings, b => `${b.remote_id}:${b.remote_attribute}:${b.local_action}`);
-  }
-
-  project.components.forEach(validateConfig);
-}
-
-function validateConfig(component) {
-  const config = component.config;
-  component.plugin.config.forEach(item => {
-    if(config.hasOwnProperty(item.name)) { return; }
-    config[item.name] = metadata.getConfigTypeDefaultValue(item.type);
-  });
-}
-
-function removeDuplicates(array, itemValue) {
-  const values = new Set();
-  const indexes = [];
-  for(const [i, it] of array.entries()) {
-    const value = itemValue(it);
-    if(values.has(value)) {
-      indexes.push(i);
-      continue;
-    }
-    values.add(value);
-  }
-  indexes.reverse();
-  for(const i of indexes) {
-    array.splice(i, 1);
-  }
 }
 
 function findPlugin(project, entityId, library, type) {
-  for(let item of project.toolbox) {
-    if(item.entityId !== entityId) { continue; }
-    for(let plugin of item.plugins) {
-      if(plugin.library === library && plugin.type === type) {
-        return plugin;
-      }
+  for(const plugin of project.plugins.values()) {
+    if(plugin.entityId === entityId &&
+       plugin.library  === library &&
+       plugin.type     === type) {
+      return plugin;
     }
   }
 }
 
 function findComponent(project, componentId) {
-  for(const component of project.components) {
+  for(const component of project.components.values()) {
     if(component.id === componentId) {
       return component;
     }
@@ -680,7 +712,7 @@ function findComponent(project, componentId) {
 }
 
 function findPluginUsage(project, plugin) {
-  return project.components.filter(comp => comp.plugin === plugin);
+  return project.components.filter(comp => comp.plugin === plugin).ToArray();
 }
 
 function arrayRemoveByValue(array, item) {
@@ -691,7 +723,7 @@ function arrayRemoveByValue(array, item) {
 
 function getProjectPlugins(project) {
   const ret = new Map();
-  for(const item of project.toolbox) {
+  for(const item of project.plugins) {
     for(const plugin of item.plugins) {
       ret.set(`${item.entityId}:${plugin.library}:${plugin.type}`, {
         item,
