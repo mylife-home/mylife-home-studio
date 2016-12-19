@@ -50,7 +50,6 @@ class CanvasWindow extends React.Component {
 
     this.state = {
       isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
-      lastUpdate: props.project.lastUpdate,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
 
@@ -71,8 +70,7 @@ class CanvasWindow extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
-      lastUpdate: project.lastUpdate
+      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
     });
   }
 
@@ -81,8 +79,7 @@ class CanvasWindow extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
-      lastUpdate: project.lastUpdate
+      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
     });
   }
 
@@ -114,7 +111,7 @@ class CanvasWindow extends React.Component {
                  style={styles.window}>
               <DataImage image={getImage(state, { project: project.uid, image: window.backgroundResource })} style={styles.background}/>
               {getWindowControls(state, { project: project.uid, window: window.uid }).map((ctrl) => (
-                <CanvasControl key={ctrl.uid} project={project} window={window} control={ctrl} />))}
+                <CanvasControl key={ctrl.uid} project={project.uid} window={window} control={ctrl} />))}
             </div>
           </ResizableBox>
         </div>

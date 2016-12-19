@@ -60,11 +60,10 @@ class CanvasControl extends React.Component {
     super(props, context);
 
     const { project, control } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.state = {
       isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
-      lastUpdate: props.project.lastUpdate,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
 
@@ -82,28 +81,26 @@ class CanvasControl extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { project, control } = nextProps;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
-      lastUpdate: project.lastUpdate
+      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
     });
   }
 
   handleStoreChange() {
     const { project, control } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
-      lastUpdate: project.lastUpdate
+      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
     });
   }
 
   controlResize(dir, size) {
     const { project, window, control } = this.props;
 
-    AppDispatcher.dispatch(projectResizeControl(project.uid, window.uid, control.uid, size));
+    AppDispatcher.dispatch(projectResizeControl(project, window.uid, control.uid, size));
   }
 
   select() {
@@ -126,7 +123,7 @@ class CanvasControl extends React.Component {
   renderDisplay(control, styles) {
     const { project } = this.props;
     const state = storeHandler.getStore().getState();
-    return (<DataImage image={getImage(state, { project: project.uid, image: control.display.defaultResource })} style={styles.item}/>);
+    return (<DataImage image={getImage(state, { project, image: control.display.defaultResource })} style={styles.item}/>);
   }
 
   render() {
@@ -157,7 +154,7 @@ class CanvasControl extends React.Component {
 }
 
 CanvasControl.propTypes = {
-  project: React.PropTypes.object.isRequired,
+  project: React.PropTypes.number.isRequired,
   window: React.PropTypes.object.isRequired,
   control: React.PropTypes.object.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
@@ -185,7 +182,7 @@ const controlSource = {
     const { project, window, control } = props;
 
     const { delta } = monitor.getDropResult();
-    AppDispatcher.dispatch(projectMoveControl(project.uid, window.uid, control.uid, {
+    AppDispatcher.dispatch(projectMoveControl(project, window.uid, control.uid, {
       x: control.x + delta.x / window.width,
       y: control.y + delta.y / window.height
     }));
