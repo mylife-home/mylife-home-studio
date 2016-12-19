@@ -49,7 +49,7 @@ class CanvasWindow extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.state = {
-      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
 
@@ -70,7 +70,7 @@ class CanvasWindow extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
     });
   }
 
@@ -79,7 +79,7 @@ class CanvasWindow extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
     });
   }
 

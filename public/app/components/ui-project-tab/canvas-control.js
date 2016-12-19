@@ -63,7 +63,7 @@ class CanvasControl extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.state = {
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
 
@@ -84,7 +84,7 @@ class CanvasControl extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
     });
   }
 
@@ -93,7 +93,7 @@ class CanvasControl extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
     });
   }
 

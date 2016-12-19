@@ -90,7 +90,7 @@ class CanvasComponent extends React.Component {
     const { project, component } = this.props;
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     this.setState({
-      isSelected: projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid,
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid,
       componentHash: Facade.projects.vpanelGetComponentHash(project, component)
     });
   }
