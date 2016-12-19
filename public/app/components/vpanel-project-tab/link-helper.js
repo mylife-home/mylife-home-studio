@@ -6,6 +6,7 @@ import AppDispatcher from '../../compat/dispatcher';
 import { projectStateUpdateLinkData } from '../../actions/index';
 import storeHandler from '../../compat/store';
 import { getProjectState } from '../../selectors/projects';
+import { getPlugin } from '../../selectors/vpanel-projects';
 
 //const GRID_SIZE   = utils.GRID_SIZE;
 //const CANVAS_SIZE = 32000;
@@ -66,7 +67,8 @@ function componentOnMeasureChanged(uiComponent, component, project, projectState
   }
 
   const componentMeasures = measures.components;
-  const plugin = component.plugin;
+
+  const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
   const members = plugin.clazz.attributes.map(a => a.name).
     concat(plugin.clazz.actions.map(a => a.name));
 

@@ -11,7 +11,6 @@ export const getComponent  = (state, props) => getComponents(state, props).get(p
 export const getPlugin     = (state, props) => getPlugins(state, props).get(props.plugin);
 export const getBinding    = (state, props) => getBindings(state, props).get(props.binding);
 
-
 export const makeGetToolbox = () => createSelector(
   [ getPlugins ],
   (plugins) => plugins.

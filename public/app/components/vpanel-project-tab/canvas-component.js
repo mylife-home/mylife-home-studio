@@ -19,6 +19,7 @@ import CanvasComponentAction from './canvas-component-action';
 import commonStyles from './canvas-component-styles';
 import linkHelper from './link-helper';
 import { getProjectState } from '../../selectors/projects';
+import { getPlugin } from '../../selectors/vpanel-projects';
 
 function getStyles(props, state) {
   const { muiTheme, isSelected } = state;
@@ -128,11 +129,10 @@ class CanvasComponent extends React.Component {
     AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
   }
 
-  renderIcon(styles) {
-    const { component } = this.props;
+  renderIcon(styles, plugin) {
     const iconColor = styles.titleContainer.color;
 
-    switch(component.plugin.usage) {
+    switch(plugin.usage) {
       case Facade.metadata.pluginUsage.driver:
         return (
           <icons.PluginDriver color={iconColor} style={styles.titleIcon} />
@@ -157,8 +157,8 @@ class CanvasComponent extends React.Component {
     const { project, component, connectDragPreview, connectDragSource, isDragging } = this.props;
     const location = component.designer.location;
     const styles = getStyles(this.props, this.state);
-    const entityHost = component.plugin.entityId.split('_')[1];
-    const plugin = component.plugin;
+    const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
+    const entityHost = plugin.entityId.split('_')[1];
 
     return (
       <div ref={'component'} style={{
@@ -176,7 +176,7 @@ class CanvasComponent extends React.Component {
                   {/* title */}
                   {connectDragSource(
                     <div style={styles.titleContainer}>
-                      <div style={styles.titleIconContainer}>{this.renderIcon(styles)}</div>
+                      <div style={styles.titleIconContainer}>{this.renderIcon(styles, plugin)}</div>
                       <div style={styles.titleText}>{component.id}</div>
                     </div>
                   )}

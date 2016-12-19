@@ -10,6 +10,7 @@ import { dragTypes } from '../../constants/index';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 import { getProjectState } from '../../selectors/projects';
+import { getComponents, getBindings } from '../../selectors/vpanel-projects';
 
 import CanvasComponent from './canvas-component';
 import CanvasBinding from './canvas-binding';
@@ -65,7 +66,7 @@ class Canvas extends React.Component {
   }
 
   handleStoreChange() {
-    const project = this.props.project;
+    const { project } = this.props;
     let projectVersion = project && project.version;
     this.setState({ projectVersion });
   }
@@ -83,11 +84,13 @@ class Canvas extends React.Component {
   }
 
   renderComponents(project) {
-    return project.components.map(component => (<CanvasComponent key={component.uid} project={project} component={component}/>));
+    const components = getComponents(storeHandler.getStore().getState(), { project: project.uid }).toArray();
+    return components.map(component => (<CanvasComponent key={component.uid} project={project} component={component}/>));
   }
 
   renderBindings(project) {
-    return project.bindings.map(binding => (<CanvasBinding key={binding.uid} project={project} binding={binding}/>));
+    const bindings = getBindings(storeHandler.getStore().getState(), { project: project.uid }).toArray();
+    return bindings.map(binding => (<CanvasBinding key={binding.uid} project={project} binding={binding}/>));
   }
 
   render() {
