@@ -103,6 +103,22 @@ function updateControlDisplayMap(state, action, changedProps) {
   }));
 }
 
+function updateComponent(state, action, changedProps) {
+  return updateProject(state, action, project => ({
+    components : project.components.update(action.component, component => {
+
+      if(typeof changedProps === 'function') {
+        changedProps = changedProps(component);
+      }
+
+      return {
+        ...component,
+        ...changedProps
+      };
+    })
+  }));
+}
+
 export default function(state = { projects: Immutable.Map(), states: Immutable.Map() }, action) {
 
   switch(action.type) {
@@ -130,8 +146,17 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_NEW_COMPONENT:
       return updateProject(state, action, project => ({ components : project.components.set(action.component.uid, action.component) }));
 
-    case actionTypes.PROJECT_NEW_COMPONENT:
-      return updateProject(state, action, project => ({ components : project.components.set(action.component.uid, action.component) }));
+    case actionTypes.PROJECT_DELETE_VPANEL_COMPONENT:
+      return updateProject(state, action, project => ({ components : project.components.delete(action.component) }));
+
+    case actionTypes.PROJECT_COMPONENT_CHANGE_ID:
+      return updateComponent(state, action, { id: action.id });
+
+    case actionTypes.PROJECT_MOVE_COMPONENT:
+      return updateComponent(state, action, component => ({ designer: { ...component.designer, location: action.location } }));
+
+    case actionTypes.PROJECT_COMPONENT_CHANGE_CONFIG:
+      return updateComponent(state, action, component => ({ config: { ...component.config, [action.name]: action.value } }));
 
     case actionTypes.PROJECT_DELETE_UI_COMPONENT: // merge with PROJECT_DELETE_COMPONENT (vpane) ?
       return updateProject(state, action, project => ({ components : project.components.delete(action.component) }));

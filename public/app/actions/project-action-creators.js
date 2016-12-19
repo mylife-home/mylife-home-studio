@@ -13,6 +13,7 @@ import { resourcesGet } from './resources-action-creators';
 import { getProjects, getProject, getProjectState } from '../selectors/projects';
 import { getWindow } from '../selectors/ui-projects';
 import { getResourceEntity } from '../selectors/online';
+import { getComponent } from '../selectors/vpanel-projects';
 
 export function projectNew(type) {
   const project = Facade.projects.new(type);
@@ -126,8 +127,6 @@ export function projectChangeName(project, newName) {
   };
 }
 
-////// BEGIN TODO
-
 export function projectNewComponent(project, location, plugin) {
   return (dispatch) => {
     const component = Facade.projects.vpanelCreateComponent(project, location, plugin);
@@ -138,29 +137,62 @@ export function projectNewComponent(project, location, plugin) {
     });
 
     const selection = { type: 'component', uid: component.uid };
-    dispatch(projectStateSelect(project, selection, selection));
+    dispatch(projectStateSelect(project, selection));
   };
 }
 
 export function projectDeleteVPanelComponent(project, component) {
-  AppDispatcher.dispatch(projectStateSelect(project, null));
-  Facade.projects.vpanelDeleteComponent(project, component);
+  return (dispatch, getState) => {
+    // delete bindings
+    const state = getState();
+    const comp = getComponent(state, { project, component });
+
+    for(const binding of comp.bindings) {
+      dispatch(projectDeleteBinding(project, binding));
+    }
+    for(const binding of comp.bindingTargets) {
+      dispatch(projectDeleteBinding(project, binding));
+    }
+
+    dispatch({
+      type: actionTypes.PROJECT_DELETE_VPANEL_COMPONENT,
+      project,
+      component
+    });
+
+    dispatch(projectStateSelect(project, null));
+  };
 }
 
 export function projectComponentChangeId(project, component, id) {
-  component.id = id;
-  Facade.projects.dirtify(project);
+  return {
+    type: actionTypes.PROJECT_COMPONENT_CHANGE_ID,
+    project,
+    component,
+    id
+  };
 }
 
 export function projectMoveComponent(project, component, location) {
-  Object.assign(component.designer.location, location);
-  Facade.projects.vpanelDirtifyComponent(project, component);
+  return {
+    type: actionTypes.PROJECT_MOVE_COMPONENT,
+    project,
+    component,
+    location
+  };
 }
 
 export function projectComponentChangeConfig(project, component, name, value) {
-  component.config[name] = value;
-  Facade.projects.vpanelDirtifyComponent(project, component);
+  return {
+    type: actionTypes.PROJECT_COMPONENT_CHANGE_CONFIG,
+    project,
+    component,
+    name,
+    value
+  };
 }
+
+////// BEGIN TODO
 
 export function projectNewBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
   const binding = Facade.projects.vpanelCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);

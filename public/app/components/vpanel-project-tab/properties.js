@@ -88,7 +88,7 @@ class Properties extends React.Component {
 
   renderComponent(project, component) {
     const onDelete = () => {
-      projectDeleteVPanelComponent(project, component);
+      AppDispatcher.dispatch(projectDeleteVPanelComponent(project.uid, component.uid));
     };
 
     const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
