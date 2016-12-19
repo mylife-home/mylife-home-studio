@@ -10,7 +10,7 @@ export default function(state = DEFAULT_TAB, action) {
       return `project-${action.project.uid}`;
 
     case actionTypes.PROJECT_CLOSE:
-      if(action.project.uid !== state) { return state; }
+      if(`project-${action.project}` !== state) { return state; }
       return DEFAULT_TAB;
 
     case actionTypes.TAB_ACTIVATE:

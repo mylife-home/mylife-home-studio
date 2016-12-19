@@ -93,7 +93,7 @@ class UiProjectTab extends React.Component {
                 center={title}
                 left={<icons.tabs.Ui />}
                 right={
-                  <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project))}>
+                  <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project.uid))}>
                     <icons.actions.Close />
                   </mui.IconButton>
                 }/>

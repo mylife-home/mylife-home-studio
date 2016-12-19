@@ -56,7 +56,7 @@ class VPanelProjectTab extends React.Component {
                 center={project.name}
                 left={<icons.tabs.VPanel />}
                 right={
-                  <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project))}>
+                  <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project.uid))}>
                     <icons.actions.Close />
                   </mui.IconButton>
                 }/>

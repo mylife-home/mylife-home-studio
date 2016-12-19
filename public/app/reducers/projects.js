@@ -120,8 +120,8 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_CLOSE:
       return {
         ...state,
-        projects: state.projects.delete(action.project.uid),
-        states: state.states.delete(action.project.uid)
+        projects: state.projects.delete(action.projec),
+        states: state.states.delete(action.projec)
       };
 
     case actionTypes.PROJECT_CHANGE_NAME:
