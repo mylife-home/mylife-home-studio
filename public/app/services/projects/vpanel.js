@@ -102,8 +102,8 @@ function serialize(project) {
   project.raw.Toolbox = project.toolbox.map(item => ({
     EntityName : item.entityId,
     Plugins    : item.plugins.map(plugin => ({
-      clazz   : plugin.rawClass,
-      config  : plugin.rawConfig,
+      clazz   : plugin.raw.clazz,
+      config  : plugin.raw.config,
       library : plugin.library,
       type    : plugin.type,
       usage   : plugin.usage,
@@ -711,7 +711,7 @@ function pluginsDiff(projectPlugins, onlinePlugins) {
                      filter(id => !onlinePlugins.has(id)),
     modified : Array.from(projectPlugins.keys()).
                      filter(id => onlinePlugins.has(id)).
-                     filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.rawClass)
+                     filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.raw.clazz)
   };
 
   ret.count = ret.added.length +

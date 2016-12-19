@@ -9,6 +9,7 @@ import AppDispatcher from '../../compat/dispatcher';
 import { resourcesSetQuery } from '../../actions/index';
 import storeHandler from '../../compat/store'; // TODO: remove that ?
 import { getResourceEntity } from'../../selectors/online';
+import { getComponent } from'../../selectors/ui-projects';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -185,6 +186,7 @@ function findWindow(project, id) {
 }
 
 function validate(project, msgs) {
+  const state = storeHandler.getStore().getState();
   common.validate(project, msgs);
 
   if(!project.defaultWindow) {
@@ -234,7 +236,8 @@ function validate(project, msgs) {
       }
 
       if(control.display && control.display.component) {
-        const attributeType = control.display.component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
+        const component = getComponent(state, { project: project.uid, component: control.display.component });
+        const attributeType = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
         if(attributeType.constructor.name === 'Enum') {
           const { noIdCount, duplicates } = common.checkIds(control.display.map, item => item.value);
           if(noIdCount > 0) {
@@ -268,10 +271,8 @@ function validate(project, msgs) {
 }
 
 function serialize(project) {
-  common.serialize(project);
-
-  project.raw = {
-    ...project.raw,
+  return {
+    ...common.serialize(project),
     Components    : common.serializeFromMap(project.components, serializeComponent),
     Images        : common.serializeFromMap(project.images, serializeImage),
     Windows       : common.serializeFromMap(project.windows, (w) => serializeWindow(project, w)),
@@ -294,8 +295,8 @@ function serializeComponent(comp) {
       type    : comp.plugin.type,
       usage   : comp.plugin.usage,
       version : comp.plugin.version,
-      config  : comp.plugin.rawConfig,
-      clazz   : comp.plugin.rawClass
+      config  : comp.plugin.raw.config,
+      clazz   : comp.plugin.raw.clazz
     }
   };
 }
@@ -313,7 +314,7 @@ function serializeWindow(project, win) {
     height: win.height,
     width: win.width,
     style: win.style,
-    background_resource_id: serializeObjectId(project.windows, win.backgroundResource),
+    background_resource_id: serializeObjectId(project.images, win.backgroundResource),
     controls: common.serializeFromMap(win.controls, (c) => serializeControl(project, c))
   };
 }

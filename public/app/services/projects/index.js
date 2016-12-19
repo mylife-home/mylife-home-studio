@@ -50,8 +50,7 @@ class Projects {
     };
 
     const project = {
-      raw          : data,
-      uid          :newId(),
+      uid          : newId(),
       type,
       name         : data.Name,
       creationDate : common.loadDate(data.CreationDate),
@@ -60,7 +59,7 @@ class Projects {
       ... specifics[type]()
     };
 
-    debug('project created', project.uid);
+    debug('project opened', project.uid);
     return project;
   }
 
@@ -110,15 +109,11 @@ class Projects {
 
     switch(project.type) {
       case projectTypes.VPANEL:
-        vpanel.serialize(project);
-        break;
+        return JSON.stringify(vpanel.serialize(project));
 
       case projectTypes.UI:
-        ui.serialize(project);
-        break;
+        return JSON.stringify(ui.serialize(project));
     }
-
-    return JSON.stringify(project.raw);
   }
 
   executeDeploy(data, done) {

@@ -212,7 +212,7 @@ function checkIds(map, idAccessor) {
 }
 
 function serialize(project) {
-  project.raw = {
+  return {
     Name         : project.name,
     CreationDate : serializeDate(project.creationDate),
     LastUpdate   : serializeDate(project.lastUpdate)
