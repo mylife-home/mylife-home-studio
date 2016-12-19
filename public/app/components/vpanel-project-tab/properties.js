@@ -13,7 +13,7 @@ import AppDispatcher from '../../compat/dispatcher';
 import {
   projectChangeName,
   projectDeleteBinding,
-  projectDeleteComponent, projectComponentChangeId, projectComponentChangeConfig
+  projectDeleteVPanelComponent, projectComponentChangeId, projectComponentChangeConfig
 } from '../../actions/index';
 import { getProjectState } from '../../selectors/projects';
 import { getPlugin } from '../../selectors/vpanel-projects';
@@ -88,7 +88,7 @@ class Properties extends React.Component {
 
   renderComponent(project, component) {
     const onDelete = () => {
-      projectDeleteComponent(project, component);
+      projectDeleteVPanelComponent(project, component);
     };
 
     const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });

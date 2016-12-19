@@ -150,10 +150,8 @@ class Projects {
     return vpanel.prepareDeployDrivers(project, done);
   }
 
-  vpanelCreateComponent(project, location, pluginData) {
-    const component = vpanel.createComponent(project, location, pluginData);
-    AppDispatcher.dispatch(projectRefresh(project));
-    return component;
+  vpanelCreateComponent(project, location, plugin) {
+    return vpanel.createComponent(project, location, plugin);
   }
 
   vpanelCanCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {

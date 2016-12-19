@@ -4,7 +4,9 @@ import Immutable from 'immutable';
 import Metadata from '../metadata/index';
 import common from './common';
 import Resources from '../resources';
-import { newId } from '../../utils/index';
+import { newId, snapToGrid } from '../../utils/index';
+import storeHandler from '../../compat/store'; // TODO: remove that ?
+import { getProject } from'../../selectors/projects';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
@@ -577,24 +579,21 @@ function prepareDeployDrivers(project, done) {
   });
 }
 
-function createComponent(project, location, pluginData) {
-  const plugin = findPlugin(project, pluginData.entityId, pluginData.library, pluginData.type);
-  const config = {};
-
+function createComponent(projectUid, location, plugin) {
+  const state   = storeHandler.getStore().getState();
+  const project = getProject(state, { project: projectUid });
+  const uid     = newId();
   const component = {
-    uid: newId(),
-    id: `component_${common.uid()}`,
-    bindings: [],
-    bindingTargets: [],
-    config,
-    designer: { location },
+    uid,
+    id             : `component_${uid}`,
+    bindings       : Immutable.Set(),
+    bindingTargets : Immutable.Set(),
+    config         : {},
+    designer       : { location: snapToGrid(location) },
     plugin
   };
 
   validateConfig(project, component);
-  project.components.push(component);
-  common.dirtify(project);
-
   return component;
 }
 

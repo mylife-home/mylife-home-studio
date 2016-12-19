@@ -6,7 +6,7 @@ import Facade from '../services/facade';
 
 import AppDispatcher from '../compat/dispatcher';
 
-import { download, snapToGrid } from '../utils/index';
+import { download } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
 import { resourcesGet } from './resources-action-creators';
@@ -129,13 +129,20 @@ export function projectChangeName(project, newName) {
 ////// BEGIN TODO
 
 export function projectNewComponent(project, location, plugin) {
+  return (dispatch) => {
+    const component = Facade.projects.vpanelCreateComponent(project, location, plugin);
+    dispatch({
+      type: actionTypes.PROJECT_NEW_COMPONENT,
+      project,
+      component
+    });
 
-  const component = Facade.projects.vpanelCreateComponent(project, snapToGrid(location), plugin);
-
-  AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
+    const selection = { type: 'component', uid: component.uid };
+    dispatch(projectStateSelect(project, selection, selection));
+  };
 }
 
-export function projectDeleteComponent(project, component) {
+export function projectDeleteVPanelComponent(project, component) {
   AppDispatcher.dispatch(projectStateSelect(project, null));
   Facade.projects.vpanelDeleteComponent(project, component);
 }

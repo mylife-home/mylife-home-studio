@@ -90,20 +90,16 @@ ToolboxPlugin.propTypes = {
 const pluginSource = {
   beginDrag(props) {
     const { plugin } = props;
-    return {
-      entityId: plugin.entityId,
-      library: plugin.library,
-      type: plugin.type
-    };
+    return { plugin: plugin.uid };
   },
 
   endDrag(props, monitor) {
     if(!monitor.didDrop()) { return; }
 
-    const plugin = monitor.getItem();
+    const { plugin } = monitor.getItem();
     const { project, onNewComponent } = props;
     const { location } = monitor.getDropResult();
-    onNewComponent(project, location, plugin);
+    onNewComponent(project.uid, location, plugin);
   }
 };
 
