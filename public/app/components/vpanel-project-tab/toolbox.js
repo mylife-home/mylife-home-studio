@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 
 import Toolbar from './toolbar';
-import ToolboxPluginContainer from '../../containers/vpanel-project-tab/toolbox-plugin-container';
+import ToolboxPlugin from './toolbox-plugin';
 
 import tabStyles from '../base/tab-styles';
 
@@ -14,20 +14,20 @@ const styles = {
   }
 };
 
-const Toolbox = ({ project }) => {
+const Toolbox = ({ project, toolbox, onNewComponent }) => {
 
   const items = [];
 
-  project.toolbox.forEach(item => {
-    const entityId = item.entityId;
+  toolbox.forEach(item => {
+    const { entityId, plugins } = item;
     const entityName = entityId.substr(entityId.indexOf('_') + 1);
 
     items.push(<mui.Subheader key={entityId}>{entityName}</mui.Subheader>);
 
-    item.plugins.forEach(plugin => {
+    plugins.forEach(plugin => {
       items.push(
         <mui.ListItem key={`${entityId}:${plugin.library}:${plugin.type}`}>
-          <ToolboxPluginContainer project={project} plugin={plugin}></ToolboxPluginContainer>
+          <ToolboxPlugin project={project} plugin={plugin} onNewComponent={onNewComponent}></ToolboxPlugin>
         </mui.ListItem>
       );
     });
@@ -44,7 +44,9 @@ const Toolbox = ({ project }) => {
 };
 
 Toolbox.propTypes = {
-  project: React.PropTypes.object.isRequired,
+  project        : React.PropTypes.object.isRequired,
+  toolbox        : React.PropTypes.array.isRequired,
+  onNewComponent : React.PropTypes.func.isRequired
 };
 
 export default Toolbox;

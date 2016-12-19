@@ -7,7 +7,7 @@ import icons from '../icons';
 import MainTitle from '../main-title';
 
 import Properties from './properties';
-import Toolbox from './toolbox';
+import ToolboxContainer from '../../containers/vpanel-project-tab/toolbox-container';
 import Canvas from './canvas';
 
 import storeHandler from '../../compat/store';
@@ -47,7 +47,7 @@ class VPanelProjectTab extends React.Component {
         <bs.Row style={tabStyles.fullHeight}>
           <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
             <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              <Toolbox project={project} />
+              <ToolboxContainer project={project.uid} />
             </mui.Paper>
           </bs.Col>
           <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
