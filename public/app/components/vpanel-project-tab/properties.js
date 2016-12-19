@@ -102,7 +102,7 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${component.uid}_id`} value={component.id} onChange={(value) => projectComponentChangeId(project, component, value)} type={'s'} /></td>
+              <td><PropertiesEditor id={`${component.uid}_id`} value={component.id} onChange={(value) => AppDispatcher.dispatch(projectComponentChangeId(project.uid, component.uid, value))} type={'s'} /></td>
             </tr>
             {pluginConfig.map(prop => (
               <tr key={prop.name}>
@@ -113,7 +113,7 @@ class Properties extends React.Component {
                   <PropertiesEditor
                     id={`${component.uid}_config_${prop.name}`}
                     value={component.config[prop.name]}
-                    onChange={(value) => projectComponentChangeConfig(project, component, prop.name, value)}
+                    onChange={(value) => AppDispatcher.dispatch(projectComponentChangeConfig(project.uid, component.uid, prop.name, value))}
                     type={prop.type} />
                 </td>
               </tr>))
@@ -127,7 +127,7 @@ class Properties extends React.Component {
   renderBinding(project, binding) {
     const key = `${binding.remote.id}:${binding.remote_attribute} -> ${binding.local.id}:${binding.local_action}`;
     const onDelete = () => {
-      projectDeleteBinding(project, binding);
+      AppDispatcher.dispatch(projectDeleteBinding(project, binding));
     };
 
     return (
