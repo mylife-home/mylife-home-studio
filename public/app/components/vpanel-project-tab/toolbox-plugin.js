@@ -89,7 +89,7 @@ ToolboxPlugin.propTypes = {
 
 const pluginSource = {
   beginDrag(props) {
-    const plugin = props.plugin;
+    const { plugin } = props;
     return {
       entityId: plugin.entityId,
       library: plugin.library,
