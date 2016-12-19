@@ -16,6 +16,7 @@ import {
   projectDeleteComponent, projectComponentChangeId, projectComponentChangeConfig
 } from '../../actions/index';
 import { getProjectState } from '../../selectors/projects';
+import { getPlugin } from '../../selectors/vpanel-projects';
 
 const styles = {
   cell: {
@@ -89,7 +90,9 @@ class Properties extends React.Component {
     const onDelete = () => {
       projectDeleteComponent(project, component);
     };
-    const pluginConfig = component.plugin.config;
+
+    const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
+    const pluginConfig = plugin.config;
 
     return (
       <div>
