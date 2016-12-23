@@ -127,7 +127,7 @@ class Properties extends React.Component {
   renderBinding(project, binding) {
     const key = `${binding.remote.id}:${binding.remote_attribute} -> ${binding.local.id}:${binding.local_action}`;
     const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteBinding(project, binding));
+      AppDispatcher.dispatch(projectDeleteBinding(project, binding.uid));
     };
 
     return (

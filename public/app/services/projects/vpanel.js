@@ -25,9 +25,7 @@ export default {
   prepareDeployDrivers,
   createComponent,
   canCreateBinding,
-  createBinding,
-  deleteComponent,
-  deleteBinding,
+  createBinding
 };
 
 function createNew() {
@@ -595,9 +593,9 @@ function createComponent(projectUid, location, plugin) {
   return component;
 }
 
-function canCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
-  const remoteComponent = findComponent(project, remoteComponentId);
-  const localComponent  = findComponent(project, localComponentId);
+function canCreateBinding(project, remoteComponentUid, remoteAttributeName, localComponentUid, localActionName) {
+  const remoteComponent = project.components.get(remoteComponentUid);
+  const localComponent  = project.components.get(localComponentUid);
   const remoteAttribute = remoteComponent.plugin.clazz.attributes.find(a => a.name === remoteAttributeName);
   const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
 
@@ -607,15 +605,16 @@ function canCreateBinding(project, remoteComponentId, remoteAttributeName, local
   }
 
   // cannot bind on self
-  if(remoteComponent.id === localComponent.id) {
+  if(remoteComponent === localComponent) {
     return false;
   }
 
   // check if a binding already exists
-  for(const binding of localComponent.bindings) {
-    if(binding.remote.id === remoteComponent.id &&
-       binding.remote_attribute === remoteAttribute.name &&
-       binding.local_action === localAction.name) {
+  for(const binding of project.bindings.values()) {
+    if(binding.local === localComponent.uid &&
+       binding.remote === remoteComponent.uid &&
+       binding.localAction === localAction.name &&
+       binding.remoteAttribute === remoteAttribute.name) {
       return false;
     }
   }
@@ -623,44 +622,14 @@ function canCreateBinding(project, remoteComponentId, remoteAttributeName, local
   return true;
 }
 
-function createBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
-  const remoteComponent = findComponent(project, remoteComponentId);
-  const localComponent  = findComponent(project, localComponentId);
-  //const remoteAttribute = remoteComponent.plugin.clazz.attributes.find(a => a.name === remoteAttributeName);
-  //const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
-
-  const binding = {
-    uid: newId(),
-    remote: remoteComponent,
-    local: localComponent,
-    remote_attribute: remoteAttributeName,
-    local_action: localActionName
+function createBinding(project, remoteComponentUid, remoteAttributeName, localComponentUid, localActionName) {
+  return {
+    uid             : newId(),
+    remote          : remoteComponentUid,
+    local           : localComponentUid,
+    remoteAttribute : remoteAttributeName,
+    localAction     : localActionName
   };
-
-  localComponent.bindings.push(binding);
-  remoteComponent.bindingTargets.push(binding);
-  project.bindings.push(binding);
-
-  common.dirtify(project);
-  return binding;
-}
-
-function deleteComponent(project, component) {
-  for(const binding of component.bindings.slice()) {
-    deleteBinding(project, binding);
-  }
-  for(const binding of component.bindingTargets.slice()) {
-    deleteBinding(project, binding);
-  }
-  arrayRemoveValue(project.components, component);
-  common.dirtify(project);
-}
-
-function deleteBinding(project, binding) {
-  arrayRemoveValue(binding.local.bindings, binding);
-  arrayRemoveValue(binding.remote.bindingTargets, binding);
-  arrayRemoveValue(project.bindings, binding);
-  common.dirtify(project);
 }
 
 function getToolboxItem(project, entityId) {

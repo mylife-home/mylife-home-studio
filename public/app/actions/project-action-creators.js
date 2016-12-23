@@ -13,7 +13,7 @@ import { resourcesGet } from './resources-action-creators';
 import { getProjects, getProject, getProjectState } from '../selectors/projects';
 import { getWindow } from '../selectors/ui-projects';
 import { getResourceEntity } from '../selectors/online';
-import { getComponent } from '../selectors/vpanel-projects';
+import { getComponent, getBinding } from '../selectors/vpanel-projects';
 
 export function projectNew(type) {
   const project = Facade.projects.new(type);
@@ -192,23 +192,39 @@ export function projectComponentChangeConfig(project, component, name, value) {
   };
 }
 
-////// BEGIN TODO
+export function projectNewBinding(project, remoteComponent, remoteAttributeName, localComponent, localActionName) {
+  return (dispatch) => {
+    const binding = Facade.projects.vpanelCreateBinding(project, remoteComponent, remoteAttributeName, localComponent, localActionName);
 
-export function projectNewBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
-  const binding = Facade.projects.vpanelCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);
+    dispatch({
+      type: actionTypes.PROJECT_NEW_BINDING,
+      project,
+      binding
+    });
 
-  AppDispatcher.dispatch(projectStateSelect(project, {
-    type: 'binding',
-    uid: binding.uid
-  }));
+    dispatch(projectStateSelect(project, {
+      type: 'binding',
+      uid: binding.uid
+    }));
+  };
 }
 
 export function projectDeleteBinding(project, binding) {
-  AppDispatcher.dispatch(projectStateSelect(project, null));
-  Facade.projects.vpanelDeleteBinding(project, binding);
-}
+  return (dispatch, getState) => {
 
-////// END TODO
+    const bindingObject = getBinding(getState(), { binding });
+
+    dispatch(projectStateSelect(project, null));
+
+    dispatch({
+      type   : actionTypes.PROJECT_DELETE_BINDING,
+      project,
+      binding,
+      remote : bindingObject.remote,
+      local  : bindingObject.local
+    });
+  };
+}
 
 export function projectDeleteUiComponent(project, component) {
   return (dispatch, getState) => {

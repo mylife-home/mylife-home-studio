@@ -20,20 +20,20 @@ const CanvasComponentAttribute = ({ attribute, connectDragPreview, connectDragSo
 );
 
 CanvasComponentAttribute.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  component: React.PropTypes.object.isRequired,
-  attribute: React.PropTypes.object.isRequired,
-  connectDragSource: React.PropTypes.func.isRequired,
-  connectDragPreview: React.PropTypes.func.isRequired,
-  isDragging: React.PropTypes.bool.isRequired
+  project            : React.PropTypes.object.isRequired,
+  component          : React.PropTypes.object.isRequired,
+  attribute          : React.PropTypes.object.isRequired,
+  connectDragSource  : React.PropTypes.func.isRequired,
+  connectDragPreview : React.PropTypes.func.isRequired,
+  isDragging         : React.PropTypes.bool.isRequired
 };
 
 const attributeSource = {
   beginDrag(props/*, monitor*/) {
     const { component, attribute } = props;
     return {
-      componentId: component.id,
-      attributeName: attribute.name
+      remoteComponent : component.uid,
+      remoteAttribute : attribute.name
     };
   },
 
@@ -41,18 +41,18 @@ const attributeSource = {
     if(!monitor.didDrop()) { return; }
 
     const { project, component, attribute } = props;
-    const { componentId, actionName } = monitor.getDropResult();
+    const { localComponent, localAction } = monitor.getDropResult();
 
-    AppDispatcher.dispatch(projectNewBinding(project, component.id, attribute.name, componentId, actionName));
+    AppDispatcher.dispatch(projectNewBinding(project, component.uid, attribute.name, localComponent, localAction));
     linkHelper.rebuild(project);
   }
 };
 
 function collect(connect, monitor) {
   return {
-    connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging()
+    connectDragSource  : connect.dragSource(),
+    connectDragPreview : connect.dragPreview(),
+    isDragging         : monitor.isDragging()
   };
 }
 

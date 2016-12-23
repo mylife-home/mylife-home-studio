@@ -29,34 +29,34 @@ const CanvasComponentAction = ({ action, connectDropTarget, isHighlighted }) => 
 };
 
 CanvasComponentAction.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  component: React.PropTypes.object.isRequired,
-  action: React.PropTypes.object.isRequired,
-  connectDropTarget: React.PropTypes.func.isRequired,
-  isHighlighted: React.PropTypes.bool.isRequired
+  project           : React.PropTypes.object.isRequired,
+  component         : React.PropTypes.object.isRequired,
+  action            : React.PropTypes.object.isRequired,
+  connectDropTarget : React.PropTypes.func.isRequired,
+  isHighlighted     : React.PropTypes.bool.isRequired
 };
 
 const actionTarget = {
   drop(props) {
     const { component, action } = props;
     return {
-      componentId: component.id,
-      actionName: action.name
+      localComponent : component.uid,
+      localAction    : action.name
     };
   },
 
   canDrop(props, monitor) {
     const { project, component, action } = props;
-    const { componentId, attributeName } = monitor.getItem();
+    const { remoteComponent, remoteAttribute } = monitor.getItem();
 
-    return Facade.projects.vpanelCanCreateBinding(project, componentId, attributeName, component.id, action.name);
+    return Facade.projects.vpanelCanCreateBinding(project, remoteComponent, remoteAttribute, component.uid, action.name);
   }
 };
 
 function collect(connect, monitor) {
   return {
-    connectDropTarget: connect.dropTarget(),
-    isHighlighted: monitor.canDrop()
+    connectDropTarget : connect.dropTarget(),
+    isHighlighted     : monitor.canDrop()
   };
 }
 

@@ -162,16 +162,6 @@ class Projects {
     return binding;
   }
 
-  vpanelDeleteComponent(project, component) {
-    vpanel.deleteComponent(project, component);
-    AppDispatcher.dispatch(projectRefresh(project));
-  }
-
-  vpanelDeleteBinding(project, binding) {
-    vpanel.deleteBinding(project, binding);
-    AppDispatcher.dispatch(projectRefresh(project));
-  }
-
   uiPrepareImportOnline(project, done) {
     return ui.prepareImportOnline(project, done);
   }
