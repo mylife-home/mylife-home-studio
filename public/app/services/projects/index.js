@@ -120,8 +120,6 @@ class Projects {
     return common.executeDeploy(data, done);
   }
 
-  // -----------------------------------------------------------------------------
-
   vpanelPrepareImportOnlineToolbox(project, done) {
     return vpanel.prepareImportToolbox(project, done);
   }
@@ -173,17 +171,6 @@ class Projects {
     vpanel.deleteBinding(project, binding);
     AppDispatcher.dispatch(projectRefresh(project));
   }
-
-  vpanelDirtifyComponent(project, component) {
-    vpanel.dirtifyComponent(project, component);
-    this.dirtify(project);
-  }
-
-  vpanelGetComponentHash(project, component) {
-    return vpanel.getComponentHash(project, component);
-  }
-
-  // -----------------------------------------------------------------------------
 
   uiPrepareImportOnline(project, done) {
     return ui.prepareImportOnline(project, done);

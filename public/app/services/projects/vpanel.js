@@ -28,8 +28,6 @@ export default {
   createBinding,
   deleteComponent,
   deleteBinding,
-  dirtifyComponent,
-  getComponentHash
 };
 
 function createNew() {
@@ -663,22 +661,6 @@ function deleteBinding(project, binding) {
   arrayRemoveValue(binding.remote.bindingTargets, binding);
   arrayRemoveValue(project.bindings, binding);
   common.dirtify(project);
-}
-
-function dirtifyComponent(project, component) {
-  component._hash = null;
-}
-
-function getComponentHash(project, component) {
-  if(!component._hash) {
-    component._hash = JSON.stringify({
-      id: component.id,
-      x: component.designer && component.designer.location && component.designer.location.x,
-      y: component.designer && component.designer.location && component.designer.location.y,
-      config: component.config
-    });
-  }
-  return component._hash;
 }
 
 function getToolboxItem(project, entityId) {

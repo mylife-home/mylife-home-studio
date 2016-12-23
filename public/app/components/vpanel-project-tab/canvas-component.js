@@ -72,8 +72,7 @@ class CanvasComponent extends React.Component {
 
     this.state = {
       isSelected: false,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme(),
-      componentHash: Facade.projects.vpanelGetComponentHash(project, component)
+      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -91,8 +90,7 @@ class CanvasComponent extends React.Component {
     const { project, component } = this.props;
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     this.setState({
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid,
-      componentHash: Facade.projects.vpanelGetComponentHash(project, component)
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid
     });
   }
 
@@ -115,13 +113,6 @@ class CanvasComponent extends React.Component {
     // may be not yet rendered
     if(!node) { return; }
     return node.getBoundingClientRect();
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if(!!nextState.isSelected !== !!this.state.isSelected) { return true; }
-    if(!!nextProps.isDragging !== !!this.props.isDragging) { return true; }
-    if(nextState.componentHash !== this.state.componentHash) { return true; }
-    return false;
   }
 
   select() {
