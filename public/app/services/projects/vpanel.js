@@ -204,10 +204,10 @@ function serialize(project) {
       id       : component.id,
       library  : component.plugin.library,
       type     : component.plugin.type,
-      bindings : component.bindings.map(binding => ({
-        local_action    : binding.local_action,
-        remote_attribute: binding.remote_attribute,
-        remote_id       : binding.remote.id })),
+      bindings : component.bindings.map(binding => ({ // FIXME
+        local_action    : binding.localAction,
+        remote_attribute: binding.remoteAttribute,
+        remote_id       : binding.remote.id })), // FIXME
       config   : common.serializeMap(component.config),
       designer : common.serializeMap({
         Location: `${component.designer.location.x},${component.designer.location.y}`
