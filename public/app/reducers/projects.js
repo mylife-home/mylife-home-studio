@@ -158,7 +158,7 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_COMPONENT_CHANGE_CONFIG:
       return updateComponent(state, action, component => ({ config: { ...component.config, [action.name]: action.value } }));
 
-    case actionTypes.PROJECT_DELETE_UI_COMPONENT: // merge with PROJECT_DELETE_COMPONENT (vpane) ?
+    case actionTypes.PROJECT_DELETE_UI_COMPONENT: // merge with PROJECT_DELETE_COMPONENT (vpanel) ?
       return updateProject(state, action, project => ({ components : project.components.delete(action.component) }));
 
     case actionTypes.PROJECT_CHANGE_DEFAULT_WINDOW:
