@@ -138,8 +138,10 @@ export function projectChangeName(project, newName) {
 }
 
 export function projectNewComponent(project, location, plugin) {
-  return (dispatch) => {
-    const component = Facade.projects.vpanelCreateComponent(project, location, plugin);
+  return (dispatch, getState) => {
+    const state = getState();
+    const projectObject = getProject(state, { project });
+    const component = Facade.projects.vpanelCreateComponent(projectObject, location, plugin);
     dispatch({
       type: actionTypes.PROJECT_NEW_COMPONENT,
       project,

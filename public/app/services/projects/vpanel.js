@@ -5,8 +5,6 @@ import Metadata from '../metadata/index';
 import common from './common';
 import Resources from '../resources';
 import { newId, snapToGrid } from '../../utils/index';
-import storeHandler from '../../compat/store'; // TODO: remove that ?
-import { getProject } from'../../selectors/projects';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
@@ -570,10 +568,8 @@ function prepareDeployDrivers(project, done) {
   });
 }
 
-function createComponent(projectUid, location, plugin) {
-  const state   = storeHandler.getStore().getState();
-  const project = getProject(state, { project: projectUid });
-  const uid     = newId();
+function createComponent(project, location, plugin) {
+  const uid       = newId();
   const component = {
     uid,
     id             : `component_${uid}`,
