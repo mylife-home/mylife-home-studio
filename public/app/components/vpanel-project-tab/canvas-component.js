@@ -68,8 +68,6 @@ class CanvasComponent extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    const { project, component } = this.props;
-
     this.state = {
       isSelected: false,
       muiTheme: context.muiTheme || muiStyles.getMuiTheme()

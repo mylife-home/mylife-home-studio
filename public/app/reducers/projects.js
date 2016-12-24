@@ -159,20 +159,20 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
       return updateComponent(state, action, component => ({ config: { ...component.config, [action.name]: action.value } }));
 
     case actionTypes.PROJECT_NEW_BINDING:
-      return updateProject(staate, action, project => {
-        bindings : project.bindings.delete(action.binding),
+      return updateProject(state, action, project => ({
+        bindings   : project.bindings.delete(action.binding),
         components : project.components.
-          update(action.local,  component => { ...component, bindings : component.bindings.delete(action.binding) }).
-          update(action.remote, component => { ...component, bindings : component.bindingTargets.delete(action.binding) })
-      });
+          update(action.local,  component => ({ ...component, bindings : component.bindings.delete(action.binding) })).
+          update(action.remote, component => ({ ...component, bindings : component.bindingTargets.delete(action.binding) }))
+      }));
 
     case actionTypes.PROJECT_DELETE_BINDING:
-      return updateProject(staate, action, project => {
-        bindings : project.bindings.set(action.binding.uid, action.binding),
+      return updateProject(state, action, project => ({
+        bindings   : project.bindings.delete(action.binding),
         components : project.components.
-          update(action.binding.local,  component => { ...component, bindings : component.bindings.add(action.binding.uid) }).
-          update(action.binding.remote, component => { ...component, bindings : component.bindingTargets.add(action.binding.uid) })
-      });
+          update(action.binding.local,  component => ({ ...component, bindings : component.bindings.delete(action.binding) })).
+          update(action.binding.remote, component => ({ ...component, bindings : component.bindingTargets.delete(action.binding) }))
+      }));
 
     case actionTypes.PROJECT_DELETE_UI_COMPONENT: // merge with PROJECT_DELETE_COMPONENT (vpanel) ?
       return updateProject(state, action, project => ({ components : project.components.delete(action.component) }));

@@ -4,8 +4,6 @@ import async from 'async';
 import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 
-import AppDispatcher from '../compat/dispatcher';
-
 import { download } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
