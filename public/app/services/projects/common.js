@@ -15,7 +15,6 @@ const metadata = new Metadata(); // TODO: how to use facade ?
 export default {
   loadToMap,
   serializeFromMap,
-  dirtify,
   loadDate,
   serializeDate,
   loadMap,
@@ -44,11 +43,6 @@ function loadToMap(array, mapper) {
 
 function serializeFromMap(map, mapper) {
   return Array.from(map.values()).map(mapper);
-}
-
-function dirtify(project) {
-  project.dirty = true;
-  project.lastUpdate = new Date();
 }
 
 function loadDate(raw) {

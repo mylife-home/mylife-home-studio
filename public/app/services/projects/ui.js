@@ -524,8 +524,6 @@ function executeImport(data) {
 
     data.project.components.push(newComponent);
   }
-
-  common.dirtify(data.project);
 }
 
 function prepareDeploy(project, done) {

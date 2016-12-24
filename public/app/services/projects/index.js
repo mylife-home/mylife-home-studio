@@ -2,8 +2,7 @@
 
 import debugLib from 'debug';
 
-import AppDispatcher from '../../compat/dispatcher';
-import { projectRefresh, resourcesSetQuery } from '../../actions/index';
+import { resourcesSetQuery } from '../../actions/index';
 import { projectTypes } from '../../constants/index';
 import { newId } from '../../utils/index';
 import storeHandler from '../../compat/store'; // TODO: remove that ?
@@ -63,11 +62,6 @@ class Projects {
     return project;
   }
 
-  dirtify(project) {
-    common.dirtify(project);
-    AppDispatcher.dispatch(projectRefresh(project));
-  }
-
   validate(project) {
     const msgs = [];
 
@@ -97,9 +91,7 @@ class Projects {
     return resourcesSetQuery(entityId, key, content, (err) => {
       if(err) { return done(err); }
 
-      project.dirty = false;
       debug('project saved', project.uid);
-      AppDispatcher.dispatch(projectRefresh(project));
       return done();
     });
   }
@@ -125,19 +117,11 @@ class Projects {
   }
 
   vpanelExecuteImportOnlineToolbox(data, done) {
-    return vpanel.executeImportToolbox(data, (err) => {
-      if(err) { return done(err); }
-      AppDispatcher.dispatch(projectRefresh(data.project));
-      return done();
-    });
+    return vpanel.executeImportToolbox(data, done);
   }
 
   vpanelImportOnlineDriverComponents(project, done) {
-    return vpanel.importDriverComponents(project, (err) => {
-      if(err) { return done(err); }
-      AppDispatcher.dispatch(projectRefresh(project));
-      return done();
-    });
+    return vpanel.importDriverComponents(project, done);
   }
 
   vpanelPrepareDeployVPanel(project, done) {
@@ -157,9 +141,7 @@ class Projects {
   }
 
   vpanelCreateBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName) {
-    const binding = vpanel.createBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);
-    AppDispatcher.dispatch(projectRefresh(project));
-    return binding;
+    return vpanel.createBinding(project, remoteComponentId, remoteAttributeName, localComponentId, localActionName);
   }
 
   uiPrepareImportOnline(project, done) {
@@ -172,7 +154,6 @@ class Projects {
 
   uiExecuteImport(data) {
     ui.executeImport(data);
-    AppDispatcher.dispatch(projectRefresh(data.project));
   }
 
   uiPrepareDeploy(project, done) {
@@ -188,9 +169,7 @@ class Projects {
   }
 
   uiCreateControl(project, window, location, type) {
-    const control = ui.createControl(project, window, location, type);
-    AppDispatcher.dispatch(projectRefresh(project));
-    return control;
+    return ui.createControl(project, window, location, type);
   }
 
   uiCheckComponentUsage(project, component) {

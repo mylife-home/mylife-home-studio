@@ -140,6 +140,12 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
         states: state.states.delete(action.projec)
       };
 
+    case actionTypes.PROJECT_SAVED:
+      return {
+        ...state,
+        projects: state.projects.update(action.project, project => ({ ...project, dirty : false }))
+      };
+
     case actionTypes.PROJECT_CHANGE_NAME:
       return updateProject(state, action, { name : action.newName });
 
@@ -263,13 +269,6 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
 
     case actionTypes.PROJECT_CONTROL_CHANGE_ACTION:
       return updateControl(state, action, { [action.actionType] : action.action });
-
-    // FIXME
-    case actionTypes.PROJECT_REFRESH:
-      return  { ...state, projects: state.projects.update(action.project, project => ({
-        ...project,
-        version: project.version + 1
-      })) };
 
     case actionTypes.PROJECT_STATE_UPDATE_LINK_DATA:
       return { ...state, states: state.states.update(action.project, state => ({ ... state, linkData: action.linkData })) };

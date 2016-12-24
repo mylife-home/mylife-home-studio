@@ -80,6 +80,7 @@ export function projectSaveOnline(project) {
   return (dispatch) => {
     dispatch(dialogSetBusy('Saving project'));
     Facade.projects.saveOnline(project, (err) => {
+      dispatch(projectSaved({ project: project.uid }));
       dispatch(dialogUnsetBusy());
       if(err) { return dispatch(dialogError(err)); }
     });
@@ -103,7 +104,11 @@ export function projectSaveAllOnline() {
   return (dispatch, getState) => {
     const projects = getProjects(getState());
     dispatch(dialogSetBusy('Saving projects'));
-    async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, cb), (err) => {
+    async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, (err) => {
+      if(err) return cb(err);
+      dispatch(projectSaved({ project: project.uid }));
+      return cb();
+    }), (err) => {
       dispatch(dialogUnsetBusy());
       if(err) { return dispatch(dialogError(err)); }
     });
@@ -113,6 +118,13 @@ export function projectSaveAllOnline() {
 export function projectClose(project) {
   return {
     type: actionTypes.PROJECT_CLOSE,
+    project
+  };
+}
+
+export function projectSaved(project) {
+  return {
+    type: actionTypes.PROJECT_SAVED,
     project
   };
 }
@@ -591,13 +603,6 @@ export function projectControlChangeAction(project, window, control, actionType,
     control,
     actionType,
     action
-  };
-}
-
-export function projectRefresh(project) {
-  return {
-    type: actionTypes.PROJECT_REFRESH,
-    project
   };
 }
 
