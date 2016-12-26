@@ -16,7 +16,6 @@ import { getPlugin } from '../../selectors/vpanel-projects';
 const debouncedRebuild = debounce(100, rebuild);
 
 export default {
-  version,
   bindingPath,
   canvasOnMeasureChanged,
   componentOnMeasureChanged,
@@ -27,7 +26,6 @@ function data(projectState) {
 
   if(!projectState.linkData) {
     projectState.linkData = {
-      version: 0,
       measures: {
         components: new Map(),
         canvas: null
@@ -39,17 +37,15 @@ function data(projectState) {
   return projectState.linkData;
 }
 
-function version(projectState) {
-  return data(projectState).version;
-}
-
-function bindingPath(projectState, binding) {
+function bindingPath(project, binding) {
+  const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
   const { bindingPaths } = data(projectState);
   if(!bindingPaths) { return null; }
   return bindingPaths.get(binding);
 }
 
-function canvasOnMeasureChanged(project, projectState, dim) {
+function canvasOnMeasureChanged(project, dim) {
+  const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
   const measures = data(projectState).measures;
 
   measures.canvas = {
@@ -58,7 +54,8 @@ function canvasOnMeasureChanged(project, projectState, dim) {
   };
 }
 
-function componentOnMeasureChanged(uiComponent, component, project, projectState, dim) {
+function componentOnMeasureChanged(uiComponent, component, project, dim) {
+  const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
   const measures = data(projectState).measures;
 
   // TODO: remove this horror and find a better way to have canvasOnMeasureChanged called before componentOnMeasureChanged
@@ -154,7 +151,6 @@ function rebuild(project) {
     bindingPaths.set(binding, path);
   }
 
-  ++linkData.version;
   AppDispatcher.dispatch(projectStateUpdateLinkData(project, { ...linkData })); // force new object creation as a workaround for now
 }
 /*

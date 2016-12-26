@@ -9,7 +9,6 @@ import storeHandler from '../../compat/store';
 import { dragTypes } from '../../constants/index';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
-import { getProjectState } from '../../selectors/projects';
 import { getComponents, getBindings } from '../../selectors/vpanel-projects';
 
 import CanvasComponent from './canvas-component';
@@ -44,9 +43,6 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
     this.boundHandleMeasureChange = this.handleMeasureChange.bind(this);
   }
 
@@ -56,31 +52,22 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
     this.refs.scrollbox.addEventListener('scroll', this.boundHandleMeasureChange);
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
     this.refs.scrollbox.removeEventListener('scroll', this.boundHandleMeasureChange);
-  }
-
-  handleStoreChange() {
-    const { project } = this.props;
-    let projectVersion = project && project.version;
-    this.setState({ projectVersion });
   }
 
   handleMeasureChange() {
     const { project } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     const node = this.refs.canvas;
     // may be not yet rendered
     if(!node) { return; }
     const dim = node.getBoundingClientRect();
 
-    linkHelper.canvasOnMeasureChanged(project, projectState, dim);
+    linkHelper.canvasOnMeasureChanged(project, dim);
   }
 
   renderComponents(project) {

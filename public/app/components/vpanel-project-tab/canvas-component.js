@@ -94,7 +94,6 @@ class CanvasComponent extends React.Component {
 
   handleMeasureChange(dim) {
     const { project, component } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     if(!dim) {
       const node = this.refs.component;
@@ -103,7 +102,7 @@ class CanvasComponent extends React.Component {
       dim = node.getBoundingClientRect();
     }
 
-    linkHelper.componentOnMeasureChanged(this, component, project, projectState, dim);
+    linkHelper.componentOnMeasureChanged(this, component, project, dim);
   }
 
   measureMember(name) {
