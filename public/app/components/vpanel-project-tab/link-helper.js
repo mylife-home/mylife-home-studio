@@ -15,12 +15,25 @@ import { getPlugin } from '../../selectors/vpanel-projects';
 
 const debouncedRebuild = debounce(100, rebuild);
 
+// TODO: reimplement properly
+const noop = () => {};
+
+export default {
+  bindingPath               : noop,
+  canvasOnMeasureChanged    : noop,
+  componentOnMeasureChanged : noop,
+  rebuild                   : noop
+};
+
+/*
 export default {
   bindingPath,
   canvasOnMeasureChanged,
   componentOnMeasureChanged,
   rebuild: debouncedRebuild
-};
+};*/
+
+// ---
 
 function data(projectState) {
 
