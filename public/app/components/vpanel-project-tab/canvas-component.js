@@ -17,7 +17,6 @@ import storeHandler from '../../compat/store';
 import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
 import commonStyles from './canvas-component-styles';
-import linkHelper from './link-helper';
 import { getProjectState } from '../../selectors/projects';
 import { getPlugin } from '../../selectors/vpanel-projects';
 
@@ -92,7 +91,7 @@ class CanvasComponent extends React.Component {
   }
 
   handleMeasureChange(dim) {
-    const { project, component } = this.props;
+    const { component } = this.props;
 
     if(!dim) {
       const node = this.refs.component;
@@ -101,7 +100,7 @@ class CanvasComponent extends React.Component {
       dim = node.getBoundingClientRect();
     }
 
-    linkHelper.componentOnMeasureChanged(this, component, project, dim);
+    this.context.canvasManager.componentMeasureChanged(this, component, dim);
   }
 
   measureMember(name) {
@@ -214,6 +213,10 @@ CanvasComponent.propTypes = {
   connectDragSource: React.PropTypes.func.isRequired,
   connectDragPreview: React.PropTypes.func.isRequired,
   isDragging: React.PropTypes.bool.isRequired
+};
+
+CanvasComponent.contextTypes = {
+  canvasManager: React.PropTypes.object.isRequired
 };
 
 const componentSource = {

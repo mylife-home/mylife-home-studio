@@ -11,10 +11,9 @@ import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 import { getComponents, getBindings } from '../../selectors/vpanel-projects';
 
+import CanvasManager from './canvas-manager';
 import CanvasComponent from './canvas-component';
 import CanvasBinding from './canvas-binding';
-
-import linkHelper from './link-helper';
 
 const styles = {
   container: {
@@ -44,6 +43,12 @@ class Canvas extends React.Component {
     super(props);
 
     this.boundHandleMeasureChange = this.handleMeasureChange.bind(this);
+
+    this.canvasManager = new CanvasManager();
+  }
+
+  getChildContext() {
+    return { canvasManager: this.canvasManager };
   }
 
   select() {
@@ -60,14 +65,12 @@ class Canvas extends React.Component {
   }
 
   handleMeasureChange() {
-    const { project } = this.props;
-
     const node = this.refs.canvas;
     // may be not yet rendered
     if(!node) { return; }
     const dim = node.getBoundingClientRect();
 
-    linkHelper.canvasOnMeasureChanged(project, dim);
+    this.canvasManager.canvasMeasureChanged(dim);
   }
 
   renderComponents(project) {
@@ -108,6 +111,10 @@ Canvas.propTypes = {
   project: React.PropTypes.object.isRequired,
   connectDropTarget: React.PropTypes.func.isRequired,
   isHighlighted: React.PropTypes.bool.isRequired
+};
+
+Canvas.childContextTypes = {
+  canvasManager: React.PropTypes.object.isRequired
 };
 
 const canvasTarget = {

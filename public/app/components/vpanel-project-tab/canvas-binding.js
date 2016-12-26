@@ -10,8 +10,6 @@ import { projectStateSelect } from '../../actions/index';
 import storeHandler from '../../compat/store';
 import { getProjectState } from '../../selectors/projects';
 
-import linkHelper from './link-helper';
-
 function getStyles(props, state) {
   const { isSelected } = state;
   const { muiTheme } = props;
@@ -57,18 +55,22 @@ class CanvasBinding extends React.Component {
     super(props, context);
 
     this.state = {
-      isSelected : false
+      isSelected : false,
+      path       : null
     };
 
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
+    this.boundHandleStoreChange   = this.handleStoreChange.bind(this);
+    this.boundHandleMeasureChange = this.handleMeasureChange.bind(this);
   }
 
   componentDidMount() {
+    this.canvasManagerUnsubscribe = this.context.canvasManager.addBindingChangedListener(this.boundHandleMeasureChange);
     this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
     this.unsubscribe();
+    this.canvasManagerUnsubscribe();
   }
 
   handleStoreChange() {
@@ -79,14 +81,20 @@ class CanvasBinding extends React.Component {
     });
   }
 
+  handleMeasureChange() {
+    const { binding } = this.props;
+    this.setState({
+      path: this.context.canvasManager.bindingPath(binding)
+    });
+  }
+
   select() {
     const { project, binding } = this.props;
     AppDispatcher.dispatch(projectStateSelect(project, { type: 'binding', uid: binding.uid }));
   }
 
   render() {
-    const { project, binding } = this.props;
-    const path = linkHelper.bindingPath(project, binding);
+    const { path } = this.state;
     const styles = getStyles(this.props, this.state);
 
     if(!path) {
@@ -116,6 +124,10 @@ class CanvasBinding extends React.Component {
 CanvasBinding.propTypes = {
   project: React.PropTypes.object.isRequired,
   binding: React.PropTypes.object.isRequired
+};
+
+CanvasBinding.contextTypes = {
+  canvasManager: React.PropTypes.object.isRequired
 };
 
 export default muiThemeable()(CanvasBinding);

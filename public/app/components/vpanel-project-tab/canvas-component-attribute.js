@@ -10,8 +10,6 @@ import AppDispatcher from '../../compat/dispatcher';
 import { projectNewBinding } from '../../actions/index';
 import styles from './canvas-component-styles';
 
-import linkHelper from './link-helper';
-
 const CanvasComponentAttribute = ({ attribute, connectDragPreview, connectDragSource }) => connectDragSource(
   <div style={styles.detailsContainer}>
     {connectDragPreview(<div style={styles.detailsIconContainer}><icons.NetAttribute style={styles.detailsIcon} /></div>)}
@@ -44,7 +42,6 @@ const attributeSource = {
     const { localComponent, localAction } = monitor.getDropResult();
 
     AppDispatcher.dispatch(projectNewBinding(project, component.uid, attribute.name, localComponent, localAction));
-    linkHelper.rebuild(project);
   }
 };
 
