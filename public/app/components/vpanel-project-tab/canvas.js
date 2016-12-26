@@ -58,6 +58,7 @@ class Canvas extends React.Component {
 
   componentDidMount() {
     this.refs.scrollbox.addEventListener('scroll', this.boundHandleMeasureChange);
+    this.handleMeasureChange();
   }
 
   componentWillUnmount() {

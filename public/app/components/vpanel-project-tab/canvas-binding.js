@@ -56,7 +56,7 @@ class CanvasBinding extends React.Component {
 
     this.state = {
       isSelected : false,
-      path       : null
+      path       : this.context.canvasManager.bindingPath(props.binding)
     };
 
     this.boundHandleStoreChange   = this.handleStoreChange.bind(this);
