@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import icons from '../icons';
 import { stopPropagationWrapper } from '../../utils/index';
 
@@ -13,8 +13,8 @@ import { getProjectState } from '../../selectors/projects';
 import linkHelper from './link-helper';
 
 function getStyles(props, state) {
-  const { muiTheme, isSelected } = state;
-  const { baseTheme } = muiTheme;
+  const { isSelected } = state;
+  const { muiTheme } = props;
 
   return {
     container: {
@@ -29,13 +29,13 @@ function getStyles(props, state) {
       position   : 'absolute',
       height     : '16px',
       width      : '16px',
-      background : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
+      background : (isSelected ? muiTheme.palette.primary1Color : muiTheme.palette.primary3Color),
     },
     boxIcon: {
       margin        : '2px',
       width         : '12px',
       height        : '12px',
-      color         : (isSelected ? baseTheme.palette.alternateTextColor : baseTheme.palette.textColor),
+      color         : (isSelected ? muiTheme.palette.alternateTextColor : muiTheme.palette.textColor),
     },
     svg: {
       position : 'absolute',
@@ -45,7 +45,7 @@ function getStyles(props, state) {
       width    : '32000px'
     },
     path: {
-      stroke      : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
+      stroke      : (isSelected ? muiTheme.palette.primary1Color : muiTheme.palette.primary3Color),
       strokeWidth : 2
     }
   };
@@ -57,8 +57,7 @@ class CanvasBinding extends React.Component {
     super(props, context);
 
     this.state = {
-      isSelected : false,
-      muiTheme   : context.muiTheme || muiStyles.getMuiTheme()
+      isSelected : false
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -119,12 +118,4 @@ CanvasBinding.propTypes = {
   binding: React.PropTypes.object.isRequired
 };
 
-CanvasBinding.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-CanvasBinding.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-export default CanvasBinding;
+export default muiThemeable()(CanvasBinding);

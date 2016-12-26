@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as mui from 'material-ui';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
 import icons from '../icons';
@@ -22,14 +22,14 @@ import { getProjectState } from '../../selectors/projects';
 import { getPlugin } from '../../selectors/vpanel-projects';
 
 function getStyles(props, state) {
-  const { muiTheme, isSelected } = state;
-  const { baseTheme } = muiTheme;
+  const { isSelected } = state;
+  const { muiTheme } = props;
 
   return Object.assign({
     titleContainer: {
       cursor     : 'move',
-      background : (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color),
-      color      : (isSelected ? baseTheme.palette.alternateTextColor : baseTheme.palette.textColor),
+      background : (isSelected ? muiTheme.palette.primary1Color : muiTheme.palette.primary3Color),
+      color      : (isSelected ? muiTheme.palette.alternateTextColor : muiTheme.palette.textColor),
     },
     titleText: {
       whiteSpace    : 'nowrap',
@@ -69,8 +69,7 @@ class CanvasComponent extends React.Component {
     super(props, context);
 
     this.state = {
-      isSelected: false,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+      isSelected: false
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -217,14 +216,6 @@ CanvasComponent.propTypes = {
   isDragging: React.PropTypes.bool.isRequired
 };
 
-CanvasComponent.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-CanvasComponent.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
 const componentSource = {
   beginDrag(props, monitor, uiComponent) {
     uiComponent.select();
@@ -260,4 +251,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DragSource(dragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent);
+export default muiThemeable()(dnd.DragSource(dragTypes.VPANEL_COMPONENT, componentSource, collect)(CanvasComponent));

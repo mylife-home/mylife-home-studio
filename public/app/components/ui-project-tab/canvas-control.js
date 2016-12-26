@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
@@ -18,11 +18,10 @@ import { getImage } from '../../selectors/ui-projects';
 import { getProjectState } from '../../selectors/projects';
 
 function getStyles(props, state) {
-  const { window, control } = props;
-  const { muiTheme, isSelected } = state;
-  const { baseTheme } = muiTheme;
+  const { window, control, muiTheme } = props;
+  const { isSelected } = state;
 
-  const backColor = (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color);
+  const backColor = (isSelected ? muiTheme.palette.primary1Color : muiTheme.palette.primary3Color);
   const left = (window.width * control.x) - (control.width / 2);
   const top = (window.height * control.y) - (control.height / 2);
 
@@ -63,8 +62,7 @@ class CanvasControl extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project });
 
     this.state = {
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -162,14 +160,6 @@ CanvasControl.propTypes = {
   isDragging: React.PropTypes.bool.isRequired
 };
 
-CanvasControl.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-CanvasControl.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
 const controlSource = {
   beginDrag(props, monitor, uiControl) {
     uiControl.select();
@@ -197,4 +187,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default dnd.DragSource(dragTypes.UI_CONTROL, controlSource, collect)(CanvasControl);
+export default muiThemeable()(dnd.DragSource(dragTypes.UI_CONTROL, controlSource, collect)(CanvasControl));

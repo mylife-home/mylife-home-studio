@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import * as muiStyles from 'material-ui/styles/index';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
@@ -19,10 +19,10 @@ import { getImage, getWindowControls } from '../../selectors/ui-projects';
 import { getProjectState } from '../../selectors/projects';
 
 function getStyles(props, state) {
-  const { muiTheme, isSelected } = state;
-  const { baseTheme } = muiTheme;
+  const { muiTheme } = props;
+  const { isSelected } = state;
 
-  const backColor = (isSelected ? baseTheme.palette.primary1Color : baseTheme.palette.primary3Color);
+  const backColor = (isSelected ? muiTheme.palette.primary1Color : muiTheme.palette.primary3Color);
 
   return Object.assign({
     windowContainer: {
@@ -49,8 +49,7 @@ class CanvasWindow extends React.Component {
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
 
     this.state = {
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid,
-      muiTheme: context.muiTheme || muiStyles.getMuiTheme()
+      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
     };
 
     this.boundHandleStoreChange = this.handleStoreChange.bind(this);
@@ -126,14 +125,6 @@ CanvasWindow.propTypes = {
   connectDropTarget: React.PropTypes.func.isRequired,
 };
 
-CanvasWindow.contextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
-CanvasWindow.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
-
 const canvasTarget = {
   drop(props, monitor, component) {
     switch(monitor.getItemType()) {
@@ -159,4 +150,4 @@ function collect(connect) {
   };
 }
 
-export default dnd.DropTarget([dragTypes.UI_TOOLBOX_CONTROL, dragTypes.UI_CONTROL], canvasTarget, collect)(CanvasWindow);
+export default muiThemeable()(dnd.DropTarget([dragTypes.UI_TOOLBOX_CONTROL, dragTypes.UI_CONTROL], canvasTarget, collect)(CanvasWindow));
