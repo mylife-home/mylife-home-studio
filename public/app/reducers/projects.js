@@ -16,8 +16,7 @@ function updateProject(state, action, changedProps) {
         ...project,
         ...changedProps,
         dirty      : true,
-        lastUpdate : new Date(),
-        version    : project.version + 1 // TODO: remove me
+        lastUpdate : new Date()
       };
     })
   };
@@ -125,7 +124,6 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_LOAD:
       {
         const project = action.project;
-        project.version = 1;
         return {
           ...state,
           projects: state.projects.set(project.uid, project),

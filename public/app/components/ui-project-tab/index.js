@@ -15,6 +15,8 @@ import AppDispatcher from '../../compat/dispatcher';
 import { projectClose } from '../../actions/index';
 import storeHandler from '../../compat/store';
 
+import { getProjectState } from '../../selectors/projects';
+
 import tabStyles from '../base/tab-styles';
 
 const styles = {
@@ -42,9 +44,9 @@ class UiProjectTab extends React.Component {
 
   handleStoreChange() {
     const { project } = this.props;
-    const projectVersion = project && project.version;
-    const { activeContent } = this.state;
-    this.setState({ projectVersion, activeContent });
+    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
+    const activeContent = projectState && projectState.activeContent;
+    this.setState({ activeContent });
   }
 
   render() {

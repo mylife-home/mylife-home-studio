@@ -29,11 +29,10 @@ class Canvas extends React.Component {
   }
 
   handleStoreChange() {
-    const project = this.props.project;
-    const projectVersion = project && project.version;
+    const { project } = this.props;
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     const activeContent = projectState && projectState.activeContent;
-    this.setState({ projectVersion, activeContent });
+    this.setState({ activeContent });
   }
 
   render() {

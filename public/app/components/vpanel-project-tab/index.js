@@ -10,7 +10,6 @@ import Properties from './properties';
 import ToolboxContainer from '../../containers/vpanel-project-tab/toolbox-container';
 import Canvas from './canvas';
 
-import storeHandler from '../../compat/store';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectClose } from '../../actions/index';
 
@@ -20,27 +19,10 @@ class VPanelProjectTab extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handleStoreChange() {
-    const project = this.props.project;
-    let projectVersion = project && project.version;
-    this.setState({ projectVersion });
   }
 
   render() {
-    const project = this.props.project;
+    const { project } = this.props;
 
     return (
       <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
