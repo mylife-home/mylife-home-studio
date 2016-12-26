@@ -608,14 +608,6 @@ export function projectControlChangeAction(project, window, control, actionType,
   };
 }
 
-export function projectStateUpdateLinkData(project, linkData) {
-  return {
-    type: actionTypes.PROJECT_STATE_UPDATE_LINK_DATA,
-    project,
-    linkData
-  };
-}
-
 export function projectStateSelect(project, selection) {
   if(typeof project === 'object') { project = project.uid; } // TODO: clean
   return {

@@ -3,7 +3,6 @@
 import { debounce } from 'throttle-debounce';
 //import aStar from 'a-star';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateUpdateLinkData } from '../../actions/index';
 import storeHandler from '../../compat/store';
 import { getProjectState } from '../../selectors/projects';
 import { getPlugin } from '../../selectors/vpanel-projects';
@@ -164,7 +163,6 @@ function rebuild(project) {
     bindingPaths.set(binding, path);
   }
 
-  AppDispatcher.dispatch(projectStateUpdateLinkData(project, { ...linkData })); // force new object creation as a workaround for now
 }
 /*
 function buildObstacleGrid(measures) {
