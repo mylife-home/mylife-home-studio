@@ -9,7 +9,6 @@ import AppDispatcher from '../../compat/dispatcher';
 import { resourcesSetQuery } from '../../actions/index';
 import storeHandler from '../../compat/store'; // TODO: remove that ?
 import { getResourceEntity } from'../../selectors/online';
-import { getComponent } from'../../selectors/ui-projects';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -186,7 +185,6 @@ function findWindow(project, id) {
 }
 
 function validate(project, msgs) {
-  const state = storeHandler.getStore().getState();
   common.validate(project, msgs);
 
   if(!project.defaultWindow) {
@@ -236,7 +234,7 @@ function validate(project, msgs) {
       }
 
       if(control.display && control.display.component) {
-        const component = getComponent(state, { project: project.uid, component: control.display.component });
+        const component = project.components.get(control.display.component);
         const attributeType = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
         if(attributeType.constructor.name === 'Enum') {
           const { noIdCount, duplicates } = common.checkIds(control.display.map, item => item.value);
