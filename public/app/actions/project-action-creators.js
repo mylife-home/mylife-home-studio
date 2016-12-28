@@ -224,7 +224,7 @@ export function projectNewBinding(project, remoteComponent, remoteAttributeName,
 export function projectDeleteBinding(project, binding) {
   return (dispatch, getState) => {
 
-    const bindingObject = getBinding(getState(), { binding });
+    const bindingObject = getBinding(getState(), { project, binding });
 
     dispatch(projectStateSelect(project, null));
 

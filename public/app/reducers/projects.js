@@ -174,8 +174,8 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
       return updateProject(state, action, project => ({
         bindings   : project.bindings.delete(action.binding),
         components : project.components.
-          update(action.binding.local,  component => ({ ...component, bindings : component.bindings.delete(action.binding) })).
-          update(action.binding.remote, component => ({ ...component, bindings : component.bindingTargets.delete(action.binding) }))
+          update(action.local,  component => ({ ...component, bindings : component.bindings.delete(action.binding) })).
+          update(action.remote, component => ({ ...component, bindings : component.bindingTargets.delete(action.binding) }))
       }));
 
     case actionTypes.PROJECT_DELETE_UI_COMPONENT: // merge with PROJECT_DELETE_COMPONENT (vpanel) ?

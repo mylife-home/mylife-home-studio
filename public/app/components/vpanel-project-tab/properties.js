@@ -16,7 +16,7 @@ import {
   projectDeleteVPanelComponent, projectComponentChangeId, projectComponentChangeConfig
 } from '../../actions/index';
 import { getProjectState } from '../../selectors/projects';
-import { getPlugin } from '../../selectors/vpanel-projects';
+import { getPlugin, getComponent } from '../../selectors/vpanel-projects';
 
 const styles = {
   cell: {
@@ -125,10 +125,13 @@ class Properties extends React.Component {
   }
 
   renderBinding(project, binding) {
-    const key = `${binding.remote.id}:${binding.remote_attribute} -> ${binding.local.id}:${binding.local_action}`;
     const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteBinding(project, binding.uid));
+      AppDispatcher.dispatch(projectDeleteBinding(project.uid, binding.uid));
     };
+
+    const remote = getComponent(storeHandler.getStore().getState(), { project: project.uid, component: binding.remote });
+    const local  = getComponent(storeHandler.getStore().getState(), { project: project.uid, component: binding.local  });
+    const key    = `${remote.id}:${binding.remoteAttribute} -> ${local.id}:${binding.localAction}`;
 
     return (
       <div>
@@ -138,19 +141,19 @@ class Properties extends React.Component {
           <tbody>
             <tr>
               <td><PropertiesLabel text={'Remote component'}/></td>
-              <td><PropertiesValue value={binding.remote.id}/></td>
+              <td><PropertiesValue value={remote.id}/></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Remote attribute'}/></td>
-              <td><PropertiesValue value={binding.remote_attribute}/></td>
+              <td><PropertiesValue value={binding.remoteAttribute}/></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Local component'}/></td>
-              <td><PropertiesValue value={binding.local.id}/></td>
+              <td><PropertiesValue value={local.id}/></td>
             </tr>
             <tr>
               <td><PropertiesLabel text={'Local action'}/></td>
-              <td><PropertiesValue value={binding.local_action}/></td>
+              <td><PropertiesValue value={binding.localAction}/></td>
             </tr>
           </tbody>
         </table>
