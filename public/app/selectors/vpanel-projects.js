@@ -15,6 +15,7 @@ export const makeGetToolbox = () => createSelector(
   [ getPlugins ],
   (plugins) => plugins.
     groupBy(it => it.entityId).
-    map((map, entityId) => ({ entityId, plugins: map.toArray() })).
+    map((map, entityId) => ({ entityId, plugins: map.sortBy(plugin => `${plugin.library}:${plugin.type}`).toArray() })).
+    sortBy((map, entityId) => entityId).
     toArray()
 );
