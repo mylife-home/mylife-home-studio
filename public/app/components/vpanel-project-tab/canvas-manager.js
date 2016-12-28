@@ -5,30 +5,43 @@
 export default class CanvasManager {
 
   constructor() {
-    this.canvasMeasure        = null;
-    this.componentMeasures    = new Map();
-    this.bindingPaths         = new Map();
-    this.listeners            = new Map();
-    this.listenersIdGenerator = 0;
+    this.canvasMeasure               = null;
+    this.componentMeasures           = new Map();
+    this.bindingPaths                = new Map();
+    this.listeners                   = new Map();
+    this.listenersIdGenerator        = 0;
+    this.firstCanvasMeasureListeners = [];
   }
 
   canvasMeasureChanged(dim) {
-    console.log('canvasMeasureChanged');
+    const first = !this.canvasMeasure;
+
     this.canvasMeasure = {
       x : dim.left,
       y : dim.top
     };
 
-    this.bindingPaths.clear();
-    this._changed();
+    if(first) {
+      for(const listener of this.firstCanvasMeasureListeners) {
+        listener();
+      }
+
+      this.firstCanvasMeasureListeners.splice(0, this.firstCanvasMeasureListeners.length);
+    }
   }
 
   componentMeasureChanged(uiComponent, component, plugin, dim) {
-    console.log('componentMeasureChanged', component);
+
+    if(!this.canvasMeasure) {
+      this.firstCanvasMeasureListeners.push(() => this.componentMeasureChanged(uiComponent, component, plugin, dim));
+      return;
+    }
+
     const members = plugin.clazz.attributes.map(a => a.name).
       concat(plugin.clazz.actions.map(a => a.name));
 
     const oldMeasure = this.componentMeasures.get(component.uid);
+    dim = this._convertRectToCanvas(dim);
 
     if(!componentShouldUpdateMeasure(dim, oldMeasure)) { return; }
 
@@ -51,7 +64,7 @@ export default class CanvasManager {
         measure.containsNulls   = true;
         continue;
       }
-      measure.anchors[member] = memberMeasure;
+      measure.anchors[member] = this._convertAnchorToCanvas(memberMeasure);
     }
 
     if(measure.containsNulls) { return; }
@@ -74,14 +87,12 @@ export default class CanvasManager {
   }
 
   addBindingChangedListener(handler) {
-    console.log('addBindingChangedListener');
     const newId = ++this.listenersIdGenerator;
     this.listeners.set(newId, handler);
     return () => { this.listeners.delete(newId); };
   }
 
   bindingPath(binding) {
-    console.log('bindingPath', binding);
 
     let path = this.bindingPaths.get(binding.uid);
     if(path) { return path; }
@@ -105,14 +116,14 @@ export default class CanvasManager {
     return path;
   }
 
-  _convertRectToGrid(canvasMeasure, rect) {
+  _convertRectToCanvas(rect) {
     const ret = {
-      top    : Math.floor(rect.top   / GRID_SIZE),
-      left   : Math.floor(rect.left  / GRID_SIZE),
-      right  : Math.ceil(rect.right  / GRID_SIZE),
-      bottom : Math.ceil(rect.bottom / GRID_SIZE),
+      top:    rect.top - this.canvasMeasure.y,
+      left:   rect.left - this.canvasMeasure.x,
+      right:  rect.right - this.canvasMeasure.x,
+      bottom: rect.bottom - this.canvasMeasure.y,
     };
-    ret.width  = ret.right - ret.left;
+    ret.width = ret.right - ret.left;
     ret.height = ret.bottom - ret.top;
     return ret;
   }
@@ -132,8 +143,6 @@ export default class CanvasManager {
   }
 
   _findPathBasic(start, end) {
-    start           = this._convertAnchorToCanvas(start);
-    end             = this._convertAnchorToCanvas(end);
     const distances = [];
     for(const startPoint of [start.left, start.right]) {
       for(const endPoint of [end.left, end.right]) {
