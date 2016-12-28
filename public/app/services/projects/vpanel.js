@@ -194,36 +194,49 @@ function validate(project, msgs) {
 }
 
 function serialize(project) {
-  common.serialize(project);
+  return {
+    ...common.serialize(project),
+    Components : common.serializeFromMap(project.components, comp => serializeComponent(project, comp)),
+    Toolbox    : project.plugins.
+      groupBy(it => it.entityId).
+      map((map, entityId) => ({
+        EntityName : entityId,
+        Plugins: map.map(plugin => ({
+          clazz   : plugin.raw.clazz,
+          config  : plugin.raw.config,
+          library : plugin.library,
+          type    : plugin.type,
+          usage   : plugin.usage,
+          version : plugin.version
+        })).toArray()
+      })).toArray()
+  };
+}
 
-  project.raw.Components = project.components.map(component => ({
+function serializeComponent(project, component) {
+  const plugin   = project.plugins.get(component.plugin);
+  const bindings = project.bindings.valueSeq()
+    .filter(binding => binding.local === component.uid)
+    .map(binding => ({
+      local_action     : binding.localAction,
+      remote_attribute : binding.remoteAttribute,
+      remote_id        : project.components.get(binding.remote).id
+    }))
+    .toArray();
+
+  return {
     Component : {
       id       : component.id,
-      library  : component.plugin.library,
-      type     : component.plugin.type,
-      bindings : component.bindings.map(binding => ({ // FIXME
-        local_action    : binding.localAction,
-        remote_attribute: binding.remoteAttribute,
-        remote_id       : binding.remote.id })), // FIXME
+      library  : plugin.library,
+      type     : plugin.type,
+      bindings,
       config   : common.serializeMap(component.config),
       designer : common.serializeMap({
         Location: `${component.designer.location.x},${component.designer.location.y}`
       })
     },
-    EntityName : component.plugin.entityId
-  }));
-
-  project.raw.Toolbox = project.plugins.map(item => ({
-    EntityName : item.entityId,
-    Plugins    : item.plugins.map(plugin => ({
-      clazz   : plugin.raw.clazz,
-      config  : plugin.raw.config,
-      library : plugin.library,
-      type    : plugin.type,
-      usage   : plugin.usage,
-      version : plugin.version
-    }))
-  }));
+    EntityName : plugin.entityId
+  };
 }
 
 function prepareImportToolbox(project, done) {
