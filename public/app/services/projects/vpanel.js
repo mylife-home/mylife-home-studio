@@ -163,21 +163,22 @@ function validate(project, msgs) {
   common.validate(project, msgs);
 
   // component id set and unique
-  const { noIdCount, duplicates } = common.checkIds(project.components);
-  if(noIdCount > 0) {
-    msgs.push(`${noIdCount} components have no id`);
-  }
-  for(const id of duplicates) {
-    msgs.push(`Duplicate component id: ${id}`);
+  {
+    const { noIdCount, duplicates } = common.checkIds(project.components);
+    if(noIdCount > 0) {
+      msgs.push(`${noIdCount} components have no id`);
+    }
+    for(const id of duplicates) {
+      msgs.push(`Duplicate component id: ${id}`);
+    }
   }
 
   // no binding duplicate
-  for(const comp of project.components) {
+  {
     const bindings = new Set();
     const duplicates = new Set();
-
-    for(const binding of comp.bindings) {
-      const bindingId = `${binding.remote.id}.${binding.remote_attribute} -> ${comp.id}.${binding.local_action}`;
+    for(const binding of project.bindings.values()) {
+      const bindingId = `${binding.remote}.${binding.remoteAttribute} -> ${binding.local}.${binding.localAction}`;
       if(bindings.has(bindingId)) {
         duplicates.add(bindingId);
         continue;
