@@ -6,9 +6,7 @@ import Metadata from '../metadata/index';
 import { newId } from '../../utils/index';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { resourcesSetQuery } from '../../actions/index';
-import storeHandler from '../../compat/store'; // TODO: remove that ?
-import { getResourceEntity } from'../../selectors/online';
+import { resourcesSet } from '../../actions/index';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -549,10 +547,9 @@ function prepareDeploy(project, done) {
 
       resources.set('default_window', project.defaultWindow.id);
 
-      const entity = getResourceEntity(storeHandler.getStore().getState());
       operations = [];
       for(const [resourceId, resourceContent] of resources.entries()) {
-        operations.push(createOperationResourceSet(entity.id, resourceId, resourceContent));
+        operations.push(createOperationResourceSet(resourceId, resourceContent));
       }
     } catch(err) {
       return done(err);
@@ -562,13 +559,13 @@ function prepareDeploy(project, done) {
   });
 }
 
-function createOperationResourceSet(entityId, resourceId, resourceContent) {
+function createOperationResourceSet(resourceId, resourceContent) {
   return {
     uid: newId(),
     enabled: true,
     description: `${resourceContent ? 'Set' : 'Delete'} resource ${resourceId}`,
     action: (done) => {
-      return AppDispatcher.dispatch(resourcesSetQuery(entityId, resourceId, resourceContent, done));
+      return AppDispatcher.dispatch(resourcesSet(resourceId, resourceContent, done));
     }
   };
 }

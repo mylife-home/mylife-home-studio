@@ -2,11 +2,10 @@
 
 import debugLib from 'debug';
 
-import { resourcesSetQuery } from '../../actions/index';
+import { resourcesSet } from '../../actions/index';
 import { projectTypes } from '../../constants/index';
 import { newId } from '../../utils/index';
 import storeHandler from '../../compat/store'; // TODO: remove that ?
-import { getResourceEntity } from'../../selectors/online';
 
 import vpanel from './vpanel';
 import ui from './ui';
@@ -80,7 +79,6 @@ class Projects {
 
   saveOnline(project, done) {
     const key = `project.${project.type}.${project.name}`;
-    const entityId = getResourceEntity(storeHandler.getStore().getState()).id;
     let content;
     try {
       content = this.serialize(project);
@@ -88,7 +86,7 @@ class Projects {
       return done(err);
     }
 
-    return resourcesSetQuery(entityId, key, content, (err) => {
+    return resourcesSet(key, content, (err) => {
       if(err) { return done(err); }
 
       debug('project saved', project.uid);

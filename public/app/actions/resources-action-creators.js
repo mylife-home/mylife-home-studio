@@ -4,6 +4,7 @@ import async from 'async';
 import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 import shared from '../shared/index';
+import { getResourceEntity } from'../selectors/online';
 
 export function resourcesEntityQuery(entity, done) {
   return (dispatch) => {
@@ -69,43 +70,42 @@ export function resourcesEntityComponentsList(entityId, components) {
 
 export function resourcesGet(entityId, resourceId, done) {
   return (dispatch) => {
-    Facade.resources.queryResourceGet(entityId, resourceId, (err, res) => {
+    Facade.resources.queryResourceGet(entityId, resourceId, (err, resourceContent) => {
       if(err) {
         if(!done) { return console.log(err); } // eslint-disable-line no-console
         return done(err);
       }
 
-      dispatch(resourcesGetResult(entityId, resourceId, res));
-      if(done) { return done(null, res); }
+      dispatch({
+        type: actionTypes.RESOURCE_GET,
+        entityId,
+        resourceId,
+        resourceContent
+      });
+
+      if(done) { return done(null, resourceContent); }
     });
   };
 }
 
-export function resourcesGetResult(entityId, resourceId, resourceContent) {
-  return {
-    type: actionTypes.RESOURCE_GET,
-    entityId,
-    resourceId,
-    resourceContent
-  };
-}
+export function resourcesSet(resourceId, resourceContent, done) {
+  return (dispatch, getState) => {
+    const entityId = getResourceEntity(getState()).id;
 
-export function resourcesSetQuery(entityId, resourceId, resourceContent, done) {
-  return (dispatch) => {
-    dispatch({
-      type: actionTypes.RESOURCE_SET,
-      entityId,
-      resourceId,
-      resourceContent
-    });
-
-    Facade.resources.queryResourceSet(entityId, resourceId, resourceContent, (err, res) => {
+    Facade.resources.queryResourceSet(entityId, resourceId, resourceContent, (err, resourceContent) => {
       if(err) {
         if(!done) { return console.log(err); } // eslint-disable-line no-console
         return done(err);
       }
 
-      if(done) { return done(null, res); }
+      dispatch({
+        type: actionTypes.RESOURCE_SET,
+        entityId,
+        resourceId,
+        resourceContent
+      });
+
+      if(done) { return done(null, resourceContent); }
     });
   };
 }
