@@ -82,7 +82,7 @@ export function dialogCancelOperations() {
 export function dialogSetOneOperation(operation, value) {
   return {
     type: actionTypes.DIALOG_SET_ONE_OPERATION,
-    operation: operation.id,
+    operation: operation.uid,
     enabled: value
   };
 }

@@ -25,7 +25,7 @@ const DialogOperationSelect = ({ operations, ok, cancel, setAll, setOne }) => (
     autoScrollBodyContent={true}>
     <mui.List>
       {(operations || []).map(op => (<mui.ListItem
-                           key={op.id}
+                           key={op.uid}
                            primaryText={op.description}
                            leftCheckbox={
                              <mui.Checkbox checked={op.enabled}

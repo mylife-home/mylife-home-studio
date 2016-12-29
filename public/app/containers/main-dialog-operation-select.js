@@ -9,7 +9,7 @@ import {
 } from '../actions/index';
 
 const mapStateToProps = (state) => ({
-  operations: state.dialogs.operations && state.dialogs.operations.toArray()
+  operations: state.dialogs.operations && state.dialogs.operations.sortBy(op => op.uid).toArray()
 });
 
 const mapDispatchToProps = ({
