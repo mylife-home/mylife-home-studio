@@ -17,7 +17,6 @@ export default {
   serialize,
   prepareImportOnline,
   prepareImportVpanelProject,
-  executeImport,
   prepareDeploy,
   createImage,
   createWindow,
@@ -387,8 +386,6 @@ function serializeActionWindow(project, actionWindow) {
   };
 }
 
- /////// BEGIN TODO ///////
-
 function prepareImportOnline(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
@@ -423,48 +420,57 @@ function prepareImportOnline(project, done) {
 
 function prepareImportVpanelProject(project, vpanelProject) {
   const components = vpanelProject.components
-    .filter(c => c.plugin.usage === metadata.pluginUsage.ui)
-    .map(c => ({ id: c.id, plugin: c.plugin }));
+    .valueSeq()
+    .filter(c => vpanelProject.plugins.get(c.plugin).usage === metadata.pluginUsage.ui)
+    .map(c => ({ id: c.id, plugin: vpanelProject.plugins.get(c.plugin) }))
+    .toArray();
   return prepareImport(project, components);
 }
 
 function prepareImport(project, newComponents) {
 
   const messages = [];
-  const cleaners = [];
-  for(const window of project.windows) {
-    for(const control of window.controls) {
-      for(const property of ['primaryAction', 'secondaryAction']) {
-        if(!control[property]) { continue; }
-        const actionComp = control[property].component;
-        if(actionComp && !importIsComponentAction(newComponents, actionComp.component, actionComp.action)) {
-          messages.push(` - ${window.id}/${control.id}/${property}`);
-          cleaners.push(importPropertyDeleter(control, property));
+  const operations = [];
+  for(const window of project.windows.values()) {
+    for(const control of window.controls.values()) {
+      for(const action of ['primaryAction', 'secondaryAction']) {
+        if(!control[action]) { continue; }
+        const actionComp = control[action].component;
+        if(actionComp && !importIsComponentAction(newComponents, project.components.get(actionComp.component), actionComp.action)) {
+          messages.push(` - ${window.id}/${control.id}/${action}`);
+          operations.push({ type: 'deleteControlAction', window: window.uid, control: control.uid, action });
         }
       }
 
       if(control.text) {
-        for(const item of control.text.context) {
-          if(!importIsComponentAttribute(newComponents, item.component, item.attribute)) {
+        for(const item of control.text.context.values()) {
+          if(!importIsComponentAttribute(newComponents, project.components.get(item.component), item.attribute)) {
             messages.push(` - ${window.id}/${control.id}/text/${item.id}`);
-            cleaners.push(importArrayItemDeleter(control.text.context, item));
+            operations.push({ type: 'deleteControlContext', window: window.uid, control: control.uid, context: item.uid });
           }
         }
       }
 
-      if(control.display && !importIsComponentAttribute(newComponents, control.display.component, control.display.attribute)) {
+      if(control.display && !importIsComponentAttribute(newComponents, project.components.get(control.display.component), control.display.attribute)) {
         messages.push(` - ${window.id}/${control.id}/display`);
-        cleaners.push(importPropertyDeleter(control.display, 'component'));
-        cleaners.push(importPropertyDeleter(control.display, 'attribute'));
+        operations.push({ type: 'deleteControlDisplayComponent', window: window.uid, control: control.uid });
       }
     }
   }
 
+  for(const newComponent of newComponents) {
+    const actualComponent = project.components.find(c => c.id === newComponent.id);
+    if(actualComponent) {
+      operations.push({ type: 'setComponentPlugin', component: actualComponent.uid, plugin: newComponent.plugin });
+      continue;
+    }
+
+    operations.push({ type: 'newComponent', component: newComponent });
+  }
+
   return {
-    project,
-    newComponents,
     messages,
-    cleaners
+    operations
   };
 }
 
@@ -491,34 +497,7 @@ function importIsComponentAttribute(newComponents, oldComponent, attributeName) 
   return true;
 }
 
-function importPropertyDeleter(object, property) {
-  return () => {
-    object[property] = null;
-  };
-}
-
-function importArrayItemDeleter(array, item) {
-  return () => {
-    arrayRemoveValue(array, item);
-  };
-}
-
-function executeImport(data) {
-
-  for(const cleaner of data.cleaners) {
-    cleaner();
-  }
-
-  for(const newComponent of data.newComponents) {
-    const actualComponent = data.project.components.find(c => c.id === newComponent.id);
-    if(actualComponent) {
-      actualComponent.plugin = newComponent.plugin;
-      continue;
-    }
-
-    data.project.components.push(newComponent);
-  }
-}
+ /////// BEGIN TODO ///////
 
 function prepareDeploy(project, done) {
   return common.loadOnlineResourceNames((err, names) => {
@@ -719,11 +698,4 @@ function checkWindowUsage(project, window) {
   if(usage.length) {
     throw new Error('The window is used:\n' + usage.join('\n'));
   }
-}
-
-function arrayRemoveValue(arr, value) {
-  const index = arr.indexOf(value);
-  if(index === -1) { return false; }
-  arr.splice(index, 1);
-  return true;
 }

@@ -239,11 +239,27 @@ function projectUiImportPostPrepare(project, data) {
 
 function projectUiExecuteImportComponents(project, data) {
   return (dispatch) => {
-    try {
-      Facade.projects.uiExecuteImport(data);
-    } catch(err) {
-      return dispatch(dialogError(err));
-    }
+    dispatch({
+      type: actionTypes.PROJECT_BATCH_CHANGES,
+      project,
+      operations: data.operations
+    });
+
+  //operations.push({ type: 'deleteControlAction', window: window.uid, control: control.uid, action });
+  //cleaners.push(importPropertyDeleter(control, property));
+
+  //operations.push({ type: 'deleteControlContext', window: window.uid, control: control.uid, context: item.uid });
+  //cleaners.push(importArrayItemDeleter(control.text.context, item));
+
+  //operations.push({ type: 'deleteControlDisplayComponent', window: window.uid, control: control.uid });
+  //cleaners.push(importPropertyDeleter(control.display, 'component'));
+  //cleaners.push(importPropertyDeleter(control.display, 'attribute'));
+
+  //operations.push({ type: 'setComponentPlugin', component: actualComponent.uid, plugin: newComponent.plugin });
+  //actualComponent.plugin = newComponent.plugin;
+
+  //operations.push({ type: 'newComponent', component: newComponent });
+  //data.project.components.push(newComponent);
 
     dispatch(dialogInfo({ title: 'Success', lines: ['Components imported'] }));
   };

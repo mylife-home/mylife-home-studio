@@ -131,10 +131,6 @@ class Projects {
     return ui.prepareImportVpanelProject(project, vpanelProject);
   }
 
-  uiExecuteImport(data) {
-    ui.executeImport(data);
-  }
-
   uiPrepareDeploy(project, done) {
     return ui.prepareDeploy(project, done);
   }
