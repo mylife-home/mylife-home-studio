@@ -576,7 +576,7 @@ function createImage() {
   const uid = newId();
   return {
     uid,
-    id      : `image_${}`,
+    id      : `image_${uid}`,
     content : null
   };
 }
