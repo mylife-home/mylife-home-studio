@@ -573,17 +573,19 @@ function createOperationResourceSet(resourceId, resourceContent) {
  /////// END TODO ///////
 
 function createImage() {
+  const uid = newId();
   return {
-    uid     : newId(),
-    id      : `image_${common.uid()}`,
+    uid,
+    id      : `image_${}`,
     content : null
   };
 }
 
 function createWindow() {
+  const uid = newId();
   return {
-    uid                : newId(),
-    id                 : `window_${common.uid()}`,
+    uid,
+    id                 : `window_${uid}`,
     height             : 500,
     width              : 500,
     style              : '',
@@ -598,9 +600,10 @@ function createControl(window, location, type) {
   const x = location.x / window.width;
   const y = location.y / window.height;
 
+  const uid = newId();
   const control = {
-    uid: newId(),
-    id: `control_${common.uid()}`,
+    uid,
+    id: `control_${uid}`,
     height,
     width,
     x,

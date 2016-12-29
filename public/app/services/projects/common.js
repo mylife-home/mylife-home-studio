@@ -30,7 +30,6 @@ export default {
   checkIds,
   serialize,
   checkSaved,
-  uid,
   executeDeploy
 };
 
@@ -217,10 +216,6 @@ function checkSaved(project) {
   if(project.dirty) {
     throw new Error('project must be saved');
   }
-}
-
-function uid() {
-  return Math.floor((1 + Math.random()) * 0x10000000).toString(16);
 }
 
 function executeDeploy(data, done) {
