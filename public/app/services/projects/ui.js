@@ -5,9 +5,6 @@ import common from './common';
 import Metadata from '../metadata/index';
 import { newId } from '../../utils/index';
 
-import AppDispatcher from '../../compat/dispatcher';
-import { resourcesSet } from '../../actions/index';
-
 const metadata = new Metadata(); // TODO: how to use facade ?
 
 export default {
@@ -497,8 +494,6 @@ function importIsComponentAttribute(newComponents, oldComponent, attributeName) 
   return true;
 }
 
- /////// BEGIN TODO ///////
-
 function prepareDeploy(project, done) {
   return common.loadOnlineResourceNames((err, names) => {
     if(err) { return done(err); }
@@ -515,16 +510,16 @@ function prepareDeploy(project, done) {
         }
       }
 
-      for(const image of project.images) {
+      for(const image of project.images.values()) {
         resources.set(`image.${image.id}`, image.content);
       }
 
-      for(const window of project.windows) {
-        const content = JSON.stringify({ window: serializeWindow(window) });
+      for(const window of project.windows.values()) {
+        const content = JSON.stringify({ window: serializeWindow(project, window) });
         resources.set(`window.${window.id}`, content);
       }
 
-      resources.set('default_window', project.defaultWindow.id);
+      resources.set('default_window', project.windows.get(project.defaultWindow).id);
 
       operations = [];
       for(const [resourceId, resourceContent] of resources.entries()) {
@@ -534,7 +529,7 @@ function prepareDeploy(project, done) {
       return done(err);
     }
 
-    return done(null, { project, operations });
+    return done(null, operations);
   });
 }
 
@@ -543,13 +538,9 @@ function createOperationResourceSet(resourceId, resourceContent) {
     uid: newId(),
     enabled: true,
     description: `${resourceContent ? 'Set' : 'Delete'} resource ${resourceId}`,
-    action: (done) => {
-      return AppDispatcher.dispatch(resourcesSet(resourceId, resourceContent, done));
-    }
+    action: { type: 'resourceSet', resourceId, resourceContent }
   };
 }
-
- /////// END TODO ///////
 
 function createImage() {
   const uid = newId();

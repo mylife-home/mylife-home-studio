@@ -7,14 +7,11 @@ import icons from '../icons';
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations, dialogExecuteOperations,
   projectNewImage, projectNewWindow,
-  projectUiImportOnline, projectUiImportVPanelProjectFile, projectUiImportVPanelProjectOnline
+  projectUiImportOnline, projectUiImportVPanelProjectFile, projectUiImportVPanelProjectOnline, projectUiPrepareDeploy
 } from '../../actions/index';
 import storeHandler from '../../compat/store';
 import { getVPanelProjectNames } from'../../selectors/online';
-
-import Facade from '../../services/facade';
 
 const styles = {
   icon: {
@@ -59,18 +56,7 @@ class Toolbar extends React.Component {
   // deploy
 
   deploy() {
-    const project = this.props.project;
-    AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
-    Facade.projects.uiPrepareDeploy(project, (err, data) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      AppDispatcher.dispatch(dialogOpenOperations(data.operations));
-    });
-  }
-
-  executeOperations() {
-    AppDispatcher.dispatch(dialogExecuteOperations());
+    AppDispatcher.dispatch(projectUiPrepareDeploy(this.props.project.uid));
   }
 
   render() {

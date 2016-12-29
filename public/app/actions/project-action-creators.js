@@ -6,7 +6,7 @@ import Facade from '../services/facade';
 
 import { download } from '../utils/index';
 
-import { dialogError, dialogInfo, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
+import { dialogError, dialogInfo, dialogSetBusy, dialogUnsetBusy, dialogOpenOperations } from './dialog-action-creators';
 import { resourcesGet, resourcesSet } from './resources-action-creators';
 import { getResourceEntity } from '../selectors/online';
 import { getProjects, getProject, getProjectState } from '../selectors/projects';
@@ -282,6 +282,23 @@ export function projectUiConfirmImportComponents(project) {
     const data = getPendingImportComponents(getState(), { project });
     dispatch(projectUiSetPendingImportComponents(project, null));
     dispatch(projectUiExecuteImportComponents(project, data));
+  };
+}
+
+export function projectUiPrepareDeploy(project) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    const projectObject = getProject(state, { project });
+
+    dispatch(dialogSetBusy('Preparing deploy'));
+    Facade.projects.uiPrepareDeploy(projectObject, (err, operations) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+
+      dispatch(dialogOpenOperations(operations));
+    });
+
   };
 }
 
