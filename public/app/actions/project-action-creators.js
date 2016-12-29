@@ -7,7 +7,7 @@ import Facade from '../services/facade';
 import { download } from '../utils/index';
 
 import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
-import { resourcesGet } from './resources-action-creators';
+import { resourcesGet, resourcesSet } from './resources-action-creators';
 import { getProjects, getProject, getProjectState } from '../selectors/projects';
 import { getWindow } from '../selectors/ui-projects';
 import { getResourceEntity } from '../selectors/online';
@@ -78,11 +78,20 @@ export function projectLoad(project) {
 
 export function projectSaveOnline(project) {
   return (dispatch) => {
+    let content;
+    try {
+      content = this.serialize(project);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
+
     dispatch(dialogSetBusy('Saving project'));
-    Facade.projects.saveOnline(project, (err) => {
-      dispatch(projectSaved({ project: project.uid }));
+    const key = `project.${project.type}.${project.name}`;
+    return resourcesSet(key, content, (err) => {
       dispatch(dialogUnsetBusy());
+
       if(err) { return dispatch(dialogError(err)); }
+      dispatch(projectSaved({ project: project.uid }));
     });
   };
 }

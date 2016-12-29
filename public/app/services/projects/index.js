@@ -2,7 +2,6 @@
 
 import debugLib from 'debug';
 
-import { resourcesSet } from '../../actions/index';
 import { projectTypes } from '../../constants/index';
 import { newId } from '../../utils/index';
 
@@ -74,23 +73,6 @@ class Projects {
     }
 
     common.validateHandler(msgs);
-  }
-
-  saveOnline(project, done) {
-    const key = `project.${project.type}.${project.name}`;
-    let content;
-    try {
-      content = this.serialize(project);
-    } catch(err) {
-      return done(err);
-    }
-
-    return resourcesSet(key, content, (err) => {
-      if(err) { return done(err); }
-
-      debug('project saved', project.uid);
-      return done();
-    });
   }
 
   serialize(project) {
