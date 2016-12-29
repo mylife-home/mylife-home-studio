@@ -90,7 +90,14 @@ export function resourcesGet(entityId, resourceId, done) {
 
 export function resourcesSet(resourceId, resourceContent, done) {
   return (dispatch, getState) => {
-    const entityId = getResourceEntity(getState()).id;
+    let entityId;
+    try {
+      entityId = getResourceEntity(getState()).id;
+      if(!entityId) { throw new Error('No resource entity on network'); }
+    } catch(err) {
+      if(!done) { return console.log(err); } // eslint-disable-line no-console
+      return done(err);
+    }
 
     Facade.resources.queryResourceSet(entityId, resourceId, resourceContent, (err, resourceContent) => {
       if(err) {
