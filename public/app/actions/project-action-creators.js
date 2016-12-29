@@ -87,12 +87,12 @@ export function projectSaveOnline(project) {
 
     dispatch(dialogSetBusy('Saving project'));
     const key = `project.${project.type}.${project.name}`;
-    return resourcesSet(key, content, (err) => {
+    return dispatch(resourcesSet(key, content, (err) => {
       dispatch(dialogUnsetBusy());
 
       if(err) { return dispatch(dialogError(err)); }
       dispatch(projectSaved({ project: project.uid }));
-    });
+    }));
   };
 }
 
@@ -122,12 +122,12 @@ export function projectSaveAllOnline() {
       }
 
       const key = `project.${project.type}.${project.name}`;
-      return resourcesSet(key, content, (err) => {
+      return dispatch(resourcesSet(key, content, (err) => {
 
         if(err) { return cb(err); }
         dispatch(projectSaved({ project: project.uid }));
         return cb();
-      });
+      }));
     }, (err) => {
       dispatch(dialogUnsetBusy());
       if(err) { return dispatch(dialogError(err)); }
