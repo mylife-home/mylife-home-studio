@@ -105,10 +105,6 @@ class Toolbar extends React.Component {
     });
   }
 
-  executeOperations() {
-    AppDispatcher.dispatch(dialogExecuteOperations());
-  }
-
   render() {
     return (
       <div>
