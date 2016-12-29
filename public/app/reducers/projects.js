@@ -274,6 +274,9 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_STATE_SELECT_AND_ACTIVE_CONTENT:
       return { ...state, states: state.states.update(action.project, state => ({ ... state, selection: action.selection, activeContent : action.activeContent })) };
 
+    case actionTypes.PROJECT_STATE_UI_PENDING_IMPORT_COMPONENTS:
+      return { ...state, states: state.states.update(action.project, state => ({ ... state, pendingImportComponents: action.data })) };
+
     default:
       return state;
   }

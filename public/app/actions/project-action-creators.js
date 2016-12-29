@@ -1,16 +1,16 @@
 'use strict';
 
 import async from 'async';
-import { actionTypes } from '../constants/index';
+import { actionTypes, projectTypes } from '../constants/index';
 import Facade from '../services/facade';
 
 import { download } from '../utils/index';
 
-import { dialogError, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
+import { dialogError, dialogInfo, dialogSetBusy, dialogUnsetBusy } from './dialog-action-creators';
 import { resourcesGet, resourcesSet } from './resources-action-creators';
-import { getProjects, getProject, getProjectState } from '../selectors/projects';
-import { getWindow } from '../selectors/ui-projects';
 import { getResourceEntity } from '../selectors/online';
+import { getProjects, getProject, getProjectState } from '../selectors/projects';
+import { getWindow, getPendingImportComponents } from '../selectors/ui-projects';
 import { getComponent, getBinding } from '../selectors/vpanel-projects';
 
 export function projectNew(type) {
@@ -146,6 +146,126 @@ export function projectSaved(project) {
   return {
     type: actionTypes.PROJECT_SAVED,
     project
+  };
+}
+
+export function projectUiImportOnline(project) {
+  return (dispatch, getState) => {
+    dispatch(dialogSetBusy('Preparing import'));
+
+    const state = getState();
+    const projectObject = getProject(state, { project });
+
+    Facade.projects.uiPrepareImportOnline(projectObject, (err, data) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+
+      return dispatch(projectUiImportPostPrepare(project, data));
+    });
+  };
+}
+
+// TODO: merge with projectLoadFile
+export function projectUiImportVPanelProjectFile(project, file) {
+  return (dispatch) => {
+    const reader = new FileReader();
+
+    dispatch(dialogSetBusy('Loading project'));
+
+    reader.onloadend = () => {
+      dispatch(dialogUnsetBusy());
+      const err = reader.error;
+      if(err) { return dispatch(dialogError(err)); }
+      return dispatch(projectUiImportVPanelProject(project, reader.result));
+    };
+
+    reader.readAsText(file);
+  };
+}
+
+// TODO: merge with projectLoadOnline
+export function projectUiImportVPanelProjectOnline(project, name) {
+  return (dispatch, getState) => {
+    const resource = 'project.vpanel.' + name;
+
+    const entity = getResourceEntity(getState());
+    const cachedContent = entity.cachedResources && entity.cachedResources[resource];
+    if(cachedContent) {
+      return dispatch(projectUiImportVPanelProject(project, cachedContent));
+    }
+
+    dispatch(dialogSetBusy('Loading project'));
+    return dispatch(resourcesGet(entity.id, resource, (err, content) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+      return dispatch(projectUiImportVPanelProject(project, content));
+    }));
+  };
+}
+
+function projectUiImportVPanelProject(project, content) {
+  return (dispatch, getState) => {
+
+    let vpanelProject;
+    try {
+      vpanelProject = Facade.projects.open(projectTypes.VPANEL, content);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
+
+    const state = getState();
+    const projectObject = getProject(state, { project });
+
+    let data;
+    try {
+      data = Facade.projects.uiPrepareImportVpanelProject(projectObject, vpanelProject);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
+
+    return dispatch(projectUiImportPostPrepare(project, data));
+  };
+}
+
+function projectUiImportPostPrepare(project, data) {
+  return (dispatch) => {
+    if(data.messages && data.messages.length) {
+      return dispatch(projectUiSetPendingImportComponents(project, data));
+    }
+
+    return dispatch(projectUiExecuteImportComponents(project, data));
+  };
+}
+
+function projectUiExecuteImportComponents(project, data) {
+  return (dispatch) => {
+    try {
+      Facade.projects.uiExecuteImport(data);
+    } catch(err) {
+      return dispatch(dialogError(err));
+    }
+
+    dispatch(dialogInfo({ title: 'Success', lines: ['Components imported'] }));
+  };
+}
+
+function projectUiSetPendingImportComponents(project, data) {
+  return {
+    type: actionTypes.PROJECT_STATE_UI_PENDING_IMPORT_COMPONENTS,
+    project,
+    data
+  };
+}
+
+export function projectUiCancelImportComponents(project) {
+  return projectUiSetPendingImportComponents(project, null);
+}
+
+export function projectUiConfirmImportComponents(project) {
+  return (dispatch, getState) => {
+    const data = getPendingImportComponents(getState(), { project });
+    dispatch(projectUiSetPendingImportComponents(project, null));
+    dispatch(projectUiExecuteImportComponents(project, data));
   };
 }
 

@@ -10,9 +10,10 @@ import Properties from './properties';
 import ExplorerContainer from '../../containers/ui-project-tab/explorer-container';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
+import DialogConfirm from '../dialogs/dialog-confirm';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectClose } from '../../actions/index';
+import { projectClose, projectUiCancelImportComponents, projectUiConfirmImportComponents } from '../../actions/index';
 import storeHandler from '../../compat/store';
 
 import { getProjectState } from '../../selectors/projects';
@@ -46,7 +47,8 @@ class UiProjectTab extends React.Component {
     const { project } = this.props;
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     const activeContent = projectState && projectState.activeContent;
-    this.setState({ activeContent });
+    const importComponentsConfirm = projectState && projectState.pendingImportComponents;
+    this.setState({ activeContent, importComponentsConfirm });
   }
 
   render() {
@@ -77,38 +79,46 @@ class UiProjectTab extends React.Component {
     }
 
     return (
-      <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
-        <bs.Row style={tabStyles.fullHeight}>
-          <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
-            <div style={tabStyles.fullHeight}>
-              <mui.Paper>
-                <Toolbox project={project} />
+      <div>
+        <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
+          <bs.Row style={tabStyles.fullHeight}>
+            <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
+              <div style={tabStyles.fullHeight}>
+                <mui.Paper>
+                  <Toolbox project={project} />
+                </mui.Paper>
+                <mui.Paper style={Object.assign({}, tabStyles.scrollable, styles.explorerHeight)}>
+                  <ExplorerContainer project={project.uid} fullProject={project}/>
+                </mui.Paper>
+              </div>
+            </bs.Col>
+            <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
+              <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
+                <MainTitle
+                  center={title}
+                  left={<icons.tabs.Ui />}
+                  right={
+                    <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project.uid))}>
+                      <icons.actions.Close />
+                    </mui.IconButton>
+                  }/>
+                <Canvas project={project} />
+              </div>
+            </bs.Col>
+            <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
+              <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+                <Properties project={project} />
               </mui.Paper>
-              <mui.Paper style={Object.assign({}, tabStyles.scrollable, styles.explorerHeight)}>
-                <ExplorerContainer project={project.uid} fullProject={project}/>
-              </mui.Paper>
-            </div>
-          </bs.Col>
-          <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
-            <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
-              <MainTitle
-                center={title}
-                left={<icons.tabs.Ui />}
-                right={
-                  <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project.uid))}>
-                    <icons.actions.Close />
-                  </mui.IconButton>
-                }/>
-              <Canvas project={project} />
-            </div>
-          </bs.Col>
-          <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
-            <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-              <Properties project={project} />
-            </mui.Paper>
-          </bs.Col>
-        </bs.Row>
-      </bs.Grid>
+            </bs.Col>
+          </bs.Row>
+        </bs.Grid>
+
+        <DialogConfirm title="Confirm"
+                       open={!!this.state.importComponentsConfirm}
+                       lines={(this.state.importComponentsConfirm && ['The following elements will be lost:'].concat(this.state.importComponentsConfirm.messages)) || []}
+                       yes={() => projectUiConfirmImportComponents(project.uid)}
+                       no={() => projectUiCancelImportComponents(project.uid)}/>
+      </div>
     );
   }
 }

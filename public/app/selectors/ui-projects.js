@@ -1,7 +1,7 @@
 'use strict';
 
 import { createSelector } from 'reselect';
-import { getProject } from './projects';
+import { getProject, getProjectState } from './projects';
 
 export const getComponents     = (state, props) => getProject(state, props).components;
 export const getImages         = (state, props) => getProject(state, props).images;
@@ -12,6 +12,8 @@ export const getImage          = (state, props) => getImages(state, props).get(p
 export const getWindow         = (state, props) => getWindows(state, props).get(props.window);
 export const getWindowControls = (state, props) => getWindow(state, props).controls.toArray();
 export const getWindowControl  = (state, props) => getWindow(state, props).controls.get(props.control);
+
+export const getPendingImportComponents = (state, props) => getProjectState(state, props).pendingImportComponents;
 
 export const makeGetSortedComponents = () => createSelector(
   [ getComponents ],
