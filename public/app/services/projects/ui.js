@@ -12,8 +12,6 @@ import { getResourceEntity } from'../../selectors/online';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
-let operationId = 0;
-
 export default {
   createNew,
   open,
@@ -566,7 +564,7 @@ function prepareDeploy(project, done) {
 
 function createOperationResourceSet(entityId, resourceId, resourceContent) {
   return {
-    id: ++operationId,
+    uid: newId(),
     enabled: true,
     description: `${resourceContent ? 'Set' : 'Delete'} resource ${resourceId}`,
     action: (done) => {

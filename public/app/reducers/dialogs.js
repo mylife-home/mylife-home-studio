@@ -24,7 +24,7 @@ export default function(state = { busyText: null, error: null }, action) {
       return { ...state, info: null };
 
     case actionTypes.DIALOG_OPEN_OPERATIONS:
-      return { ...state, operations: Immutable.Map(action.operations.map(op => [op.id, op])) };
+      return { ...state, operations: Immutable.Map(action.operations.map(op => [op.uid, op])) };
 
     case actionTypes.DIALOG_CLEAR_OPERATIONS:
       return { ...state, operations: null };

@@ -9,8 +9,6 @@ import { newId, snapToGrid } from '../../utils/index';
 const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
 
-let operationId = 0;
-
 export default {
   createNew,
   open,
@@ -756,7 +754,7 @@ function getOnlineTargetBindings(onlineComponents, remoteId) {
 
 function createOperationDeleteBinding(entityId, componentId, binding) {
   return {
-    id: ++operationId,
+    uid: newId(),
     enabled: true,
     description: `Delete binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
     action: (done) => {
@@ -772,7 +770,7 @@ function createOperationDeleteBinding(entityId, componentId, binding) {
 
 function createOperationDeleteComponent(entityId, componentId) {
   return {
-    id: ++operationId,
+    uid: newId(),
     enabled: true,
     description: `Delete component ${componentId} on entity ${entityId}`,
     action: (done) => {
@@ -783,7 +781,7 @@ function createOperationDeleteComponent(entityId, componentId) {
 
 function createOperationCreateComponent(component) {
   return {
-    id: ++operationId,
+    uid: newId(),
     enabled: true,
     description: `Create component ${component.id} on entity ${component.plugin.entityId}`,
     action: (done) => {
@@ -800,7 +798,7 @@ function createOperationCreateComponent(component) {
 
 function createOperationCreateBinding(component, binding) {
   return {
-    id: ++operationId,
+    uid: newId(),
     enabled: true,
     description: `Create binding ${binding.remote.id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
     action: (done) => {
