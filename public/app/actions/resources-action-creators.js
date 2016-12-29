@@ -92,8 +92,9 @@ export function resourcesSet(resourceId, resourceContent, done) {
   return (dispatch, getState) => {
     let entityId;
     try {
-      entityId = getResourceEntity(getState()).id;
-      if(!entityId) { throw new Error('No resource entity on network'); }
+      const entity = getResourceEntity(getState());
+      if(!entity) { throw new Error('No resource entity on network'); }
+      entityId = entity.id;
     } catch(err) {
       if(!done) { return console.log(err); } // eslint-disable-line no-console
       return done(err);
