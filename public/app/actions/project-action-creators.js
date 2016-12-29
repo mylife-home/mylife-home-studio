@@ -111,13 +111,24 @@ export function projectSaveAs(project) {
 
 export function projectSaveAllOnline() {
   return (dispatch, getState) => {
-    const projects = getProjects(getState());
+    const projects = getProjects(getState()).filter(project => project.dirty);
     dispatch(dialogSetBusy('Saving projects'));
-    async.eachSeries(projects, (project, cb) => Facade.projects.saveOnline(project, (err) => {
-      if(err) return cb(err);
-      dispatch(projectSaved({ project: project.uid }));
-      return cb();
-    }), (err) => {
+    async.eachSeries(projects, (project, cb) => {
+      let content;
+      try {
+        content = this.serialize(project);
+      } catch(err) {
+        return cb(err);
+      }
+
+      const key = `project.${project.type}.${project.name}`;
+      return resourcesSet(key, content, (err) => {
+
+        if(err) { return cb(err); }
+        dispatch(projectSaved({ project: project.uid }));
+        return cb();
+      });
+    }, (err) => {
       dispatch(dialogUnsetBusy());
       if(err) { return dispatch(dialogError(err)); }
     });
