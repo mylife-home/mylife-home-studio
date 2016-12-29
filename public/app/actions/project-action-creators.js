@@ -80,7 +80,7 @@ export function projectSaveOnline(project) {
   return (dispatch) => {
     let content;
     try {
-      content = this.serialize(project);
+      content = Facade.projects.serialize(project);
     } catch(err) {
       return dispatch(dialogError(err));
     }
@@ -116,7 +116,7 @@ export function projectSaveAllOnline() {
     async.eachSeries(projects, (project, cb) => {
       let content;
       try {
-        content = this.serialize(project);
+        content = Facade.projects.serialize(project);
       } catch(err) {
         return cb(err);
       }
