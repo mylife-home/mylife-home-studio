@@ -5,7 +5,6 @@ import debugLib from 'debug';
 import { resourcesSet } from '../../actions/index';
 import { projectTypes } from '../../constants/index';
 import { newId } from '../../utils/index';
-import storeHandler from '../../compat/store'; // TODO: remove that ?
 
 import vpanel from './vpanel';
 import ui from './ui';
