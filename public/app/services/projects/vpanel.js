@@ -237,6 +237,8 @@ function serializeComponent(project, component) {
   };
 }
 
+// BEGIN TODO
+
 function prepareImportToolbox(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
@@ -579,6 +581,8 @@ function prepareDeployDrivers(project, done) {
     return done(null, { project, operations });
   });
 }
+
+// END TODO
 
 function createComponent(project, location, plugin) {
   const uid       = newId();
