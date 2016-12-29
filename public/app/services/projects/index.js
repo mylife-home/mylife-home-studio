@@ -26,7 +26,7 @@ class Projects {
     const project = {
       uid,
       type,
-      name         : uid,
+      name         : `${type}_project_${uid}`,
       creationDate : new Date(),
       lastUpdate   : new Date(),
       dirty        : true,
