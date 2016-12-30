@@ -116,8 +116,8 @@ class UiProjectTab extends React.Component {
         <DialogConfirm title="Confirm"
                        open={!!this.state.importComponentsConfirm}
                        lines={(this.state.importComponentsConfirm && ['The following elements will be lost:'].concat(this.state.importComponentsConfirm.messages)) || []}
-                       yes={() => projectUiConfirmImportComponents(project.uid)}
-                       no={() => projectUiCancelImportComponents(project.uid)}/>
+                       yes={() => AppDispatcher.dispatch(projectUiConfirmImportComponents(project.uid))}
+                       no={() => AppDispatcher.dispatch(projectUiCancelImportComponents(project.uid))}/>
       </div>
     );
   }
