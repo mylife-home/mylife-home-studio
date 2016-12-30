@@ -79,7 +79,7 @@ class UiProjectTab extends React.Component {
     }
 
     return (
-      <div>
+      <div style={Object.assign({}, tabStyles.fullHeight)}>
         <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
           <bs.Row style={tabStyles.fullHeight}>
             <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
