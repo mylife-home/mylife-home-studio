@@ -3,14 +3,12 @@
 import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
-import DialogConfirm from '../dialogs/dialog-confirm';
 
 import AppDispatcher from '../../compat/dispatcher';
 import {
-  dialogSetBusy, dialogUnsetBusy, dialogError, dialogOpenOperations, dialogInfo, dialogExecuteOperations
+  projectVPanelImportOnlineToolbox, projectVPanelImportOnlineDriverComponents,
+  projectVPanelPrepareDeployVPanel, projectVPanelPrepareDeployDrivers
 } from '../../actions/index';
-
-import Facade from '../../services/facade';
 
 const styles = {
   icon: {
@@ -33,122 +31,58 @@ class Toolbar extends React.Component {
   // importOnlineToolbox
 
   importOnlineToolbox() {
-    const { project } = this.props;
-    AppDispatcher.dispatch(dialogSetBusy('Preparing import'));
-    Facade.projects.vpanelPrepareImportOnlineToolbox(project, (err, data) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      if(data.messages && data.messages.length) {
-        this.setState({
-          importOnlineToolboxConfirm: data
-        });
-        return;
-      }
-
-      this.executeImportOnlineToolbox(data);
-    });
-  }
-
-  cancelImportOnlineToolbox() {
-    this.setState({ importOnlineToolboxConfirm: null });
-  }
-
-  confirmImportOnlineToolbox() {
-    const data = this.state.importOnlineToolboxConfirm;
-    this.setState({ importOnlineToolboxConfirm: null });
-    this.executeImportOnlineToolbox(data);
-  }
-
-  executeImportOnlineToolbox(data) {
-    AppDispatcher.dispatch(dialogSetBusy('Executing import'));
-    Facade.projects.vpanelExecuteImportOnlineToolbox(data, (err) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      AppDispatcher.dispatch(dialogInfo({ title: 'Success', lines: ['Toolbox imported'] }));
-    });
+    AppDispatcher.dispatch(projectVPanelImportOnlineToolbox(this.props.project.uid));
   }
 
   // ---
 
   importOnlineDriverComponents() {
-    const project = this.props.project;
-    AppDispatcher.dispatch(dialogSetBusy('Executing import'));
-    Facade.projects.vpanelImportOnlineDriverComponents(project, (err) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      AppDispatcher.dispatch(dialogInfo({ title: 'Success', lines: ['Components imported'] }));
-    });
+    AppDispatcher.dispatch(projectVPanelImportOnlineDriverComponents(this.props.project.uid));
   }
 
   deployVPanel() {
-    const project = this.props.project;
-    AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
-    Facade.projects.vpanelPrepareDeployVPanel(project, (err, data) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      AppDispatcher.dispatch(dialogOpenOperations(data.operations));
-    });
+    AppDispatcher.dispatch(projectVPanelPrepareDeployVPanel(this.props.project.uid));
   }
 
   deployDrivers() {
-    const project = this.props.project;
-    AppDispatcher.dispatch(dialogSetBusy('Preparing deploy'));
-    Facade.projects.vpanelPrepareDeployDrivers(project, (err, data) => {
-      AppDispatcher.dispatch(dialogUnsetBusy());
-      if(err) { return AppDispatcher.dispatch(dialogError(err)); }
-
-      AppDispatcher.dispatch(dialogOpenOperations(data.operations));
-    });
+    AppDispatcher.dispatch(projectVPanelPrepareDeployDrivers(this.props.project.uid));
   }
 
   render() {
     return (
-      <div>
-        <mui.Toolbar>
-          <mui.ToolbarGroup>
+      <mui.Toolbar>
+        <mui.ToolbarGroup>
 
-            <mui.IconButton tooltip="Import toolbox from online entities"
-                            tooltipPosition="top-right"
-                            onClick={this.importOnlineToolbox.bind(this)}
-                            style={styles.button}>
-              <icons.PluginDriver />
-            </mui.IconButton>
+          <mui.IconButton tooltip="Import toolbox from online entities"
+                          tooltipPosition="top-right"
+                          onClick={this.importOnlineToolbox.bind(this)}
+                          style={styles.button}>
+            <icons.PluginDriver />
+          </mui.IconButton>
 
-            <mui.IconButton tooltip="Import driver components from online entities"
-                            tooltipPosition="top-right"
-                            onClick={this.importOnlineDriverComponents.bind(this)}
-                            style={styles.button}>
-              <icons.Component />
-            </mui.IconButton>
+          <mui.IconButton tooltip="Import driver components from online entities"
+                          tooltipPosition="top-right"
+                          onClick={this.importOnlineDriverComponents.bind(this)}
+                          style={styles.button}>
+            <icons.Component />
+          </mui.IconButton>
 
-            <mui.IconButton tooltip={<div>Deploy vpanel project<br/>(replace vpanel and ui components on all entities)</div>}
-                            tooltipPosition="top-center"
-                            onClick={this.deployVPanel.bind(this)}
-                            style={styles.button}>
-              <icons.tabs.Online />
-            </mui.IconButton>
+          <mui.IconButton tooltip={<div>Deploy vpanel project<br/>(replace vpanel and ui components on all entities)</div>}
+                          tooltipPosition="top-center"
+                          onClick={this.deployVPanel.bind(this)}
+                          style={styles.button}>
+            <icons.tabs.Online />
+          </mui.IconButton>
 
-            <mui.IconButton tooltip={<div>Deploy driver project<br/>(replace driver components on targeted entities)</div>}
-                            tooltipPosition="top-center"
-                            onClick={this.deployDrivers.bind(this)}
-                            style={styles.button}>
-              <icons.tabs.Online />
-            </mui.IconButton>
+          <mui.IconButton tooltip={<div>Deploy driver project<br/>(replace driver components on targeted entities)</div>}
+                          tooltipPosition="top-center"
+                          onClick={this.deployDrivers.bind(this)}
+                          style={styles.button}>
+            <icons.tabs.Online />
+          </mui.IconButton>
 
-          </mui.ToolbarGroup>
-        </mui.Toolbar>
-
-        <DialogConfirm title="Confirm"
-                       open={!!this.state.importOnlineToolboxConfirm}
-                       lines={(this.state.importOnlineToolboxConfirm && this.state.importOnlineToolboxConfirm.messages) || []}
-                       yes={this.confirmImportOnlineToolbox.bind(this)}
-                       no={this.cancelImportOnlineToolbox.bind(this)}/>
-
-      </div>
+        </mui.ToolbarGroup>
+      </mui.Toolbar>
     );
   }
 }

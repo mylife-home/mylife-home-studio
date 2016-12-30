@@ -11,7 +11,7 @@ import { resourcesGet, resourcesSet } from './resources-action-creators';
 import { getResourceEntity } from '../selectors/online';
 import { getProjects, getProject, getProjectState } from '../selectors/projects';
 import { getWindow, getPendingImportComponents } from '../selectors/ui-projects';
-import { getComponent, getBinding } from '../selectors/vpanel-projects';
+import { getComponent, getBinding, getPendingImportToolbox } from '../selectors/vpanel-projects';
 
 export function projectNew(type) {
   const project = Facade.projects.new(type);
@@ -284,6 +284,131 @@ export function projectUiPrepareDeploy(project) {
 
     dispatch(dialogSetBusy('Preparing deploy'));
     Facade.projects.uiPrepareDeploy(projectObject, (err, operations) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+
+      dispatch(dialogOpenOperations(operations));
+    });
+
+  };
+}
+
+export function projectVPanelImportOnlineToolbox(project) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const projectObject = getProject(state, { project });
+
+    dispatch(dialogSetBusy('Preparing import'));
+
+    Facade.projects.vpanelPrepareImportOnlineToolbox(projectObject, (err, data) => {
+
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+
+      if(data.messages && data.messages.length) {
+        return dispatch(projectVPanelSetPendingImportToolbox(project, data));
+      }
+
+      return dispatch(projectVPanelExecuteImportToolbox(project, data));
+    });
+  };
+}
+
+function projectVPanelSetPendingImportToolbox(project, data) {
+  return {
+    type: actionTypes.PROJECT_STATE_VPANEL_PENDING_IMPORT_TOOLBOX,
+    project,
+    data
+  };
+}
+
+export function projectVPanelConfirmImportToolbox(project) {
+  return (dispatch, getState) => {
+    const data = getPendingImportToolbox(getState(), { project });
+    dispatch(projectVPanelSetPendingImportToolbox(project, null));
+    dispatch(projectVPanelExecuteImportToolbox(project, data));
+  };
+}
+
+export function projectVPanelCancelImportToolbox(project) {
+  return projectVPanelSetPendingImportToolbox(project, null);
+}
+
+function projectVPanelExecuteImportToolbox(project, data) {
+  return (dispatch) => {
+
+    const executors = {
+      deleteComponent : (op) => dispatch(projectDeleteVPanelComponent(project, op.component)),
+      deletePlugin    : (op) => dispatch({ type: actionTypes.PROJECT_DELETE_PLUGIN, project, plugin: op.plugin }),
+      newPlugin       : (op) => dispatch({ type: actionTypes.PROJECT_NEW_PLUGIN, project, plugin: op.plugin })
+    };
+
+    for(const operation of data.operations) {
+      executors[operation.type](operation);
+    }
+
+    dispatch(dialogInfo({ title: 'Success', lines: ['Toolbox imported'] }));
+  };
+}
+
+export function projectVPanelImportOnlineDriverComponents(project) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const projectObject = getProject(state, { project });
+
+    dispatch(dialogSetBusy('Executing import'));
+
+    Facade.projects.vpanelImportOnlineDriverComponents(projectObject, (err, components) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+
+      let lastComponent;
+
+      for(const component of components) {
+        dispatch({
+          type: actionTypes.PROJECT_NEW_COMPONENT,
+          project,
+          component
+        });
+
+        lastComponent = component;
+      }
+
+      if(lastComponent) {
+        const selection = { type: 'component', uid: lastComponent.uid };
+        dispatch(projectStateSelect(project, selection));
+      }
+
+      dispatch(dialogInfo({ title: 'Success', lines: ['Components imported'] }));
+    });
+  };
+}
+
+export function projectVPanelPrepareDeployVPanel(project) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    const projectObject = getProject(state, { project });
+
+    dispatch(dialogSetBusy('Preparing deploy'));
+    Facade.projects.vpanelPrepareDeployVPanel(projectObject, (err, operations) => {
+      dispatch(dialogUnsetBusy());
+      if(err) { return dispatch(dialogError(err)); }
+
+      dispatch(dialogOpenOperations(operations));
+    });
+
+  };
+}
+
+export function projectVPanelPrepareDeployDrivers(project) {
+  return (dispatch, getState) => {
+
+    const state = getState();
+    const projectObject = getProject(state, { project });
+
+    dispatch(dialogSetBusy('Preparing deploy'));
+    Facade.projects.vpanelPrepareDeployDrivers(projectObject, (err, operations) => {
       dispatch(dialogUnsetBusy());
       if(err) { return dispatch(dialogError(err)); }
 

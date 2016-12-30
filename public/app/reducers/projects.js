@@ -178,6 +178,12 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
           update(action.remote, component => ({ ...component, bindings : component.bindingTargets.delete(action.binding) }))
       }));
 
+    case actionTypes.PROJECT_NEW_PLUGIN:
+      return updateProject(state, action, project => ({ plugins : project.plugins.set(action.plugin.uid, action.plugin) }));
+
+    case actionTypes.PROJECT_DELETE_PLUGIN:
+      return updateProject(state, action, project => ({ plugins : project.plugins.delete(action.plugin) }));
+
     case actionTypes.PROJECT_COMPONENT_SET_PLUGIN:
       return updateProject(state, action, project => ({
         components : project.components.update(action.component, component => ({
@@ -284,6 +290,9 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
 
     case actionTypes.PROJECT_STATE_UI_PENDING_IMPORT_COMPONENTS:
       return { ...state, states: state.states.update(action.project, state => ({ ... state, pendingImportComponents: action.data })) };
+
+    case actionTypes.PROJECT_STATE_VPANEL_PENDING_IMPORT_TOOLBOX:
+      return { ...state, states: state.states.update(action.project, state => ({ ... state, pendingImportToolbox: action.data })) };
 
     default:
       return state;

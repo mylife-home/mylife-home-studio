@@ -95,10 +95,6 @@ class Projects {
     return vpanel.prepareImportToolbox(project, done);
   }
 
-  vpanelExecuteImportOnlineToolbox(data, done) {
-    return vpanel.executeImportToolbox(data, done);
-  }
-
   vpanelImportOnlineDriverComponents(project, done) {
     return vpanel.importDriverComponents(project, done);
   }

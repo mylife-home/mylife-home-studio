@@ -15,7 +15,6 @@ export default {
   validate,
   serialize,
   prepareImportToolbox,
-  executeImportToolbox,
   importDriverComponents,
   prepareDeployVPanel,
   prepareDeployDrivers,
@@ -237,8 +236,6 @@ function serializeComponent(project, component) {
   };
 }
 
-// BEGIN TODO
-
 function prepareImportToolbox(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
@@ -248,7 +245,8 @@ function prepareImportToolbox(project, done) {
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = common.getOnlinePlugins();
       const diff = pluginsDiff(projectPlugins, onlinePlugins);
-      const messages = [];
+      const messages   = [];
+      const operations = [];
 
       diff.added.forEach(id => messages.push(`New plugin: ${id}`));
       diff.deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
@@ -270,22 +268,26 @@ function prepareImportToolbox(project, done) {
         }
       });
 
-      bindingsToDelete.forEach(binding => messages.push(
-        `Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote.id}:${binding.remote_attribute}`));
+      bindingsToDelete.forEach(binding => messages.push(`Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote.id}:${binding.remote_attribute}`));
 
-      componentsToDelete.forEach(comp => messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`));
+      componentsToDelete.forEach(comp => {
+        messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`);
+        operations.push({ type: 'deleteComponent', component: comp.uid });
+      });
 
-      ret = {
-        project,
-        onlinePlugins,
-        projectPlugins,
-        added: diff.added,
-        deleted: diff.deleted,
-        modified: diff.modified,
-        componentsToDelete,
-        bindingsToDelete,
-        messages
-      };
+
+      for(const del of diff.deleted.concat(diff.modified)) {
+        const plugin = projectPlugins.get(del);
+        operations.push({ type: 'deletePlugin', plugin: plugin.uid });
+      }
+
+      for(const add of diff.added.concat(diff.modified)) {
+        const { entity, plugin } = onlinePlugins.get(add);
+        const pluginObject = common.loadPlugin(plugin, entity.id);
+        operations.push({ type: 'newPlugin', plugin: pluginObject });
+      }
+
+      ret = { messages, operations };
 
     } catch(err) {
       return done(err);
@@ -295,46 +297,11 @@ function prepareImportToolbox(project, done) {
   });
 }
 
-function executeImportToolbox(data, done) {
-  try {
-
-    for(const binding of data.bindingsToDelete) {
-      arrayRemoveByValue(binding.local.bindings, binding);
-      arrayRemoveByValue(binding.remote.bindingTargets, binding);
-    }
-
-    for(const component of data.componentsToDelete) {
-      arrayRemoveByValue(data.project.components, component);
-    }
-
-    for(const del of data.deleted.concat(data.modified)) {
-      const { item, plugin } = data.projectPlugins.get(del);
-      arrayRemoveByValue(item.plugins, plugin);
-    }
-
-    for(const add of data.added.concat(data.modified)) {
-      const {entity, plugin } = data.onlinePlugins.get(add);
-      const entityId = entity.id;
-      const item = getToolboxItem(data.project, entityId);
-      item.plugins.push(common.loadPlugin(plugin, entityId));
-    }
-
-    // clean empty plugins items
-    data.project.plugins.
-                 filter(it => !it.plugins.length).
-                 forEach(arrayRemoveByValue.bind(null, data.project.plugins));
-
-  } catch(err) {
-    return done(err);
-  }
-
-  return done();
-}
-
 function importDriverComponents(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
+    let components;
     try {
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = common.getOnlinePlugins();
@@ -351,11 +318,11 @@ function importDriverComponents(project, done) {
         const component = {
           uid: newId(),
           id: onlineComponent.id,
-          bindings: [],
-          bindingTargets: [],
+          bindings: Immutable.Set(),
+          bindingTargets: Immutable.Set(),
           config: common.loadMapOnline(onlineComponent.config),
           designer: { location: { x: 0, y: 0 } },
-          plugin
+          plugin: plugin.uid
         };
 
         validateConfig(project, component);
@@ -366,9 +333,11 @@ function importDriverComponents(project, done) {
       return done(err);
     }
 
-    return done();
+    return done(null, components);
   });
 }
+
+// BEGIN TODO
 
 function prepareDeployVPanel(project, done) {
   return common.loadOnlineCoreEntities((err) => {
@@ -639,17 +608,6 @@ function createBinding(project, remoteComponentUid, remoteAttributeName, localCo
   };
 }
 
-function getToolboxItem(project, entityId) {
-  for(const item of project.plugins) {
-    if(item.entityId === entityId) {
-      return item;
-    }
-  }
-  const ret = { entityId, plugins: [] };
-  project.plugins.push(ret);
-  return ret;
-}
-
 function findPlugin(project, entityId, library, type) {
   for(const plugin of project.plugins.values()) {
     if(plugin.entityId === entityId &&
@@ -670,12 +628,6 @@ function findComponent(project, componentId) {
 
 function findPluginUsage(project, plugin) {
   return project.components.filter(comp => comp.plugin === plugin).ToArray();
-}
-
-function arrayRemoveByValue(array, item) {
-  const index = array.indexOf(item);
-  if(index === -1) { return; }
-  array.splice(index, 1);
 }
 
 function getProjectPlugins(project) {
