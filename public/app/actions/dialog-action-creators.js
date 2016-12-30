@@ -59,6 +59,8 @@ export function dialogClearOperations() {
 export function dialogExecuteOperations() {
   return (dispatch, getState) => {
 
+// TODO
+
     // action: { type: 'resourceSet', resourceId, resourceContent }
     //  AppDispatcher.dispatch(resourcesSet(resourceId, resourceContent, done));
 
