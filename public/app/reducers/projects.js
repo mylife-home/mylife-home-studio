@@ -181,9 +181,8 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_COMPONENT_SET_PLUGIN:
       return updateProject(state, action, project => ({
         components : project.components.update(action.component, component => ({
-            ...component,
-            plugin: action.plugin
-          };
+          ...component,
+          plugin: action.plugin
         }))
       }));
 
