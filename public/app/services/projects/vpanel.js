@@ -283,7 +283,7 @@ function prepareImportToolbox(project, done) {
 
       for(const add of diff.added.concat(diff.modified)) {
         const { entity, plugin } = onlinePlugins.get(add);
-        const pluginObject = common.loadPlugin(plugin, entity.id);
+        const pluginObject = { ...common.loadPlugin(plugin, entity.id), uid: newId() };
         operations.push({ type: 'newPlugin', plugin: pluginObject });
       }
 
