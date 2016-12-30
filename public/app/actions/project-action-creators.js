@@ -289,7 +289,6 @@ export function projectUiPrepareDeploy(project) {
 
       dispatch(dialogOpenOperations(operations));
     });
-
   };
 }
 
@@ -397,7 +396,6 @@ export function projectVPanelPrepareDeployVPanel(project) {
 
       dispatch(dialogOpenOperations(operations));
     });
-
   };
 }
 
@@ -414,7 +412,6 @@ export function projectVPanelPrepareDeployDrivers(project) {
 
       dispatch(dialogOpenOperations(operations));
     });
-
   };
 }
 
