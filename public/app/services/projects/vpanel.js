@@ -301,7 +301,7 @@ function importDriverComponents(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
-    let components;
+    const components = [];
     try {
       const projectPlugins = getProjectPlugins(project);
       const onlinePlugins = common.getOnlinePlugins();
@@ -326,7 +326,7 @@ function importDriverComponents(project, done) {
         };
 
         validateConfig(project, component);
-        project.components.push(component);
+        components.push(component);
       }
 
     } catch(err) {
@@ -632,13 +632,10 @@ function findPluginUsage(project, plugin) {
 
 function getProjectPlugins(project) {
   const ret = new Map();
-  for(const item of project.plugins) {
-    for(const plugin of item.plugins) {
-      ret.set(`${item.entityId}:${plugin.library}:${plugin.type}`, {
-        item,
-        plugin
-      });
-    }
+  for(const plugin of project.plugins.values()) {
+    ret.set(`${plugin.entityId}:${plugin.library}:${plugin.type}`, {
+      plugin
+    });
   }
   return ret;
 }
