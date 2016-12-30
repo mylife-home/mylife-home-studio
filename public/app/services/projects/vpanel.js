@@ -343,7 +343,7 @@ function prepareDeployVPanel(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
-    let operations;
+    const operations = [];
     try {
       common.checkSaved(project);
 
@@ -379,21 +379,21 @@ function prepareDeployVPanel(project, done) {
         });
       }
 
-      for(const projectComponent of project.components) {
+      for(const projectComponent of project.components.values()) {
 
         for(const binding of projectComponent.bindings) {
           const bindingId = `${binding.remote.id}.${binding.remote_attribute}->${projectComponent.id}.${binding.local_action}`;
           bindingsToCreate.set(bindingId, {
-            entityId: projectComponent.plugin.entityId,
-            component: projectComponent,
+            entityId  : project.plugins.get(projectComponent.plugin).entityId,
+            component : projectComponent,
             binding
           });
         }
 
-        if(!usages.includes(projectComponent.plugin.usage)) { continue; }
+        if(!usages.includes(project.plugins.get(projectComponent.plugin).usage)) { continue; }
         componentsToCreate.set(projectComponent.id, {
-          entityId: projectComponent.plugin.entityId,
-          component: projectComponent
+          component : projectComponent,
+          plugin    : project.plugins.get(projectComponent.plugin)
         });
       }
 
@@ -430,8 +430,6 @@ function prepareDeployVPanel(project, done) {
         bindingsToCreate.delete(id);
       }
 
-      operations = [];
-
       for(const value of bindingsToDelete.values()) {
         operations.push(createOperationDeleteBinding(value.entityId, value.component.id, value.binding));
       }
@@ -441,11 +439,11 @@ function prepareDeployVPanel(project, done) {
       }
 
       for(const value of componentsToCreate.values()) {
-        operations.push(createOperationCreateComponent(value.component));
+        operations.push(createOperationCreateComponent(value.component, value.plugin));
       }
 
       for(const value of bindingsToCreate.values()) {
-        operations.push(createOperationCreateBinding(value.component, value.binding));
+        operations.push(createOperationCreateBinding(value.entityId, value.component, value.binding));
       }
     } catch(err) {
       return done(err);
@@ -459,7 +457,7 @@ function prepareDeployDrivers(project, done) {
   return common.loadOnlineCoreEntities((err) => {
     if(err) { return done(err); }
 
-    let operations;
+    const operations = [];
     try {
       common.checkSaved(project);
 
@@ -468,8 +466,6 @@ function prepareDeployDrivers(project, done) {
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
       const onlineComponents = common.getOnlineComponents();
-
-      operations = [];
 
       // we deploy each entity in a separate way
       const entityIds = new Set(project.components.
@@ -487,7 +483,7 @@ function prepareDeployDrivers(project, done) {
           onlineIds.push(id);
         }
 
-        for(const component of project.components) {
+        for(const component of project.components.values()) {
           if(component.plugin.usage !== metadata.pluginUsage.driver) { continue; }
           if(component.plugin.entityId !== entityId) { continue; }
           projectComponents.push(component);
@@ -707,60 +703,54 @@ function getOnlineTargetBindings(onlineComponents, remoteId) {
 
 function createOperationDeleteBinding(entityId, componentId, binding) {
   return {
-    uid: newId(),
-    enabled: true,
-    description: `Delete binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
-    action: (done) => {
-      return resources.queryComponentUnbind(entityId, {
-        remote_id: binding.remote_id,
-        remote_attribute: binding.remote_attribute,
-        local_id: componentId,
-        local_action: binding.local_action
-      }, done);
+    uid         : newId(),
+    enabled     : true,
+    description : `Delete binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
+    action      : {
+      type : 'deleteBinding',
+      entityId,
+      componentId,
+      binding
     }
   };
 }
 
 function createOperationDeleteComponent(entityId, componentId) {
   return {
-    uid: newId(),
-    enabled: true,
-    description: `Delete component ${componentId} on entity ${entityId}`,
-    action: (done) => {
-      return resources.queryComponentDelete(entityId, componentId, done);
+    uid         : newId(),
+    enabled     : true,
+    description : `Delete component ${componentId} on entity ${entityId}`,
+    action      : {
+      type : 'deleteComponent',
+      entityId,
+      componentId
     }
   };
 }
 
-function createOperationCreateComponent(component) {
+function createOperationCreateComponent(component, plugin) {
   return {
-    uid: newId(),
-    enabled: true,
-    description: `Create component ${component.id} on entity ${component.plugin.entityId}`,
-    action: (done) => {
-      return resources.queryComponentCreate(component.plugin.entityId, {
-        comp_id: component.id,
-        library: component.plugin.library,
-        comp_type: component.plugin.type,
-        config: mapToAction(component.config),
-        designer: []
-      }, done);
+    uid         : newId(),
+    enabled     : true,
+    description : `Create component ${component.id} on entity ${component.plugin.entityId}`,
+    action      : {
+      type: 'newComponent',
+      component,
+      plugin
     }
   };
 }
 
-function createOperationCreateBinding(component, binding) {
+function createOperationCreateBinding(entityId, component, binding) {
   return {
-    uid: newId(),
-    enabled: true,
-    description: `Create binding ${binding.remote.id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
-    action: (done) => {
-      return resources.queryComponentBind(component.plugin.entityId, {
-        remote_id: binding.remote.id,
-        remote_attribute: binding.remote_attribute,
-        local_id: component.id,
-        local_action: binding.local_action
-      }, done);
+    uid         : newId(),
+    enabled     : true,
+    description : `Create binding ${binding.remote.id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
+    action      : {
+      type : 'newBinding',
+      entityId,
+      component,
+      binding
     }
   };
 }
