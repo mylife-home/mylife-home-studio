@@ -87,10 +87,6 @@ class Projects {
     }
   }
 
-  executeDeploy(data, done) {
-    return common.executeDeploy(data, done);
-  }
-
   vpanelPrepareImportOnlineToolbox(project, done) {
     return vpanel.prepareImportToolbox(project, done);
   }

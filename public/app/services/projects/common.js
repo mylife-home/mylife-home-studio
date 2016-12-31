@@ -3,12 +3,7 @@
 import Immutable from 'immutable';
 import async from 'async';
 
-import storeHandler from '../../compat/store'; // TODO: remove that ?
 import Metadata from '../metadata/index';
-
-import AppDispatcher from '../../compat/dispatcher';
-import { resourcesEntityQuery } from '../../actions/index';
-import { getCoreEntities } from'../../selectors/online';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -20,7 +15,6 @@ export default {
   loadMap,
   serializeMap,
   loadMapOnline,
-  loadOnlineCoreEntities,
   getOnlinePlugins,
   getOnlineComponents,
   loadPlugin,
@@ -28,8 +22,7 @@ export default {
   validateHandler,
   checkIds,
   serialize,
-  checkSaved,
-  executeDeploy
+  checkSaved
 };
 
 function loadToMap(array, mapper) {
@@ -119,17 +112,6 @@ function loadMapOnline(map) {
   return ret;
 }
 
-function loadOnlineCoreEntities(done) {
-  const entities = getCoreEntities(storeHandler.getStore().getState());
-
-  const funcs = [];
-  for(const entity of entities) {
-    funcs.push((cb) => AppDispatcher.dispatch(resourcesEntityQuery(entity, cb)));
-  }
-
-  return async.parallel(funcs, done);
-}
-
 function getOnlinePlugins(coreEntities) {
   const ret = new Map();
   for(const entity of coreEntities) {
@@ -207,12 +189,3 @@ function checkSaved(project) {
   }
 }
 
-function executeDeploy(data, done) {
-  const operations = data.operations.filter(o => o.enabled);
-  console.log('executeDeploy', operations); // eslint-disable-line no-console
-  const actions = operations.map(o => o.action);
-  async.series(actions, (err) => {
-    if(err) { return done(err); }
-    return loadOnlineCoreEntities(done);
-  });
-}
