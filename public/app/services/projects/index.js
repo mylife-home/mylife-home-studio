@@ -127,8 +127,8 @@ class Projects {
     return ui.prepareImportVpanelProject(project, vpanelProject);
   }
 
-  uiPrepareDeploy(project, done) {
-    return ui.prepareDeploy(project, done);
+  uiPrepareDeploy(project, resourcesEntity) {
+    return ui.prepareDeploy(project, resourcesEntity);
   }
 
   uiCreateImage() {

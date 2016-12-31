@@ -7,7 +7,7 @@ import Facade from '../services/facade';
 import { download } from '../utils/index';
 
 import { dialogError, dialogInfo, dialogSetBusy, dialogUnsetBusy, dialogOpenOperations } from './dialog-action-creators';
-import { resourcesGet, resourcesSet } from './resources-action-creators';
+import { resourcesGet, resourcesSet, resourcesEntityQuery } from './resources-action-creators';
 import { getResourceEntity } from '../selectors/online';
 import { getProjects, getProject, getProjectState } from '../selectors/projects';
 import { getWindow, getPendingImportComponents } from '../selectors/ui-projects';
@@ -282,13 +282,26 @@ export function projectUiPrepareDeploy(project) {
     const state = getState();
     const projectObject = getProject(state, { project });
 
+    const entity = getResourceEntity(state);
+    if(!entity) {
+      dispatch(dialogUnsetBusy());
+      return dispatch(dialogError(new Error('No resource entity on network')));
+    }
+
     dispatch(dialogSetBusy('Preparing deploy'));
-    Facade.projects.uiPrepareDeploy(projectObject, (err, operations) => {
+    return dispatch(resourcesEntityQuery(entity, (err) => {
       dispatch(dialogUnsetBusy());
       if(err) { return dispatch(dialogError(err)); }
 
+      let operations;
+      try {
+        operations = Facade.projects.uiPrepareDeploy(projectObject, entity);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
+
       dispatch(dialogOpenOperations(operations));
-    });
+    }));
   };
 }
 

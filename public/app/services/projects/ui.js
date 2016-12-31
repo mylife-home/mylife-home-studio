@@ -494,43 +494,35 @@ function importIsComponentAttribute(newComponents, oldComponent, attributeName) 
   return true;
 }
 
-function prepareDeploy(project, done) {
-  return common.loadOnlineResourceNames((err, names) => {
-    if(err) { return done(err); }
-    let operations;
-    try {
-      common.checkSaved(project);
+function prepareDeploy(project, resourcesEntity) {
+  common.checkSaved(project);
 
-      const resources = new Map();
-      for(const name of names) {
-        // delete all image/window
-        // default_window will be reset too below
-        if(name.startsWith('image.') || name.startsWith('window.')) {
-          resources.set(name, '');
-        }
-      }
-
-      for(const image of project.images.values()) {
-        resources.set(`image.${image.id}`, image.content);
-      }
-
-      for(const window of project.windows.values()) {
-        const content = JSON.stringify({ window: serializeWindow(project, window) });
-        resources.set(`window.${window.id}`, content);
-      }
-
-      resources.set('default_window', project.windows.get(project.defaultWindow).id);
-
-      operations = [];
-      for(const [resourceId, resourceContent] of resources.entries()) {
-        operations.push(createOperationResourceSet(resourceId, resourceContent));
-      }
-    } catch(err) {
-      return done(err);
+  const resources = new Map();
+  for(const resourceName of resourcesEntity.resources) {
+    // delete all image/window
+    // default_window will be reset too below
+    if(resourceName.startsWith('image.') || resourceName.startsWith('window.')) {
+      resources.set(resourceName, '');
     }
+  }
 
-    return done(null, operations);
-  });
+  for(const image of project.images.values()) {
+    resources.set(`image.${image.id}`, image.content);
+  }
+
+  for(const window of project.windows.values()) {
+    const content = JSON.stringify({ window: serializeWindow(project, window) });
+    resources.set(`window.${window.id}`, content);
+  }
+
+  resources.set('default_window', project.windows.get(project.defaultWindow).id);
+
+  const operations = [];
+  for(const [resourceId, resourceContent] of resources.entries()) {
+    operations.push(createOperationResourceSet(resourceId, resourceContent));
+  }
+
+  return operations;
 }
 
 function createOperationResourceSet(resourceId, resourceContent) {

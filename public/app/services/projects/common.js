@@ -8,7 +8,7 @@ import Metadata from '../metadata/index';
 
 import AppDispatcher from '../../compat/dispatcher';
 import { resourcesEntityQuery } from '../../actions/index';
-import { getResourceEntity, getCoreEntities } from'../../selectors/online';
+import { getCoreEntities } from'../../selectors/online';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
 
@@ -21,7 +21,6 @@ export default {
   serializeMap,
   loadMapOnline,
   loadOnlineCoreEntities,
-  loadOnlineResourceNames,
   getOnlinePlugins,
   getOnlineComponents,
   loadPlugin,
@@ -129,14 +128,6 @@ function loadOnlineCoreEntities(done) {
   }
 
   return async.parallel(funcs, done);
-}
-
-function loadOnlineResourceNames(done) {
-  const entity = getResourceEntity(storeHandler.getStore().getState());
-  if(!entity) {
-    return done(new Error('No resource entity on network'));
-  }
-  return AppDispatcher.dispatch(resourcesEntityQuery(entity, done));
 }
 
 function getOnlinePlugins() {
