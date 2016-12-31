@@ -59,6 +59,8 @@ export function dialogClearOperations() {
 export function dialogExecuteOperations() {
   return (dispatch, getState) => {
 
+
+
 // TODO
 
     // action: { type: 'resourceSet', resourceId, resourceContent }
@@ -67,10 +69,27 @@ export function dialogExecuteOperations() {
     const operations = getState().dialogs.operations.toArray();
     dispatch(dialogClearOperations());
 
+    console.log('executeDeploy', operations); // eslint-disable-line no-console
+
+/*
+
+function executeDeploy(data, done) {
+  const operations = data.operations.filter(o => o.enabled);
+  console.log('executeDeploy', operations); // eslint-disable-line no-console
+  const actions = operations.map(o => o.action);
+  async.series(actions, (err) => {
+    if(err) { return done(err); }
+    return loadOnlineCoreEntities(done);
+  });
+}
+*/
+
     dispatch(dialogSetBusy('Executing deploy'));
     Facade.projects.executeDeploy({ operations }, (err) => {
       dispatch(dialogSetBusy());
       if(err) { return dispatch(dialogError(err)); }
+
+// TODO: refresh all entities (see project-action-creators.refreshEntities)
 
       dispatch(dialogInfo({ title: 'Success', lines: ['Deploy done'] }));
     });
