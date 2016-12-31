@@ -155,14 +155,8 @@ export function projectUiImportOnline(project) {
     const state         = getState();
     const projectObject = getProject(state, { project });
     const coreEntities  = getCoreEntities(state);
-    const funcs         = [];
-    for(const entity of coreEntities) {
-      funcs.push((cb) => dispatch(resourcesEntityQuery(entity, cb)));
-    }
 
-    dispatch(dialogSetBusy('Preparing import'));
-    return async.parallel(funcs, (err) => {
-      dispatch(dialogUnsetBusy());
+    return refreshEntities(dispatch, coreEntities, 'Preparing import', (err) => {
       if(err) { return dispatch(dialogError(err)); }
 
       let data;
@@ -300,9 +294,7 @@ export function projectUiPrepareDeploy(project) {
       return dispatch(dialogError(new Error('No resource entity on network')));
     }
 
-    dispatch(dialogSetBusy('Preparing deploy'));
-    return dispatch(resourcesEntityQuery(entity, (err) => {
-      dispatch(dialogUnsetBusy());
+    return refreshEntities(dispatch, [entity], 'Preparing deploy', (err) => {
       if(err) { return dispatch(dialogError(err)); }
 
       let operations;
@@ -313,7 +305,7 @@ export function projectUiPrepareDeploy(project) {
       }
 
       dispatch(dialogOpenOperations(operations));
-    }));
+    });
   };
 }
 
@@ -936,4 +928,17 @@ export function projectStateSelectAndActiveContent(project, selection, activeCon
     selection,
     activeContent
   };
+}
+
+function refreshEntities(dispatch, entities, busyMessage, done) {
+  const funcs         = [];
+  for(const entity of entities) {
+    funcs.push((cb) => dispatch(resourcesEntityQuery(entity, cb)));
+  }
+
+  dispatch(dialogSetBusy(busyMessage));
+  return async.parallel(funcs, (err) => {
+    dispatch(dialogUnsetBusy());
+    return done(err);
+  });
 }
