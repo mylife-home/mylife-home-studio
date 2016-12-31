@@ -66,6 +66,79 @@ export function dialogExecuteOperations() {
     // action: { type: 'resourceSet', resourceId, resourceContent }
     //  AppDispatcher.dispatch(resourcesSet(resourceId, resourceContent, done));
 
+/*
+function createOperationDeleteBinding(entityId, componentId, binding) {
+  return {
+    uid: newId(),
+    enabled: true,
+    description: `Delete binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
+    action: (done) => {
+      return resources.queryComponentUnbind(entityId, {
+        remote_id: binding.remote_id,
+        remote_attribute: binding.remote_attribute,
+        local_id: componentId,
+        local_action: binding.local_action
+      }, done);
+    }
+  };
+}
+
+function createOperationDeleteComponent(entityId, componentId) {
+  return {
+    uid: newId(),
+    enabled: true,
+    description: `Delete component ${componentId} on entity ${entityId}`,
+    action: (done) => {
+      return resources.queryComponentDelete(entityId, componentId, done);
+    }
+  };
+}
+
+function createOperationCreateComponent(component) {
+  return {
+    uid: newId(),
+    enabled: true,
+    description: `Create component ${component.id} on entity ${component.plugin.entityId}`,
+    action: (done) => {
+      return resources.queryComponentCreate(component.plugin.entityId, {
+        comp_id: component.id,
+        library: component.plugin.library,
+        comp_type: component.plugin.type,
+        config: mapToAction(component.config),
+        designer: []
+      }, done);
+    }
+  };
+}
+
+function createOperationCreateBinding(component, binding) {
+  return {
+    uid: newId(),
+    enabled: true,
+    description: `Create binding ${binding.remote.id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
+    action: (done) => {
+      return resources.queryComponentBind(component.plugin.entityId, {
+        remote_id: binding.remote.id,
+        remote_attribute: binding.remote_attribute,
+        local_id: component.id,
+        local_action: binding.local_action
+      }, done);
+    }
+  };
+}
+
+function mapToAction(map) {
+  const ret = [];
+  for(const key of Object.keys(map)) {
+    const value = map[key];
+    ret.push({ key, value });
+  }
+  return ret;
+}
+*/
+
+
+
     const operations = getState().dialogs.operations.toArray();
     dispatch(dialogClearOperations());
 
