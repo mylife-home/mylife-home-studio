@@ -9,9 +9,6 @@ import { newId, snapToGrid } from '../../utils/index';
 const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
 
-import storeHandler from '../../compat/store'; // TODO: remove that ?
-import { getCoreEntities } from'../../selectors/online';
-
 export default {
   createNew,
   open,
@@ -239,315 +236,282 @@ function serializeComponent(project, component) {
   };
 }
 
-function prepareImportToolbox(project, done) {
-  return common.loadOnlineCoreEntities((err) => {
-    if(err) { return done(err); }
+function prepareImportToolbox(project, coreEntities) {
 
-    let ret;
-    try {
-      const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
-      const diff = pluginsDiff(projectPlugins, onlinePlugins);
-      const messages   = [];
-      const operations = [];
+  const projectPlugins = getProjectPlugins(project);
+  const onlinePlugins = common.getOnlinePlugins(coreEntities);
+  const diff = pluginsDiff(projectPlugins, onlinePlugins);
+  const messages   = [];
+  const operations = [];
 
-      diff.added.forEach(id => messages.push(`New plugin: ${id}`));
-      diff.deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
-      diff.modified.forEach(id => messages.push(`Plugin modified: ${id}`));
+  diff.added.forEach(id => messages.push(`New plugin: ${id}`));
+  diff.deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
+  diff.modified.forEach(id => messages.push(`Plugin modified: ${id}`));
 
-      const componentsToDelete = new Set();
-      // TODO: go deeper in changes in class
-      diff.deleted.concat(diff.modified).forEach(id => {
-        const usage = findPluginUsage(project, projectPlugins.get(id).plugin);
-        for(const comp of usage) {
-          componentsToDelete.add(comp);
-        }
-      });
-
-      const bindingsToDelete = new Set();
-      componentsToDelete.forEach(comp => {
-        for(const binding of comp.bindings.concat(comp.bindingTargets)) {
-          bindingsToDelete.add(binding);
-        }
-      });
-
-      bindingsToDelete.forEach(binding => messages.push(`Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote.id}:${binding.remote_attribute}`));
-
-      componentsToDelete.forEach(comp => {
-        messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`);
-        operations.push({ type: 'deleteComponent', component: comp.uid });
-      });
-
-
-      for(const del of diff.deleted.concat(diff.modified)) {
-        const plugin = projectPlugins.get(del);
-        operations.push({ type: 'deletePlugin', plugin: plugin.uid });
-      }
-
-      for(const add of diff.added.concat(diff.modified)) {
-        const { entity, plugin } = onlinePlugins.get(add);
-        const pluginObject = { ...common.loadPlugin(plugin, entity.id), uid: newId() };
-        operations.push({ type: 'newPlugin', plugin: pluginObject });
-      }
-
-      ret = { messages, operations };
-
-    } catch(err) {
-      return done(err);
+  const componentsToDelete = new Set();
+  // TODO: go deeper in changes in class
+  diff.deleted.concat(diff.modified).forEach(id => {
+    const usage = findPluginUsage(project, projectPlugins.get(id).plugin);
+    for(const comp of usage) {
+      componentsToDelete.add(comp);
     }
-
-    return done(null, ret);
   });
+
+  const bindingsToDelete = new Set();
+  componentsToDelete.forEach(comp => {
+    for(const binding of comp.bindings.concat(comp.bindingTargets)) {
+      bindingsToDelete.add(binding);
+    }
+  });
+
+  bindingsToDelete.forEach(binding => messages.push(`Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote.id}:${binding.remote_attribute}`));
+
+  componentsToDelete.forEach(comp => {
+    messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`);
+    operations.push({ type: 'deleteComponent', component: comp.uid });
+  });
+
+
+  for(const del of diff.deleted.concat(diff.modified)) {
+    const plugin = projectPlugins.get(del);
+    operations.push({ type: 'deletePlugin', plugin: plugin.uid });
+  }
+
+  for(const add of diff.added.concat(diff.modified)) {
+    const { entity, plugin } = onlinePlugins.get(add);
+    const pluginObject = { ...common.loadPlugin(plugin, entity.id), uid: newId() };
+    operations.push({ type: 'newPlugin', plugin: pluginObject });
+  }
+
+  return { messages, operations };
 }
 
-function importDriverComponents(project, done) {
-  return common.loadOnlineCoreEntities((err) => {
-    if(err) { return done(err); }
+function importDriverComponents(project, coreEntities) {
 
-    const components = [];
-    try {
-      const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
-      checkPluginsUpToDate(projectPlugins, onlinePlugins);
-      const onlineComponents = common.getOnlineComponents(getCoreEntities(storeHandler.getStore().getState()));
+  const components = [];
+  const projectPlugins = getProjectPlugins(project);
+  const onlinePlugins = common.getOnlinePlugins(coreEntities);
+  checkPluginsUpToDate(projectPlugins, onlinePlugins);
+  const onlineComponents = common.getOnlineComponents(coreEntities);
 
-      for(const [ id, value ] of onlineComponents.entries()) {
-        if(findComponent(project, id)) { continue; }
+  for(const [ id, value ] of onlineComponents.entries()) {
+    if(findComponent(project, id)) { continue; }
 
-        const onlineComponent = value.component;
-        const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
-        if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
+    const onlineComponent = value.component;
+    const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+    if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
 
-        const component = {
-          uid: newId(),
-          id: onlineComponent.id,
-          bindings: Immutable.Set(),
-          bindingTargets: Immutable.Set(),
-          config: common.loadMapOnline(onlineComponent.config),
-          designer: { location: { x: 0, y: 0 } },
-          plugin: plugin.uid
-        };
+    const component = {
+      uid: newId(),
+      id: onlineComponent.id,
+      bindings: Immutable.Set(),
+      bindingTargets: Immutable.Set(),
+      config: common.loadMapOnline(onlineComponent.config),
+      designer: { location: { x: 0, y: 0 } },
+      plugin: plugin.uid
+    };
 
-        validateConfig(project, component);
-        components.push(component);
-      }
+    validateConfig(project, component);
+    components.push(component);
+  }
 
-    } catch(err) {
-      return done(err);
-    }
-
-    return done(null, components);
-  });
+  return components;
 }
 
 // BEGIN TODO
 
-function prepareDeployVPanel(project, done) {
-  return common.loadOnlineCoreEntities((err) => {
-    if(err) { return done(err); }
+function prepareDeployVPanel(project, coreEntities) {
 
-    const operations = [];
-    try {
-      common.checkSaved(project);
+  common.checkSaved(project);
+  const operations = [];
 
-      const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
-      checkPluginsUpToDate(projectPlugins, onlinePlugins);
+  const projectPlugins = getProjectPlugins(project);
+  const onlinePlugins = common.getOnlinePlugins(coreEntities);
+  checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
-      const onlineComponents = common.getOnlineComponents(getCoreEntities(storeHandler.getStore().getState()));
-      const usages = [metadata.pluginUsage.vpanel, metadata.pluginUsage.ui];
+  const onlineComponents = common.getOnlineComponents(coreEntities);
+  const usages = [metadata.pluginUsage.vpanel, metadata.pluginUsage.ui];
 
-      const bindingsToDelete = new Map();
-      const componentsToDelete = new Map();
-      const componentsToCreate = new Map();
-      const bindingsToCreate = new Map();
+  const bindingsToDelete = new Map();
+  const componentsToDelete = new Map();
+  const componentsToCreate = new Map();
+  const bindingsToCreate = new Map();
 
-      for(const [id, value] of onlineComponents.entries()) {
-        const onlineComponent = value.component;
+  for(const [id, value] of onlineComponents.entries()) {
+    const onlineComponent = value.component;
 
-        for(const binding of onlineComponent.bindings) {
-          const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${id}.${binding.local_action}`;
-          bindingsToDelete.set(bindingId, {
-            entityId: value.entity.id,
-            component: onlineComponent,
-            binding
-          });
-        }
-
-        const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
-        if(!usages.includes(plugin.usage)) { continue; }
-        componentsToDelete.set(id, {
-          entityId: value.entity.id,
-          component: onlineComponent
-        });
-      }
-
-      for(const projectComponent of project.components.values()) {
-
-        for(const binding of projectComponent.bindings) {
-          const bindingId = `${binding.remote.id}.${binding.remote_attribute}->${projectComponent.id}.${binding.local_action}`;
-          bindingsToCreate.set(bindingId, {
-            entityId  : project.plugins.get(projectComponent.plugin).entityId,
-            component : projectComponent,
-            binding
-          });
-        }
-
-        if(!usages.includes(project.plugins.get(projectComponent.plugin).usage)) { continue; }
-        componentsToCreate.set(projectComponent.id, {
-          component : projectComponent,
-          plugin    : project.plugins.get(projectComponent.plugin)
-        });
-      }
-
-      // TODO: avoid delete all/rebuild all
-      const unchangedComponents = [];
-      for(const [id, componentDelete] of componentsToDelete.entries()) {
-        const componentCreate = componentsToCreate.get(id);
-        if(!componentCreate) { continue; }
-        if(!componentsAreSame(componentDelete, componentCreate.component)) { continue; }
-        unchangedComponents.push(id);
-      }
-
-      console.log('removed unchanged components from operation list', unchangedComponents); // eslint-disable-line no-console
-      for(const id of unchangedComponents) {
-        componentsToDelete.delete(id);
-        componentsToCreate.delete(id);
-      }
-
-      const unchangedBindings = [];
-
-      for(const [id, bindingDelete] of bindingsToDelete.entries()) {
-        const bindingCreate = bindingsToCreate.get(id);
-        if(!bindingCreate) { continue; }
-        const ownerId = bindingDelete.component.id;
-        if(componentsToDelete.get(ownerId)) { continue; }
-        if(componentsToCreate.get(ownerId)) { continue; }
-
-        unchangedBindings.push(id);
-      }
-
-      console.log('removed unchanged bindings from operation list', unchangedBindings); // eslint-disable-line no-console
-      for(const id of unchangedBindings) {
-        bindingsToDelete.delete(id);
-        bindingsToCreate.delete(id);
-      }
-
-      for(const value of bindingsToDelete.values()) {
-        operations.push(createOperationDeleteBinding(value.entityId, value.component.id, value.binding));
-      }
-
-      for(const value of componentsToDelete.values()) {
-        operations.push(createOperationDeleteComponent(value.entityId, value.component.id));
-      }
-
-      for(const value of componentsToCreate.values()) {
-        operations.push(createOperationCreateComponent(value.component, value.plugin));
-      }
-
-      for(const value of bindingsToCreate.values()) {
-        operations.push(createOperationCreateBinding(value.entityId, value.component, value.binding));
-      }
-    } catch(err) {
-      return done(err);
+    for(const binding of onlineComponent.bindings) {
+      const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${id}.${binding.local_action}`;
+      bindingsToDelete.set(bindingId, {
+        entityId: value.entity.id,
+        component: onlineComponent,
+        binding
+      });
     }
 
-    return done(null, { project, operations });
-  });
+    const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+    if(!usages.includes(plugin.usage)) { continue; }
+    componentsToDelete.set(id, {
+      entityId: value.entity.id,
+      component: onlineComponent
+    });
+  }
+
+  for(const projectComponent of project.components.values()) {
+
+    for(const binding of projectComponent.bindings) {
+      const bindingId = `${binding.remote.id}.${binding.remote_attribute}->${projectComponent.id}.${binding.local_action}`;
+      bindingsToCreate.set(bindingId, {
+        entityId  : project.plugins.get(projectComponent.plugin).entityId,
+        component : projectComponent,
+        binding
+      });
+    }
+
+    if(!usages.includes(project.plugins.get(projectComponent.plugin).usage)) { continue; }
+    componentsToCreate.set(projectComponent.id, {
+      component : projectComponent,
+      plugin    : project.plugins.get(projectComponent.plugin)
+    });
+  }
+
+  // TODO: avoid delete all/rebuild all
+  const unchangedComponents = [];
+  for(const [id, componentDelete] of componentsToDelete.entries()) {
+    const componentCreate = componentsToCreate.get(id);
+    if(!componentCreate) { continue; }
+    if(!componentsAreSame(componentDelete, componentCreate.component)) { continue; }
+    unchangedComponents.push(id);
+  }
+
+  console.log('removed unchanged components from operation list', unchangedComponents); // eslint-disable-line no-console
+  for(const id of unchangedComponents) {
+    componentsToDelete.delete(id);
+    componentsToCreate.delete(id);
+  }
+
+  const unchangedBindings = [];
+
+  for(const [id, bindingDelete] of bindingsToDelete.entries()) {
+    const bindingCreate = bindingsToCreate.get(id);
+    if(!bindingCreate) { continue; }
+    const ownerId = bindingDelete.component.id;
+    if(componentsToDelete.get(ownerId)) { continue; }
+    if(componentsToCreate.get(ownerId)) { continue; }
+
+    unchangedBindings.push(id);
+  }
+
+  console.log('removed unchanged bindings from operation list', unchangedBindings); // eslint-disable-line no-console
+  for(const id of unchangedBindings) {
+    bindingsToDelete.delete(id);
+    bindingsToCreate.delete(id);
+  }
+
+  for(const value of bindingsToDelete.values()) {
+    operations.push(createOperationDeleteBinding(value.entityId, value.component.id, value.binding));
+  }
+
+  for(const value of componentsToDelete.values()) {
+    operations.push(createOperationDeleteComponent(value.entityId, value.component.id));
+  }
+
+  for(const value of componentsToCreate.values()) {
+    operations.push(createOperationCreateComponent(value.component, value.plugin));
+  }
+
+  for(const value of bindingsToCreate.values()) {
+    operations.push(createOperationCreateBinding(value.entityId, value.component, value.binding));
+  }
+
+  return operations;
 }
 
-function prepareDeployDrivers(project, done) {
-  return common.loadOnlineCoreEntities((err) => {
-    if(err) { return done(err); }
+function prepareDeployDrivers(project, coreEntities) {
 
-    const operations = [];
-    try {
-      common.checkSaved(project);
+  common.checkSaved(project);
+  const operations = [];
 
-      const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
-      checkPluginsUpToDate(projectPlugins, onlinePlugins);
+  const projectPlugins = getProjectPlugins(project);
+  const onlinePlugins = common.getOnlinePlugins(coreEntities);
+  checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
-      const onlineComponents = common.getOnlineComponents(getCoreEntities(storeHandler.getStore().getState()));
+  const onlineComponents = common.getOnlineComponents(coreEntities);
 
-      // we deploy each entity in a separate way
-      const entityIds = new Set(project.components.
-        filter(c => c.plugin.usage === metadata.pluginUsage.driver).
-        map(c => c.plugin.entityId));
+  // we deploy each entity in a separate way
+  const entityIds = new Set(project.components.
+    filter(c => c.plugin.usage === metadata.pluginUsage.driver).
+    map(c => c.plugin.entityId));
 
-      for(const entityId of entityIds) {
-        const onlineIds = [];
-        const projectComponents = [];
+  for(const entityId of entityIds) {
+    const onlineIds = [];
+    const projectComponents = [];
 
-        for(const [id, value] of onlineComponents) {
-          if(value.entity.id !== entityId) { continue; }
-          const plugin = findPlugin(project, value.entity.id, value.component.library, value.component.type);
-          if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
-          onlineIds.push(id);
-        }
-
-        for(const component of project.components.values()) {
-          if(component.plugin.usage !== metadata.pluginUsage.driver) { continue; }
-          if(component.plugin.entityId !== entityId) { continue; }
-          projectComponents.push(component);
-        }
-
-        const bindingsToDelete = new Map();
-        const componentsToDelete = new Map();
-        const componentsToCreate = new Map();
-
-        for(const onlineId of onlineIds) {
-          const projectComponent = projectComponents.find(c => c.id === onlineId);
-          const onlineComponent = onlineComponents.get(onlineId);
-
-          // does not exist anymore
-          if(!projectComponent) {
-            componentsToDelete.set(onlineId, onlineComponent);
-            continue;
-          }
-
-          // no changes -> skip
-          if(componentsAreSame(onlineComponent, projectComponent)) {
-            continue;
-          }
-
-          // still exist but changes -> recreate
-          componentsToDelete.set(onlineId, onlineComponent);
-          componentsToCreate.set(projectComponent.id, projectComponent);
-        }
-
-        // only new components
-        for(const projectComponent of projectComponents) {
-          if(onlineIds.includes(projectComponent.id)) { continue; }
-
-          componentsToCreate.set(projectComponent.id, projectComponent);
-        }
-
-        for(const compId of componentsToDelete.keys()) {
-          // remove bindingTargets
-          for(const [key, value] of getOnlineTargetBindings(onlineComponents, compId).entries()) {
-            bindingsToDelete.set(key, value);
-          }
-        }
-
-        for(const value of bindingsToDelete.values()) {
-          operations.push(createOperationDeleteBinding(value.entity.id, value.component.id, value.binding));
-        }
-
-        for(const value of componentsToDelete.values()) {
-          operations.push(createOperationDeleteComponent(value.entity.id, value.component.id));
-        }
-
-        for(const value of componentsToCreate.values()) {
-          operations.push(createOperationCreateComponent(value));
-        }
-      }
-    } catch(err) {
-      return done(err);
+    for(const [id, value] of onlineComponents) {
+      if(value.entity.id !== entityId) { continue; }
+      const plugin = findPlugin(project, value.entity.id, value.component.library, value.component.type);
+      if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
+      onlineIds.push(id);
     }
 
-    return done(null, { project, operations });
-  });
+    for(const component of project.components.values()) {
+      if(component.plugin.usage !== metadata.pluginUsage.driver) { continue; }
+      if(component.plugin.entityId !== entityId) { continue; }
+      projectComponents.push(component);
+    }
+
+    const bindingsToDelete = new Map();
+    const componentsToDelete = new Map();
+    const componentsToCreate = new Map();
+
+    for(const onlineId of onlineIds) {
+      const projectComponent = projectComponents.find(c => c.id === onlineId);
+      const onlineComponent = onlineComponents.get(onlineId);
+
+      // does not exist anymore
+      if(!projectComponent) {
+        componentsToDelete.set(onlineId, onlineComponent);
+        continue;
+      }
+
+      // no changes -> skip
+      if(componentsAreSame(onlineComponent, projectComponent)) {
+        continue;
+      }
+
+      // still exist but changes -> recreate
+      componentsToDelete.set(onlineId, onlineComponent);
+      componentsToCreate.set(projectComponent.id, projectComponent);
+    }
+
+    // only new components
+    for(const projectComponent of projectComponents) {
+      if(onlineIds.includes(projectComponent.id)) { continue; }
+
+      componentsToCreate.set(projectComponent.id, projectComponent);
+    }
+
+    for(const compId of componentsToDelete.keys()) {
+      // remove bindingTargets
+      for(const [key, value] of getOnlineTargetBindings(onlineComponents, compId).entries()) {
+        bindingsToDelete.set(key, value);
+      }
+    }
+
+    for(const value of bindingsToDelete.values()) {
+      operations.push(createOperationDeleteBinding(value.entity.id, value.component.id, value.binding));
+    }
+
+    for(const value of componentsToDelete.values()) {
+      operations.push(createOperationDeleteComponent(value.entity.id, value.component.id));
+    }
+
+    for(const value of componentsToCreate.values()) {
+      operations.push(createOperationCreateComponent(value));
+    }
+  }
+
+  return operations;
 }
 
 // END TODO

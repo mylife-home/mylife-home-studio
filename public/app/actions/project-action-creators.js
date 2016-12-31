@@ -311,15 +311,19 @@ export function projectUiPrepareDeploy(project) {
 
 export function projectVPanelImportOnlineToolbox(project) {
   return (dispatch, getState) => {
-    const state = getState();
+    const state         = getState();
     const projectObject = getProject(state, { project });
+    const coreEntities  = getCoreEntities(state);
 
-    dispatch(dialogSetBusy('Preparing import'));
-
-    Facade.projects.vpanelPrepareImportOnlineToolbox(projectObject, (err, data) => {
-
-      dispatch(dialogUnsetBusy());
+    return refreshEntities(dispatch, coreEntities, 'Preparing import', (err) => {
       if(err) { return dispatch(dialogError(err)); }
+
+      let data;
+      try {
+        data = Facade.projects.vpanelPrepareImportOnlineToolbox(projectObject, coreEntities);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
 
       if(data.messages && data.messages.length) {
         return dispatch(projectVPanelSetPendingImportToolbox(project, data));
@@ -369,17 +373,21 @@ function projectVPanelExecuteImportToolbox(project, data) {
 
 export function projectVPanelImportOnlineDriverComponents(project) {
   return (dispatch, getState) => {
-    const state = getState();
+    const state         = getState();
     const projectObject = getProject(state, { project });
+    const coreEntities  = getCoreEntities(state);
 
-    dispatch(dialogSetBusy('Executing import'));
-
-    Facade.projects.vpanelImportOnlineDriverComponents(projectObject, (err, components) => {
-      dispatch(dialogUnsetBusy());
+    return refreshEntities(dispatch, coreEntities, 'Executing import', (err) => {
       if(err) { return dispatch(dialogError(err)); }
 
-      let lastComponent;
+      let components;
+      try {
+        components = Facade.projects.vpanelImportOnlineDriverComponents(projectObject, coreEntities);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
 
+      let lastComponent;
       for(const component of components) {
         dispatch({
           type: actionTypes.PROJECT_NEW_COMPONENT,
@@ -403,13 +411,19 @@ export function projectVPanelImportOnlineDriverComponents(project) {
 export function projectVPanelPrepareDeployVPanel(project) {
   return (dispatch, getState) => {
 
-    const state = getState();
+    const state         = getState();
     const projectObject = getProject(state, { project });
+    const coreEntities  = getCoreEntities(state);
 
-    dispatch(dialogSetBusy('Preparing deploy'));
-    Facade.projects.vpanelPrepareDeployVPanel(projectObject, (err, operations) => {
-      dispatch(dialogUnsetBusy());
+    return refreshEntities(dispatch, coreEntities, 'Preparing deploy', (err) => {
       if(err) { return dispatch(dialogError(err)); }
+
+      let operations;
+      try {
+        operations = Facade.projects.vpanelPrepareDeployVPanel(projectObject, coreEntities);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
 
       dispatch(dialogOpenOperations(operations));
     });
@@ -419,13 +433,19 @@ export function projectVPanelPrepareDeployVPanel(project) {
 export function projectVPanelPrepareDeployDrivers(project) {
   return (dispatch, getState) => {
 
-    const state = getState();
+    const state         = getState();
     const projectObject = getProject(state, { project });
+    const coreEntities  = getCoreEntities(state);
 
-    dispatch(dialogSetBusy('Preparing deploy'));
-    Facade.projects.vpanelPrepareDeployDrivers(projectObject, (err, operations) => {
-      dispatch(dialogUnsetBusy());
+    return refreshEntities(dispatch, coreEntities, 'Preparing deploy', (err) => {
       if(err) { return dispatch(dialogError(err)); }
+
+      let operations;
+      try {
+        operations = Facade.projects.vpanelPrepareDeployDrivers(projectObject, coreEntities);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
 
       dispatch(dialogOpenOperations(operations));
     });
