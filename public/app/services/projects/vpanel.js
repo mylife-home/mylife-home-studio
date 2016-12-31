@@ -9,6 +9,9 @@ import { newId, snapToGrid } from '../../utils/index';
 const metadata = new Metadata(); // TODO: how to use facade ?
 const resources = new Resources(); // TODO: how to use facade ?
 
+import storeHandler from '../../compat/store'; // TODO: remove that ?
+import { getCoreEntities } from'../../selectors/online';
+
 export default {
   createNew,
   open,
@@ -243,7 +246,7 @@ function prepareImportToolbox(project, done) {
     let ret;
     try {
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
       const diff = pluginsDiff(projectPlugins, onlinePlugins);
       const messages   = [];
       const operations = [];
@@ -304,9 +307,9 @@ function importDriverComponents(project, done) {
     const components = [];
     try {
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
-      const onlineComponents = common.getOnlineComponents();
+      const onlineComponents = common.getOnlineComponents(getCoreEntities(storeHandler.getStore().getState()));
 
       for(const [ id, value ] of onlineComponents.entries()) {
         if(findComponent(project, id)) { continue; }
@@ -348,10 +351,10 @@ function prepareDeployVPanel(project, done) {
       common.checkSaved(project);
 
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
-      const onlineComponents = common.getOnlineComponents();
+      const onlineComponents = common.getOnlineComponents(getCoreEntities(storeHandler.getStore().getState()));
       const usages = [metadata.pluginUsage.vpanel, metadata.pluginUsage.ui];
 
       const bindingsToDelete = new Map();
@@ -462,10 +465,10 @@ function prepareDeployDrivers(project, done) {
       common.checkSaved(project);
 
       const projectPlugins = getProjectPlugins(project);
-      const onlinePlugins = common.getOnlinePlugins();
+      const onlinePlugins = common.getOnlinePlugins(getCoreEntities(storeHandler.getStore().getState()));
       checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
-      const onlineComponents = common.getOnlineComponents();
+      const onlineComponents = common.getOnlineComponents(getCoreEntities(storeHandler.getStore().getState()));
 
       // we deploy each entity in a separate way
       const entityIds = new Set(project.components.

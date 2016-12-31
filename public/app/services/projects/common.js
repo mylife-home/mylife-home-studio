@@ -130,10 +130,9 @@ function loadOnlineCoreEntities(done) {
   return async.parallel(funcs, done);
 }
 
-function getOnlinePlugins() {
-  const entities = getCoreEntities(storeHandler.getStore().getState());
+function getOnlinePlugins(coreEntities) {
   const ret = new Map();
-  for(const entity of entities) {
+  for(const entity of coreEntities) {
     for(const plugin of entity.plugins) {
       ret.set(`${entity.id}:${plugin.library}:${plugin.type}`, {
         entity,
@@ -144,10 +143,9 @@ function getOnlinePlugins() {
   return ret;
 }
 
-function getOnlineComponents() {
-  const entities = getCoreEntities(storeHandler.getStore().getState());
+function getOnlineComponents(coreEntities) {
   const ret = new Map();
-  for(const entity of entities) {
+  for(const entity of coreEntities) {
     for(const component of entity.components) {
       ret.set(component.id, {
         entity,
