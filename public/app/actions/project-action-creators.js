@@ -8,7 +8,7 @@ import { download } from '../utils/index';
 
 import { dialogError, dialogInfo, dialogSetBusy, dialogUnsetBusy, dialogOpenOperations } from './dialog-action-creators';
 import { resourcesGet, resourcesSet, resourcesEntityQuery } from './resources-action-creators';
-import { getResourceEntity } from '../selectors/online';
+import { getResourceEntity, getCoreEntities } from '../selectors/online';
 import { getProjects, getProject, getProjectState } from '../selectors/projects';
 import { getWindow, getPendingImportComponents } from '../selectors/ui-projects';
 import { getComponent, getBinding, getPendingImportToolbox } from '../selectors/vpanel-projects';
@@ -151,14 +151,26 @@ export function projectSaved(project) {
 
 export function projectUiImportOnline(project) {
   return (dispatch, getState) => {
-    dispatch(dialogSetBusy('Preparing import'));
 
-    const state = getState();
+    const state         = getState();
     const projectObject = getProject(state, { project });
+    const coreEntities  = getCoreEntities(state);
+    const funcs         = [];
+    for(const entity of coreEntities) {
+      funcs.push((cb) => dispatch(resourcesEntityQuery(entity, cb)));
+    }
 
-    Facade.projects.uiPrepareImportOnline(projectObject, (err, data) => {
+    dispatch(dialogSetBusy('Preparing import'));
+    return async.parallel(funcs, (err) => {
       dispatch(dialogUnsetBusy());
       if(err) { return dispatch(dialogError(err)); }
+
+      let data;
+      try {
+        data = Facade.projects.uiPrepareImportOnline(projectObject, coreEntities);
+      } catch(err) {
+        return dispatch(dialogError(err));
+      }
 
       return dispatch(projectUiImportPostPrepare(project, data));
     });

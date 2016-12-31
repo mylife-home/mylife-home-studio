@@ -383,36 +383,25 @@ function serializeActionWindow(project, actionWindow) {
   };
 }
 
-function prepareImportOnline(project, done) {
-  return common.loadOnlineCoreEntities((err) => {
-    if(err) { return done(err); }
+function prepareImportOnline(project, coreEntities) {
+  const onlinePlugins    = common.getOnlinePlugins(coreEntities);
+  const onlineComponents = common.getOnlineComponents(coreEntities);
 
-    const onlinePlugins = common.getOnlinePlugins();
-    const onlineComponents = common.getOnlineComponents();
+  const plugins = Array.from(onlinePlugins.values())
+    .map(value => common.loadPlugin(value.plugin, value.entity.id))
+    .filter(p => p.usage === metadata.pluginUsage.ui);
 
-    const plugins = Array.from(onlinePlugins.values())
-      .map(value => common.loadPlugin(value.plugin, value.entity.id))
-      .filter(p => p.usage === metadata.pluginUsage.ui);
+  const components = Array.from(onlineComponents.values())
+    .map(value => ({
+      id: value.component.id,
+      plugin: plugins.find(p =>
+        p.library === value.component.library &&
+        p.type === value.component.type &&
+        p.entityId === value.entity.id)
+    }))
+    .filter(c => c.plugin);
 
-    const components = Array.from(onlineComponents.values())
-      .map(value => ({
-        id: value.component.id,
-        plugin: plugins.find(p =>
-          p.library === value.component.library &&
-          p.type === value.component.type &&
-          p.entityId === value.entity.id)
-      }))
-      .filter(c => c.plugin);
-
-    let data;
-    try {
-      data = prepareImport(project, components);
-    } catch(err) {
-      return done(err);
-    }
-
-    return done(null, data);
-  });
+  return prepareImport(project, components);
 }
 
 function prepareImportVpanelProject(project, vpanelProject) {
