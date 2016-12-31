@@ -1,7 +1,6 @@
 'use strict';
 
 import Immutable from 'immutable';
-import async from 'async';
 
 import Metadata from '../metadata/index';
 

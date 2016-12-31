@@ -3,11 +3,9 @@
 import Immutable from 'immutable';
 import Metadata from '../metadata/index';
 import common from './common';
-import Resources from '../resources';
 import { newId, snapToGrid } from '../../utils/index';
 
 const metadata = new Metadata(); // TODO: how to use facade ?
-const resources = new Resources(); // TODO: how to use facade ?
 
 export default {
   createNew,
@@ -720,13 +718,4 @@ function createOperationCreateBinding(entityId, component, binding) {
       binding
     }
   };
-}
-
-function mapToAction(map) {
-  const ret = [];
-  for(const key of Object.keys(map)) {
-    const value = map[key];
-    ret.push({ key, value });
-  }
-  return ret;
 }
