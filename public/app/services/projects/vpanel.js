@@ -595,6 +595,7 @@ function getProjectPlugins(project) {
   const ret = new Map();
   for(const plugin of project.plugins.values()) {
     ret.set(`${plugin.entityId}:${plugin.library}:${plugin.type}`, {
+      entityId: plugin.entityId,
       plugin
     });
   }

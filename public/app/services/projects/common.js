@@ -116,7 +116,7 @@ function getOnlinePlugins(coreEntities) {
   for(const entity of coreEntities) {
     for(const plugin of entity.plugins) {
       ret.set(`${entity.id}:${plugin.library}:${plugin.type}`, {
-        entity,
+        entityId: entity.id,
         plugin
       });
     }
@@ -129,7 +129,7 @@ function getOnlineComponents(coreEntities) {
   for(const entity of coreEntities) {
     for(const component of entity.components) {
       ret.set(component.id, {
-        entity,
+        entityId: entity.id,
         component
       });
     }

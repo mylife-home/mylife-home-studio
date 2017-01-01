@@ -388,16 +388,17 @@ function prepareImportOnline(project, coreEntities) {
   const onlineComponents = common.getOnlineComponents(coreEntities);
 
   const plugins = Array.from(onlinePlugins.values())
-    .map(value => common.loadPlugin(value.plugin, value.entity.id))
+    .map(value => common.loadPlugin(value.plugin, value.entityId))
     .filter(p => p.usage === metadata.pluginUsage.ui);
 
   const components = Array.from(onlineComponents.values())
     .map(value => ({
-      id: value.component.id,
-      plugin: plugins.find(p =>
+      uid    : newId(),
+      id     : value.component.id,
+      plugin : plugins.find(p =>
         p.library === value.component.library &&
         p.type === value.component.type &&
-        p.entityId === value.entity.id)
+        p.entityId === value.entityId)
     }))
     .filter(c => c.plugin);
 
@@ -408,7 +409,11 @@ function prepareImportVpanelProject(project, vpanelProject) {
   const components = vpanelProject.components
     .valueSeq()
     .filter(c => vpanelProject.plugins.get(c.plugin).usage === metadata.pluginUsage.ui)
-    .map(c => ({ id: c.id, plugin: vpanelProject.plugins.get(c.plugin) }))
+    .map(c => ({
+      uid    : newId(),
+      id     : c.id,
+      plugin : vpanelProject.plugins.get(c.plugin)
+    }))
     .toArray();
   return prepareImport(project, components);
 }
