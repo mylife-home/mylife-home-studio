@@ -309,61 +309,69 @@ function prepareDeployVPanel(project, coreEntities) {
   const operations = [];
 
   const projectPlugins = getProjectPlugins(project);
-  const onlinePlugins = common.getOnlinePlugins(coreEntities);
+  const onlinePlugins  = common.getOnlinePlugins(coreEntities);
   checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
   const onlineComponents = common.getOnlineComponents(coreEntities);
-  const usages = [metadata.pluginUsage.vpanel, metadata.pluginUsage.ui];
+  const usages           = [metadata.pluginUsage.vpanel, metadata.pluginUsage.ui];
 
-  const bindingsToDelete = new Map();
+  const bindingsToDelete   = new Map();
   const componentsToDelete = new Map();
   const componentsToCreate = new Map();
-  const bindingsToCreate = new Map();
+  const bindingsToCreate   = new Map();
 
-  for(const [id, value] of onlineComponents.entries()) {
+  for(const value of onlineComponents.values()) {
     const onlineComponent = value.component;
 
     for(const binding of onlineComponent.bindings) {
-      const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${id}.${binding.local_action}`;
+      const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${onlineComponent.id}.${binding.local_action}`;
       bindingsToDelete.set(bindingId, {
-        entityId: value.entity.id,
-        component: onlineComponent,
-        binding
+        entityId        : value.entityId,
+        remoteId        : binding.remote_id,
+        remoteAttribute : binding.remote_attribute,
+        localId         : onlineComponent.id,
+        localAction     : binding.local_action
       });
     }
 
-    const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+    const plugin = findPlugin(project, value.entityId, onlineComponent.library, onlineComponent.type);
     if(!usages.includes(plugin.usage)) { continue; }
-    componentsToDelete.set(id, {
-      entityId: value.entity.id,
-      component: onlineComponent
+
+    componentsToDelete.set(onlineComponent.id, value);
+  }
+
+  for(const component of project.components.values()) {
+    const plugin = project.plugins.get(component.plugin);
+
+    if(!usages.includes(plugin.usage)) { continue; }
+
+    componentsToCreate.set(component.id, {
+      entityId : plugin.entityId,
+      component,
+      plugin
     });
   }
 
-  for(const projectComponent of project.components.values()) {
+  for(const binding of project.bindings.values()) {
+    const localComponent  = project.components.get(binding.local);
+    const remoteComponent = project.components.get(binding.remote);
+    const plugin          = project.plugins.get(localComponent.plugin);
 
-    for(const binding of projectComponent.bindings) {
-      const bindingId = `${binding.remote.id}.${binding.remote_attribute}->${projectComponent.id}.${binding.local_action}`;
-      bindingsToCreate.set(bindingId, {
-        entityId  : project.plugins.get(projectComponent.plugin).entityId,
-        component : projectComponent,
-        binding
-      });
-    }
-
-    if(!usages.includes(project.plugins.get(projectComponent.plugin).usage)) { continue; }
-    componentsToCreate.set(projectComponent.id, {
-      component : projectComponent,
-      plugin    : project.plugins.get(projectComponent.plugin)
+    const bindingId = `${remoteComponent.id}.${binding.remoteAttribute}->${localComponent.id}.${binding.localAction}`;
+    bindingsToCreate.set(bindingId, {
+      entityId        : plugin.entityId,
+      remoteId        : remoteComponent.id,
+      remoteAttribute : binding.remoteAttribute,
+      localId         : localComponent.id,
+      localAction     : binding.localAction
     });
   }
 
-  // TODO: avoid delete all/rebuild all
   const unchangedComponents = [];
   for(const [id, componentDelete] of componentsToDelete.entries()) {
     const componentCreate = componentsToCreate.get(id);
     if(!componentCreate) { continue; }
-    if(!componentsAreSame(componentDelete, componentCreate.component)) { continue; }
+    if(!componentsAreSame(componentDelete, componentCreate)) { continue; }
     unchangedComponents.push(id);
   }
 
@@ -378,7 +386,7 @@ function prepareDeployVPanel(project, coreEntities) {
   for(const [id, bindingDelete] of bindingsToDelete.entries()) {
     const bindingCreate = bindingsToCreate.get(id);
     if(!bindingCreate) { continue; }
-    const ownerId = bindingDelete.component.id;
+    const ownerId = bindingDelete.localId;
     if(componentsToDelete.get(ownerId)) { continue; }
     if(componentsToCreate.get(ownerId)) { continue; }
 
@@ -431,8 +439,8 @@ function prepareDeployDrivers(project, coreEntities) {
     const projectComponents = [];
 
     for(const [id, value] of onlineComponents) {
-      if(value.entity.id !== entityId) { continue; }
-      const plugin = findPlugin(project, value.entity.id, value.component.library, value.component.type);
+      if(value.entityId !== entityId) { continue; }
+      const plugin = findPlugin(project, value.entityId, value.component.library, value.component.type);
       if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
       onlineIds.push(id);
     }
@@ -482,11 +490,11 @@ function prepareDeployDrivers(project, coreEntities) {
     }
 
     for(const value of bindingsToDelete.values()) {
-      operations.push(createOperationDeleteBinding(value.entity.id, value.component.id, value.binding));
+      operations.push(createOperationDeleteBinding(value.entityId, value.component.id, value.binding));
     }
 
     for(const value of componentsToDelete.values()) {
-      operations.push(createOperationDeleteComponent(value.entity.id, value.component.id));
+      operations.push(createOperationDeleteComponent(value.entityId, value.component.id));
     }
 
     for(const value of componentsToCreate.values()) {
@@ -614,12 +622,11 @@ function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
 }
 
 function componentsAreSame(onlineComponent, projectComponent) {
-  const onlineEntityId = onlineComponent.entityId || onlineComponent.entity.id;
-  if(onlineComponent.component.id !== projectComponent.id) { return false; }
-  if(onlineEntityId !== projectComponent.plugin.entityId) { return false; }
+  if(onlineComponent.component.id !== projectComponent.component.id) { return false; }
+  if(onlineComponent.entityId !== projectComponent.entityId) { return false; }
   if(onlineComponent.component.library !== projectComponent.plugin.library) { return false; }
   if(onlineComponent.component.type !== projectComponent.plugin.type) { return false; }
-  if(!mapAreSame(common.loadMapOnline(onlineComponent.component.config), projectComponent.config)) { return false; }
+  if(!mapAreSame(common.loadMapOnline(onlineComponent.component.config), projectComponent.component.config)) { return false; }
   return true;
 }
 
