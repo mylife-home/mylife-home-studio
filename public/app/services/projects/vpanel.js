@@ -624,7 +624,7 @@ function pluginsDiff(projectPlugins, onlinePlugins) {
 function checkPluginsUpToDate(projectPlugins, onlinePlugins) {
   const diff = pluginsDiff(projectPlugins, onlinePlugins);
   if(diff.count) {
-    throw new Error('plugins are outdated');
+    throw new Error('Plugins are outdated');
   }
 }
 
