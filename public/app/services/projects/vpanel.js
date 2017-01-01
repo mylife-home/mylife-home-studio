@@ -273,8 +273,9 @@ function importDriverComponents(project, coreEntities) {
   const components       = [];
   const projectPlugins   = getProjectPlugins(project);
   const onlinePlugins    = common.getOnlinePlugins(coreEntities);
-  checkPluginsUpToDate(projectPlugins, onlinePlugins);
   const onlineComponents = common.getOnlineComponents(coreEntities);
+
+  checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
   for(const [ id, value ] of onlineComponents.entries()) {
     if(findComponent(project, id)) { continue; }
