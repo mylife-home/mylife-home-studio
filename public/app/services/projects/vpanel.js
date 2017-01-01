@@ -127,6 +127,12 @@ function validateConfig(project, component) {
     if(config.hasOwnProperty(item.name)) { return; }
     config[item.name] = metadata.getConfigTypeDefaultValue(item.type);
   });
+  // remove extra keys
+  const configKeys = plugin.config.map(item => item.name);
+  for(const key of Object.keys(config)) {
+    if(configKeys.includes(key)) { continue; }
+    delete config[key];
+  }
 }
 
 function removeDuplicates(container, itemValue) {
