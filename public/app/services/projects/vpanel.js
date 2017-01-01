@@ -281,7 +281,7 @@ function importDriverComponents(project, coreEntities) {
     if(findComponent(project, id)) { continue; }
 
     const onlineComponent = value.component;
-    const plugin          = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+    const plugin          = findPlugin(project, value.entityId, onlineComponent.library, onlineComponent.type);
     if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
 
     const component = {
