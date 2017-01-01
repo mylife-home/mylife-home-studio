@@ -237,23 +237,22 @@ function serializeComponent(project, component) {
 function prepareImportToolbox(project, coreEntities) {
 
   const projectPlugins = getProjectPlugins(project);
-  const onlinePlugins = common.getOnlinePlugins(coreEntities);
-  const diff = pluginsDiff(projectPlugins, onlinePlugins);
-  const messages   = [];
-  const operations = [];
+  const onlinePlugins  = common.getOnlinePlugins(coreEntities);
+  const diff           = pluginsDiff(projectPlugins, onlinePlugins);
+  const messages       = [];
+  const operations     = [];
 
   diff.added.forEach(id => messages.push(`New plugin: ${id}`));
   diff.deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
   diff.modified.forEach(id => messages.push(`Plugin modified: ${id}`));
 
   // TODO: go deeper in changes in class
-  diff.deleted.concat(diff.modified).forEach(id => {
-    const usage = findPluginUsage(project, projectPlugins.get(id).plugin.uid);
-    for(const comp of usage) {
+  for(const id of diff.deleted.concat(diff.modified)) {
+    for(const comp of findPluginUsage(project, projectPlugins.get(id).plugin.uid)) {
       messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`);
       operations.push({ type: 'deleteComponent', component: comp.uid });
     }
-  });
+  }
 
   for(const del of diff.deleted.concat(diff.modified)) {
     const plugin = projectPlugins.get(del);
@@ -271,9 +270,9 @@ function prepareImportToolbox(project, coreEntities) {
 
 function importDriverComponents(project, coreEntities) {
 
-  const components = [];
-  const projectPlugins = getProjectPlugins(project);
-  const onlinePlugins = common.getOnlinePlugins(coreEntities);
+  const components       = [];
+  const projectPlugins   = getProjectPlugins(project);
+  const onlinePlugins    = common.getOnlinePlugins(coreEntities);
   checkPluginsUpToDate(projectPlugins, onlinePlugins);
   const onlineComponents = common.getOnlineComponents(coreEntities);
 
@@ -281,17 +280,17 @@ function importDriverComponents(project, coreEntities) {
     if(findComponent(project, id)) { continue; }
 
     const onlineComponent = value.component;
-    const plugin = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
+    const plugin          = findPlugin(project, value.entity.id, onlineComponent.library, onlineComponent.type);
     if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
 
     const component = {
-      uid: newId(),
-      id: onlineComponent.id,
-      bindings: Immutable.Set(),
-      bindingTargets: Immutable.Set(),
-      config: common.loadMapOnline(onlineComponent.config),
-      designer: { location: { x: 0, y: 0 } },
-      plugin: plugin.uid
+      uid            : newId(),
+      id             : onlineComponent.id,
+      bindings       : Immutable.Set(),
+      bindingTargets : Immutable.Set(),
+      config         : common.loadMapOnline(onlineComponent.config),
+      designer       : { location: { x: 0, y: 0 } },
+      plugin         : plugin.uid
     };
 
     validateConfig(project, component);
