@@ -951,14 +951,93 @@ export function projectStateSelectAndActiveContent(project, selection, activeCon
 }
 
 export function projectExecuteDeploy(operations) {
-  return (dispatch/*, getState*/) => {
+  return (dispatch, getState) => {
 
-// TODO
+    const operations = data.operations.filter(o => o.enabled);
+    console.log('projectExecuteDeploy', operations); // eslint-disable-line no-console
 
-    // action: { type: 'resourceSet', resourceId, resourceContent }
-    //  AppDispatcher.dispatch(resourcesSet(resourceId, resourceContent, done));
+    /// TODO ///
+    const executors = {
+      resourceSet     : (action) => ((done) => dispatch(resourcesSet(action.resourceId, action.resourceContent, done))),
+      deleteBinding   : (action) => {},
+      deleteComponent : (action) => {},
+      newComponent    : (action) => {},
+      newBinding      : (action) => {}
+    };
+    /// TODO ///
 
+    const actions = operations.map(op => executors[op.action.type](op.action));
+
+    dispatch(dialogSetBusy('Executing deploy'));
+
+    async.series(actions, (err) => {
+      if(err) {
+        dispatch(dialogSetBusy());
+        return dispatch(dialogError(err));
+      }
+
+      const state         = getState();
+      const projectObject = getProject(state, { project });
+      const coreEntities  = getCoreEntities(state);
+
+      refreshEntities(dispatch, entities, 'Executing deploy', (/*err*/) => {
+        dispatch(dialogSetBusy());
+
+        dispatch(dialogInfo({ title: 'Success', lines: ['Deploy done'] }));
+      });
+    });
 /*
+
+function createOperationDeleteBinding(value) {
+  return {
+    uid         : newId(),
+    enabled     : true,
+    description : `Delete binding ${value.remoteId}.${value.remoteAttribute} -> ${value.localId}.${value.localAction} on entity ${value.entityId}`,
+    action      : {
+      type : 'deleteBinding',
+      ...value
+    }
+  };
+}
+
+function createOperationDeleteComponent(value) {
+  return {
+    uid         : newId(),
+    enabled     : true,
+    description : `Delete component ${value.component.id} on entity ${value.entityId}`,
+    action      : {
+      type : 'deleteComponent',
+      ...value
+    }
+  };
+}
+
+function createOperationCreateComponent(value) {
+  return {
+    uid         : newId(),
+    enabled     : true,
+    description : `Create component ${value.component.id} on entity ${value.entityId}`,
+    action      : {
+      type: 'newComponent',
+      ...value
+    }
+  };
+}
+
+function createOperationCreateBinding(value) {
+  return {
+    uid         : newId(),
+    enabled     : true,
+    description : `Create binding ${value.remoteId}.${value.remoteAttribute} -> ${value.localId}.${value.localAction} on entity ${value.entityId}`,
+    action      : {
+      type : 'newBinding',
+      ...value
+    }
+  };
+}
+
+
+
 function createOperationDeleteBinding(entityId, componentId, binding) {
   return {
     uid: newId(),
@@ -1028,30 +1107,6 @@ function mapToAction(map) {
   return ret;
 }
 */
-
-    console.log('executeDeploy', operations); // eslint-disable-line no-console
-
-/*
-
-function executeDeploy(data, done) {
-  const operations = data.operations.filter(o => o.enabled);
-  console.log('executeDeploy', operations); // eslint-disable-line no-console
-  const actions = operations.map(o => o.action);
-  async.series(actions, (err) => {
-    if(err) { return done(err); }
-    return loadOnlineCoreEntities(done);
-  });
-}
-*/
-
-    dispatch(dialogSetBusy('Executing deploy'));
-    // TODO
-    dispatch(dialogSetBusy());
-    //if(err) { return dispatch(dialogError(err)); }
-
-// TODO: refresh all entities (see project-action-creators.refreshEntities)
-
-    dispatch(dialogInfo({ title: 'Success', lines: ['Deploy done'] }));
   };
 }
 
