@@ -953,18 +953,32 @@ export function projectStateSelectAndActiveContent(project, selection, activeCon
 export function projectExecuteDeploy(operations) {
   return (dispatch, getState) => {
 
-    const operations = data.operations.filter(o => o.enabled);
+    operations = operations.filter(o => o.enabled);
     console.log('projectExecuteDeploy', operations); // eslint-disable-line no-console
 
-    /// TODO ///
     const executors = {
       resourceSet     : (action) => ((done) => dispatch(resourcesSet(action.resourceId, action.resourceContent, done))),
-      deleteBinding   : (action) => {},
-      deleteComponent : (action) => {},
-      newComponent    : (action) => {},
-      newBinding      : (action) => {}
+      deleteBinding   : (action) => ((done) => Facade.resources.queryComponentUnbind(action.entityId, {
+        remote_id        : action.remoteId,
+        remote_attribute : action.remoteAttribute,
+        local_id         : action.localId,
+        local_action     : action.localAction
+      }, done)),
+      deleteComponent : (action) => ((done) => Facade.resources.queryComponentDelete(action.entityId, action.component.id, done)),
+      newComponent    : (action) => ((done) => Facade.resources.queryComponentCreate(action.entityId, {
+        comp_id   : action.component.id,
+        library   : action.plugin.library,
+        comp_type : action.plugin.type,
+        config    : mapToArray(action.component.config),
+        designer  : []
+      }, done)),
+      newBinding      : (action) => ((done) => Facade.resources.queryComponentBind(action.entityId, {
+        remote_id        : action.remoteId,
+        remote_attribute : action.remoteAttribute,
+        local_id         : action.localId,
+        local_action     : action.localAction
+      }, done))
     };
-    /// TODO ///
 
     const actions = operations.map(op => executors[op.action.type](op.action));
 
@@ -976,9 +990,8 @@ export function projectExecuteDeploy(operations) {
         return dispatch(dialogError(err));
       }
 
-      const state         = getState();
-      const projectObject = getProject(state, { project });
-      const coreEntities  = getCoreEntities(state);
+      const state    = getState();
+      const entities = getCoreEntities(state);
 
       refreshEntities(dispatch, entities, 'Executing deploy', (/*err*/) => {
         dispatch(dialogSetBusy());
@@ -986,127 +999,6 @@ export function projectExecuteDeploy(operations) {
         dispatch(dialogInfo({ title: 'Success', lines: ['Deploy done'] }));
       });
     });
-/*
-
-function createOperationDeleteBinding(value) {
-  return {
-    uid         : newId(),
-    enabled     : true,
-    description : `Delete binding ${value.remoteId}.${value.remoteAttribute} -> ${value.localId}.${value.localAction} on entity ${value.entityId}`,
-    action      : {
-      type : 'deleteBinding',
-      ...value
-    }
-  };
-}
-
-function createOperationDeleteComponent(value) {
-  return {
-    uid         : newId(),
-    enabled     : true,
-    description : `Delete component ${value.component.id} on entity ${value.entityId}`,
-    action      : {
-      type : 'deleteComponent',
-      ...value
-    }
-  };
-}
-
-function createOperationCreateComponent(value) {
-  return {
-    uid         : newId(),
-    enabled     : true,
-    description : `Create component ${value.component.id} on entity ${value.entityId}`,
-    action      : {
-      type: 'newComponent',
-      ...value
-    }
-  };
-}
-
-function createOperationCreateBinding(value) {
-  return {
-    uid         : newId(),
-    enabled     : true,
-    description : `Create binding ${value.remoteId}.${value.remoteAttribute} -> ${value.localId}.${value.localAction} on entity ${value.entityId}`,
-    action      : {
-      type : 'newBinding',
-      ...value
-    }
-  };
-}
-
-
-
-function createOperationDeleteBinding(entityId, componentId, binding) {
-  return {
-    uid: newId(),
-    enabled: true,
-    description: `Delete binding ${binding.remote_id}.${binding.remote_attribute} -> ${componentId}.${binding.local_action} on entity ${entityId}`,
-    action: (done) => {
-      return resources.queryComponentUnbind(entityId, {
-        remote_id: binding.remote_id,
-        remote_attribute: binding.remote_attribute,
-        local_id: componentId,
-        local_action: binding.local_action
-      }, done);
-    }
-  };
-}
-
-function createOperationDeleteComponent(entityId, componentId) {
-  return {
-    uid: newId(),
-    enabled: true,
-    description: `Delete component ${componentId} on entity ${entityId}`,
-    action: (done) => {
-      return resources.queryComponentDelete(entityId, componentId, done);
-    }
-  };
-}
-
-function createOperationCreateComponent(component) {
-  return {
-    uid: newId(),
-    enabled: true,
-    description: `Create component ${component.id} on entity ${component.plugin.entityId}`,
-    action: (done) => {
-      return resources.queryComponentCreate(component.plugin.entityId, {
-        comp_id: component.id,
-        library: component.plugin.library,
-        comp_type: component.plugin.type,
-        config: mapToAction(component.config),
-        designer: []
-      }, done);
-    }
-  };
-}
-
-function createOperationCreateBinding(component, binding) {
-  return {
-    uid: newId(),
-    enabled: true,
-    description: `Create binding ${binding.remote.id}.${binding.remote_attribute} -> ${component.id}.${binding.local_action} on entity ${component.plugin.entityId}`,
-    action: (done) => {
-      return resources.queryComponentBind(component.plugin.entityId, {
-        remote_id: binding.remote.id,
-        remote_attribute: binding.remote_attribute,
-        local_id: component.id,
-        local_action: binding.local_action
-      }, done);
-    }
-  };
-}
-
-function mapToAction(map) {
-  const ret = [];
-  for(const key of Object.keys(map)) {
-    const value = map[key];
-    ret.push({ key, value });
-  }
-  return ret;
-}
-*/
   };
 }
 
@@ -1121,4 +1013,13 @@ function refreshEntities(dispatch, entities, busyMessage, done) {
     dispatch(dialogUnsetBusy());
     return done(err);
   });
+}
+
+function mapToArray(map) {
+  const ret = [];
+  for(const key of Object.keys(map)) {
+    const value = map[key];
+    ret.push({ key, value });
+  }
+  return ret;
 }
