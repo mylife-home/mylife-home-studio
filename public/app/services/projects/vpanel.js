@@ -249,7 +249,7 @@ function prepareImportToolbox(project, coreEntities) {
   const componentsToDelete = new Set();
   // TODO: go deeper in changes in class
   diff.deleted.concat(diff.modified).forEach(id => {
-    const usage = findPluginUsage(project, projectPlugins.get(id).plugin);
+    const usage = findPluginUsage(project, projectPlugins.get(id).plugin.uid);
     for(const comp of usage) {
       componentsToDelete.add(comp);
     }
