@@ -307,12 +307,9 @@ function importDriverComponents(project, coreEntities) {
   return components;
 }
 
-// BEGIN TODO
-
 function prepareDeployVPanel(project, coreEntities) {
 
   common.checkSaved(project);
-  const operations = [];
 
   const projectPlugins = getProjectPlugins(project);
   const onlinePlugins  = common.getOnlinePlugins(coreEntities);
@@ -405,23 +402,7 @@ function prepareDeployVPanel(project, coreEntities) {
     bindingsToCreate.delete(id);
   }
 
-  for(const value of bindingsToDelete.values()) {
-    operations.push(createOperationDeleteBinding(value));
-  }
-
-  for(const value of componentsToDelete.values()) {
-    operations.push(createOperationDeleteComponent(value));
-  }
-
-  for(const value of componentsToCreate.values()) {
-    operations.push(createOperationCreateComponent(value));
-  }
-
-  for(const value of bindingsToCreate.values()) {
-    operations.push(createOperationCreateBinding(value));
-  }
-
-  return operations;
+  return fillOperations(null, bindingsToDelete, componentsToDelete, componentsToCreate, bindingsToCreate);
 }
 
 function prepareDeployDrivers(project, coreEntities) {
@@ -429,45 +410,46 @@ function prepareDeployDrivers(project, coreEntities) {
   common.checkSaved(project);
   const operations = [];
 
-  const projectPlugins = getProjectPlugins(project);
-  const onlinePlugins = common.getOnlinePlugins(coreEntities);
+  const projectPlugins   = getProjectPlugins(project);
+  const onlinePlugins    = common.getOnlinePlugins(coreEntities);
+  const onlineComponents = common.getOnlineComponents(coreEntities);
   checkPluginsUpToDate(projectPlugins, onlinePlugins);
 
-  const onlineComponents = common.getOnlineComponents(coreEntities);
+  const allOnlineComponents = Array.from(onlineComponents.values())
+    .map(value => ({
+      ...value,
+      plugin : findPlugin(project, value.entityId, value.component.library, value.component.type)
+    }))
+    .filter(c => c.plugin.usage === metadata.pluginUsage.driver);
+
+  const allProjectComponents = project.components.toArray()
+    .map(component => {
+      const plugin = project.plugins.get(component.plugin);
+      return {
+        entityId : plugin.entityId,
+        component,
+        plugin
+      };
+    })
+    .filter(c => c.plugin.usage === metadata.pluginUsage.driver);
 
   // we deploy each entity in a separate way
-  const entityIds = new Set(project.components.
-    filter(c => c.plugin.usage === metadata.pluginUsage.driver).
-    map(c => c.plugin.entityId));
+  const entityIds = new Set(allProjectComponents.map(c => c.plugin.entityId));
 
   for(const entityId of entityIds) {
-    const onlineIds = [];
-    const projectComponents = [];
+    const entityOnlineComponents  = allOnlineComponents.filter(c => c.entityId === entityId);
+    const entityProjectComponents = allProjectComponents.filter(c => c.entityId === entityId);
 
-    for(const [id, value] of onlineComponents) {
-      if(value.entityId !== entityId) { continue; }
-      const plugin = findPlugin(project, value.entityId, value.component.library, value.component.type);
-      if(plugin.usage !== metadata.pluginUsage.driver) { continue; }
-      onlineIds.push(id);
-    }
-
-    for(const component of project.components.values()) {
-      if(component.plugin.usage !== metadata.pluginUsage.driver) { continue; }
-      if(component.plugin.entityId !== entityId) { continue; }
-      projectComponents.push(component);
-    }
-
-    const bindingsToDelete = new Map();
+    const bindingsToDelete   = new Map();
     const componentsToDelete = new Map();
     const componentsToCreate = new Map();
 
-    for(const onlineId of onlineIds) {
-      const projectComponent = projectComponents.find(c => c.id === onlineId);
-      const onlineComponent = onlineComponents.get(onlineId);
+    for(const onlineComponent of entityOnlineComponents) {
+      const projectComponent = entityProjectComponents.find(c => c.component.id === onlineComponent.component.id);
 
       // does not exist anymore
       if(!projectComponent) {
-        componentsToDelete.set(onlineId, onlineComponent);
+        componentsToDelete.set(onlineComponent.component.id, onlineComponent);
         continue;
       }
 
@@ -477,41 +459,40 @@ function prepareDeployDrivers(project, coreEntities) {
       }
 
       // still exist but changes -> recreate
-      componentsToDelete.set(onlineId, onlineComponent);
-      componentsToCreate.set(projectComponent.id, projectComponent);
+      componentsToDelete.set(onlineComponent.component.id, onlineComponent);
+      componentsToCreate.set(projectComponent.component.id, projectComponent);
     }
 
     // only new components
-    for(const projectComponent of projectComponents) {
-      if(onlineIds.includes(projectComponent.id)) { continue; }
+    for(const projectComponent of entityProjectComponents) {
+      if(entityOnlineComponents.find(c => c.component.id === projectComponent.component.id)) { continue; }
 
-      componentsToCreate.set(projectComponent.id, projectComponent);
+      componentsToCreate.set(projectComponent.component.id, projectComponent);
     }
 
     for(const compId of componentsToDelete.keys()) {
       // remove bindingTargets
-      for(const [key, value] of getOnlineTargetBindings(onlineComponents, compId).entries()) {
-        bindingsToDelete.set(key, value);
+      for(const [id, value] of onlineComponents) {
+        for(const binding of value.component.bindings) {
+          if(binding.remote_id !== compId) { continue; }
+
+          const bindingId = `${binding.remote_id}.${binding.remote_attribute}->${id}.${binding.local_action}`;
+          bindingsToDelete.set(bindingId, {
+            entityId        : value.entityId,
+            remoteId        : binding.remote_id,
+            remoteAttribute : binding.remote_attribute,
+            localId         : id,
+            localAction     : binding.local_action
+          });
+        }
       }
     }
 
-    for(const value of bindingsToDelete.values()) {
-      operations.push(createOperationDeleteBinding(value.entityId, value.component.id, value.binding));
-    }
-
-    for(const value of componentsToDelete.values()) {
-      operations.push(createOperationDeleteComponent(value.entityId, value.component.id));
-    }
-
-    for(const value of componentsToCreate.values()) {
-      operations.push(createOperationCreateComponent(value));
-    }
+    fillOperations(operations, bindingsToDelete, componentsToDelete, componentsToCreate);
   }
 
   return operations;
 }
-
-// END TODO
 
 function createComponent(project, location, plugin) {
   const uid       = newId();
@@ -650,19 +631,27 @@ function mapAreSame(map1, map2) {
   return true;
 }
 
-function getOnlineTargetBindings(onlineComponents, remoteId) {
-  const ret = new Map();
-  for(const [id, value] of onlineComponents) {
-    for(const binding of value.component.bindings) {
-      if(binding.remote_id === remoteId) { continue; }
-      ret.set(`${binding.remote_id}.${binding.remote_attribute}->${id}.${binding.local_action}`, {
-        entity: value.entity,
-        component: value.component,
-        binding
-      });
-    }
+function fillOperations(operations, bindingsToDelete, componentsToDelete, componentsToCreate, bindingsToCreate) {
+
+  operations = operations || [];
+
+  for(const value of (bindingsToDelete || new Map()).values()) {
+    operations.push(createOperationDeleteBinding(value));
   }
-  return ret;
+
+  for(const value of (componentsToDelete || new Map()).values()) {
+    operations.push(createOperationDeleteComponent(value));
+  }
+
+  for(const value of (componentsToCreate || new Map()).values()) {
+    operations.push(createOperationCreateComponent(value));
+  }
+
+  for(const value of (bindingsToCreate || new Map()).values()) {
+    operations.push(createOperationCreateBinding(value));
+  }
+
+  return operations;
 }
 
 function createOperationDeleteBinding(value) {
