@@ -246,29 +246,14 @@ function prepareImportToolbox(project, coreEntities) {
   diff.deleted.forEach(id => messages.push(`Plugin deleted: ${id}`));
   diff.modified.forEach(id => messages.push(`Plugin modified: ${id}`));
 
-  const componentsToDelete = new Set();
   // TODO: go deeper in changes in class
   diff.deleted.concat(diff.modified).forEach(id => {
     const usage = findPluginUsage(project, projectPlugins.get(id).plugin.uid);
     for(const comp of usage) {
-      componentsToDelete.add(comp);
+      messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`);
+      operations.push({ type: 'deleteComponent', component: comp.uid });
     }
   });
-
-  const bindingsToDelete = new Set();
-  componentsToDelete.forEach(comp => {
-    for(const binding of comp.bindings.concat(comp.bindingTargets)) {
-      bindingsToDelete.add(binding);
-    }
-  });
-
-  bindingsToDelete.forEach(binding => messages.push(`Binding deleted: ${binding.local.id}:${binding.local_action} -> ${binding.remote.id}:${binding.remote_attribute}`));
-
-  componentsToDelete.forEach(comp => {
-    messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`);
-    operations.push({ type: 'deleteComponent', component: comp.uid });
-  });
-
 
   for(const del of diff.deleted.concat(diff.modified)) {
     const plugin = projectPlugins.get(del);
@@ -276,8 +261,8 @@ function prepareImportToolbox(project, coreEntities) {
   }
 
   for(const add of diff.added.concat(diff.modified)) {
-    const { entity, plugin } = onlinePlugins.get(add);
-    const pluginObject = { ...common.loadPlugin(plugin, entity.id), uid: newId() };
+    const { entityId, plugin } = onlinePlugins.get(add);
+    const pluginObject = { ...common.loadPlugin(plugin, entityId), uid: newId() };
     operations.push({ type: 'newPlugin', plugin: pluginObject });
   }
 
