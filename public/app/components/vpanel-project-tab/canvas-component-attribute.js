@@ -6,8 +6,6 @@ import icons from '../icons';
 
 import { dragTypes } from '../../constants/index';
 
-import AppDispatcher from '../../compat/dispatcher';
-import { projectNewBinding } from '../../actions/index';
 import styles from './canvas-component-styles';
 
 const CanvasComponentAttribute = ({ attribute, connectDragPreview, connectDragSource }) => connectDragSource(
@@ -21,6 +19,7 @@ CanvasComponentAttribute.propTypes = {
   project            : React.PropTypes.object.isRequired,
   component          : React.PropTypes.object.isRequired,
   attribute          : React.PropTypes.object.isRequired,
+  onCreateBinding    : React.PropTypes.func.isRequired,
   connectDragSource  : React.PropTypes.func.isRequired,
   connectDragPreview : React.PropTypes.func.isRequired,
   isDragging         : React.PropTypes.bool.isRequired
@@ -38,10 +37,10 @@ const attributeSource = {
   endDrag(props, monitor) {
     if(!monitor.didDrop()) { return; }
 
-    const { project, component, attribute } = props;
+    const { project, component, attribute, onCreateBinding } = props;
     const { localComponent, localAction } = monitor.getDropResult();
 
-    AppDispatcher.dispatch(projectNewBinding(project, component.uid, attribute.name, localComponent, localAction));
+    onCreateBinding(project, component.uid, attribute.name, localComponent, localAction);
   }
 };
 

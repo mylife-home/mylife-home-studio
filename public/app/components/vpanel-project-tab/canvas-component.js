@@ -141,7 +141,7 @@ class CanvasComponent extends React.Component {
   }
 
   render() {
-    const { project, component, connectDragPreview, connectDragSource, isDragging } = this.props;
+    const { project, component, onCreateBinding, connectDragPreview, connectDragSource, isDragging } = this.props;
     const location = component.designer.location;
     const styles = getStyles(this.props, this.state);
     const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
@@ -187,7 +187,8 @@ class CanvasComponent extends React.Component {
                       <div ref={attribute.name} key={attribute.name}>
                         <CanvasComponentAttribute project={project}
                                                   component={component}
-                                                  attribute={attribute} />
+                                                  attribute={attribute}
+                                                  onCreateBinding={onCreateBinding} />
                       </div>
                     ))}
                     {plugin.clazz.actions.map(action => (
@@ -211,6 +212,7 @@ class CanvasComponent extends React.Component {
 CanvasComponent.propTypes = {
   project: React.PropTypes.object.isRequired,
   component: React.PropTypes.object.isRequired,
+  onCreateBinding: React.PropTypes.func.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
   connectDragPreview: React.PropTypes.func.isRequired,
   isDragging: React.PropTypes.bool.isRequired

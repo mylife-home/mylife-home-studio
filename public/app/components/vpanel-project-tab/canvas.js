@@ -8,7 +8,7 @@ import { stopPropagationWrapper } from '../../utils/index';
 import storeHandler from '../../compat/store';
 import { dragTypes } from '../../constants/index';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect } from '../../actions/index';
+import { projectStateSelect, projectNewBinding } from '../../actions/index';
 import { getComponents, getBindings } from '../../selectors/vpanel-projects';
 import { getProjectState } from '../../selectors/projects';
 
@@ -77,7 +77,13 @@ class Canvas extends React.Component {
 
   renderComponents(project) {
     const components = getComponents(storeHandler.getStore().getState(), { project: project.uid }).toArray();
-    return components.map(component => (<CanvasComponent key={component.uid} project={project} component={component}/>));
+    return components.map(component => (
+      <CanvasComponent key={component.uid}
+                       project={project}
+                       component={component}
+                       onCreateBinding={(project, remoteComponent, remoteAttribute, localComponent, localAction) => AppDispatcher.dispatch(projectNewBinding(project, remoteComponent, remoteAttribute, localComponent, localAction))}
+      />
+    ));
   }
 
   renderBindings(project) {
