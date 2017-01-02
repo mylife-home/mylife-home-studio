@@ -513,8 +513,10 @@ function createComponent(project, location, plugin) {
 function canCreateBinding(project, remoteComponentUid, remoteAttributeName, localComponentUid, localActionName) {
   const remoteComponent = project.components.get(remoteComponentUid);
   const localComponent  = project.components.get(localComponentUid);
-  const remoteAttribute = remoteComponent.plugin.clazz.attributes.find(a => a.name === remoteAttributeName);
-  const localAction     = localComponent.plugin.clazz.actions.find(a => a.name === localActionName);
+  const remotePlugin    = project.plugins.get(remoteComponent.plugin);
+  const localPlugin     = project.plugins.get(localComponent.plugin);
+  const remoteAttribute = remotePlugin.clazz.attributes.find(a => a.name === remoteAttributeName);
+  const localAction     = localPlugin.clazz.actions.find(a => a.name === localActionName);
 
   // check types
   if(localAction.types.length !== 1 || localAction.types[0] !== remoteAttribute.type) {
