@@ -79,7 +79,6 @@ const ToolboxPlugin = ({ connectDragSource, connectDragPreview, isDragging, plug
 );
 
 ToolboxPlugin.propTypes = {
-  project: React.PropTypes.object.isRequired,
   plugin: React.PropTypes.object.isRequired,
   onNewComponent: React.PropTypes.func.isRequired,
   connectDragSource: React.PropTypes.func.isRequired,
@@ -97,9 +96,9 @@ const pluginSource = {
     if(!monitor.didDrop()) { return; }
 
     const { plugin } = monitor.getItem();
-    const { project, onNewComponent } = props;
+    const { onNewComponent } = props;
     const { location } = monitor.getDropResult();
-    onNewComponent(project.uid, location, plugin);
+    onNewComponent(location, plugin);
   }
 };
 

@@ -4,12 +4,6 @@ import React from 'react';
 import * as mui from 'material-ui';
 import icons from '../icons';
 
-import AppDispatcher from '../../compat/dispatcher';
-import {
-  projectVPanelImportOnlineToolbox, projectVPanelImportOnlineDriverComponents,
-  projectVPanelPrepareDeployVPanel, projectVPanelPrepareDeployDrivers
-} from '../../actions/index';
-
 const styles = {
   icon: {
     margin: 16,
@@ -21,74 +15,47 @@ const styles = {
   }
 };
 
-class Toolbar extends React.Component {
+const Toolbar = ({ onImportOnlineToolbox, onImportOnlineDriverComponents, onDeployVPanel, onDeployDrivers }) => (
+  <mui.Toolbar>
+    <mui.ToolbarGroup>
 
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
+      <mui.IconButton tooltip="Import toolbox from online entities"
+                      tooltipPosition="top-right"
+                      onClick={onImportOnlineToolbox}
+                      style={styles.button}>
+        <icons.PluginDriver />
+      </mui.IconButton>
 
-  // importOnlineToolbox
+      <mui.IconButton tooltip="Import driver components from online entities"
+                      tooltipPosition="top-right"
+                      onClick={onImportOnlineDriverComponents}
+                      style={styles.button}>
+        <icons.Component />
+      </mui.IconButton>
 
-  importOnlineToolbox() {
-    AppDispatcher.dispatch(projectVPanelImportOnlineToolbox(this.props.project.uid));
-  }
+      <mui.IconButton tooltip={<div>Deploy vpanel project<br/>(replace vpanel and ui components on all entities)</div>}
+                      tooltipPosition="top-center"
+                      onClick={onDeployVPanel}
+                      style={styles.button}>
+        <icons.tabs.Online />
+      </mui.IconButton>
 
-  // ---
+      <mui.IconButton tooltip={<div>Deploy driver project<br/>(replace driver components on targeted entities)</div>}
+                      tooltipPosition="top-center"
+                      onClick={onDeployDrivers}
+                      style={styles.button}>
+        <icons.tabs.Online />
+      </mui.IconButton>
 
-  importOnlineDriverComponents() {
-    AppDispatcher.dispatch(projectVPanelImportOnlineDriverComponents(this.props.project.uid));
-  }
-
-  deployVPanel() {
-    AppDispatcher.dispatch(projectVPanelPrepareDeployVPanel(this.props.project.uid));
-  }
-
-  deployDrivers() {
-    AppDispatcher.dispatch(projectVPanelPrepareDeployDrivers(this.props.project.uid));
-  }
-
-  render() {
-    return (
-      <mui.Toolbar>
-        <mui.ToolbarGroup>
-
-          <mui.IconButton tooltip="Import toolbox from online entities"
-                          tooltipPosition="top-right"
-                          onClick={this.importOnlineToolbox.bind(this)}
-                          style={styles.button}>
-            <icons.PluginDriver />
-          </mui.IconButton>
-
-          <mui.IconButton tooltip="Import driver components from online entities"
-                          tooltipPosition="top-right"
-                          onClick={this.importOnlineDriverComponents.bind(this)}
-                          style={styles.button}>
-            <icons.Component />
-          </mui.IconButton>
-
-          <mui.IconButton tooltip={<div>Deploy vpanel project<br/>(replace vpanel and ui components on all entities)</div>}
-                          tooltipPosition="top-center"
-                          onClick={this.deployVPanel.bind(this)}
-                          style={styles.button}>
-            <icons.tabs.Online />
-          </mui.IconButton>
-
-          <mui.IconButton tooltip={<div>Deploy driver project<br/>(replace driver components on targeted entities)</div>}
-                          tooltipPosition="top-center"
-                          onClick={this.deployDrivers.bind(this)}
-                          style={styles.button}>
-            <icons.tabs.Online />
-          </mui.IconButton>
-
-        </mui.ToolbarGroup>
-      </mui.Toolbar>
-    );
-  }
-}
+    </mui.ToolbarGroup>
+  </mui.Toolbar>
+);
 
 Toolbar.propTypes = {
-  project: React.PropTypes.object.isRequired,
+  onImportOnlineToolbox          : React.PropTypes.func.isRequired,
+  onImportOnlineDriverComponents : React.PropTypes.func.isRequired,
+  onDeployVPanel                 : React.PropTypes.func.isRequired,
+  onDeployDrivers                : React.PropTypes.func.isRequired
 };
 
 export default Toolbar;

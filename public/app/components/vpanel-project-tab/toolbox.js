@@ -14,7 +14,7 @@ const styles = {
   }
 };
 
-const Toolbox = ({ project, toolbox, onNewComponent }) => {
+const Toolbox = ({ toolbox, onNewComponent, onImportOnlineToolbox, onImportOnlineDriverComponents, onDeployVPanel, onDeployDrivers }) => {
 
   const items = [];
 
@@ -27,7 +27,7 @@ const Toolbox = ({ project, toolbox, onNewComponent }) => {
     plugins.forEach(plugin => {
       items.push(
         <mui.ListItem key={`${entityId}:${plugin.library}:${plugin.type}`}>
-          <ToolboxPlugin project={project} plugin={plugin} onNewComponent={onNewComponent}></ToolboxPlugin>
+          <ToolboxPlugin plugin={plugin} onNewComponent={onNewComponent}></ToolboxPlugin>
         </mui.ListItem>
       );
     });
@@ -38,15 +38,21 @@ const Toolbox = ({ project, toolbox, onNewComponent }) => {
       <mui.List style={Object.assign({}, tabStyles.scrollable, styles.pluginList)}>
         {items}
       </mui.List>
-      <Toolbar project={project} />
+      <Toolbar onImportOnlineToolbox={onImportOnlineToolbox}
+               onImportOnlineDriverComponents={onImportOnlineDriverComponents}
+               onDeployVPanel={onDeployVPanel}
+               onDeployDrivers={onDeployDrivers} />
     </div>
   );
 };
 
 Toolbox.propTypes = {
-  project        : React.PropTypes.object.isRequired,
-  toolbox        : React.PropTypes.array.isRequired,
-  onNewComponent : React.PropTypes.func.isRequired
+  toolbox                        : React.PropTypes.array.isRequired,
+  onNewComponent                 : React.PropTypes.func.isRequired,
+  onImportOnlineToolbox          : React.PropTypes.func.isRequired,
+  onImportOnlineDriverComponents : React.PropTypes.func.isRequired,
+  onDeployVPanel                 : React.PropTypes.func.isRequired,
+  onDeployDrivers                : React.PropTypes.func.isRequired
 };
 
 export default Toolbox;
