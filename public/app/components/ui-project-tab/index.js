@@ -8,12 +8,10 @@ import MainTitle from '../main-title';
 
 import Properties from './properties';
 import ExplorerContainer from '../../containers/ui-project-tab/explorer-container';
+import DialogConfirmImportComponents from '../../containers/ui-project-tab/dialog-confirm-import-components';
 import Toolbox from './toolbox';
 import Canvas from './canvas';
-import DialogConfirm from '../dialogs/dialog-confirm';
 
-import AppDispatcher from '../../compat/dispatcher';
-import { projectUiCancelImportComponents, projectUiConfirmImportComponents } from '../../actions/index';
 import storeHandler from '../../compat/store';
 
 import { getProjectState } from '../../selectors/projects';
@@ -113,11 +111,7 @@ class UiProjectTab extends React.Component {
           </bs.Row>
         </bs.Grid>
 
-        <DialogConfirm title="Confirm"
-                       open={!!this.state.importComponentsConfirm}
-                       lines={(this.state.importComponentsConfirm && ['The following elements will be lost:'].concat(this.state.importComponentsConfirm.messages)) || []}
-                       yes={() => AppDispatcher.dispatch(projectUiConfirmImportComponents(project.uid))}
-                       no={() => AppDispatcher.dispatch(projectUiCancelImportComponents(project.uid))}/>
+        <DialogConfirmImportComponents project={project.uid}/>
       </div>
     );
   }
