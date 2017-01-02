@@ -1,55 +1,26 @@
 'use strict';
 
-import React from 'react';
+import { connect } from 'react-redux';
 
 import MainTabs from '../components/main-tabs';
 
-import AppDispatcher from '../compat/dispatcher';
-import storeHandler from '../compat/store';
-
+import { getProjects } from '../selectors/projects';
 import { tabActivate } from '../actions/index';
 
-class MainTabsContainer extends React.Component {
+const mapStateToProps = (state) => ({
+  projects: getProjects(state).toArray(),
+  activeTab: state.activeTab
+});
 
-  constructor(props) {
-    super(props);
 
-    const state = storeHandler.getStore().getState();
+const mapDispatchToProps = ({
+  onTabChanged : tabActivate
+});
 
-    this.state = {
-      projects: Array.from(state.projects.projects.toArray()),
-      activeTab: state.activeTab
-    };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handleStoreChange() {
-    const state = storeHandler.getStore().getState();
-
-    this.setState({
-      projects: Array.from(state.projects.projects.toArray()),
-      activeTab: state.activeTab
-    });
-  }
-
-  render() {
-
-    const { projects, activeTab } = this.state;
-
-    return (<MainTabs
-      projects={projects}
-      activeTab={activeTab}
-      onTabChanged={(value) => AppDispatcher.dispatch(tabActivate(value))} />);
-  }
-}
+const MainTabsContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainTabs);
 
 export default MainTabsContainer;
+
