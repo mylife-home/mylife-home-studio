@@ -11,75 +11,42 @@ import ToolboxContainer from '../../containers/vpanel-project-tab/toolbox-contai
 import DialogConfirmImportToolbox from '../../containers/vpanel-project-tab/dialog-confirm-import-toolbox';
 import Canvas from './canvas';
 
-import storeHandler from '../../compat/store';
-
-import { getProjectState } from '../../selectors/projects';
-
 import tabStyles from '../base/tab-styles';
 
-class VPanelProjectTab extends React.Component {
+const VPanelProjectTab = ({ project, onTabClosed }) => (
+  <div style={Object.assign({}, tabStyles.fullHeight)}>
+    <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
+      <bs.Row style={tabStyles.fullHeight}>
+        <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
+          <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+            <ToolboxContainer project={project.uid} />
+          </mui.Paper>
+        </bs.Col>
+        <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
+          <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
+            <MainTitle
+              center={project.name}
+              left={<icons.tabs.VPanel />}
+              right={
+                <mui.IconButton onClick={() => onTabClosed(project.uid)}>
+                  <icons.actions.Close />
+                </mui.IconButton>
+              }/>
+            <Canvas project={project} />
+          </div>
+        </bs.Col>
+        <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
+          <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
+            <Properties project={project} />
+          </mui.Paper>
+        </bs.Col>
+      </bs.Row>
+    </bs.Grid>
 
-  constructor(props) {
-    super(props);
-    this.state = { };
+    <DialogConfirmImportToolbox project={project.uid}/>
 
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handleStoreChange() {
-    const { project } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
-    const pendingImportToolbox = projectState && projectState.pendingImportToolbox;
-    this.setState({ pendingImportToolbox });
-  }
-
-  render() {
-    const { project, onTabClosed } = this.props;
-
-    return (
-      <div style={Object.assign({}, tabStyles.fullHeight)}>
-        <bs.Grid fluid={true} style={Object.assign({}, tabStyles.fullHeight)}>
-          <bs.Row style={tabStyles.fullHeight}>
-            <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
-              <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-                <ToolboxContainer project={project.uid} />
-              </mui.Paper>
-            </bs.Col>
-            <bs.Col sm={8} style={Object.assign({}, tabStyles.noPadding, tabStyles.scrollable, tabStyles.fullHeight)}>
-              <div style={Object.assign({marginTop: '-10px' /* WTF ?! */}, tabStyles.noPadding, tabStyles.fullHeight)}>
-                <MainTitle
-                  center={project.name}
-                  left={<icons.tabs.VPanel />}
-                  right={
-                    <mui.IconButton onClick={() => onTabClosed(project.uid)}>
-                      <icons.actions.Close />
-                    </mui.IconButton>
-                  }/>
-                <Canvas project={project} />
-              </div>
-            </bs.Col>
-            <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
-              <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-                <Properties project={project} />
-              </mui.Paper>
-            </bs.Col>
-          </bs.Row>
-        </bs.Grid>
-
-        <DialogConfirmImportToolbox project={project.uid}/>
-
-      </div>
-    );
-  }
-}
+  </div>
+);
 
 VPanelProjectTab.propTypes = {
   project: React.PropTypes.object.isRequired,
