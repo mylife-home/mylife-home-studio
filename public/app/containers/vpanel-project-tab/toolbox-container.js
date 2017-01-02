@@ -15,9 +15,9 @@ const mapStateToProps = () => {
   });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onNewComponent: (project, location, plugin) => dispatch(projectNewComponent(project, location, plugin))
-});
+const mapDispatchToProps = {
+  onNewComponent: projectNewComponent
+};
 
 const ToolboxContainer = connect(
   mapStateToProps,
