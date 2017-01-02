@@ -8,7 +8,7 @@ import { stopPropagationWrapper } from '../../utils/index';
 import storeHandler from '../../compat/store';
 import { dragTypes } from '../../constants/index';
 import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectNewBinding } from '../../actions/index';
+import { projectStateSelect, projectNewBinding, projectMoveComponent } from '../../actions/index';
 import { getComponents, getBindings, getPlugin } from '../../selectors/vpanel-projects';
 import { getProjectState } from '../../selectors/projects';
 

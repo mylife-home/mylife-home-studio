@@ -63,7 +63,7 @@ class CanvasComponent extends React.Component {
   }
 
   handleMeasureChange(dim) {
-    const { project, component, plugin } = this.props;
+    const { component, plugin } = this.props;
 
     if(!dim) {
       const node = this.refs.component;
