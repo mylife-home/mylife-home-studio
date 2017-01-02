@@ -12,9 +12,6 @@ import DetailsContainer from './details-container';
 
 import Facade from '../../services/facade';
 
-import AppDispatcher from '../../compat/dispatcher';
-import { resourcesEntityQuery } from '../../actions/index';
-
 function renderPluginUsageIcon(plugin) {
   switch(plugin.usage) {
     case Facade.metadata.pluginUsage.driver:
@@ -156,14 +153,14 @@ function renderTypeIcon(entity) {
   }
 }
 
-const DetailsEntity = ({ entity, onChangeValue }) => (
+const DetailsEntity = ({ entity, onChangeValue, onEntityRefresh }) => (
   <div>
     <MainTitle
       center={
         <div>
           {entity.id}
           &nbsp;
-          <mui.IconButton tooltip="refresh" onClick={() => AppDispatcher.dispatch(resourcesEntityQuery(entity))}>
+          <mui.IconButton tooltip="refresh" onClick={() => onEntityRefresh(entity)}>
             <icons.actions.Refresh />
           </mui.IconButton>
         </div>
@@ -186,7 +183,8 @@ const DetailsEntity = ({ entity, onChangeValue }) => (
 
 DetailsEntity.propTypes = {
   entity: React.PropTypes.object.isRequired,
-  onChangeValue: React.PropTypes.func.isRequired
+  onChangeValue: React.PropTypes.func.isRequired,
+  onEntityRefresh: React.PropTypes.func.isRequired
 };
 
 export default DetailsEntity;
