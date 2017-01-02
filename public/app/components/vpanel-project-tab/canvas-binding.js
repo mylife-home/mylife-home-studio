@@ -5,14 +5,8 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import icons from '../icons';
 import { stopPropagationWrapper } from '../../utils/index';
 
-import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect } from '../../actions/index';
-import storeHandler from '../../compat/store';
-import { getProjectState } from '../../selectors/projects';
-
-function getStyles(props, state) {
-  const { isSelected } = state;
-  const { muiTheme } = props;
+function getStyles(props) {
+  const { isSelected, muiTheme } = props;
 
   return {
     container: {
@@ -55,30 +49,18 @@ class CanvasBinding extends React.Component {
     super(props, context);
 
     this.state = {
-      isSelected : false,
-      path       : this.context.canvasManager.bindingPath(props.binding)
+      path: this.context.canvasManager.bindingPath(props.binding)
     };
 
-    this.boundHandleStoreChange   = this.handleStoreChange.bind(this);
     this.boundHandleMeasureChange = this.handleMeasureChange.bind(this);
   }
 
   componentDidMount() {
     this.canvasManagerUnsubscribe = this.context.canvasManager.addBindingChangedListener(this.boundHandleMeasureChange);
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
     this.canvasManagerUnsubscribe();
-  }
-
-  handleStoreChange() {
-    const { project, binding } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
-    this.setState({
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'binding' && projectState.selection.uid === binding.uid
-    });
   }
 
   handleMeasureChange() {
@@ -88,21 +70,17 @@ class CanvasBinding extends React.Component {
     });
   }
 
-  select() {
-    const { project, binding } = this.props;
-    AppDispatcher.dispatch(projectStateSelect(project, { type: 'binding', uid: binding.uid }));
-  }
-
   render() {
     const { path } = this.state;
-    const styles = getStyles(this.props, this.state);
+    const { onSelected, binding } = this.props;
 
     if(!path) {
       return null;
     }
 
-    const start = path[0];
-    const end = path[path.length-1];
+    const styles = getStyles(this.props);
+    const start  = path[0];
+    const end    = path[path.length-1];
     const middle = path[Math.round(path.length / 2) - 1];
 
     return (
@@ -113,7 +91,7 @@ class CanvasBinding extends React.Component {
           </g>
         </svg>
         <div style={Object.assign({left: `${middle.x - 8}px`, top: `${middle.y - 8}px`}, styles.box)}
-             onClick={stopPropagationWrapper(this.select.bind(this))}>
+             onClick={stopPropagationWrapper(() => onSelected(binding))}>
           <icons.Binding color={styles.boxIcon.color} style={styles.boxIcon} />
         </div>
       </div>
@@ -122,12 +100,14 @@ class CanvasBinding extends React.Component {
 }
 
 CanvasBinding.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  binding: React.PropTypes.object.isRequired
+  project    : React.PropTypes.object.isRequired,
+  binding    : React.PropTypes.object.isRequired,
+  isSelected : React.PropTypes.bool.isRequired,
+  onSelected : React.PropTypes.func.isRequired
 };
 
 CanvasBinding.contextTypes = {
-  canvasManager: React.PropTypes.object.isRequired
+  canvasManager : React.PropTypes.object.isRequired
 };
 
 export default muiThemeable()(CanvasBinding);

@@ -10,6 +10,7 @@ import { dragTypes } from '../../constants/index';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect } from '../../actions/index';
 import { getComponents, getBindings } from '../../selectors/vpanel-projects';
+import { getProjectState } from '../../selectors/projects';
 
 import CanvasManager from './canvas-manager';
 import CanvasComponent from './canvas-component';
@@ -80,8 +81,17 @@ class Canvas extends React.Component {
   }
 
   renderBindings(project) {
-    const bindings = getBindings(storeHandler.getStore().getState(), { project: project.uid }).toArray();
-    return bindings.map(binding => (<CanvasBinding key={binding.uid} project={project} binding={binding}/>));
+    const state        = storeHandler.getStore().getState();
+    const bindings     = getBindings(state, { project: project.uid }).toArray();
+    const projectState = getProjectState(state, { project: project.uid });
+    return bindings.map(binding => (
+      <CanvasBinding key={binding.uid}
+                     project={project}
+                     binding={binding}
+                     isSelected={!!(projectState && projectState.selection && projectState.selection.type === 'binding' && projectState.selection.uid === binding.uid)}
+                     onSelected={(binding) => AppDispatcher.dispatch(projectStateSelect(project, { type: 'binding', uid: binding.uid }))}
+      />
+    ));
   }
 
   render() {
