@@ -39,7 +39,7 @@ function renderTabLabel(text, icon) {
   );
 }
 
-const MainTabs = ({ projects, activeTab, onTabChanged }) => (
+const MainTabs = ({ projects, activeTab, onTabChanged, onTabClosed }) => (
   <mui.Tabs value={activeTab}
             onChange={onTabChanged}
             style={styles.tabs}
@@ -58,7 +58,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
             <mui.Tab key={project.uid}
                      value={`project-${project.uid}`}
                      label={renderTabLabel(title, (<icons.tabs.VPanel />))}>
-              <VPanelProjectTab project={project} />
+              <VPanelProjectTab project={project} onTabClosed={onTabClosed} />
             </mui.Tab>
           );
 
@@ -67,7 +67,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
             <mui.Tab key={project.uid}
                      value={`project-${project.uid}`}
                      label={renderTabLabel(title, (<icons.tabs.Ui />))}>
-              <UiProjectTab project={project} />
+              <UiProjectTab project={project} onTabClosed={onTabClosed} />
             </mui.Tab>
           );
 
@@ -81,7 +81,8 @@ const MainTabs = ({ projects, activeTab, onTabChanged }) => (
 MainTabs.propTypes = {
   projects: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   activeTab: React.PropTypes.string.isRequired,
-  onTabChanged: React.PropTypes.func.isRequired
+  onTabChanged: React.PropTypes.func.isRequired,
+  onTabClosed: React.PropTypes.func.isRequired
 };
 
 export default MainTabs;

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import MainTabs from '../components/main-tabs';
 
 import { getProjects } from '../selectors/projects';
-import { tabActivate } from '../actions/index';
+import { tabActivate, projectClose } from '../actions/index';
 
 const mapStateToProps = (state) => ({
   projects: getProjects(state).toArray(),
@@ -14,7 +14,8 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = ({
-  onTabChanged : tabActivate
+  onTabChanged : tabActivate,
+  onTabClosed  : projectClose
 });
 
 const MainTabsContainer = connect(

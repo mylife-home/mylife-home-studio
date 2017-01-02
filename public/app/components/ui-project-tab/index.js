@@ -13,7 +13,7 @@ import Canvas from './canvas';
 import DialogConfirm from '../dialogs/dialog-confirm';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectClose, projectUiCancelImportComponents, projectUiConfirmImportComponents } from '../../actions/index';
+import { projectUiCancelImportComponents, projectUiConfirmImportComponents } from '../../actions/index';
 import storeHandler from '../../compat/store';
 
 import { getProjectState } from '../../selectors/projects';
@@ -52,7 +52,7 @@ class UiProjectTab extends React.Component {
   }
 
   render() {
-    const { project } = this.props;
+    const { project, onTabClosed } = this.props;
     const { activeContent } = this.state;
 
     let title = project.name;
@@ -98,7 +98,7 @@ class UiProjectTab extends React.Component {
                   center={title}
                   left={<icons.tabs.Ui />}
                   right={
-                    <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project.uid))}>
+                    <mui.IconButton onClick={() => onTabClosed(project.uid)}>
                       <icons.actions.Close />
                     </mui.IconButton>
                   }/>
@@ -125,6 +125,7 @@ class UiProjectTab extends React.Component {
 
 UiProjectTab.propTypes = {
   project: React.PropTypes.object.isRequired,
+  onTabClosed: React.PropTypes.func.isRequired
 };
 
 export default UiProjectTab;

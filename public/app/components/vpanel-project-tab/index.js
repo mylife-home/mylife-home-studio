@@ -11,8 +11,6 @@ import ToolboxContainer from '../../containers/vpanel-project-tab/toolbox-contai
 import DialogConfirmImportToolbox from '../../containers/vpanel-project-tab/dialog-confirm-import-toolbox';
 import Canvas from './canvas';
 
-import AppDispatcher from '../../compat/dispatcher';
-import { projectClose } from '../../actions/index';
 import storeHandler from '../../compat/store';
 
 import { getProjectState } from '../../selectors/projects';
@@ -44,7 +42,7 @@ class VPanelProjectTab extends React.Component {
   }
 
   render() {
-    const { project } = this.props;
+    const { project, onTabClosed } = this.props;
 
     return (
       <div style={Object.assign({}, tabStyles.fullHeight)}>
@@ -61,7 +59,7 @@ class VPanelProjectTab extends React.Component {
                   center={project.name}
                   left={<icons.tabs.VPanel />}
                   right={
-                    <mui.IconButton onClick={() => AppDispatcher.dispatch(projectClose(project.uid))}>
+                    <mui.IconButton onClick={() => onTabClosed(project.uid)}>
                       <icons.actions.Close />
                     </mui.IconButton>
                   }/>
@@ -85,6 +83,7 @@ class VPanelProjectTab extends React.Component {
 
 VPanelProjectTab.propTypes = {
   project: React.PropTypes.object.isRequired,
+  onTabClosed: React.PropTypes.func.isRequired
 };
 
 export default VPanelProjectTab;
