@@ -10,19 +10,13 @@ import { stopPropagationWrapper, snapToGrid } from '../../utils/index';
 
 import Facade from '../../services/facade';
 import { dragTypes } from '../../constants/index';
-import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectMoveComponent } from '../../actions/index';
-import storeHandler from '../../compat/store';
 
 import CanvasComponentAttribute from './canvas-component-attribute';
 import CanvasComponentAction from './canvas-component-action';
 import commonStyles from './canvas-component-styles';
-import { getProjectState } from '../../selectors/projects';
-import { getPlugin } from '../../selectors/vpanel-projects';
 
-function getStyles(props, state) {
-  const { isSelected } = state;
-  const { muiTheme } = props;
+function getStyles(props) {
+  const { isSelected, muiTheme } = props;
 
   return Object.assign({
     titleContainer: {
@@ -66,33 +60,10 @@ class CanvasComponent extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    this.state = {
-      isSelected: false
-    };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handleStoreChange() {
-    const { project, component } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
-    this.setState({
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid
-    });
   }
 
   handleMeasureChange(dim) {
-    const { project, component } = this.props;
-    const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
+    const { project, component, plugin } = this.props;
 
     if(!dim) {
       const node = this.refs.component;
@@ -109,11 +80,6 @@ class CanvasComponent extends React.Component {
     // may be not yet rendered
     if(!node) { return; }
     return node.getBoundingClientRect();
-  }
-
-  select() {
-    const { project, component } = this.props;
-    AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }));
   }
 
   renderIcon(styles, plugin) {
@@ -141,10 +107,9 @@ class CanvasComponent extends React.Component {
   }
 
   render() {
-    const { project, component, onCreateBinding, connectDragPreview, connectDragSource, isDragging } = this.props;
-    const location = component.designer.location;
-    const styles = getStyles(this.props, this.state);
-    const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
+    const { project, component, plugin, onSelected, onCreateBinding, connectDragPreview, connectDragSource, isDragging } = this.props;
+    const location   = component.designer.location;
+    const styles     = getStyles(this.props);
     const entityHost = plugin.entityId.split('_')[1];
 
     return (
@@ -154,7 +119,7 @@ class CanvasComponent extends React.Component {
         left    : location.x,
         top     : location.y,
         opacity : isDragging ? 0.5 : 1
-      }} onClick={stopPropagationWrapper(this.select.bind(this))}>
+      }} onClick={stopPropagationWrapper(() => onSelected(component))}>
         <Measure onMeasure={this.handleMeasureChange.bind(this)}>
           <div>
             {connectDragPreview(
@@ -210,12 +175,16 @@ class CanvasComponent extends React.Component {
 }
 
 CanvasComponent.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  component: React.PropTypes.object.isRequired,
-  onCreateBinding: React.PropTypes.func.isRequired,
-  connectDragSource: React.PropTypes.func.isRequired,
-  connectDragPreview: React.PropTypes.func.isRequired,
-  isDragging: React.PropTypes.bool.isRequired
+  project            : React.PropTypes.object.isRequired,
+  component          : React.PropTypes.object.isRequired,
+  plugin             : React.PropTypes.object.isRequired,
+  isSelected         : React.PropTypes.bool.isRequired,
+  onSelected         : React.PropTypes.func.isRequired,
+  onComponentMove    : React.PropTypes.func.isRequired,
+  onCreateBinding    : React.PropTypes.func.isRequired,
+  connectDragSource  : React.PropTypes.func.isRequired,
+  connectDragPreview : React.PropTypes.func.isRequired,
+  isDragging         : React.PropTypes.bool.isRequired
 };
 
 CanvasComponent.contextTypes = {
@@ -234,7 +203,7 @@ const componentSource = {
   endDrag(props, monitor, uiComponent) {
     if(!monitor.didDrop()) { return; }
 
-    const { component, project } = props;
+    const { component, project, onComponentMove } = props;
 
     const { delta } = monitor.getDropResult();
     const location = {
@@ -243,7 +212,7 @@ const componentSource = {
     };
     snapToGrid(location, true);
 
-    AppDispatcher.dispatch(projectMoveComponent(project.uid, component.uid, location));
+    onComponentMove(project.uid, component.uid, location);
 
     uiComponent.handleMeasureChange();
   }

@@ -9,7 +9,7 @@ import storeHandler from '../../compat/store';
 import { dragTypes } from '../../constants/index';
 import AppDispatcher from '../../compat/dispatcher';
 import { projectStateSelect, projectNewBinding } from '../../actions/index';
-import { getComponents, getBindings } from '../../selectors/vpanel-projects';
+import { getComponents, getBindings, getPlugin } from '../../selectors/vpanel-projects';
 import { getProjectState } from '../../selectors/projects';
 
 import CanvasManager from './canvas-manager';
@@ -76,11 +76,17 @@ class Canvas extends React.Component {
   }
 
   renderComponents(project) {
-    const components = getComponents(storeHandler.getStore().getState(), { project: project.uid }).toArray();
+    const state        = storeHandler.getStore().getState();
+    const components   = getComponents(state, { project: project.uid }).toArray();
+    const projectState = getProjectState(state, { project: project.uid });
     return components.map(component => (
       <CanvasComponent key={component.uid}
                        project={project}
                        component={component}
+                       plugin={getPlugin(state, { project: project.uid, plugin: component.plugin })}
+                       isSelected={!!(projectState && projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid)}
+                       onSelected={(component) => AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }))}
+                       onComponentMove={(project, component, location) => AppDispatcher.dispatch(projectMoveComponent(project, component, location))}
                        onCreateBinding={(project, remoteComponent, remoteAttribute, localComponent, localAction) => AppDispatcher.dispatch(projectNewBinding(project, remoteComponent, remoteAttribute, localComponent, localAction))}
       />
     ));
