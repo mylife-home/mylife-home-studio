@@ -45,8 +45,7 @@ class UiProjectTab extends React.Component {
     const { project } = this.props;
     const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
     const activeContent = projectState && projectState.activeContent;
-    const importComponentsConfirm = projectState && projectState.pendingImportComponents;
-    this.setState({ activeContent, importComponentsConfirm });
+    this.setState({ activeContent });
   }
 
   render() {
