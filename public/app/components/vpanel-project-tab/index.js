@@ -8,11 +8,11 @@ import MainTitle from '../main-title';
 
 import Properties from './properties';
 import ToolboxContainer from '../../containers/vpanel-project-tab/toolbox-container';
+import DialogConfirmImportToolbox from '../../containers/vpanel-project-tab/dialog-confirm-import-toolbox';
 import Canvas from './canvas';
-import DialogConfirm from '../dialogs/dialog-confirm';
 
 import AppDispatcher from '../../compat/dispatcher';
-import { projectClose, projectVPanelConfirmImportToolbox, projectVPanelCancelImportToolbox } from '../../actions/index';
+import { projectClose } from '../../actions/index';
 import storeHandler from '../../compat/store';
 
 import { getProjectState } from '../../selectors/projects';
@@ -76,11 +76,7 @@ class VPanelProjectTab extends React.Component {
           </bs.Row>
         </bs.Grid>
 
-        <DialogConfirm title="Confirm"
-                       open={!!this.state.pendingImportToolbox}
-                       lines={(this.state.pendingImportToolbox && this.state.pendingImportToolbox.messages) || []}
-                       yes={() => AppDispatcher.dispatch(projectVPanelConfirmImportToolbox(project.uid))}
-                       no={() => AppDispatcher.dispatch(projectVPanelCancelImportToolbox(project.uid))}/>
+        <DialogConfirmImportToolbox project={project.uid}/>
 
       </div>
     );
