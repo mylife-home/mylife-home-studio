@@ -4,17 +4,11 @@ import React from 'react';
 import * as dnd from 'react-dnd';
 import Measure from 'react-measure';
 import { stopPropagationWrapper } from '../../utils/index';
-
-import storeHandler from '../../compat/store';
 import { dragTypes } from '../../constants/index';
-import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectNewBinding, projectMoveComponent } from '../../actions/index';
-import { getComponents, getBindings, getPlugin } from '../../selectors/vpanel-projects';
-import { getProjectState } from '../../selectors/projects';
 
 import CanvasManager from './canvas-manager';
-import CanvasComponent from './canvas-component';
-import CanvasBinding from './canvas-binding';
+import CanvasComponentContainer from '../../containers/vpanel-project-tab/canvas-component-container';
+import CanvasBindingContainer from '../../containers/vpanel-project-tab/canvas-binding-container';
 
 const styles = {
   container: {
@@ -44,17 +38,11 @@ class Canvas extends React.Component {
     super(props);
 
     this.boundHandleMeasureChange = this.handleMeasureChange.bind(this);
-
     this.canvasManager = new CanvasManager();
   }
 
   getChildContext() {
     return { canvasManager: this.canvasManager };
-  }
-
-  select() {
-    const { project } = this.props;
-    AppDispatcher.dispatch(projectStateSelect(project, null));
   }
 
   componentDidMount() {
@@ -75,39 +63,8 @@ class Canvas extends React.Component {
     this.canvasManager.canvasMeasureChanged(dim);
   }
 
-  renderComponents(project) {
-    const state        = storeHandler.getStore().getState();
-    const components   = getComponents(state, { project: project.uid }).toArray();
-    const projectState = getProjectState(state, { project: project.uid });
-    return components.map(component => (
-      <CanvasComponent key={component.uid}
-                       project={project}
-                       component={component}
-                       plugin={getPlugin(state, { project: project.uid, plugin: component.plugin })}
-                       isSelected={!!(projectState && projectState.selection && projectState.selection.type === 'component' && projectState.selection.uid === component.uid)}
-                       onSelected={(component) => AppDispatcher.dispatch(projectStateSelect(project, { type: 'component', uid: component.uid }))}
-                       onComponentMove={(project, component, location) => AppDispatcher.dispatch(projectMoveComponent(project, component, location))}
-                       onCreateBinding={(project, remoteComponent, remoteAttribute, localComponent, localAction) => AppDispatcher.dispatch(projectNewBinding(project, remoteComponent, remoteAttribute, localComponent, localAction))}
-      />
-    ));
-  }
-
-  renderBindings(project) {
-    const state        = storeHandler.getStore().getState();
-    const bindings     = getBindings(state, { project: project.uid }).toArray();
-    const projectState = getProjectState(state, { project: project.uid });
-    return bindings.map(binding => (
-      <CanvasBinding key={binding.uid}
-                     project={project}
-                     binding={binding}
-                     isSelected={!!(projectState && projectState.selection && projectState.selection.type === 'binding' && projectState.selection.uid === binding.uid)}
-                     onSelected={(binding) => AppDispatcher.dispatch(projectStateSelect(project, { type: 'binding', uid: binding.uid }))}
-      />
-    ));
-  }
-
   render() {
-    const { project, connectDropTarget, isHighlighted } = this.props;
+    const { project, components, bindings, onSelected, connectDropTarget, isHighlighted } = this.props;
 
     const canvasStyle = isHighlighted ?
       Object.assign({}, styles.canvas, styles.canvasHighlight) :
@@ -116,11 +73,11 @@ class Canvas extends React.Component {
     return connectDropTarget(
       <div style={styles.container}>
         <div style={styles.scrollbox} ref="scrollbox">
-          <div style={canvasStyle} onClick={stopPropagationWrapper(this.select.bind(this))} ref="canvas">
+          <div style={canvasStyle} onClick={stopPropagationWrapper(onSelected)} ref="canvas">
             <Measure onMeasure={this.handleMeasureChange.bind(this)}>
               <div>
-                {this.renderComponents(project)}
-                {this.renderBindings(project)}
+                {components.map(component => (<CanvasComponentContainer key={component.uid} project={project} component={component} />))}
+                {bindings.map(binding => (<CanvasBindingContainer key={binding.uid} project={project} binding={binding} />))}
               </div>
             </Measure>
           </div>
@@ -131,13 +88,16 @@ class Canvas extends React.Component {
 }
 
 Canvas.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  connectDropTarget: React.PropTypes.func.isRequired,
-  isHighlighted: React.PropTypes.bool.isRequired
+  project           : React.PropTypes.object.isRequired,
+  components        : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
+  bindings          : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
+  onSelected        : React.PropTypes.func.isRequired,
+  connectDropTarget : React.PropTypes.func.isRequired,
+  isHighlighted     : React.PropTypes.bool.isRequired
 };
 
 Canvas.childContextTypes = {
-  canvasManager: React.PropTypes.object.isRequired
+  canvasManager : React.PropTypes.object.isRequired
 };
 
 const canvasTarget = {
@@ -160,8 +120,8 @@ const canvasTarget = {
 
 function collect(connect, monitor) {
   return {
-    connectDropTarget: connect.dropTarget(),
-    isHighlighted: monitor.canDrop()
+    connectDropTarget : connect.dropTarget(),
+    isHighlighted     : monitor.canDrop()
   };
 }
 

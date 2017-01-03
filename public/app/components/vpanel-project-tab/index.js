@@ -9,7 +9,7 @@ import MainTitle from '../main-title';
 import Properties from './properties';
 import ToolboxContainer from '../../containers/vpanel-project-tab/toolbox-container';
 import DialogConfirmImportToolbox from '../../containers/vpanel-project-tab/dialog-confirm-import-toolbox';
-import Canvas from './canvas';
+import CanvasContainer from '../../containers/vpanel-project-tab/canvas-container';
 
 import tabStyles from '../base/tab-styles';
 
@@ -32,7 +32,7 @@ const VPanelProjectTab = ({ project, onTabClosed }) => (
                   <icons.actions.Close />
                 </mui.IconButton>
               }/>
-            <Canvas project={project} />
+            <CanvasContainer project={project} />
           </div>
         </bs.Col>
         <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>

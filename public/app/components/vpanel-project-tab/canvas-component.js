@@ -119,7 +119,7 @@ class CanvasComponent extends React.Component {
         left    : location.x,
         top     : location.y,
         opacity : isDragging ? 0.5 : 1
-      }} onClick={stopPropagationWrapper(() => onSelected(component))}>
+      }} onClick={stopPropagationWrapper(onSelected)}>
         <Measure onMeasure={this.handleMeasureChange.bind(this)}>
           <div>
             {connectDragPreview(
@@ -150,8 +150,7 @@ class CanvasComponent extends React.Component {
                     ))}
                     {plugin.clazz.attributes.map(attribute => (
                       <div ref={attribute.name} key={attribute.name}>
-                        <CanvasComponentAttribute project={project}
-                                                  component={component}
+                        <CanvasComponentAttribute component={component}
                                                   attribute={attribute}
                                                   onCreateBinding={onCreateBinding} />
                       </div>
@@ -203,7 +202,7 @@ const componentSource = {
   endDrag(props, monitor, uiComponent) {
     if(!monitor.didDrop()) { return; }
 
-    const { component, project, onComponentMove } = props;
+    const { component, onComponentMove } = props;
 
     const { delta } = monitor.getDropResult();
     const location = {
@@ -212,7 +211,7 @@ const componentSource = {
     };
     snapToGrid(location, true);
 
-    onComponentMove(project.uid, component.uid, location);
+    onComponentMove(location);
 
     uiComponent.handleMeasureChange();
   }

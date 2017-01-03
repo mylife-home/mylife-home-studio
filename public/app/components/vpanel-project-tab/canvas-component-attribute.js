@@ -16,7 +16,6 @@ const CanvasComponentAttribute = ({ attribute, connectDragPreview, connectDragSo
 );
 
 CanvasComponentAttribute.propTypes = {
-  project            : React.PropTypes.object.isRequired,
   component          : React.PropTypes.object.isRequired,
   attribute          : React.PropTypes.object.isRequired,
   onCreateBinding    : React.PropTypes.func.isRequired,
@@ -37,10 +36,10 @@ const attributeSource = {
   endDrag(props, monitor) {
     if(!monitor.didDrop()) { return; }
 
-    const { project, component, attribute, onCreateBinding } = props;
+    const { component, attribute, onCreateBinding } = props;
     const { localComponent, localAction } = monitor.getDropResult();
 
-    onCreateBinding(project, component.uid, attribute.name, localComponent, localAction);
+    onCreateBinding(component.uid, attribute.name, localComponent, localAction);
   }
 };
 
