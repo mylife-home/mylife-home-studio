@@ -3,8 +3,8 @@
 import React from 'react';
 import icons from '../icons';
 
-import CanvasComponentContainer from '../../containers/vpanel-project-tab/canvas-component-container';
-import CanvasBindingContainer from '../../containers/vpanel-project-tab/canvas-binding-container';
+import PropertiesComponentContainer from '../../containers/vpanel-project-tab/properties-component-container';
+import PropertiesBindingContainer from '../../containers/vpanel-project-tab/properties-binding-container';
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
@@ -81,10 +81,10 @@ class Properties extends React.Component {
 
     switch(selection && selection.type) {
       case 'component':
-        return (<CanvasComponentContainer project={project.uid} component={selection.uid} />);
+        return (<PropertiesComponentContainer project={project.uid} component={selection.uid} />);
 
       case 'binding': {
-        return (<CanvasBindingContainer project={project.uid} binding={selection.uid} />);
+        return (<PropertiesBindingContainer project={project.uid} binding={selection.uid} />);
       }
     }
 

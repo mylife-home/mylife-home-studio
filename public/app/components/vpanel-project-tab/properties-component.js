@@ -7,7 +7,7 @@ import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesEditor from '../properties/properties-editor';
 
-const PropertiesComponent = ({ component, plugin, onDelete, onchangeId, onChangeConfig }) => (
+const PropertiesComponent = ({ component, plugin, onDelete, onChangeId, onChangeConfig }) => (
   <div>
     <PropertiesTitle icon={<icons.Component/>} text={component.id} onDelete={onDelete} />
     {/* details */}
@@ -15,7 +15,7 @@ const PropertiesComponent = ({ component, plugin, onDelete, onchangeId, onChange
       <tbody>
         <tr>
           <td><PropertiesLabel text={'Id'} /></td>
-          <td><PropertiesEditor id={`${component.uid}_id`} value={component.id} onChange={onchangeId} type={'s'} /></td>
+          <td><PropertiesEditor id={`${component.uid}_id`} value={component.id} onChange={onChangeId} type={'s'} /></td>
         </tr>
         {plugin.config.map(prop => (
           <tr key={prop.name}>
@@ -40,7 +40,7 @@ PropertiesComponent.propTypes = {
   component      : React.PropTypes.object.isRequired,
   plugin         : React.PropTypes.object.isRequired,
   onDelete       : React.PropTypes.func.isRequired,
-  onchangeId     : React.PropTypes.func.isRequired,
+  onChangeId     : React.PropTypes.func.isRequired,
   onChangeConfig : React.PropTypes.func.isRequired
 };
 
