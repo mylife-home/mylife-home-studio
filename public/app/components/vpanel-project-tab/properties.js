@@ -5,6 +5,7 @@ import icons from '../icons';
 
 import PropertiesComponentContainer from '../../containers/vpanel-project-tab/properties-component-container';
 import PropertiesBindingContainer from '../../containers/vpanel-project-tab/properties-binding-container';
+import PropertiesProject from './properties-project';
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
@@ -42,31 +43,6 @@ class Properties extends React.Component {
     });
   }
 
-  renderProject(project) {
-    return (
-      <div>
-        <PropertiesTitle icon={<icons.tabs.VPanel/>} text={'Project'} />
-        {/* details */}
-        <table>
-          <tbody>
-            <tr>
-              <td><PropertiesLabel text={'Name'}/></td>
-              <td><PropertiesEditor id={`${project.uid}_name`} value={project.name} onChange={(value) => AppDispatcher.dispatch(projectChangeName(project.uid, value))} type={'s'} /></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Creation'}/></td>
-              <td><PropertiesValue value={project.creationDate.toISOString()}/></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Last update'}/></td>
-              <td><PropertiesValue value={project.lastUpdate.toISOString()}/></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-
   render() {
     const { project } = this.props;
     const { selection } = this.state;
@@ -80,7 +56,7 @@ class Properties extends React.Component {
       }
     }
 
-    return this.renderProject(project);
+    return (<PropertiesProject project={project} onChangeName={(value) => AppDispatcher.dispatch(projectChangeName(project.uid, value))} />);
   }
 }
 
