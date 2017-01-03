@@ -1,42 +1,18 @@
 'use strict';
 
 import React from 'react';
-import * as mui from 'material-ui';
 import icons from '../icons';
 
+import CanvasComponentContainer from '../../containers/vpanel-project-tab/canvas-component-container';
+import CanvasBindingContainer from '../../containers/vpanel-project-tab/canvas-binding-container';
 import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesValue from '../properties/properties-value';
 import PropertiesEditor from '../properties/properties-editor';
 import storeHandler from '../../compat/store';
 import AppDispatcher from '../../compat/dispatcher';
-import {
-  projectChangeName,
-  projectDeleteBinding,
-  projectDeleteVPanelComponent, projectComponentChangeId, projectComponentChangeConfig
-} from '../../actions/index';
+import { projectChangeName } from '../../actions/index';
 import { getProjectState } from '../../selectors/projects';
-import { getPlugin, getComponent } from '../../selectors/vpanel-projects';
-
-const styles = {
-  cell: {
-    display: 'inline-block',
-    fontSize: '16px',
-    lineHeight: '24px',
-    marginLeft: '10px',
-    marginRight: '30px'
-  },
-  valueContainer: {
-    display: 'inline-block',
-    fontSize: '16px',
-    lineHeight: '24px',
-    height: '48px',
-  },
-  value: {
-    marginTop: '12px',
-    marginBottom: '12px',
-  },
-};
 
 class Properties extends React.Component {
 
@@ -64,101 +40,6 @@ class Properties extends React.Component {
     this.setState({
       selection : projectState && projectState.selection
     });
-  }
-
-  renderTitle(Icon, text, onDelete) {
-    return (
-      <div style={styles.titleContainer}>
-        <div style={Object.assign({}, styles.titleItem, styles.titleLeft)}>
-          <Icon/>
-        </div>
-        {(() => {
-          if(!onDelete) { return; }
-          return (
-            <mui.IconButton onClick={onDelete} style={Object.assign({}, styles.titleItem, styles.titleRight)}>
-              <icons.actions.Close/>
-            </mui.IconButton>);
-        })()}
-        <div style={Object.assign({}, styles.titleItem, styles.titleMain)}>
-          {text}
-        </div>
-      </div>
-    );
-  }
-
-  renderComponent(project, component) {
-    const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteVPanelComponent(project.uid, component.uid));
-    };
-
-    const plugin = getPlugin(storeHandler.getStore().getState(), { project: project.uid, plugin: component.plugin });
-    const pluginConfig = plugin.config;
-
-    return (
-      <div>
-        <PropertiesTitle icon={<icons.Component/>} text={component.id} onDelete={onDelete} />
-        {/* details */}
-        <table>
-          <tbody>
-            <tr>
-              <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${component.uid}_id`} value={component.id} onChange={(value) => AppDispatcher.dispatch(projectComponentChangeId(project.uid, component.uid, value))} type={'s'} /></td>
-            </tr>
-            {pluginConfig.map(prop => (
-              <tr key={prop.name}>
-                <td>
-                  <PropertiesLabel text={prop.name} />
-                </td>
-                <td>
-                  <PropertiesEditor
-                    id={`${component.uid}_config_${prop.name}`}
-                    value={component.config[prop.name]}
-                    onChange={(value) => AppDispatcher.dispatch(projectComponentChangeConfig(project.uid, component.uid, prop.name, value))}
-                    type={prop.type} />
-                </td>
-              </tr>))
-            }
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-
-  renderBinding(project, binding) {
-    const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteBinding(project.uid, binding.uid));
-    };
-
-    const remote = getComponent(storeHandler.getStore().getState(), { project: project.uid, component: binding.remote });
-    const local  = getComponent(storeHandler.getStore().getState(), { project: project.uid, component: binding.local  });
-    const key    = `${remote.id}:${binding.remoteAttribute} -> ${local.id}:${binding.localAction}`;
-
-    return (
-      <div>
-        <PropertiesTitle icon={<icons.Binding/>} text={key} onDelete={onDelete} />
-        {/* details */}
-        <table>
-          <tbody>
-            <tr>
-              <td><PropertiesLabel text={'Remote component'}/></td>
-              <td><PropertiesValue value={remote.id}/></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Remote attribute'}/></td>
-              <td><PropertiesValue value={binding.remoteAttribute}/></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Local component'}/></td>
-              <td><PropertiesValue value={local.id}/></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Local action'}/></td>
-              <td><PropertiesValue value={binding.localAction}/></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
   }
 
   renderProject(project) {
@@ -199,14 +80,11 @@ class Properties extends React.Component {
     const { selection } = this.state;
 
     switch(selection && selection.type) {
-      case 'component': {
-        const component = this.findComponent(project, selection.uid);
-        return this.renderComponent(project, component);
-      }
+      case 'component':
+        return (<CanvasComponentContainer project={project.uid} component={selection.uid} />);
 
       case 'binding': {
-        const binding = this.findBinding(project, selection.uid);
-        return this.renderBinding(project, binding);
+        return (<CanvasBindingContainer project={project.uid} binding={selection.uid} />);
       }
     }
 
