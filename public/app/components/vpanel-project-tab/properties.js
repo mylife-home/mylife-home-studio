@@ -67,14 +67,6 @@ class Properties extends React.Component {
     );
   }
 
-  findComponent(project, uid) {
-    return project.components.find(c => c.uid === uid);
-  }
-
-  findBinding(project, uid) {
-    return project.bindings.find(b => b.uid === uid);
-  }
-
   render() {
     const { project } = this.props;
     const { selection } = this.state;
