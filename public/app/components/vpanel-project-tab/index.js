@@ -6,7 +6,7 @@ import * as bs from 'react-bootstrap';
 import icons from '../icons';
 import MainTitle from '../main-title';
 
-import Properties from './properties';
+import PropertiesContainer from '../../containers/vpanel-project-tab/properties-container';
 import ToolboxContainer from '../../containers/vpanel-project-tab/toolbox-container';
 import DialogConfirmImportToolbox from '../../containers/vpanel-project-tab/dialog-confirm-import-toolbox';
 import CanvasContainer from '../../containers/vpanel-project-tab/canvas-container';
@@ -37,7 +37,7 @@ const VPanelProjectTab = ({ project, onTabClosed }) => (
         </bs.Col>
         <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
           <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-            <Properties project={project} />
+            <PropertiesContainer project={project.uid} />
           </mui.Paper>
         </bs.Col>
       </bs.Row>
