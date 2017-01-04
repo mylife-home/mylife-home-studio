@@ -60,7 +60,7 @@ class PropertiesControlDisplayMappingRow extends React.Component {
     const imageRowColumn = (
       <mui.TableRowColumn>
        <ImageSelectorContainer
-        project={project.uid}
+        project={project}
         image={item.resource}
         onImageChange={ onImageChange } />
       </mui.TableRowColumn>
@@ -113,7 +113,7 @@ class PropertiesControlDisplayMappingRow extends React.Component {
 }
 
 PropertiesControlDisplayMappingRow.propTypes = {
-  project       : React.PropTypes.object.isRequired,
+  project       : React.PropTypes.number.isRequired,
   item          : React.PropTypes.object.isRequired,
   attributeType : React.PropTypes.object.isRequired,
   isNew         : React.PropTypes.bool.isRequired,

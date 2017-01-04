@@ -144,7 +144,7 @@ class PropertiesControlDisplayMapping extends React.Component {
 }
 
 PropertiesControlDisplayMapping.propTypes = {
-  project       : React.PropTypes.object.isRequired,
+  project       : React.PropTypes.number.isRequired,
   control       : React.PropTypes.object.isRequired,
   component     : React.PropTypes.object,
   images        : React.PropTypes.object.isRequired,

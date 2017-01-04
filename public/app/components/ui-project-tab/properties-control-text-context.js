@@ -109,7 +109,7 @@ class PropertiesControlTextContext extends React.Component {
 }
 
 PropertiesControlTextContext.propTypes = {
-  project           : React.PropTypes.object.isRequired,
+  project           : React.PropTypes.number.isRequired,
   control           : React.PropTypes.object.isRequired,
   components        : React.PropTypes.object.isRequired,
   onNew             : React.PropTypes.func.isRequired,

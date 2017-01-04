@@ -7,157 +7,70 @@ import PropertiesLabel from '../properties/properties-label';
 import PropertiesTitle from '../properties/properties-title';
 import PropertiesEditor from '../properties/properties-editor';
 
-import ImageSelectorContainer from '../../containers/ui-project-tab/image-selector-container';
+import PropertiesControlDisplayContainer from '../../containers/ui-project-tab/properties-control-display-container';
+import PropertiesControlTextContainer from '../../containers/ui-project-tab/properties-control-text-container';
 import PropertiesControlActionContainer from '../../containers/ui-project-tab/properties-control-action-container';
-import PropertiesControlTextContext from './properties-control-text-context';
-import PropertiesControlDisplayMapping from './properties-control-display-mapping';
-import ComponentAttributeSelectorContainer from '../../containers/ui-project-tab/component-attribute-selector-container';
 
-import AppDispatcher from '../../compat/dispatcher';
-import {
-  projectDeleteControl, projectControlChangeTextFormat, projectControlChangeId, projectMoveControl, projectResizeControl,
-  projectControlChangeImage, projectControlChangeDisplayComponent,
-  projectControlAddTextContext, projectControlDeleteTextContext, projectControlChangeTextContextId, projectControlChangeTextContextComponent,
-  projectControlChangeDisplayMappingImage, projectControlChangeDisplayMappingValue, projectControlChangeDisplayMappingMin, projectControlChangeDisplayMappingMax, projectControlAddDisplayMapping, projectControlDeleteDisplayMapping
-} from '../../actions/index';
-
-import storeHandler from '../../compat/store';
-import { getComponents, getComponent, getImages } from '../../selectors/ui-projects';
-
-class PropertiesControl extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
-
-  handleComponentChange(component, attribute) {
-    const { project, window, control } = this.props;
-    AppDispatcher.dispatch(projectControlChangeDisplayComponent(project.uid, window.uid, control.uid, component, attribute));
-  }
-
-  renderDisplay(project, window, control) {
-    const state     = storeHandler.getStore().getState();
-    const component = control.display.component && getComponent(state, { project: project.uid, component: control.display.component });
-    const images    = getImages(state, { project: project.uid });
-    return [
-      (<tr key="Default image">
-        <td><PropertiesLabel text={'Default image'} /></td>
-        <td><ImageSelectorContainer project={project.uid} image={control.display.defaultResource} onImageChange={(img) => AppDispatcher.dispatch(projectControlChangeImage(project.uid, window.uid, control.uid, img))} /></td>
-      </tr>),
-      (<tr key="Component/Attribute">
-        <td><PropertiesLabel text={'Component/Attribute'} /></td>
-        <td><ComponentAttributeSelectorContainer
-          project={project.uid}
-          component={control.display.component}
-          attribute={control.display.attribute}
-          nullable={true}
-          onChange={(comp, attr) => this.handleComponentChange(comp, attr)} /></td>
-      </tr>),
-      (<tr key="Mapping">
-        <td><PropertiesLabel text={'Mapping'} /></td>
-        <td>
-          <PropertiesControlDisplayMapping project={project}
-                                           control={control}
-                                           component={component}
-                                           images={images}
-                                           onNew={(newItem) => AppDispatcher.dispatch(projectControlAddDisplayMapping(project.uid, window.uid, control.uid, newItem))}
-                                           onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteDisplayMapping(project.uid, window.uid, control.uid, item.uid))}
-                                           onImageChange={(item, img) => AppDispatcher.dispatch(projectControlChangeDisplayMappingImage(project.uid, window.uid, control.uid, item.uid, img))}
-                                           onValueChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingValue(project.uid, window.uid, control.uid, item.uid, value))}
-                                           onMinChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMin(project.uid, window.uid, control.uid, item.uid, value))}
-                                           onMaxChange={(item, value) => AppDispatcher.dispatch(projectControlChangeDisplayMappingMax(project.uid, window.uid, control.uid, item.uid, value))} />
-        </td>
-      </tr>)
-    ];
-  }
-
-  renderText(project, window, control) {
-    const state      = storeHandler.getStore().getState();
-    const components = getComponents(state, { project: project.uid });
-    return [
-      (<tr key="Format">
-        <td><PropertiesLabel text={'Format (function body with context items as args)'} /></td>
-        <td><PropertiesEditor id={`${control.uid}_text_format`} value={control.text.format} onChange={(value) => AppDispatcher.dispatch(projectControlChangeTextFormat(project.uid, window.uid, control.uid, value))} type={'s'} /></td>
-      </tr>),
-      (<tr key="Context">
-        <td><PropertiesLabel text={'Context'} /></td>
-        <td>
-          <PropertiesControlTextContext project={project}
-                                        control={control}
-                                        components={components}
-                                        onNew={(newItem) => AppDispatcher.dispatch(projectControlAddTextContext(project.uid, window.uid, control.uid, newItem))}
-                                        onDelete={(item) => AppDispatcher.dispatch(projectControlDeleteTextContext(project.uid, window.uid, control.uid, item.uid))}
-                                        onIdChange={(item, newId) => AppDispatcher.dispatch(projectControlChangeTextContextId(project.uid, window.uid, control.uid, item.uid, newId))}
-                                        onComponentChange={(item, component, attribute) => AppDispatcher.dispatch(projectControlChangeTextContextComponent(project.uid, window.uid, control.uid, item.uid, component, attribute))} />
-        </td>
-      </tr>)
-    ];
-  }
-
-  render() {
-    const { project, window, control } = this.props;
-
-    const onDelete = () => {
-      AppDispatcher.dispatch(projectDeleteControl(project.uid, window.uid, control.uid));
-    };
-
-    return (
-      <div>
-        <PropertiesTitle icon={control.text ? <icons.UiText/> : <icons.UiImage/>} text={control.id} onDelete={onDelete} />
-        {/* details */}
-        <table>
-          <tbody>
-            <tr>
-              <td><PropertiesLabel text={'Id'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_id`} value={control.id} onChange={(value) => AppDispatcher.dispatch(projectControlChangeId(project.uid, window.uid, control.uid, value))} type={'s'} /></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'X'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_x`} value={control.x} onChange={(value) => AppDispatcher.dispatch(projectMoveControl(project.uid, window.uid, control.uid, { x: value, y: control.y }))} type={'n'} useRealType={true} /></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Y'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_y`} value={control.y} onChange={(value) => AppDispatcher.dispatch(projectMoveControl(project.uid, window.uid, control.uid, { x: control.x, y: value }))} type={'n'} useRealType={true} /></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Width'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_width`} value={control.width} onChange={(value) => AppDispatcher.dispatch(projectResizeControl(project.uid, window.uid, control.uid, { height: control.height, width: value }))} type={'i'} useRealType={true} /></td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Height'} /></td>
-              <td><PropertiesEditor id={`${control.uid}_height`} value={control.height} onChange={(value) => AppDispatcher.dispatch(projectResizeControl(project.uid, window.uid, control.uid, { height: value, width: control.width }))} type={'i'} useRealType={true} /></td>
-            </tr>
-            {control.text ? this.renderText(project, window, control) : this.renderDisplay(project, window, control)}
-            <tr>
-              <td><PropertiesLabel text={'Primary action'} /></td>
-              <td>
-                <PropertiesControlActionContainer project={project.uid}
-                                                  window={window.uid}
-                                                  control={control.uid}
-                                                  action={'primaryAction'} />
-              </td>
-            </tr>
-            <tr>
-              <td><PropertiesLabel text={'Secondary action'} /></td>
-              <td>
-                <PropertiesControlActionContainer project={project.uid}
-                                                  window={window.uid}
-                                                  control={control.uid}
-                                                  action={'secondaryAction'} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-}
+const PropertiesControl =  ({ project, window, control, onDelete, onChangeId, onMove, onResize }) => (
+  <div>
+    <PropertiesTitle icon={control.text ? <icons.UiText/> : <icons.UiImage/>} text={control.id} onDelete={onDelete} />
+    {/* details */}
+    <table>
+      <tbody>
+        <tr>
+          <td><PropertiesLabel text={'Id'} /></td>
+          <td><PropertiesEditor id={`${control.uid}_id`} value={control.id} onChange={onChangeId} type={'s'} /></td>
+        </tr>
+        <tr>
+          <td><PropertiesLabel text={'X'} /></td>
+          <td><PropertiesEditor id={`${control.uid}_x`} value={control.x} onChange={(value) => onMove({ x: value, y: control.y })} type={'n'} useRealType={true} /></td>
+        </tr>
+        <tr>
+          <td><PropertiesLabel text={'Y'} /></td>
+          <td><PropertiesEditor id={`${control.uid}_y`} value={control.y} onChange={(value) => onMove({ x: control.x, y: value })} type={'n'} useRealType={true} /></td>
+        </tr>
+        <tr>
+          <td><PropertiesLabel text={'Width'} /></td>
+          <td><PropertiesEditor id={`${control.uid}_width`} value={control.width} onChange={(value) => onResize({ height: control.height, width: value })} type={'i'} useRealType={true} /></td>
+        </tr>
+        <tr>
+          <td><PropertiesLabel text={'Height'} /></td>
+          <td><PropertiesEditor id={`${control.uid}_height`} value={control.height} onChange={(value) => onResize({ height: value, width: control.width })} type={'i'} useRealType={true} /></td>
+        </tr>
+      </tbody>
+      {control.text ? (<PropertiesControlTextContainer project={project} window={window} control={control} />) : (<PropertiesControlDisplayContainer project={project} window={window} control={control} />)}
+      <tbody>
+        <tr>
+          <td><PropertiesLabel text={'Primary action'} /></td>
+          <td>
+            <PropertiesControlActionContainer project={project}
+                                              window={window}
+                                              control={control.uid}
+                                              action={'primaryAction'} />
+          </td>
+        </tr>
+        <tr>
+          <td><PropertiesLabel text={'Secondary action'} /></td>
+          <td>
+            <PropertiesControlActionContainer project={project}
+                                              window={window}
+                                              control={control.uid}
+                                              action={'secondaryAction'} />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+);
 
 PropertiesControl.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  window: React.PropTypes.object.isRequired,
-  control: React.PropTypes.object.isRequired
+  project: React.PropTypes.number.isRequired,
+  window: React.PropTypes.number.isRequired,
+  control: React.PropTypes.object.isRequired,
+  onDelete:  React.PropTypes.func.isRequired,
+  onChangeId:  React.PropTypes.func.isRequired,
+  onMove:  React.PropTypes.func.isRequired,
+  onResize:  React.PropTypes.func.isRequired
 };
 
 export default PropertiesControl;

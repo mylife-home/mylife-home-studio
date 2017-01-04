@@ -55,7 +55,7 @@ class PropertiesControlTextContextRow extends React.Component {
         </mui.TableRowColumn>
         <mui.TableRowColumn>
          <ComponentAttributeSelectorContainer
-          project={project.uid}
+          project={project}
           component={item.component}
           attribute={item.attribute}
           onChange={(comp, attr) => this.handleSelectComponent(comp, attr)} />
@@ -75,7 +75,7 @@ class PropertiesControlTextContextRow extends React.Component {
 }
 
 PropertiesControlTextContextRow.propTypes = {
-  project           : React.PropTypes.object.isRequired,
+  project           : React.PropTypes.number.isRequired,
   item              : React.PropTypes.object.isRequired,
   isNew             : React.PropTypes.bool.isRequired,
   action            : React.PropTypes.func.isRequired,

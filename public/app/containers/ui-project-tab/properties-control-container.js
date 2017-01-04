@@ -6,16 +6,19 @@ import PropertiesControl from '../../components/ui-project-tab/properties-contro
 
 import { getProject } from '../../selectors/projects';
 import { getWindow, getWindowControl } from '../../selectors/ui-projects';
-//import { projectDeleteControl, projectControlChangeId, projectResizeControl, projectControlChangeImage } from '../../actions/index';
+import { projectDeleteControl, projectControlChangeId, projectMoveControl, projectResizeControl } from '../../actions/index';
 
 const mapStateToProps = (state, { project, window, control }) => ({
-  project : getProject(state, { project }),
-  window  : getWindow(state, { project, window }),
+  project,
+  window,
   control : getWindowControl(state, { project, window, control })
 });
 
 const mapDispatchToProps = (dispatch, { project, window, control }) => ({
-  //onDelete      : () => dispatch(projectDeleteControl(project, window)),
+  onDelete   : () => dispatch(projectDeleteControl(project, window, control.uid)),
+  onChangeId : (value) => dispatch(projectControlChangeId(project, window, control.uid, value)),
+  onMove     : (location) => dispatch(projectMoveControl(project, window, control.uid, location)),
+  onResize   : (size) => dispatch(projectResizeControl(project, window, control.uid, size))
 });
 
 const PropertiesControlContainer = connect(
