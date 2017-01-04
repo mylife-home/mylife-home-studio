@@ -14,7 +14,10 @@ const styles = {
   }
 };
 
-const Explorer = ({ fullProject, sortedComponents, sortedImages, sortedWindows, onSelect }) => (
+const Explorer = ({
+  sortedComponents, sortedImages, sortedWindows, onSelect,
+  vpanelProjectNames, onNewImage, onNewWindow, onImportOnline, onOpenFileVPanelProject, onOpenOnlineVPanelProject, onDeploy
+ }) => (
   <div style={Object.assign({}, tabStyles.fullHeight)}>
     <mui.List style={Object.assign({}, tabStyles.scrollable, styles.listHeight)}>
       <mui.ListItem key={'project'}
@@ -56,16 +59,31 @@ const Explorer = ({ fullProject, sortedComponents, sortedImages, sortedWindows, 
                       ))} />
 
     </mui.List>
-    <Toolbar project={fullProject} />
+    <Toolbar vpanelProjectNames={vpanelProjectNames}
+             onNewImage={onNewImage}
+             onNewWindow={onNewWindow}
+             onImportOnline={onImportOnline}
+             onOpenFileVPanelProject={onOpenFileVPanelProject}
+             onOpenOnlineVPanelProject={onOpenOnlineVPanelProject}
+             onDeploy={onDeploy} />
   </div>
 );
 
 Explorer.propTypes = {
-  fullProject: React.PropTypes.object.isRequired, // TODO: remove
-  sortedComponents: React.PropTypes.array.isRequired,
-  sortedImages: React.PropTypes.array.isRequired,
-  sortedWindows: React.PropTypes.array.isRequired,
-  onSelect: React.PropTypes.func.isRequired,
+  sortedComponents          : React.PropTypes.array.isRequired,
+  sortedImages              : React.PropTypes.array.isRequired,
+  sortedWindows             : React.PropTypes.array.isRequired,
+  onSelect                  : React.PropTypes.func.isRequired,
+  vpanelProjectNames        : React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
+  onNewImage                : React.PropTypes.func.isRequired,
+  onNewWindow               : React.PropTypes.func.isRequired,
+  onImportOnline            : React.PropTypes.func.isRequired,
+  onOpenFileVPanelProject   : React.PropTypes.func.isRequired,
+  onOpenOnlineVPanelProject : React.PropTypes.func.isRequired,
+  onDeploy                  : React.PropTypes.func.isRequired,
 };
 
 export default Explorer;
+
+
+

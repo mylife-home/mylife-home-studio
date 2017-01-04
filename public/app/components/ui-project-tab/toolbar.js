@@ -5,14 +5,6 @@ import * as mui from 'material-ui';
 import base from '../base/index';
 import icons from '../icons';
 
-import AppDispatcher from '../../compat/dispatcher';
-import {
-  projectNewImage, projectNewWindow,
-  projectUiImportOnline, projectUiImportVPanelProjectFile, projectUiImportVPanelProjectOnline, projectUiPrepareDeploy
-} from '../../actions/index';
-import storeHandler from '../../compat/store';
-import { getVPanelProjectNames } from'../../selectors/online';
-
 const styles = {
   icon: {
     margin: 16,
@@ -24,98 +16,66 @@ const styles = {
   }
 };
 
-class Toolbar extends React.Component {
+const Toolbar = ({ vpanelProjectNames, onNewImage, onNewWindow, onImportOnline, onOpenFileVPanelProject, onOpenOnlineVPanelProject, onDeploy }) => (
+  <mui.Toolbar>
+    <mui.ToolbarGroup>
 
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
+      <mui.IconButton tooltip="New image"
+                      tooltipPosition="top-right"
+                      onClick={onNewImage}
+                      style={styles.button}>
+        <icons.actions.NewImage />
+      </mui.IconButton>
 
-  newImage() {
-    AppDispatcher.dispatch(projectNewImage(this.props.project.uid));
-  }
+      <mui.IconButton tooltip="New window"
+                      tooltipPosition="top-right"
+                      onClick={onNewWindow}
+                      style={styles.button}>
+        <icons.actions.NewWindow />
+      </mui.IconButton>
 
-  newWindow() {
-    AppDispatcher.dispatch(projectNewWindow(this.props.project.uid));
-  }
+      <mui.IconButton tooltip="Import UI components from online entities"
+                      tooltipPosition="top-center"
+                      onClick={onImportOnline}
+                      style={styles.button}>
+        <icons.actions.Refresh />
+      </mui.IconButton>
 
-  // import
+      <base.IconSelectButton tooltip="Import UI components from online project"
+                             tooltipPosition="top-center"
+                             style={styles.button}
+                             selectTitle="Select VPanel Project"
+                             selectItems={vpanelProjectNames}
+                             onItemSelect={onOpenFileVPanelProject}>
+        <icons.actions.OpenOnline />
+      </base.IconSelectButton>
 
-  importOnline() {
-    AppDispatcher.dispatch(projectUiImportOnline(this.props.project.uid));
-  }
+      <base.IconFileButton tooltip="Import UI components from file project"
+                           tooltipPosition="top-center"
+                           style={styles.button}
+                           onFileSelected={onOpenOnlineVPanelProject}>
+        <icons.actions.OpenFile />
+      </base.IconFileButton>
 
-  handleOpenFileVPanelProject(file) {
-    AppDispatcher.dispatch(projectUiImportVPanelProjectFile(this.props.project.uid, file));
-  }
+      <mui.IconButton tooltip="Deploy project"
+                      tooltipPosition="top-center"
+                      onClick={onDeploy}
+                      style={styles.button}>
+        <icons.tabs.Online />
+      </mui.IconButton>
 
-  handleOpenOnlineVPanelProject(name) {
-    AppDispatcher.dispatch(projectUiImportVPanelProjectOnline(this.props.project.uid, name));
-  }
-
-  // deploy
-
-  deploy() {
-    AppDispatcher.dispatch(projectUiPrepareDeploy(this.props.project.uid));
-  }
-
-  render() {
-    return (
-      <mui.Toolbar>
-        <mui.ToolbarGroup>
-
-          <mui.IconButton tooltip="New image"
-                          tooltipPosition="top-right"
-                          onClick={this.newImage.bind(this)}
-                          style={styles.button}>
-            <icons.actions.NewImage />
-          </mui.IconButton>
-
-          <mui.IconButton tooltip="New window"
-                          tooltipPosition="top-right"
-                          onClick={this.newWindow.bind(this)}
-                          style={styles.button}>
-            <icons.actions.NewWindow />
-          </mui.IconButton>
-
-          <mui.IconButton tooltip="Import UI components from online entities"
-                          tooltipPosition="top-center"
-                          onClick={this.importOnline.bind(this)}
-                          style={styles.button}>
-            <icons.actions.Refresh />
-          </mui.IconButton>
-
-          <base.IconSelectButton tooltip="Import UI components from online project"
-                                 tooltipPosition="top-center"
-                                 style={styles.button}
-                                 selectTitle="Select VPanel Project"
-                                 selectItems={getVPanelProjectNames(storeHandler.getStore().getState())}
-                                 onItemSelect={(name) => this.handleOpenOnlineVPanelProject(name)}>
-            <icons.actions.OpenOnline />
-          </base.IconSelectButton>
-
-          <base.IconFileButton tooltip="Import UI components from file project"
-                               tooltipPosition="top-center"
-                               style={styles.button}
-                               onFileSelected={(file) => this.handleOpenFileVPanelProject(file)}>
-            <icons.actions.OpenFile />
-          </base.IconFileButton>
-
-          <mui.IconButton tooltip="Deploy project"
-                          tooltipPosition="top-center"
-                          onClick={this.deploy.bind(this)}
-                          style={styles.button}>
-            <icons.tabs.Online />
-          </mui.IconButton>
-
-        </mui.ToolbarGroup>
-      </mui.Toolbar>
-    );
-  }
-}
+    </mui.ToolbarGroup>
+  </mui.Toolbar>
+);
 
 Toolbar.propTypes = {
-  project: React.PropTypes.object.isRequired,
+  vpanelProjectNames        : React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired,
+  onNewImage                : React.PropTypes.func.isRequired,
+  onNewWindow               : React.PropTypes.func.isRequired,
+  onImportOnline            : React.PropTypes.func.isRequired,
+  onOpenFileVPanelProject   : React.PropTypes.func.isRequired,
+  onOpenOnlineVPanelProject : React.PropTypes.func.isRequired,
+  onDeploy                  : React.PropTypes.func.isRequired
 };
 
 export default Toolbar;

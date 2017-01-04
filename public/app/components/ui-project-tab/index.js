@@ -85,7 +85,7 @@ class UiProjectTab extends React.Component {
                   <Toolbox project={project} />
                 </mui.Paper>
                 <mui.Paper style={Object.assign({}, tabStyles.scrollable, styles.explorerHeight)}>
-                  <ExplorerContainer project={project.uid} fullProject={project}/>
+                  <ExplorerContainer project={project.uid}/>
                 </mui.Paper>
               </div>
             </bs.Col>
