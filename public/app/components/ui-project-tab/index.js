@@ -4,7 +4,7 @@ import React from 'react';
 import * as mui from 'material-ui';
 import * as bs from 'react-bootstrap';
 
-import Properties from './properties';
+import PropertiesContainer from '../../containers/ui-project-tab/properties-container';
 import ExplorerContainer from '../../containers/ui-project-tab/explorer-container';
 import DialogConfirmImportComponents from '../../containers/ui-project-tab/dialog-confirm-import-components';
 import Toolbox from './toolbox';
@@ -41,7 +41,7 @@ const UiProjectTab = ({ project, onTabClosed }) => (
         </bs.Col>
         <bs.Col sm={2} style={Object.assign({}, tabStyles.noPadding, tabStyles.fullHeight)}>
           <mui.Paper style={Object.assign({}, tabStyles.scrollable, tabStyles.fullHeight)}>
-            <Properties project={project} />
+            <PropertiesContainer project={project.uid} />
           </mui.Paper>
         </bs.Col>
       </bs.Row>
