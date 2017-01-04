@@ -58,7 +58,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged, onTabClosed }) => (
             <mui.Tab key={project.uid}
                      value={`project-${project.uid}`}
                      label={renderTabLabel(title, (<icons.tabs.VPanel />))}>
-              <VPanelProjectTab project={project} onTabClosed={onTabClosed} />
+              <VPanelProjectTab project={project} onTabClosed={() => onTabClosed(project.uid)} />
             </mui.Tab>
           );
 
@@ -67,7 +67,7 @@ const MainTabs = ({ projects, activeTab, onTabChanged, onTabClosed }) => (
             <mui.Tab key={project.uid}
                      value={`project-${project.uid}`}
                      label={renderTabLabel(title, (<icons.tabs.Ui />))}>
-              <UiProjectTab project={project} onTabClosed={onTabClosed} />
+              <UiProjectTab project={project} onTabClosed={() => onTabClosed(project.uid)} />
             </mui.Tab>
           );
 

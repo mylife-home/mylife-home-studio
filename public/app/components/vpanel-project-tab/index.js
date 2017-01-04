@@ -28,7 +28,7 @@ const VPanelProjectTab = ({ project, onTabClosed }) => (
               center={project.name}
               left={<icons.tabs.VPanel />}
               right={
-                <mui.IconButton onClick={() => onTabClosed(project.uid)}>
+                <mui.IconButton onClick={onTabClosed}>
                   <icons.actions.Close />
                 </mui.IconButton>
               }/>
