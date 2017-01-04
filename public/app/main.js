@@ -25,7 +25,7 @@ window.debugLib = debugLib;
 
 const store = createStore(
   reducer,
-  applyMiddleware(immutableStateInvariant(), thunk, createLogger()) // FIXME: remove immutableStateInvariant in production
+  applyMiddleware(/*immutableStateInvariant(),*/ thunk/*, createLogger()*/)
 );
 
 Facade.repository.init((action) => store.dispatch(action));
