@@ -7,20 +7,14 @@ import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
 import commonStyles from './canvas-styles';
 import { stopPropagationWrapper } from '../../utils/index';
-import storeHandler from '../../compat/store';
 
 import DataImage from './data-image';
-import CanvasControl from './canvas-control';
+import CanvasControlContainer from '../../containers/ui-project-tab/canvas-control-container';
 
 import { dragTypes } from '../../constants/index';
-import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectResizeWindow } from '../../actions/index';
-import { getImage, getWindowControls } from '../../selectors/ui-projects';
-import { getProjectState } from '../../selectors/projects';
 
-function getStyles(props, state) {
-  const { muiTheme } = props;
-  const { isSelected } = state;
+function getStyles(props) {
+  const { muiTheme, isSelected } = props;
 
   const backColor = (isSelected ? muiTheme.palette.primary1Color : muiTheme.palette.primary3Color);
 
@@ -42,75 +36,29 @@ function getStyles(props, state) {
 
 class CanvasWindow extends React.Component {
 
-  constructor(props, context) {
-    super(props, context);
-
-    const { project, window } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
-
-    this.state = {
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
-    };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-    this.debouncedWindowResize = debounce(100, this.windowResize.bind(this));
-  }
-
-  componentDidMount() {
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { project, window } = nextProps;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
-
-    this.setState({
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
-    });
-  }
-
-  handleStoreChange() {
-    const { project, window } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project: project && project.uid });
-
-    this.setState({
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'window' && projectState.selection.uid === window.uid
-    });
-  }
-
-  windowResize(dir, size) {
-    const { project, window } = this.props;
-
-    AppDispatcher.dispatch(projectResizeWindow(project.uid, window.uid, size));
-  }
-
-  select() {
-    const { project, window } = this.props;
-    AppDispatcher.dispatch(projectStateSelect(project, { type: 'window', uid: window.uid }));
+  constructor(props) {
+    super(props);
+    const { onResized } = this.props;
+    this.debouncedResized = debounce(100, onResized);
   }
 
   render() {
-    const state = storeHandler.getStore().getState();
-    const { project, window, connectDropTarget } = this.props;
-    const styles = getStyles(this.props, this.state);
+    const { project, window, background, controls, onSelected, connectDropTarget } = this.props;
+    const styles = getStyles(this.props);
 
     return connectDropTarget(
       <div style={styles.container}
-           onClick={stopPropagationWrapper(this.select.bind(this))}>
+           onClick={stopPropagationWrapper(onSelected)}>
         <div style={styles.windowContainer}>
           <ResizableBox width={window.width}
                         height={window.height}
-                        onResize={this.debouncedWindowResize}
+                        onResize={this.debouncedResized}
                         isResizable={{ right: true, bottom: true, bottomRight: true }}>
             <div ref="canvas"
                  style={styles.window}>
-              <DataImage image={getImage(state, { project: project.uid, image: window.backgroundResource })} style={styles.background}/>
-              {getWindowControls(state, { project: project.uid, window: window.uid }).map((ctrl) => (
-                <CanvasControl key={ctrl.uid} project={project.uid} window={window} control={ctrl} />))}
+              <DataImage image={background} style={styles.background}/>
+              {controls.map((ctrl) => (
+                <CanvasControlContainer key={ctrl.uid} project={project} window={window} control={ctrl} />))}
             </div>
           </ResizableBox>
         </div>
@@ -120,9 +68,13 @@ class CanvasWindow extends React.Component {
 }
 
 CanvasWindow.propTypes = {
-  project: React.PropTypes.object.isRequired,
-  window: React.PropTypes.object.isRequired,
-  connectDropTarget: React.PropTypes.func.isRequired,
+  project           : React.PropTypes.number.isRequired,
+  window            : React.PropTypes.object.isRequired,
+  background        : React.PropTypes.object.isRequired,
+  controls          : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
+  onSelected        : React.PropTypes.func.isRequired,
+  onResized         : React.PropTypes.func.isRequired,
+  connectDropTarget : React.PropTypes.func.isRequired,
 };
 
 const canvasTarget = {

@@ -4,9 +4,9 @@ import React from 'react';
 
 import storeHandler from '../../compat/store';
 
-import CanvasComponent from './canvas-component';
-import CanvasImage from './canvas-image';
-import CanvasWindow from './canvas-window';
+import CanvasComponentContainer from '../../containers/ui-project-tab/canvas-component-container';
+import CanvasImageContainer from '../../containers/ui-project-tab/canvas-image-container';
+import CanvasWindowContainer from '../../containers/ui-project-tab/canvas-window-container';
 
 import { getProjectState } from '../../selectors/projects';
 
@@ -42,18 +42,15 @@ class Canvas extends React.Component {
     if(activeContent) {
       switch(activeContent.type) {
         case 'component': {
-          const component = project.components.get(activeContent.uid);
-          return (<CanvasComponent component={component} />);
+          return (<CanvasComponentContainer project={project.uid} component={activeContent.uid} />);
         }
 
         case 'image': {
-          const image = project.images.get(activeContent.uid);
-          return (<CanvasImage image={image} />);
+          return (<CanvasImageContainer project={project.uid} image={activeContent.uid} />);
         }
 
         case 'window': {
-          const window = project.windows.get(activeContent.uid);
-          return (<CanvasWindow project={project} window={window} />);
+          return (<CanvasWindowContainer project={project.uid} window={activeContent.uid} />);
         }
       }
     }

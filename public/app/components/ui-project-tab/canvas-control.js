@@ -5,21 +5,15 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import * as dnd from 'react-dnd';
 import ResizableBox from 'react-resizable-box';
 import { debounce } from 'throttle-debounce';
-import storeHandler from '../../compat/store';
 
 import { stopPropagationWrapper } from '../../utils/index';
 
 import DataImage from './data-image';
 
 import { dragTypes } from '../../constants/index';
-import AppDispatcher from '../../compat/dispatcher';
-import { projectStateSelect, projectMoveControl, projectResizeControl } from '../../actions/index';
-import { getImage } from '../../selectors/ui-projects';
-import { getProjectState } from '../../selectors/projects';
 
-function getStyles(props, state) {
-  const { window, control, muiTheme } = props;
-  const { isSelected } = state;
+function getStyles(props) {
+  const { window, control, isSelected, muiTheme } = props;
 
   const backColor = (isSelected ? muiTheme.palette.primary1Color : muiTheme.palette.primary3Color);
   const left = (window.width * control.x) - (control.width / 2);
@@ -55,78 +49,15 @@ function getStyles(props, state) {
 
 class CanvasControl extends React.Component {
 
-  constructor(props, context) {
-    super(props, context);
-
-    const { project, control } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
-
-    this.state = {
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
-    };
-
-    this.boundHandleStoreChange = this.handleStoreChange.bind(this);
-    this.debouncedControlResize = debounce(100, this.controlResize.bind(this));
-  }
-
-  componentDidMount() {
-    this.unsubscribe = storeHandler.getStore().subscribe(this.boundHandleStoreChange);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { project, control } = nextProps;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
-
-    this.setState({
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
-    });
-  }
-
-  handleStoreChange() {
-    const { project, control } = this.props;
-    const projectState = getProjectState(storeHandler.getStore().getState(), { project });
-
-    this.setState({
-      isSelected: projectState && projectState.selection && projectState.selection.type === 'control' && projectState.selection.controlUid === control.uid
-    });
-  }
-
-  controlResize(dir, size) {
-    const { project, window, control } = this.props;
-
-    AppDispatcher.dispatch(projectResizeControl(project, window.uid, control.uid, size));
-  }
-
-  select() {
-    const { project, window, control } = this.props;
-    AppDispatcher.dispatch(projectStateSelect(project, {
-      type: 'control',
-      windowUid: window.uid,
-      controlUid: control.uid
-    }));
-  }
-
-  renderText(control, styles) {
-    return (
-      <div style={Object.assign({ overflow: 'hidden' }, styles.item)}>
-        {control.text.format}
-      </div>
-    );
-  }
-
-  renderDisplay(control, styles) {
-    const { project } = this.props;
-    const state = storeHandler.getStore().getState();
-    return (<DataImage image={getImage(state, { project, image: control.display.defaultResource })} style={styles.item}/>);
+  constructor(props) {
+    super(props);
+    const { onResized } = this.props;
+    this.debouncedResized = debounce(100, onResized);
   }
 
   render() {
-    const { control, connectDragSource, connectDragPreview, isDragging } = this.props;
-    const styles = getStyles(this.props, this.state);
+    const { control, displayImage, onSelected, connectDragSource, connectDragPreview, isDragging } = this.props;
+    const styles = getStyles(this.props);
 
     if(isDragging) {
       return null;
@@ -134,14 +65,18 @@ class CanvasControl extends React.Component {
 
     return (
       <div style={styles.controlContainer}
-           onClick={stopPropagationWrapper(this.select.bind(this))}>
+           onClick={stopPropagationWrapper(onSelected)}>
         <ResizableBox width={control.width}
                       height={control.height}
-                      onResize={this.debouncedControlResize}
+                      onResize={this.debouncedResized}
                       isResizable={{ right: true, bottom: true, bottomRight: true }}>
           {connectDragPreview(
             <div style={styles.control}>
-              {control.text ? this.renderText(control, styles) : this.renderDisplay(control, styles)}
+              {control.text ?
+                (<div style={Object.assign({ overflow: 'hidden' }, styles.item)}>
+                  {control.text.format}
+                 </div>)
+              : (<DataImage image={displayImage} style={styles.item}/>)}
               {connectDragSource(<div style={styles.moveHandle}/>)}
             </div>
           )}
@@ -152,12 +87,16 @@ class CanvasControl extends React.Component {
 }
 
 CanvasControl.propTypes = {
-  project: React.PropTypes.number.isRequired,
-  window: React.PropTypes.object.isRequired,
-  control: React.PropTypes.object.isRequired,
-  connectDragSource: React.PropTypes.func.isRequired,
-  connectDragPreview: React.PropTypes.func.isRequired,
-  isDragging: React.PropTypes.bool.isRequired
+  project            : React.PropTypes.number.isRequired,
+  window             : React.PropTypes.object.isRequired,
+  control            : React.PropTypes.object.isRequired,
+  displayImage       : React.PropTypes.object,
+  onSelected         : React.PropTypes.func.isRequired,
+  onResized          : React.PropTypes.func.isRequired,
+  onMove             : React.PropTypes.func.isRequired,
+  connectDragSource  : React.PropTypes.func.isRequired,
+  connectDragPreview : React.PropTypes.func.isRequired,
+  isDragging         : React.PropTypes.bool.isRequired
 };
 
 const controlSource = {
@@ -169,13 +108,13 @@ const controlSource = {
   endDrag(props, monitor) {
     if(!monitor.didDrop()) { return; }
 
-    const { project, window, control } = props;
+    const { window, control, onMove } = props;
 
     const { delta } = monitor.getDropResult();
-    AppDispatcher.dispatch(projectMoveControl(project, window.uid, control.uid, {
+    onMove({
       x: control.x + delta.x / window.width,
       y: control.y + delta.y / window.height
-    }));
+    });
   }
 };
 
