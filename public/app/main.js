@@ -17,8 +17,6 @@ import reducer from './reducers/index';
 import Facade from './services/facade';
 import storeHandler from './compat/store';
 
-void Facade;
-
 //Needed for onTouchTap
 //Can go away when react 1.0 release
 //Check this repo:
