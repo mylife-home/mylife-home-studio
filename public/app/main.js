@@ -13,9 +13,7 @@ import debugLib from 'debug';
 
 import Application from './components/application';
 import reducer from './reducers/index';
-
 import Facade from './services/facade';
-import storeHandler from './compat/store';
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
@@ -31,8 +29,6 @@ const store = createStore(
 );
 
 Facade.repository.init((action) => store.dispatch(action));
-
-storeHandler.setStore(store);
 
 ReactDOM.render(
   <Provider store={store}>
