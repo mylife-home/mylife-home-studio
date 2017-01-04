@@ -10,8 +10,3 @@ Components that need refactoring to redux
     properties-control
     properties
     toolbar
-  vpanel-project-tab
-    canvas-component
-    canvas
-    properties
-    toolbar
