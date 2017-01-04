@@ -14,7 +14,7 @@ import debugLib from 'debug';
 import Application from './components/application';
 import reducer from './reducers/index';
 
-import Facade from './services/facade'; // import to force init
+import Facade from './services/facade';
 import storeHandler from './compat/store';
 
 void Facade;
@@ -31,6 +31,8 @@ const store = createStore(
   reducer,
   applyMiddleware(immutableStateInvariant(), thunk, createLogger()) // FIXME: remove immutableStateInvariant in production
 );
+
+Facade.repository.init((action) => store.dispatch(action));
 
 storeHandler.setStore(store);
 
