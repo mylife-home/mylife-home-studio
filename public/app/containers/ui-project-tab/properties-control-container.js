@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 
 import PropertiesControl from '../../components/ui-project-tab/properties-control';
 
-import { getProject } from '../../selectors/projects';
-import { getWindow, getWindowControl } from '../../selectors/ui-projects';
+import { getWindowControl } from '../../selectors/ui-projects';
 import { projectDeleteControl, projectControlChangeId, projectMoveControl, projectResizeControl } from '../../actions/index';
 
 const mapStateToProps = (state, { project, window, control }) => ({
