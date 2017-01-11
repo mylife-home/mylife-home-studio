@@ -14,10 +14,10 @@ const mapStateToProps = (state, { project, window, control }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { project, window, control }) => ({
-  onDelete   : () => dispatch(projectDeleteControl(project, window, control.uid)),
-  onChangeId : (value) => dispatch(projectControlChangeId(project, window, control.uid, value)),
-  onMove     : (location) => dispatch(projectMoveControl(project, window, control.uid, location)),
-  onResize   : (size) => dispatch(projectResizeControl(project, window, control.uid, size))
+  onDelete   : () => dispatch(projectDeleteControl(project, window, control)),
+  onChangeId : (value) => dispatch(projectControlChangeId(project, window, control, value)),
+  onMove     : (location) => dispatch(projectMoveControl(project, window, control, location)),
+  onResize   : (size) => dispatch(projectResizeControl(project, window, control, size))
 });
 
 const PropertiesControlContainer = connect(
