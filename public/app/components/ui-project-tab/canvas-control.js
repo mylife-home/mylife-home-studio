@@ -100,7 +100,7 @@ CanvasControl.propTypes = {
 };
 
 const controlSource = {
-  beginDrag(props, monitor) {
+  beginDrag(props) {
     props.onSelected();
     return {};
   },
