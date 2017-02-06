@@ -192,8 +192,8 @@ CanvasComponent.contextTypes = {
 
 const componentSource = {
   beginDrag(props, monitor, uiComponent) {
-    uiComponent.select();
-    const component = props.component;
+    const { component, onSelected } = props;
+    onSelected();
     return {
       id: component.id
     };
