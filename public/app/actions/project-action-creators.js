@@ -533,7 +533,7 @@ export function projectNewBinding(project, remoteComponent, remoteAttributeName,
 
     dispatch({
       type: actionTypes.PROJECT_NEW_BINDING,
-      project: project.uid,
+      project,
       binding
     });
 
