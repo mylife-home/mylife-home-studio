@@ -191,7 +191,7 @@ CanvasComponent.contextTypes = {
 };
 
 const componentSource = {
-  beginDrag(props, monitor, uiComponent) {
+  beginDrag(props, monitor/*, uiComponent*/) {
     const { component, onSelected } = props;
     onSelected();
     return {
