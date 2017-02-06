@@ -91,7 +91,7 @@ export function projectSaveOnline(project) {
       dispatch(dialogUnsetBusy());
 
       if(err) { return dispatch(dialogError(err)); }
-      dispatch(projectSaved({ project: project.uid }));
+      dispatch(projectSaved(project.uid));
     }));
   };
 }
@@ -125,7 +125,7 @@ export function projectSaveAllOnline() {
       return dispatch(resourcesSet(key, content, (err) => {
 
         if(err) { return cb(err); }
-        dispatch(projectSaved({ project: project.uid }));
+        dispatch(projectSaved(project.uid));
         return cb();
       }));
     }, (err) => {
