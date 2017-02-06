@@ -135,8 +135,8 @@ class Projects {
     return ui.createWindow();
   }
 
-  uiCreateControl(project, window, location, type) {
-    return ui.createControl(project, window, location, type);
+  uiCreateControl(window, location, type) {
+    return ui.createControl(window, location, type);
   }
 
   uiCheckComponentUsage(project, component) {

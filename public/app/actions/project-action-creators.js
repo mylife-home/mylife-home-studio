@@ -720,13 +720,13 @@ export function projectNewControl(project, location, type) {
   return (dispatch, getState) => {
     const state        = getState();
     const projectState = getProjectState(state, { project });
-    const window       = getWindow(state, { window: projectState.activeContent.uid });
-    const control      = Facade.projects.uiCreateControl(project, window, location, type);
+    const window       = getWindow(state, { project, window: projectState.activeContent.uid });
+    const control      = Facade.projects.uiCreateControl(window, location, type);
 
     dispatch({
       type: actionTypes.PROJECT_NEW_CONTROL,
       project,
-      window,
+      window: window.uid,
       control
     });
 
