@@ -647,9 +647,17 @@ export function projectImageChangeId(project, image, id) {
   };
 }
 
-export function projectChangeDefaultWindow(project, window) {
+export function projectChangeDesktopDefaultWindow(project, window) {
   return {
-    type: actionTypes.PROJECT_CHANGE_DEFAULT_WINDOW,
+    type: actionTypes.PROJECT_CHANGE_DESKTOP_DEFAULT_WINDOW,
+    project,
+    window
+  };
+}
+
+export function projectChangeMobileDefaultWindow(project, window) {
+  return {
+    type: actionTypes.PROJECT_CHANGE_MOBILE_DEFAULT_WINDOW,
     project,
     window
   };

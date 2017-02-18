@@ -25,10 +25,11 @@ export default {
 
 function createNew() {
   return {
-    components    : Immutable.Map(),
-    images        : Immutable.Map(),
-    windows       : Immutable.Map(),
-    defaultWindow : null
+    components           : Immutable.Map(),
+    images               : Immutable.Map(),
+    windows              : Immutable.Map(),
+    desktopDefaultWindow : null,
+    mobileDefaultWindow  : null
   };
 }
 
@@ -38,8 +39,9 @@ function open(data) {
     images        : common.loadToMap(data.Images, loadImage),
   };
 
-  project.windows       = common.loadToMap(data.Windows, (raw) => loadWindow(project, raw));
-  project.defaultWindow = findWindow(project, data.DefaultWindow);
+  project.windows              = common.loadToMap(data.Windows, (raw) => loadWindow(project, raw));
+  project.desktopDefaultWindow = findWindow(project, data.DesktopDefaultWindow || data.DefaultWindow);
+  project.mobileDefaultWindow  = findWindow(project, data.MobileDefaultWindow || data.DefaultWindow);
 
   for(const window of project.windows.values()) {
     window.controls = common.loadToMap(window.raw.controls, (raw) => loadControl(project, raw));
@@ -179,8 +181,12 @@ function findWindow(project, id) {
 function validate(project, msgs) {
   common.validate(project, msgs);
 
-  if(!project.defaultWindow) {
-    msgs.push('No default window');
+  if(!project.desktopDefaultWindow) {
+    msgs.push('No desktop default window');
+  }
+
+  if(!project.mobileDefaultWindow) {
+    msgs.push('No mobile default window');
   }
 
   {
@@ -263,10 +269,11 @@ function validate(project, msgs) {
 function serialize(project) {
   return {
     ...common.serialize(project),
-    Components    : common.serializeFromMap(project.components, serializeComponent),
-    Images        : common.serializeFromMap(project.images, serializeImage),
-    Windows       : common.serializeFromMap(project.windows, (w) => serializeWindow(project, w)),
-    DefaultWindow : serializeObjectId(project.windows, project.defaultWindow)
+    Components           : common.serializeFromMap(project.components, serializeComponent),
+    Images               : common.serializeFromMap(project.images, serializeImage),
+    Windows              : common.serializeFromMap(project.windows, (w) => serializeWindow(project, w)),
+    DesktopDefaultWindow : serializeObjectId(project.windows, project.desktopDefaultWindow),
+    MobileDefaultWindow  : serializeObjectId(project.windows, project.mobileDefaultWindow)
   };
 }
 
@@ -509,7 +516,10 @@ function prepareDeploy(project, resourcesEntity) {
     resources.set(`window.${window.id}`, content);
   }
 
-  resources.set('default_window', project.windows.get(project.defaultWindow).id);
+  resources.set('default_window', JSON.stringify({
+    desktop: project.windows.get(project.desktopDefaultWindow).id,
+    mobile:  project.windows.get(project.mobileDefaultWindow).id
+  }));
 
   const operations = [];
   for(const [resourceId, resourceContent] of resources.entries()) {
@@ -657,8 +667,11 @@ function checkImageUsage(project, image) {
 
 function checkWindowUsage(project, window) {
   const usage = [];
-  if(project.defaultWindow && project.defaultWindow === window) {
-    usage.push(' - defaultWindow');
+  if(project.desktopDefaultWindow === window) {
+    usage.push(' - desktopDefaultWindow');
+  }
+  if(project.mobileDefaultWindow === window) {
+    usage.push(' - mobileDefaultWindow');
   }
   for(const iterWindow of project.windows.values()) {
     for(const control of iterWindow.controls.values()) {

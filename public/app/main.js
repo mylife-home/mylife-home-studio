@@ -25,7 +25,7 @@ window.debugLib = debugLib;
 
 const store = createStore(
   reducer,
-  applyMiddleware(/*immutableStateInvariant(),*/ thunk/*, createLogger()*/)
+  applyMiddleware(immutableStateInvariant(), thunk, createLogger())
 );
 
 Facade.repository.init((action) => store.dispatch(action));

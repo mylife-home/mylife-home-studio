@@ -195,8 +195,11 @@ export default function(state = { projects: Immutable.Map(), states: Immutable.M
     case actionTypes.PROJECT_DELETE_UI_COMPONENT: // merge with PROJECT_DELETE_COMPONENT (vpanel) ?
       return updateProject(state, action, project => ({ components : project.components.delete(action.component) }));
 
-    case actionTypes.PROJECT_CHANGE_DEFAULT_WINDOW:
-      return updateProject(state, action, { defaultWindow : action.window });
+    case actionTypes.PROJECT_CHANGE_DESKTOP_DEFAULT_WINDOW:
+      return updateProject(state, action, { desktopDefaultWindow : action.window });
+
+    case actionTypes.PROJECT_CHANGE_MOBILE_DEFAULT_WINDOW:
+      return updateProject(state, action, { mobileDefaultWindow : action.window });
 
     case actionTypes.PROJECT_NEW_IMAGE:
       return updateProject(state, action, project => ({ images : project.images.set(action.image.uid, action.image) }));
