@@ -9,16 +9,12 @@ TEST_FILES  = test
 
 lint:
 	$(ESLINT) lib/* public/app/*
-#test/*
 
-test: lint
-	$(MOCHA) $(MOCHA_OPTS) --reporter $(REPORTER) $(TEST_FILES)
-
-test-silent:
-	$(MOCHA) $(MOCHA_OPTS) -b --reporter dot $(TEST_FILES)
+start-dev:
+	$(NODE) bin/server.js --dev
 
 start:
 	$(NODE) bin/server.js
 
 bundle:
-	$(JSPM) bundle app/main public/build.js
+	$(BIN)/webpack -d
