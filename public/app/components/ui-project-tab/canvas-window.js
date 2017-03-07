@@ -70,7 +70,7 @@ class CanvasWindow extends React.Component {
 CanvasWindow.propTypes = {
   project           : React.PropTypes.number.isRequired,
   window            : React.PropTypes.object.isRequired,
-  background        : React.PropTypes.object.isRequired,
+  background        : React.PropTypes.object,
   controls          : React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   onSelected        : React.PropTypes.func.isRequired,
   onResized         : React.PropTypes.func.isRequired,
