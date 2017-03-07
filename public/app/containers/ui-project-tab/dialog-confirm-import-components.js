@@ -8,12 +8,12 @@ import { getProjectState } from '../../selectors/projects';
 
 const mapStateToProps = (state, props) => {
   const projectState            = getProjectState(state, props);
-  const importComponentsConfirm = projectState && projectState.importComponentsConfirm;
+  const pendingImportComponents = projectState && projectState.pendingImportComponents;
 
   return {
     title : 'Confirm',
-    open  : !!importComponentsConfirm,
-    lines : (importComponentsConfirm && ['The following elements will be lost:'].concat(importComponentsConfirm.messages)) || []
+    open  : !!pendingImportComponents,
+    lines : (pendingImportComponents && ['The following elements will be lost:'].concat(pendingImportComponents.messages)) || []
   };
 };
 
