@@ -466,6 +466,14 @@ function prepareImport(project, newComponents) {
     operations.push({ type: 'newComponent', component: newComponent });
   }
 
+  for(const oldComponent of project.components.values()) {
+    if(newComponents.find(newComponent => newComponent.id === oldComponent.id)) {
+      continue;
+    }
+
+    operations.push({ type: 'deleteComponent', component: oldComponent.uid });
+  }
+
   return {
     messages,
     operations

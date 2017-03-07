@@ -250,6 +250,7 @@ function projectUiExecuteImportComponents(project, data) {
       deleteControlAction           : (op) => dispatch(projectControlChangeAction(project, op.window, op.control, op.action, null)),
       deleteControlContext          : (op) => dispatch(projectControlDeleteTextContext(project, op.window, op.control, op.context)),
       deleteControlDisplayComponent : (op) => dispatch(projectControlChangeDisplayComponent(project, op.window, op.control, null, null)),
+      deleteComponent               : (op) => dispatch(projectDeleteUiComponent(project, op.component)),
       setComponentPlugin            : (op) => dispatch({ type: actionTypes.PROJECT_COMPONENT_SET_PLUGIN, project, component: op.component, plugin: op.plugin }),
       newComponent                  : (op) => dispatch({ type: actionTypes.PROJECT_NEW_COMPONENT, project, component: op.component })
     };
