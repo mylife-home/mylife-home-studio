@@ -22,6 +22,10 @@ class Enum extends Type {
   format(value) {
     return value;
   }
+
+  type() {
+    return 'Enum';
+  }
 }
 
 export default Enum;

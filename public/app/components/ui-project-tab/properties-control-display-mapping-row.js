@@ -55,7 +55,7 @@ class PropertiesControlDisplayMappingRow extends React.Component {
 
   render() {
     const { project, item, attributeType, isNew, action, onImageChange } = this.props;
-    const isRange = attributeType.constructor.name === 'Range';
+    const isRange = attributeType.type() === 'Range';
 
     const imageRowColumn = (
       <mui.TableRowColumn>

@@ -26,6 +26,10 @@ class Range extends Type {
   format(value) {
     return value.toString();
   }
+
+  type() {
+    return 'Range';
+  }
 }
 
 export default Range;

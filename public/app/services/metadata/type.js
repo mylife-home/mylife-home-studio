@@ -11,6 +11,10 @@ class Type {
   format(/* value */) {
     throw new Error('not implemented');
   }
+
+  type() {
+    throw new Error('not implemented');
+  }
 }
 
 export default Type;

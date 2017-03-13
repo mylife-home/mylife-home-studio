@@ -43,7 +43,7 @@ class PropertiesControlDisplayMapping extends React.Component {
     const { control, onNew, component } = this.props;
 
     const componentAttribute = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute);
-    const isRange = componentAttribute.type.constructor.name === 'Range';
+    const isRange = componentAttribute.type.type() === 'Range';
 
     const { newItem } = this.state;
 
@@ -70,7 +70,7 @@ class PropertiesControlDisplayMapping extends React.Component {
     }
 
     const attributeType = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
-    const isRange = attributeType.constructor.name === 'Range';
+    const isRange = attributeType.type() === 'Range';
     const mappingDisplay = mapping.toArray().map(item => {
       const key = isRange ? `[${item.min}-${item.max}]` : item.value;
       return `${key} => ${images.get(item.resource).id}`;

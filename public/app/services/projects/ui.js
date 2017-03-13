@@ -234,7 +234,7 @@ function validate(project, msgs) {
       if(control.display && control.display.component) {
         const component = project.components.get(control.display.component);
         const attributeType = component.plugin.clazz.attributes.find(a => a.name === control.display.attribute).type;
-        if(attributeType.constructor.name === 'Enum') {
+        if(attributeType.type() === 'Enum') {
           const { noIdCount, duplicates } = common.checkIds(control.display.map, item => item.value);
           if(noIdCount > 0) {
             msgs.push(`On window ${window.id}: on control ${control.id}: ${noIdCount} display map items have no value`);
