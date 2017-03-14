@@ -254,8 +254,10 @@ function prepareImportToolbox(project, coreEntities) {
 
   // TODO: go deeper in changes in class
   for(const id of diff.deleted.concat(diff.modified)) {
-    for(const comp of findPluginUsage(project, projectPlugins.get(id).plugin.uid)) {
-      messages.push(`Component deleted: ${comp.plugin.entityId}:${comp.id}`);
+    const pluginUid = projectPlugins.get(id).plugin.uid;
+    const plugin = project.plugins.get(pluginUid);
+    for(const comp of findPluginUsage(project, pluginUid)) {
+      messages.push(`Component deleted: ${plugin.entityId}:${comp.id}`);
       operations.push({ type: 'deleteComponent', component: comp.uid });
     }
   }
