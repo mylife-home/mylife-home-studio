@@ -570,7 +570,7 @@ function findComponent(project, componentId) {
 }
 
 function findPluginUsage(project, plugin) {
-  return project.components.filter(comp => comp.plugin === plugin).ToArray();
+  return project.components.filter(comp => comp.plugin === plugin).valueSeq().toArray();
 }
 
 function getProjectPlugins(project) {
