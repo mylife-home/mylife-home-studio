@@ -655,6 +655,11 @@ function fillOperations(operations, bindingsToDelete, componentsToDelete, compon
     operations.push(createOperationCreateBinding(value));
   }
 
+  let order=0;
+  for(const op of operations) {
+    op.order = ++order;
+  }
+
   return operations;
 }
 

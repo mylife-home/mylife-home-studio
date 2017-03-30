@@ -963,6 +963,7 @@ export function projectExecuteDeploy(operations) {
   return (dispatch, getState) => {
 
     operations = operations.filter(o => o.enabled);
+    operations.sort((op1, op2) => op1.order - op2.order);
     console.log('projectExecuteDeploy', operations); // eslint-disable-line no-console
 
     const executors = {

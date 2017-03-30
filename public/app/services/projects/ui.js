@@ -534,6 +534,11 @@ function prepareDeploy(project, resourcesEntity) {
     operations.push(createOperationResourceSet(resourceId, resourceContent));
   }
 
+  let order=0;
+  for(const op of operations) {
+    op.order = ++order;
+  }
+
   return operations;
 }
 
