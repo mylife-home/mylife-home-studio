@@ -9,7 +9,7 @@ import PropertiesValue from '../properties/properties-value';
 
 const PropertiesBinding = ({ binding, remote, local, onDelete }) => (
   <div>
-    <PropertiesTitle icon={<icons.Binding/>} text={`${binding.remote}:${binding.remoteAttribute} -> ${binding.local}:${binding.localAction}`} onDelete={onDelete} />
+    <PropertiesTitle icon={<icons.Binding/>} text={`${remote.id}:${binding.remoteAttribute} -> ${local.id}:${binding.localAction}`} onDelete={onDelete} />
     {/* details */}
     <table>
       <tbody>
