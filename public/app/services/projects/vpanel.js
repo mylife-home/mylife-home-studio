@@ -263,8 +263,8 @@ function prepareImportToolbox(project, coreEntities) {
   }
 
   for(const del of diff.deleted.concat(diff.modified)) {
-    const plugin = projectPlugins.get(del);
-    operations.push({ type: 'deletePlugin', plugin: plugin.uid });
+    const pluginUid = projectPlugins.get(del).plugin.uid;
+    operations.push({ type: 'deletePlugin', plugin: pluginUid });
   }
 
   for(const add of diff.added.concat(diff.modified)) {
