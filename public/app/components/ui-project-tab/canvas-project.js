@@ -13,6 +13,8 @@ Handlebars.registerHelper('immutableMapEach', (context, options) => {
   return ret;
 });
 
+Handlebars.registerHelper('json', (context) => JSON.stringify(context));
+
 const styles = {
   container: {
     ... commonStyles.container,
@@ -41,7 +43,7 @@ const styles = {
 const templates = {
   'Actions' : `
 {{#immutableMapEach components}}
-    Key: {{key}} Value = {{value}}
+    Key: {{key}} Value = {{json value}}
 {{/immutableMapEach}}
   `,
   // 'Other title' : 'Other template'
@@ -66,7 +68,7 @@ class CanvasProject extends React.Component {
     template = template || this.state.template;
     project = project || this.props.project;
     try {
-      const binary = Handlebars.compile(template);
+      const binary = Handlebars.compile(template, { noEscape: true });
       return binary(project);
     } catch(err) {
       console.error(template, project, err); // eslint-disable-line no-console
