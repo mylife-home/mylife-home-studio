@@ -5,6 +5,7 @@ import React from 'react';
 import CanvasComponentContainer from '../../containers/ui-project-tab/canvas-component-container';
 import CanvasImageContainer from '../../containers/ui-project-tab/canvas-image-container';
 import CanvasWindowContainer from '../../containers/ui-project-tab/canvas-window-container';
+import CanvasProjectContainer from '../../containers/ui-project-tab/canvas-project-container';
 
 const Canvas = ({ project, activeContent }) => {
 
@@ -22,7 +23,7 @@ const Canvas = ({ project, activeContent }) => {
     }
   }
 
-  return null; // project -> no render
+  return (<CanvasProjectContainer project={project} />);
 };
 
 Canvas.propTypes = {
