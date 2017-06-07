@@ -5,10 +5,34 @@ import * as mui from 'material-ui';
 import Handlebars from 'handlebars/dist/handlebars.js';
 import commonStyles from './canvas-styles';
 
-Handlebars.registerHelper('immutableMapEach', (context, options) => {
+Handlebars.registerHelper('eachComponent', (options) => {
   let ret = '';
-  for(const [ key, value ] of context.entries()) {
-    ret += options.fn({ key, value }, { data: { ... options.data }, blockParams: [ key, value ]});
+  for(const component of options.data.root.components.values()) {
+    ret += options.fn(component, { data: { ... options.data }, blockParams: [ component ]});
+  }
+  return ret;
+});
+
+Handlebars.registerHelper('eachAttribute', (component, options) => {
+  let ret = '';
+  for(const attribute of component.plugin.clazz.attributes) {
+    ret += options.fn(attribute, { data: { ... options.data }, blockParams: [ attribute ]});
+  }
+  return ret;
+});
+
+Handlebars.registerHelper('eachAction', (component, options) => {
+  let ret = '';
+  for(const action of component.plugin.clazz.actions) {
+    ret += options.fn(action, { data: { ... options.data }, blockParams: [ action ]});
+  }
+  return ret;
+});
+
+Handlebars.registerHelper('eachActionWithoutArgument', (component, options) => {
+  let ret = '';
+  for(const action of component.plugin.clazz.actions.filter(a => !a.types.length)) {
+    ret += options.fn(action, { data: { ... options.data }, blockParams: [ action ]});
   }
   return ret;
 });
@@ -42,9 +66,11 @@ const styles = {
 
 const templates = {
   'Actions' : `
-{{#immutableMapEach components}}
-    Key: {{key}} Value = {{json value}}
-{{/immutableMapEach}}
+{{#eachComponent as |component|}}
+  {{#eachActionWithoutArgument component as |action|}}
+    component="{{ component.id }}" action="{{ action.name }}"
+  {{/eachActionWithoutArgument}}
+{{/eachComponent}}
   `,
   // 'Other title' : 'Other template'
 };
