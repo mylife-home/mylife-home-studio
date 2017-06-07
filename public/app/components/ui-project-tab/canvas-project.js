@@ -8,7 +8,7 @@ import commonStyles from './canvas-styles';
 Handlebars.registerHelper('immutableMapEach', (context, options) => {
   let ret = '';
   for(const [ key, value ] of context.entries()) {
-    ret += options.fn({ key, value });
+    ret += options.fn({ key, value }, { data: { ... options.data }, blockParams: [ key, value ]});
   }
   return ret;
 });
