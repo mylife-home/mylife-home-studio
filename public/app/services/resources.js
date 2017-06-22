@@ -139,6 +139,28 @@ class Resources {
         checkResult(err, res, cb);
       });
   }
+
+  queryUiSessionList(entityId, done) {
+    debug(`queryUiSessionList(${entityId})`);
+    request
+      .post('/resources/' + entityId)
+      .send({ type : 'session_list' })
+      .end((err, res) => {
+        if(err) { return done(err); }
+        return done(null, res.body.data);
+      });
+  }
+
+  queryUiSessionKill(entityId, sessionId, done) {
+    debug(`queryUiSessionKill(${entityId}, ${sessionId})`);
+    request
+      .post('/resources/' + entityId)
+      .send({ type : 'session_kill', sessionId })
+      .end((err, res) => {
+        if(err) { return done(err); }
+        return done(null, res.body.data);
+      });
+  }
 }
 
 function checkResult(err, res, cb) {

@@ -10,6 +10,7 @@ export default keyMirror({
   ENTITY_RESOURCES_LIST: null,
   ENTITY_PLUGINS_LIST: null,
   ENTITY_COMPONENTS_LIST: null,
+  ENTITY_UI_SESSION_LIST: null,
 
   RESOURCE_GET: null,
   RESOURCE_SET: null,

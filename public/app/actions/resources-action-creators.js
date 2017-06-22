@@ -38,7 +38,15 @@ export function resourcesEntityQuery(entity, done) {
         break;
 
       case shared.EntityType.UI:
-        // TODO
+        Facade.resources.queryUiSessionList(entity.id, (err, res) => {
+          if(err) {
+            if(!done) { return console.log(err); } // eslint-disable-line no-console
+            return done(err);
+          }
+
+          dispatch(resourcesEntityUiSessionList(entity.id, res));
+          if(done) { return done(null, res); }
+        });
         break;
     }
   };
@@ -65,6 +73,14 @@ export function resourcesEntityComponentsList(entityId, components) {
     type: actionTypes.ENTITY_COMPONENTS_LIST,
     entityId,
     components
+  };
+}
+
+export function resourcesEntityUiSessionList(entityId, sessions) {
+  return {
+    type: actionTypes.ENTITY_UI_SESSION_LIST,
+    entityId,
+    sessions
   };
 }
 
