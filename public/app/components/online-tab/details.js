@@ -7,14 +7,14 @@ import DetailsResourceContainer from '../../containers/online-tab/details-resour
 import DetailsComponent from './details-component';
 import DetailsPlugin from './details-plugin';
 
-const Details = ({ entity, value, onChangeValue, onEntityRefresh }) => {
+const Details = ({ entity, value, onChangeValue, onEntityRefresh, onUiSessionKill }) => {
   if(!value) {
     return null;
   }
 
   switch(value.type) {
     case 'entity':
-      return (<DetailsEntity entity={entity} onChangeValue={onChangeValue} onEntityRefresh={onEntityRefresh}/>);
+      return (<DetailsEntity entity={entity} onChangeValue={onChangeValue} onEntityRefresh={onEntityRefresh} onUiSessionKill={onUiSessionKill} />);
 
     case 'plugin': {
       const plugin = entity.plugins.find(p => `${p.library}.${p.type}` === value.plugin);
@@ -37,10 +37,11 @@ const Details = ({ entity, value, onChangeValue, onEntityRefresh }) => {
 };
 
 Details.propTypes = {
-  entity: React.PropTypes.object,
-  value: React.PropTypes.object,
-  onChangeValue: React.PropTypes.func.isRequired,
-  onEntityRefresh: React.PropTypes.func.isRequired
+  entity          : React.PropTypes.object,
+  value           : React.PropTypes.object,
+  onChangeValue   : React.PropTypes.func.isRequired,
+  onUiSessionKill : React.PropTypes.func.isRequired,
+  onEntityRefresh : React.PropTypes.func.isRequired,
 };
 
 export default Details;

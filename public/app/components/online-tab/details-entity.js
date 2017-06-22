@@ -40,7 +40,7 @@ function renderPluginUsageIcon(plugin) {
   }
 }
 
-function renderResourcesDetails(entity, onChangeValue) {
+function renderResourcesDetails(entity, { onChangeValue }) {
   const click = (resource) => {
     const value = { type: 'resource', entity: entity.id, resource };
     onChangeValue(value);
@@ -59,7 +59,7 @@ function renderResourcesDetails(entity, onChangeValue) {
   ));
 }
 
-function renderCoreDetails(entity, onChangeValue) {
+function renderCoreDetails(entity, { onChangeValue }) {
   const clickPlugin = (plugin) => {
     const value = { type: 'plugin', entity: entity.id, plugin: `${plugin.library}.${plugin.type}` };
     onChangeValue(value);
@@ -98,21 +98,37 @@ function renderCoreDetails(entity, onChangeValue) {
   return arr;
 }
 
-function renderUiDetails(/*entity*/) {
-  return [];
+function renderUiDetails(entity, { onUiSessionKill }) {
+  if(!entity.sessions) { return []; }
+
+  return entity.sessions.map(session => (
+    <mui.ListItem key={session}
+                  leftIcon={
+                    <base.TooltipContainer tooltip="Session">
+                      <icons.EntityUi />
+                    </base.TooltipContainer>
+                  }
+                  rightIcon={
+                    <mui.IconButton style={{ padding: 0 }}
+                                    onClick={() => onUiSessionKill(entity.id, session.id)}>
+                      <icons.actions.Close />
+                    </mui.IconButton>
+                  }
+                  primaryText={`(${session.id}) ${session.remoteAddress}`} />
+  ));
 }
 
-function renderDetails(entity, onChangeValue) {
+function renderDetails(entity, actions) {
 
   switch(entity.type) {
     case shared.EntityType.RESOURCES:
-      return renderResourcesDetails(entity, onChangeValue);
+      return renderResourcesDetails(entity, actions);
 
     case shared.EntityType.CORE:
-      return renderCoreDetails(entity, onChangeValue);
+      return renderCoreDetails(entity, actions);
 
     case shared.EntityType.UI:
-      return renderUiDetails(entity, onChangeValue);
+      return renderUiDetails(entity, actions);
 
     default:
       return [];
@@ -153,7 +169,7 @@ function renderTypeIcon(entity) {
   }
 }
 
-const DetailsEntity = ({ entity, onChangeValue, onEntityRefresh }) => (
+const DetailsEntity = ({ entity, onChangeValue, onEntityRefresh, onUiSessionKill }) => (
   <div>
     <MainTitle
       center={
@@ -175,16 +191,17 @@ const DetailsEntity = ({ entity, onChangeValue, onEntityRefresh }) => (
       right={renderTypeIcon(entity)}/>
     <DetailsContainer>
       <mui.List style={{overflowX:'hidden'}}>
-        {renderDetails(entity, onChangeValue)}
+        {renderDetails(entity, { onChangeValue, onUiSessionKill })}
       </mui.List>
     </DetailsContainer>
   </div>
 );
 
 DetailsEntity.propTypes = {
-  entity: React.PropTypes.object.isRequired,
-  onChangeValue: React.PropTypes.func.isRequired,
-  onEntityRefresh: React.PropTypes.func.isRequired
+  entity          : React.PropTypes.object.isRequired,
+  onChangeValue   : React.PropTypes.func.isRequired,
+  onUiSessionKill : React.PropTypes.func.isRequired,
+  onEntityRefresh : React.PropTypes.func.isRequired
 };
 
 export default DetailsEntity;

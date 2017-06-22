@@ -4,7 +4,7 @@ import async from 'async';
 import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 import shared from '../shared/index';
-import { getResourceEntity } from'../selectors/online';
+import { getResourceEntity, getEntities } from'../selectors/online';
 
 export function resourcesEntityQuery(entity, done) {
   return (dispatch) => {
@@ -133,3 +133,19 @@ export function resourcesSet(resourceId, resourceContent, done) {
     });
   };
 }
+
+export function resourcesUiSessionKill(entityId, sessionId, done) {
+  return (dispatch, getState) => {
+    const entity = getEntities(getState()).get(entityId);
+
+    Facade.resources.queryUiSessionKill(entityId, sessionId, (err) => {
+      if(err) {
+        if(!done) { return console.log(err); } // eslint-disable-line no-console
+        return done(err);
+      }
+
+      dispatch(resourcesEntityQuery(entity, done));
+
+      if(done) { return done(); }
+    });
+  };}
