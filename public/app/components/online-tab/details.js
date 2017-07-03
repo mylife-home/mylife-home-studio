@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import DetailsNetworkContainer from '../../containers/online-tab/details-network-container';
 import DetailsEntity from './details-entity';
 import DetailsResourceContainer from '../../containers/online-tab/details-resource-container';
 import DetailsComponent from './details-component';
@@ -13,6 +14,10 @@ const Details = ({ entity, value, onChangeValue, onEntityRefresh, onUiSessionKil
   }
 
   switch(value.type) {
+    case 'network': {
+      return (<DetailsNetworkContainer/>);
+    }
+
     case 'entity':
       return (<DetailsEntity entity={entity} onChangeValue={onChangeValue} onEntityRefresh={onEntityRefresh} onUiSessionKill={onUiSessionKill} />);
 

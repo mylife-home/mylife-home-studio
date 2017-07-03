@@ -2,6 +2,7 @@
 
 import React from 'react';
 import base from '../base/index';
+import icons from '../icons';
 
 import shared from '../../shared/index';
 
@@ -12,9 +13,22 @@ const Tree = ({ entities, selectedValueChanged, selectedNode }) => (
     selectedValueChanged={selectedValueChanged}
     selectedNode={selectedNode}
   >
-    {entities
+  {[
+    <base.SelectableListItem
+      key="network"
+      value={{ type: 'network' }}
+      open={true}
+      leftIcon={
+        <base.TooltipContainer tooltip="Network">
+          <icons.EntityCore />
+        </base.TooltipContainer>
+      }
+      primaryText="Network"
+      nestedItems={entities
       .filter(entity => (entity.type !== shared.EntityType.UNKNOWN))
       .map((entity) => (<TreeEntity key={entity.id} entity={entity} />))}
+    />
+  ]}
   </base.SelectableList>
 );
 
