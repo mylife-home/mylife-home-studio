@@ -22,6 +22,7 @@
     "express": "*",
     "file-loader": "^0.10.0",
     "handlebars": "^4.0.10",
+    "human-format": "^0.8.0",
     "immutable": "^3.8.1",
     "keymirror": "^0.1.1",
     "less": "^2.7.2",

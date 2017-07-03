@@ -1,6 +1,7 @@
 'use strict';
 
 import arraySort from 'array-sort';
+import shared from '../shared/index';
 
 export const GRID_SIZE = 32;
 
@@ -65,4 +66,15 @@ export function sortBy(array, key) {
 
 export function newId() {
   return ++idGenerator;
+}
+
+export function isKnownEntityType(entity) {
+  switch(entity.type) {
+    case shared.EntityType.RESOURCES:
+    case shared.EntityType.CORE:
+    case shared.EntityType.UI:
+      return true;
+  }
+
+  return false;
 }

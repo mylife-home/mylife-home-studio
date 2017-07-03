@@ -5,17 +5,7 @@ import { actionTypes } from '../constants/index';
 import Facade from '../services/facade';
 import shared from '../shared/index';
 import { getResourceEntity, getEntities } from'../selectors/online';
-
-function isKnownEntityType(entity) {
-  switch(entity.type) {
-    case shared.EntityType.RESOURCES:
-    case shared.EntityType.CORE:
-    case shared.EntityType.UI:
-      return true;
-  }
-
-  return false;
-}
+import { isKnownEntityType } from '../utils/index';
 
 export function resourcesNetworkSystemQuery(done) {
   return (dispatch, getState) => {
