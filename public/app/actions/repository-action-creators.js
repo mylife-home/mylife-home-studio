@@ -1,7 +1,7 @@
 'use strict';
 
 import { actionTypes } from '../constants/index';
-import { resourcesEntityQuery } from './resources-action-creators';
+import { resourcesEntityQuery, resourcesEntitySystemQuery } from './resources-action-creators';
 
 export function repositoryClear() {
   return {
@@ -17,6 +17,7 @@ export function repositoryAdd(entity) {
     });
 
     dispatch(resourcesEntityQuery(entity));
+    dispatch(resourcesEntitySystemQuery(entity));
   };
 }
 

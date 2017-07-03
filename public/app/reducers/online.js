@@ -24,6 +24,12 @@ export default function(state = { entities: Immutable.Map(), resourcesEntityId: 
         resourcesEntityId: (state.resourcesEntityId === action.id) ? null : state.resourcesEntityId
       };
 
+    case actionTypes.ENTITY_RESOURCES_SYSTEM:
+      return { ...state, entities: state.entities.update(action.entityId, entity => ({
+        ...entity,
+        system: action.system
+      }))};
+
     case actionTypes.ENTITY_RESOURCES_LIST:
       return { ...state, entities: state.entities.update(action.entityId, entity => ({
         ...entity,

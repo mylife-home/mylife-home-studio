@@ -9,6 +9,17 @@ class Resources {
   constructor() {
   }
 
+  querySysInfo(entityId, done) {
+    debug(`querySysInfo(${entityId})`);
+    request
+      .post('/resources/' + entityId)
+      .send({ type : 'sysinfo' })
+      .end((err, res) => {
+        if(err) { return done(err); }
+        return done(null, res.body.data);
+      });
+  }
+
   queryResourcesList(entityId, done) {
     debug(`queryResourcesList(${entityId})`);
     request

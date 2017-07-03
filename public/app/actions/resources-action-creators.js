@@ -6,6 +6,55 @@ import Facade from '../services/facade';
 import shared from '../shared/index';
 import { getResourceEntity, getEntities } from'../selectors/online';
 
+function isKnownEntityType(entity) {
+  switch(entity.type) {
+    case shared.EntityType.RESOURCES:
+    case shared.EntityType.CORE:
+    case shared.EntityType.UI:
+      return true;
+  }
+
+  return false;
+}
+
+export function resourcesNetworkSystemQuery(done) {
+  return (dispatch, getState) => {
+    const entities = getEntities(getState()).toArray();
+
+    async.parallel(entities.map(e => cb => dispatch(resourcesEntitySystemQuery(e, cb)), err => {
+      if(err && !done) { return console.log(err); } // eslint-disable-line no-console
+      return done(err);
+    }));
+  };
+}
+
+export function resourcesEntitySystemQuery(entity, done) {
+  return (dispatch) => {
+
+    if(!isKnownEntityType(entity)) {
+      return done && done();
+    }
+
+    Facade.resources.querySysInfo(entity.id, (err, res) => {
+      if(err) {
+        if(!done) { return console.log(err); } // eslint-disable-line no-console
+        return done(err);
+      }
+
+      dispatch(resourcesEntitiesSystemInfo(entity.id, res));
+      if(done) { return done(); }
+    });
+  };
+}
+
+export function resourcesEntitiesSystemInfo(entityId, system) {
+  return {
+    type: actionTypes.ENTITY_RESOURCES_SYSTEM,
+    entityId,
+    system
+  };
+}
+
 export function resourcesEntityQuery(entity, done) {
   return (dispatch) => {
     switch(entity.type) {
