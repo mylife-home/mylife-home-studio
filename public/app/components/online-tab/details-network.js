@@ -59,7 +59,7 @@ function renderEntity(entity, outdatedPlugins) {
   const { system }             = entity;
   const appPackage             = system && system['mylife.packages'].find(p => p.main);
   const commonPackage          = system && system['mylife.packages'].find(p => p.name === 'mylife-home-common');
-  const outdatedPluginsSummary = outdatedPlugins && outdatedPlugins.map(p => p.name).join(', ');
+  const outdatedPluginsSummary = outdatedPlugins ? (outdatedPlugins.map(p => p.name).join(', ') || '(none)') : '(unavailable)';
   const outdatedPluginsDetails = outdatedPlugins && outdatedPlugins.map(p => `${p.name}: remote ${formatCommitDate(p.remoteDate)} ${p.remoteCommit}, local ${formatCommitDate(p.localDate)} ${p.localCommit}`).join('\n');
 
   function systemCheck(renderer) {
