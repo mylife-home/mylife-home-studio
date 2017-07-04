@@ -31,3 +31,30 @@ export const getUiProjectNames = createSelector(
   [ getResourceEntity ],
   (resourcesEntity) => resourcesStartWith(resourcesEntity, 'project.ui.')
 );
+
+export const getEntityOutdatedPlugins = (state, { entity }) => {
+  const pluginRepository = state.online.pluginRepository && state.online.pluginRepository.list;
+  if(!pluginRepository) { return null; }
+  if(!entity.plugins) { return null; }
+
+  const pluginMap = new Map();
+  for(const plugin of entity.plugins) {
+    if(pluginMap.get(plugin.library)) { continue; }
+    const versionData = plugin.version.split(' ');
+    pluginMap.set(plugin.library, { name: plugin.library, localDate: versionData[0], localCommit: versionData[1] });
+  }
+
+  const plugins = Array.from(pluginMap.values());
+  for(const plugin of plugins) {
+    const repoPlugin = pluginRepository.find(p => plugin.name === p.name);
+    if(!repoPlugin) {
+      console.warn(`failed to fetch plugin ${plugin.name}`); // eslint-disable-line no-console
+      continue;
+    }
+
+    plugin.repoCommit = repoPlugin.commit.substr(0, 7);
+    plugin.repoDate   = repoPlugin.date;
+  }
+
+  return plugins.filter(p => !p.repoCommit || p.repoCommit === p.localCommit);
+};
