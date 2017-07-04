@@ -4,7 +4,7 @@ import { actionTypes } from '../constants/index';
 import Immutable from 'immutable';
 import shared from '../shared/index';
 
-export default function(state = { entities: Immutable.Map(), resourcesEntityId: null }, action) {
+export default function(state = { entities: Immutable.Map(), resourcesEntityId: null, pluginRepository: null }, action) {
 
   switch(action.type) {
     case actionTypes.REPOSITORY_CLEAR:
@@ -64,6 +64,9 @@ export default function(state = { entities: Immutable.Map(), resourcesEntityId: 
           [action.resourceId]: action.resourceContent
         }
       }))};
+
+    case actionTypes.PLUGIN_REPOSITORY:
+      return { ...state, pluginRepository: { list: action.list, date: action.date } };
 
     default:
       return state;
