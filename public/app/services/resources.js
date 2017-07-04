@@ -20,6 +20,17 @@ class Resources {
       });
   }
 
+  queryPluginFetchData(entityId, list, date, done) {
+    debug(`queryPluginFetchData(${entityId}, <data>)`);
+    request
+      .post('/resources/' + entityId)
+      .send({ type : 'plugin_fetch_data', list, date: date.valueOf() })
+      .end((err/*, res*/) => {
+        if(err) { return done(err); }
+        return done();
+      });
+  }
+
   queryResourcesList(entityId, done) {
     debug(`queryResourcesList(${entityId})`);
     request
