@@ -10,12 +10,14 @@ import 'moment-duration-format';
 
 import DetailsContainer from './details-container';
 
-const timeFormat      = t => moment.duration(t).humanize();
-const smallTimeFormat = t => moment.duration(t).format();
-const memFormat       = m => humanFormat(m, { scale: 'binary', unit: 'B' });
+const timeFormat       = t => moment.duration(t).humanize();
+const smallTimeFormat  = t => moment.duration(t).format();
+const memFormat        = m => humanFormat(m, { scale: 'binary', unit: 'B' });
+const formatCommitDate = d => moment(d).format('YYYY-MM-DD');
 
 const styles = {
   listWidth : 3500,
+  common    : { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
   flexes    : [
     4, //Id
     4, //OS platform
@@ -54,9 +56,11 @@ function renderHeader() {
 }
 
 function renderEntity(entity, outdatedPlugins) {
-  const { system }    = entity;
-  const appPackage    = system && system['mylife.packages'].find(p => p.main);
-  const commonPackage = system && system['mylife.packages'].find(p => p.name === 'mylife-home-common');
+  const { system }             = entity;
+  const appPackage             = system && system['mylife.packages'].find(p => p.main);
+  const commonPackage          = system && system['mylife.packages'].find(p => p.name === 'mylife-home-common');
+  const outdatedPluginsSummary = outdatedPlugins && outdatedPlugins.map(p => p.name).join(', ');
+  const outdatedPluginsDetails = outdatedPlugins && outdatedPlugins.map(p => `${p.name}: remote ${formatCommitDate(p.remoteDate)} ${p.remoteCommit}, local ${formatCommitDate(p.localDate)} ${p.localCommit}`).join('\n');
 
   function systemCheck(renderer) {
     if(!system) {
@@ -69,24 +73,28 @@ function renderEntity(entity, outdatedPlugins) {
     return Math.round(value * 100) / 100;
   }
 
+  function style(i) {
+    return Object.assign({ flex: styles.flexes[i] }, styles.common);
+  }
+
   return (
     <mui.ListItem
       key={entity.id}
       value={{ value: entity.id }}
       primaryText={
         <div style={{ display: 'flex', flexDirection: 'row', textAlign: 'left' }}>
-          <div style={{ flex: styles.flexes[0]  }}>{entity.id}</div>
-          <div style={{ flex: styles.flexes[1]  }}>{systemCheck(s => `${s['os.arch']}/${s['os.platform']} - ${s['os.release']}`)}</div>
-          <div style={{ flex: styles.flexes[2]  }}>{systemCheck(s => s['os.cpus'].map(cpu => `${cpu.model} @${cpu.speed}MHz x${cpu.count}`).join('\n'))}</div>
-          <div style={{ flex: styles.flexes[3]  }}>{systemCheck(s => s['os.loadavg'].map(round2dec).join(', '))}</div>
-          <div style={{ flex: styles.flexes[4]  }}>{systemCheck(s => `${memFormat(s['os.freemem'])} / ${memFormat(s['os.totalmem'])}`)}</div>
-          <div style={{ flex: styles.flexes[5]  }}>{systemCheck(s => timeFormat(s['os.uptime'] * 1000))}</div>
-          <div style={{ flex: styles.flexes[6]  }}>{systemCheck(s => s['process.version'])}</div>
-          <div style={{ flex: styles.flexes[7]  }}>{appPackage && appPackage.version}</div>
-          <div style={{ flex: styles.flexes[8]  }}>{commonPackage && commonPackage.version}</div>
-          <div style={{ flex: styles.flexes[9]  }}>{systemCheck(s => `user: ${smallTimeFormat(s['process.cpuUsage'].user / 1000)}, system: ${smallTimeFormat(s['process.cpuUsage'].system / 1000)}`)}</div>
-          <div style={{ flex: styles.flexes[10] }}>{systemCheck(s => timeFormat(s['process.uptime'] * 1000))}</div>
-          <div style={{ flex: styles.flexes[11] }}>{outdatedPlugins && outdatedPlugins.map(p => p.name).join(', ')}</div>
+          <div style={style(0)}>{entity.id}</div>
+          <div style={style(1)}>{systemCheck(s => `${s['os.arch']}/${s['os.platform']} - ${s['os.release']}`)}</div>
+          <div style={style(2)}>{systemCheck(s => s['os.cpus'].map(cpu => `${cpu.model} @${cpu.speed}MHz x${cpu.count}`).join('\n'))}</div>
+          <div style={style(3)}>{systemCheck(s => s['os.loadavg'].map(round2dec).join(', '))}</div>
+          <div style={style(4)}>{systemCheck(s => `${memFormat(s['os.freemem'])} / ${memFormat(s['os.totalmem'])}`)}</div>
+          <div style={style(5)}>{systemCheck(s => timeFormat(s['os.uptime'] * 1000))}</div>
+          <div style={style(6)}>{systemCheck(s => s['process.version'])}</div>
+          <div style={style(7)}>{appPackage && appPackage.version}</div>
+          <div style={style(8)}>{commonPackage && commonPackage.version}</div>
+          <div style={style(9)}>{systemCheck(s => `user: ${smallTimeFormat(s['process.cpuUsage'].user / 1000)}, system: ${smallTimeFormat(s['process.cpuUsage'].system / 1000)}`)}</div>
+          <div style={style(10)}>{systemCheck(s => timeFormat(s['process.uptime'] * 1000))}</div>
+          <div style={style(11)} title={outdatedPluginsDetails}>{outdatedPluginsSummary}</div>
         </div>
       }/>
   );

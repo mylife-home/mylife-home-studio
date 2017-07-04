@@ -52,9 +52,9 @@ export const getEntityOutdatedPlugins = (state, { entity }) => {
       continue;
     }
 
-    plugin.repoCommit = repoPlugin.commit.substr(0, 7);
-    plugin.repoDate   = repoPlugin.date;
+    plugin.remoteCommit = repoPlugin.commit.substr(0, 7);
+    plugin.remoteDate   = repoPlugin.date;
   }
 
-  return plugins.filter(p => !p.repoCommit || p.repoCommit === p.localCommit);
+  return plugins.filter(p => !p.remoteCommit || p.remoteCommit !== p.localCommit);
 };
