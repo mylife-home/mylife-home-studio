@@ -8,7 +8,7 @@ export default function(state = { entities: Immutable.Map(), resourcesEntityId: 
 
   switch(action.type) {
     case actionTypes.REPOSITORY_CLEAR:
-      return { entities: state.entities.clear(), ...state };
+      return { ...state, entities: state.entities.clear() };
 
     case actionTypes.REPOSITORY_ADD:
       return {
