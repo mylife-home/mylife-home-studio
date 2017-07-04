@@ -17,6 +17,7 @@ class Services {
         if(err) { return done(err); }
         return done(null, res.body);
       });
+  }
 }
 
 export default Services;
