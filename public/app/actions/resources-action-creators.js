@@ -7,6 +7,42 @@ import shared from '../shared/index';
 import { getResourceEntity, getEntities } from'../selectors/online';
 import { isKnownEntityType } from '../utils/index';
 
+export function servicesPluginRepositoryQuery(done) {
+  return (dispatch, getState) => {
+
+    Facade.services.pluginRepository((err, list) => {
+      if(err) {
+        if(!done) { return console.log(err); } // eslint-disable-line no-console
+        return done(err);
+      }
+
+      const date = new Date();
+
+      function fetchData(entity) {
+        Facade.resources.queryPluginFetchData(entity.id, list, date, err => { err && console.log(err); }); // eslint-disable-line no-console
+      }
+
+      // dispatch result to all core entities
+      for(const entity of getEntities(getState()).values()) {
+        if(entity.type !== shared.EntityType.CORE) { continue; }
+
+        fetchData(entity);
+      }
+
+      dispatch(servicesPluginRepository(list, date));
+      if(done) { return done(); }
+    });
+  };
+}
+
+export function servicesPluginRepository(list, date) {
+  return {
+    type: actionTypes.PLUGIN_REPOSITORY,
+    list,
+    date
+  };
+}
+
 export function resourcesNetworkSystemQuery(done) {
   return (dispatch, getState) => {
     const entities = getEntities(getState()).toArray();

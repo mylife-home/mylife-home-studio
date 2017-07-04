@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 
 import DetailsNetwork from '../../components/online-tab/details-network';
-import { resourcesNetworkSystemQuery } from '../../actions/index';
+import { resourcesNetworkSystemQuery, servicesPluginRepositoryQuery } from '../../actions/index';
 import { isKnownEntityType } from '../../utils/index';
 
 const mapStateToProps = (state) => ({
@@ -11,7 +11,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onRefresh: () => dispatch(resourcesNetworkSystemQuery())
+  onRefresh: () => {
+    dispatch(resourcesNetworkSystemQuery());
+    dispatch(servicesPluginRepositoryQuery());
+  }
 });
 
 const DetailsNetworkContainer = connect(

@@ -7,6 +7,8 @@ export default keyMirror({
   REPOSITORY_ADD: null,
   REPOSITORY_REMOVE: null,
 
+  PLUGIN_REPOSITORY: null,
+
   ENTITY_RESOURCES_SYSTEM: null,
   ENTITY_RESOURCES_LIST: null,
   ENTITY_PLUGINS_LIST: null,
