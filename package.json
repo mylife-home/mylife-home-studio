@@ -1,9 +1,9 @@
 {
   "name": "mylife-home-studio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mylife Home Studio",
   "main": "index.js",
-  "repository": "https://github.com/vincent-tr/mylife-home-studio",
+  "repository": "https://github.com/mylife-home/mylife-home-studio",
   "author": "Vincent Trumpff",
   "dependencies": {
     "array-sort": "^0.1.2",
@@ -31,7 +31,7 @@
     "material-ui": "^0.17.0",
     "moment": "^2.18.1",
     "moment-duration-format": "^1.3.0",
-    "mylife-home-common": "vincent-tr/mylife-home-common",
+    "mylife-home-common": "mylife-home/mylife-home-common",
     "node-events": "0.0.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
