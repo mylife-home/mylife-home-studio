@@ -595,7 +595,7 @@ function pluginsDiff(projectPlugins, onlinePlugins) {
                      filter(id => !onlinePlugins.has(id)),
     modified : Array.from(projectPlugins.keys()).
                      filter(id => onlinePlugins.has(id)).
-                     filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.raw.clazz)
+                     filter(id => onlinePlugins.get(id).plugin.clazz !== projectPlugins.get(id).plugin.raw.clazz || onlinePlugins.get(id).plugin.config !== projectPlugins.get(id).plugin.raw.config)
   };
 
   ret.count = ret.added.length +
